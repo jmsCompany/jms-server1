@@ -1,0 +1,4 @@
+Module,Role,Priv
+新建项目权,sector_supervisor,1
+部门浏览权,sector_supervisor,1
+新建项目权,user,0
