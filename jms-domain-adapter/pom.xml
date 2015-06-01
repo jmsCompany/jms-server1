@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>com.jms</groupId>
+		<artifactId>jms-server</artifactId>
+		<version>1.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>jms-domain-adapter</artifactId>
+	<packaging>jar</packaging>
+	<name>jms-domain-adapter</name>
+	<description>jms-domain-adapter</description>
+
+	<developers>
+		<developer>
+			<name>Hongtao Ren</name>
+			<email>ren@ecust.edu.cn</email>
+		</developer>
+	</developers>
+
+
+	<dependencies>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+		
+       
+		<dependency>
+			<groupId>com.jms</groupId>
+			<artifactId>jms-ws-domain</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+<dependency>
+			<groupId>com.jms</groupId>
+			<artifactId>jms-repositories</artifactId>
+			<version>1.0</version>
+		</dependency>
+	
+	</dependencies>
+
+
+</project>
