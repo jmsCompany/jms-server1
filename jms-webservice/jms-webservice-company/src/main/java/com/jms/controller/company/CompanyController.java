@@ -27,6 +27,7 @@ public class CompanyController {
 	
 	@RequestMapping(value="company/view/{idCompany}", method=RequestMethod.GET)
 	public WSCompany getCompany(@PathVariable("idCompany") int idCompany) throws Exception {
+	    System.out.println("hi");
 		Company company= companyService.findCompanyById(idCompany);
 		return companyAdapter.toWSCompany(company);
 	}

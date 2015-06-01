@@ -9,6 +9,8 @@ public class BeanUtil {
 	{
 		String propertyName = null;
 		Object target =targetClass.newInstance();
+		if(sourceObj==null)
+			return target;
 		for(Method getterMethod: sourceObj.getClass().getMethods())
 		{
 			if(getterMethod.getReturnType().isPrimitive()

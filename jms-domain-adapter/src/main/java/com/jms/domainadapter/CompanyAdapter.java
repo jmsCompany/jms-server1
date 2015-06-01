@@ -2,6 +2,7 @@ package com.jms.domainadapter;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,13 +12,15 @@ import com.jms.domain.db.Company;
 import com.jms.domain.ws.WSCompany;
 
 @Service @Transactional(readOnly=true)
-public class CompanyAdapter {
+public class CompanyAdapter{
 	
 	@Autowired
 	private UserAdapter userAdapter;
 	
 	public Company toDBCompany(WSCompany wsCompany) throws Exception
 	{
+		if(wsCompany==null)
+			return null;
 		Company c = (Company)BeanUtil.shallowCopy(wsCompany,Company.class);
 		c.setEnabled(wsCompany.getEnabledEnum().getStatusCode());
 		c.setFineTask(wsCompany.getFineTaskEnum().getStatusCode());
@@ -28,6 +31,8 @@ public class CompanyAdapter {
 
 	public WSCompany toWSCompany(Company company) throws Exception
 	{
+		if(company==null)
+			return null;
 		WSCompany wsc = (WSCompany)BeanUtil.shallowCopy(company,WSCompany.class);
 		wsc.setEnabledEnum(findEnabledEnumByStatusCode(company.getEnabled()));
 		wsc.setFineTaskEnum(findFineTaskEnumByStatusCode(company.getFineTask()));
@@ -53,4 +58,5 @@ public class CompanyAdapter {
 	    }
 		return null;
 	}
+
 }

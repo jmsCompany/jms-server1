@@ -42,29 +42,17 @@ public class CompanyService {
 	@Transactional(readOnly=true)
 	public Company findCompanyById(int idCompany)
 	{
-		Company company = companyRepository.findOne(idCompany);
-		if(company!=null)
-		logger.debug("find company: " + company.getCompanyName());
-		else
-			company = new Company();
-		return company;
+		return companyRepository.findOne(idCompany);
+
 	}
 	@Transactional(readOnly=true)
 	public Company findCompanyByIdUser(String idUser)
 	{
-		Company company;
 		Users u = usersRepository.findByUsernameOrEmailOrMobile(idUser);
 		if(u==null)
-			return new Company();
-		else
-		{
-			 company = u.getCompany();
-		}
-		if(company!=null)
-		logger.debug("find company: " + company.getCompanyName());
-		else
-			company = new Company();
-		return company;
+			return null;
+        return u.getCompany();
+		
 	}
 	
 	public Message registCompany(WSCompany wsCompany)
