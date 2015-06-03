@@ -8,6 +8,7 @@ import java.util.Date;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ import com.jms.domain.ws.WSCompany;
 import com.jms.messages.MessagesUitl;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.user.UsersRepository;
+import com.jms.user.IUserService;
 
 @Service
 public class CompanyService {
@@ -36,13 +38,17 @@ public class CompanyService {
 	private ResourceBundleMessageSource source;
 	@Autowired
 	private MessagesUitl messagesUitl;
-
+	
+	@Qualifier
+	private IUserService iUserServiceImpl;
+	
 	private static final Logger logger = LogManager.getLogger(CompanyService.class.getCanonicalName());
 	
 	@Transactional(readOnly=true)
 	public Company findCompanyById(int idCompany)
 	{
 		return companyRepository.findOne(idCompany);
+		
 
 	}
 	@Transactional(readOnly=true)

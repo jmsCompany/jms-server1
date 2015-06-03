@@ -3,6 +3,7 @@ package com.jms;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ import com.jms.service.workmanagement.ProjectService;
 public class DatabaseInit {
 
 	@Autowired private UsersRepository usersRepository;
-	@Autowired private UserService userService;
+	@Qualifier private UserService userService;
 	@Autowired private RoleService roleService;
 	@Autowired private SectorService sectorService;
 	@Autowired private ModuleService moduleService;
