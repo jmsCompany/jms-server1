@@ -51,15 +51,29 @@ public class IUserServiceImpl implements IUserService{
 
 	public Message checkLogin(String username,String email,String mobile)
 	{
-		Message msg1 =checkLogin(username);
+		logger.debug(" username: " + username+ ", email: " +email +", " +mobile);
+		
+		Message msg1 =checkLogin(username); 
 		if(msg1!=null&&msg1.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
+		{
+			 logger.debug("message1: " + msg1.getMessage()+", type: " + msg1.getMessageTypeEnum());
+
 			return msg1;
+		}
+			
 		Message msg2 = checkLogin(email);
 		if(msg2!=null&&msg2.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
-			return msg2;
+		{
+			 logger.debug("message2: " + msg2.getMessage()+", type: " + msg2.getMessageTypeEnum());
+			 return msg2;
+		}
+			
 		Message msg3 = checkLogin(mobile);
 		if(msg3!=null&&msg3.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
+		{
+			logger.debug("message3: " + msg3.getMessage()+", type: " + msg3.getMessageTypeEnum());
 			return msg3;
+		}
 		if(msg1==null&&msg2==null&&msg3==null)
 			return messagesUitl.getMessage("user.register.error.atleastone",null,MessageTypeEnum.ERROR);
 		return messagesUitl.getMessage("user.register.ok",null,MessageTypeEnum.INFOMATION);
@@ -68,7 +82,7 @@ public class IUserServiceImpl implements IUserService{
 	
 	public Message checkLogin(String login)
 	{
-		if(login!=null)
+		if(login!=null&&!login.isEmpty())
 		{
 			Users u =usersRepository.findByUsernameOrEmailOrMobile(login);
 			if(u!=null)

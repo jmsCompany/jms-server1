@@ -91,10 +91,10 @@ public class CompanyService {
 			return message;
 		logger.debug("user name: " + wsCompany.getWsUsers().getName());
 		message = iUserServiceImpl.checkLogin(wsCompany.getWsUsers().getUsername(),wsCompany.getWsUsers().getEmail(),wsCompany.getWsUsers().getMobile());
-		
+		 logger.debug("message: " + message.getMessage()+", type: " + message.getMessageTypeEnum());
 		 if(message.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
 				return message;
-		 
+		
 		 //
 		 Users dbUser= userAdapter.toDBUser(wsCompany.getWsUsers());
 		 logger.debug("user id before :  " + dbUser.getIdUser());
@@ -112,25 +112,7 @@ public class CompanyService {
 		 return null;
 		
 	}		
-	public void loadCompaniesFromCSV(String fileName) throws IOException
-	{
-		CsvReader reader = new CsvReader(fileName,',', Charset.forName("UTF-8"));
-        reader.readHeaders();  //CompanyCatergory (NORMAL_COMPANY(0), SYSTEM_COMPANY(1), TEMPLATE_COMPANY(2)),CompanyName,Description
-		while(reader.readRecord())
-		{
-			Company templateCompany = new Company();
-			templateCompany.setCompanyName(reader.get("CompanyName"));
-			templateCompany.setDescription(reader.get("Description"));
-			templateCompany.setCreationTime(new Date());
-			templateCompany.setUsers(usersRepository.findByUsername(SystemUser.System.toString()));
-			templateCompany.setEnabled(EnabledEnum.ROBOT.getStatusCode());
-			templateCompany.setFineTask(FineTaskEnum.NORMALTASK.getStatusCode());
-			templateCompany.setCompanyCatergory(Integer.parseInt(reader.get("CompanyCatergory")));
-			companyRepository.save(templateCompany);
-		
-		}
-	}
-	
+
 
 	public Message checkCompanyName(String companyName) 
 	{
@@ -152,33 +134,63 @@ public class CompanyService {
 		//copy projects
 		for(Project p: from.getProjects())
 		{
-			p.setIdProject(null);
-			p.setCompany(to);
-			projectRepository.save(p);
+			Project p1 = new Project();
+			p1.setCompany(to);
+			p1.setProjectName(p.getProjectName());
+			p1.setDescription(p.getDescription());
+	        p1.setEnabled(p.getEnabled());
+			projectRepository.save(p1);
 		}
 		//copy sectors
 		for(Sector s: from.getSectors())
 		{
-		  s.setIdSector(null);
-		  s.setCompany(to);
-		  sectorsRepository.save(s);
+		  Sector s1 = new Sector();
+		  s1.setCompany(to);
+		  s1.setDescription(s.getDescription());
+		  s1.setSector(s.getSector());
+		  sectorsRepository.save(s1);
 		}
 	   //copy roles and privileges
         for(Roles r: from.getRoleses())
         {
         	Set<RolePriv> rpSet =r.getRolePrivs();
-        	r.setIdRole(null);
-        	r.setCompany(to);
-        	roleRepository.save(r);
+        	Roles r1 = new Roles();
+        	r1.setRole(r.getRole());
+        	r1.setDescription(r.getDescription());
+        	r1.setCompany(to);
+        	r1.setLevel(r.getLevel());
+        	roleRepository.save(r1);
         	for(RolePriv rp: rpSet)
         	{
-        		RolePrivId id = new RolePrivId(rp.getModules().getIdModule(),r.getIdRole()); 
-        		rp.setId(id);
-        		//rp.setRoles(roles); data inconsist
-        		rolePrivReposity.save(rp);
+        		logger.debug("module id: " + rp.getModules().getIdModule()+" role id: " +r1.getIdRole());
+        		RolePrivId id = new RolePrivId(rp.getModules().getIdModule(),r1.getIdRole()); 
+        		RolePriv rp1 = new RolePriv();
+        		rp1.setId(id);
+        		rp1.setRoles(r1); 
+        		rp1.setPriv(rp.getPriv());
+        		rp1.setModules(rp.getModules());
+        		rolePrivReposity.save(rp1);
         	}
         	
         }
    }
-
+	public void loadCompaniesFromCSV(String fileName) throws IOException
+	{
+		CsvReader reader = new CsvReader(fileName,',', Charset.forName("UTF-8"));
+        reader.readHeaders();  //CompanyCatergory (NORMAL_COMPANY(0), SYSTEM_COMPANY(1), TEMPLATE_COMPANY(2)),CompanyName,Description
+		while(reader.readRecord())
+		{
+			Company templateCompany = new Company();
+			templateCompany.setCompanyName(reader.get("CompanyName"));
+			templateCompany.setDescription(reader.get("Description"));
+			templateCompany.setCreationTime(new Date());
+			templateCompany.setUsers(usersRepository.findByUsername(SystemUser.System.toString()));
+			templateCompany.setEnabled(EnabledEnum.ROBOT.getStatusCode());
+			templateCompany.setFineTask(FineTaskEnum.NORMALTASK.getStatusCode());
+			templateCompany.setCompanyCatergory(Integer.parseInt(reader.get("CompanyCatergory")));
+			companyRepository.save(templateCompany);
+		
+		}
+	}
+	
 }

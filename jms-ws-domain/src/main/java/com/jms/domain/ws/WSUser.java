@@ -10,6 +10,7 @@ public class WSUser {
     private String email;
     private String password;
     private Date creationTime;
+    private String locale;
     
     public String getEmail() {
     	return email;
@@ -61,6 +62,14 @@ public class WSUser {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getLocale() {
+		return locale;
+	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
 	}
 
 
