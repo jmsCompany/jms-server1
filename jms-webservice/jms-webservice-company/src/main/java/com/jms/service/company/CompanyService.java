@@ -36,7 +36,7 @@ import com.jms.repositories.company.SectorsRepository;
 import com.jms.repositories.user.RolePrivRepository;
 import com.jms.repositories.user.RoleRepository;
 import com.jms.repositories.user.UsersRepository;
-import com.jms.repositories.workmanagement.ProjectReposity;
+import com.jms.repositories.workmanagement.ProjectRepository;
 import com.jms.user.IUserService;
 
 @Service
@@ -59,7 +59,7 @@ public class CompanyService {
 	@Autowired
 	private CompanyAdapter companyAdapter;
 	@Autowired
-	private ProjectReposity projectRepository; 
+	private ProjectRepository projectRepository; 
 	@Autowired @Qualifier("iUserServiceImpl")
 	private IUserService iUserServiceImpl;
 	@Autowired
@@ -70,7 +70,10 @@ public class CompanyService {
 	@Transactional(readOnly=true)
 	public Company findCompanyById(int idCompany)
 	{
-		return companyRepository.findOne(idCompany);
+		Company company= companyRepository.findOne(idCompany);
+	    if(company.getEnabled()==EnabledEnum.DISENABLED.getStatusCode())
+        	return null;
+        return company;
 		
 
 	}
@@ -80,7 +83,10 @@ public class CompanyService {
 		Users u = usersRepository.findByUsernameOrEmailOrMobile(idUser);
 		if(u==null)
 			return null;
-        return u.getCompany();
+        Company company = u.getCompany();
+        if(company.getEnabled()==EnabledEnum.DISENABLED.getStatusCode())
+        	return null;
+        return company;
 		
 	}
 	@Transactional(readOnly=false)
@@ -89,13 +95,9 @@ public class CompanyService {
 		Message message = checkCompanyName(wsCompany.getCompanyName());
 		if(message.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
 			return message;
-		logger.debug("user name: " + wsCompany.getWsUsers().getName());
 		message = iUserServiceImpl.checkLogin(wsCompany.getWsUsers().getUsername(),wsCompany.getWsUsers().getEmail(),wsCompany.getWsUsers().getMobile());
-		 logger.debug("message: " + message.getMessage()+", type: " + message.getMessageTypeEnum());
 		 if(message.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
 				return message;
-		
-		 //
 		 Users dbUser= userAdapter.toDBUser(wsCompany.getWsUsers());
 		 logger.debug("user id before :  " + dbUser.getIdUser());
 		 iUserServiceImpl.register(dbUser);
@@ -109,7 +111,7 @@ public class CompanyService {
 		 //todo: find template company by some rules!!
 		 Company templateCompany= companyRepository.findByCompanyName("零售业企业模版");
 		 copyDataBetweenCompanies(templateCompany,company);
-		 return null;
+		 return  messagesUitl.getMessage("company.success",null,MessageTypeEnum.INFOMATION);
 		
 	}		
 

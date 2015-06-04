@@ -14,7 +14,7 @@ import com.jms.domain.db.Project;
 import com.jms.domain.ws.MessageTypeEnum;
 import com.jms.messages.MessagesUitl;
 import com.jms.repositories.company.CompanyRepository;
-import com.jms.repositories.workmanagement.ProjectReposity;
+import com.jms.repositories.workmanagement.ProjectRepository;
 
 
 @Service
@@ -25,7 +25,7 @@ public class ProjectService {
 			.getLogger(ProjectService.class.getCanonicalName());
 
 	@Autowired
-	private ProjectReposity projectRepository;
+	private ProjectRepository projectRepository;
 	@Autowired
 	private CompanyRepository companyRepository;
 	@Autowired
