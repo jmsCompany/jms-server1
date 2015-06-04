@@ -15,7 +15,7 @@ import com.jms.domain.db.RolePriv;
 import com.jms.domain.db.RolePrivId;
 import com.jms.domain.db.Roles;
 import com.jms.repositories.system.ModulesRepository;
-import com.jms.repositories.user.RolePrivReposity;
+import com.jms.repositories.user.RolePrivRepository;
 import com.jms.repositories.user.RoleRepository;
 
 
@@ -32,7 +32,7 @@ public class RolePrivService {
 	private RoleRepository roleRepository;
 	
 	@Autowired
-	private RolePrivReposity rolePrivReposity;
+	private RolePrivRepository rolePrivReposity;
 	
 	
 	public void loadRolesPrivFromCSV(String fileName) throws IOException{

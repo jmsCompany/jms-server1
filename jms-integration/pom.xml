@@ -23,6 +23,11 @@
 
 
 	<dependencies>
+		<dependency>
+			<groupId>com.jms</groupId>
+			<artifactId>jms-api</artifactId>
+			<version>1.0</version>
+		</dependency>
 			<dependency>
 			<groupId>com.jms</groupId>
 			<artifactId>jms-webservice-company</artifactId>
@@ -39,6 +44,11 @@
 			<version>1.0</version>
 		</dependency>
 		
+		<dependency>
+	<groupId>cglib</groupId>
+	<artifactId>cglib</artifactId>
+	<version>3.1</version>
+</dependency>
 		
 		
 	</dependencies>

@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jms.repositories.user.UsersRepository;
 import com.jms.service.company.CompanyService;
+import com.jms.service.company.SectorService;
 import com.jms.service.user.ModuleService;
 import com.jms.service.user.RolePrivService;
 import com.jms.service.user.RoleService;
-import com.jms.service.user.SectorService;
 import com.jms.service.user.UserService;
 import com.jms.service.workmanagement.ProjectService;
 

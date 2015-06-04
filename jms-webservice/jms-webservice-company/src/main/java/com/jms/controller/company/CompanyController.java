@@ -16,7 +16,6 @@ import com.jms.service.company.CompanyService;
 
 
 @RestController
-@EnableAutoConfiguration
 public class CompanyController {
 	
 	@Autowired
@@ -37,15 +36,16 @@ public class CompanyController {
 		return companyAdapter.toWSCompany(company);
 	}
 	
-	/*
+	@RequestMapping(value="company/checkCompanyName", method=RequestMethod.GET)
+	public Message checkCompanyName(@RequestParam("companyName") String companyName) throws Exception {
+		return companyService.checkCompanyName(companyName);
+	}
+
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/company/create", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public Message createCompany(@RequestBody Company company) {
-		
-		return null;
-		//return companyService.createCompany(company);
+	public Message createCompany(@RequestBody WSCompany wsCompany) throws Exception {
+		return companyService.registCompany(wsCompany);
 	}
-*/
 
 
 }

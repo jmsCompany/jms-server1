@@ -1,4 +1,4 @@
-package com.jms.service.user;
+package com.jms.service.company;
 
 
 import java.io.IOException;

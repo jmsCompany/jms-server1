@@ -1,7 +1,9 @@
 package com.jms.domain.ws;
 
 import java.util.Date;
+import java.util.Locale.Category;
 
+import com.jms.domain.CompanyCategoryEnum;
 import com.jms.domain.EnabledEnum;
 import com.jms.domain.FineTaskEnum;
 
@@ -15,6 +17,7 @@ public class WSCompany {
     private Date creationTime;
     private FineTaskEnum fineTaskEnum;
     private EnabledEnum enabledEnum;
+    private CompanyCategoryEnum companyCategoryEnum;
 
    public WSCompany() {
    }
@@ -94,6 +97,16 @@ public class WSCompany {
 	
 	public void setFineTaskEnum(FineTaskEnum fineTaskEnum) {
 		this.fineTaskEnum = fineTaskEnum;
+	}
+
+
+	public CompanyCategoryEnum getCompanyCategoryEnum() {
+		return companyCategoryEnum;
+	}
+
+
+	public void setCompanyCategoryEnum(CompanyCategoryEnum companyCategoryEnum) {
+		this.companyCategoryEnum = companyCategoryEnum;
 	}
 
 }

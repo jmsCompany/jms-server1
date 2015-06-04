@@ -4,6 +4,6 @@ import com.jms.domain.ws.Message;
 
 public interface IUserService {
 	public Message register(Users users);
-	
 	public Message checkLogin(String login);
+	public Message checkLogin(String username,String email,String mobile);
 }

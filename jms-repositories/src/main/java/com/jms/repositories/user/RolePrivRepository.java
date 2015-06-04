@@ -12,7 +12,7 @@ import com.jms.domain.db.Roles;
 
 
 @Repository
-public interface RolePrivReposity  extends CrudRepository<RolePriv, RolePrivId>{
+public interface RolePrivRepository  extends CrudRepository<RolePriv, RolePrivId>{
 		
 	//@Query("select r from RolePriv r where r.role=?1  and r.moudle=?2 ")	
 	//public RolePriv findByRoleidAndMoudleid(String role);

@@ -4,15 +4,19 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Locale;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.csvreader.CsvReader;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
 
-@Service("userService")
+@Service
+@Qualifier("userService")
 @Transactional
 public class UserService extends IUserServiceImpl{
 	

@@ -3,10 +3,12 @@ package com.jms.service.user;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.MessageTypeEnum;
@@ -14,7 +16,8 @@ import com.jms.messages.MessagesUitl;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.user.IUserService;
 
-@Service("iUserServiceImpl")
+@Service
+@Qualifier("iUserServiceImpl")
 @Transactional
 public class IUserServiceImpl implements IUserService{
 	
@@ -29,36 +32,38 @@ public class IUserServiceImpl implements IUserService{
 	
 	public Message register(Users users)
 	{
-		Message msg;
-	
-		if(users.getEmail()==null&&users.getUsername()==null&&users.getMobile()==null)
-		{
-			return messagesUitl.getMessage("user.register.error.atleastone",null,MessageTypeEnum.ERROR);
-		}
+		Message msg =checkLogin(users.getUsername(),users.getEmail(),users.getMobile());
+		
+		if(msg.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
+			return msg;
 		else
 		{
-			msg =checkLogin(users.getUsername());
-			if(msg!=null)
-				return msg;
-			msg =checkLogin(users.getEmail());
-			if(msg!=null)
-				return msg;
-			msg =checkLogin(users.getMobile());
-			if(msg!=null)
-				return msg;
+			String password =  encode(users.getPassword());
+			users.setPassword(password);
+	        usersRepository.save(users);
+	        Message msgToClient = messagesUitl.getMessage("user.register.success",null,MessageTypeEnum.INFOMATION);
+			logger.debug(msgToClient.getMessageTypeEnum().toString()  +", "+ msgToClient.getMessage());
+			return msgToClient;
 		}
-		String password =  encode(users.getPassword());
-		users.setPassword(password);
-        usersRepository.save(users);
-        Message msgToClient = messagesUitl.getMessage("user.register.success",null,MessageTypeEnum.INFOMATION);
-		logger.debug(msgToClient.getMessageTypeEnum().toString()  +", "+ msgToClient.getMessage());
-		return msgToClient;
+	
 	}
 
-	private String encode(String password)
+
+	public Message checkLogin(String username,String email,String mobile)
 	{
-		Md5PasswordEncoder md5 = new Md5PasswordEncoder();
-		return md5.encodePassword(password, salt);
+		Message msg1 =checkLogin(username);
+		if(msg1!=null&&msg1.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
+			return msg1;
+		Message msg2 = checkLogin(email);
+		if(msg2!=null&&msg2.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
+			return msg2;
+		Message msg3 = checkLogin(mobile);
+		if(msg3!=null&&msg3.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
+			return msg3;
+		if(msg1==null&&msg2==null&&msg3==null)
+			return messagesUitl.getMessage("user.register.error.atleastone",null,MessageTypeEnum.ERROR);
+		return messagesUitl.getMessage("user.register.ok",null,MessageTypeEnum.INFOMATION);
+	
 	}
 	
 	public Message checkLogin(String login)
@@ -67,13 +72,16 @@ public class IUserServiceImpl implements IUserService{
 		{
 			Users u =usersRepository.findByUsernameOrEmailOrMobile(login);
 			if(u!=null)
-			{
 				return messagesUitl.getMessage("user.register.error",new Object[] {login}, MessageTypeEnum.ERROR);
-			}
 			else
-				return null;
+				return messagesUitl.getMessage("user.name.available",null, MessageTypeEnum.INFOMATION);
 		}
 		else
 			return null;
+	}
+	private String encode(String password)
+	{
+		Md5PasswordEncoder md5 = new Md5PasswordEncoder();
+		return md5.encodePassword(password, salt);
 	}
 }
