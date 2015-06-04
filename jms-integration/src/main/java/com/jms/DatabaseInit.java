@@ -24,7 +24,7 @@ import com.jms.service.workmanagement.ProjectService;
 public class DatabaseInit {
 
 	@Autowired private UsersRepository usersRepository;
-	@Qualifier private UserService userService;
+	@Autowired @Qualifier("userService") private UserService userService;
 	@Autowired private RoleService roleService;
 	@Autowired private SectorService sectorService;
 	@Autowired private ModuleService moduleService;
