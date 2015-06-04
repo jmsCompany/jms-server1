@@ -37,8 +37,8 @@ public class Application {
     	
     	ConfigurableApplicationContext ctx= SpringApplication.run(Application.class, args);
 
-    	//DatabaseInit initDB = ctx.getBean(DatabaseInit.class);
-    	//initDB.init(ctx);
+    	DatabaseInit initDB = ctx.getBean(DatabaseInit.class);
+    	initDB.init(ctx);
 
     	
     	//EmailSenderTest et = ctx.getBean(EmailSenderTest.class);
