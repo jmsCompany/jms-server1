@@ -23,19 +23,20 @@ public class CompanyController {
 	@Autowired
 	private CompanyAdapter companyAdapter;
 	
-	
+	@Transactional(readOnly = true)
 	@RequestMapping(value="company/view/{idCompany}", method=RequestMethod.GET)
 	public WSCompany getCompany(@PathVariable("idCompany") int idCompany) throws Exception {
 		Company company= companyService.findCompanyById(idCompany);
 		return companyAdapter.toWSCompany(company);
 	}
-	
+	@Transactional(readOnly = true)
 	@RequestMapping(value="company/view", method=RequestMethod.GET)
 	public WSCompany getCompany(@RequestParam("idUser") String idUser) throws Exception {
 		Company company= companyService.findCompanyByIdUser(idUser);
 		return companyAdapter.toWSCompany(company);
 	}
 	
+	@Transactional(readOnly = true)
 	@RequestMapping(value="company/checkCompanyName", method=RequestMethod.GET)
 	public Message checkCompanyName(@RequestParam("companyName") String companyName) throws Exception {
 		return companyService.checkCompanyName(companyName);
@@ -46,6 +47,12 @@ public class CompanyController {
 	public Message createCompany(@RequestBody WSCompany wsCompany) throws Exception {
 		return companyService.registCompany(wsCompany);
 	}
-
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/company/cancel", method=RequestMethod.GET)
+	public Message cancelCompany(@RequestParam("idCompany") int idCompany)
+	{
+		return companyService.cancelCompany(idCompany);
+	}
 
 }

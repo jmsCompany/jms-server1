@@ -1,4 +1,4 @@
-package com.jms.email;
+package com.jms.locale;
 
 import java.util.Locale;
 

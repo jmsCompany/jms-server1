@@ -38,6 +38,7 @@ import com.jms.repositories.user.RoleRepository;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.repositories.workmanagement.ProjectRepository;
 import com.jms.user.IUserService;
+import com.jms.web.security.SecurityUtils;
 
 @Service
 public class CompanyService {
@@ -74,8 +75,6 @@ public class CompanyService {
 	    if(company.getEnabled()==EnabledEnum.DISENABLED.getStatusCode())
         	return null;
         return company;
-		
-
 	}
 	@Transactional(readOnly=true)
 	public Company findCompanyByIdUser(String idUser)
@@ -130,8 +129,27 @@ public class CompanyService {
 		}
 		
 	}
-	
-	public void copyDataBetweenCompanies(Company from,Company to)
+	@Transactional(readOnly=false)
+	public Message cancelCompany(int idCompany)
+	{
+		logger.debug("user name: " + SecurityUtils.getUsername());
+		String login =  SecurityUtils.getUsername();
+		Users u = usersRepository.findByUsernameOrEmailOrMobile(login);
+		if(u==null)
+			 return  messagesUitl.getMessage("nosuchuser",null,MessageTypeEnum.ERROR);
+		Company company = u.getCompany();
+		if(u!=null && company!=null && company.getIdCompany()==idCompany)
+		{
+			company.setEnabled(EnabledEnum.DISENABLED.getStatusCode());
+			companyRepository.save(company);
+			return messagesUitl.getMessage("company.cancel.success",null,MessageTypeEnum.INFOMATION);
+					
+		}
+			
+		return  messagesUitl.getMessage("company.cancel.failure",null,MessageTypeEnum.ERROR);
+	}
+	@Transactional(readOnly=false)
+	private void copyDataBetweenCompanies(Company from,Company to)
 	{
 		//copy projects
 		for(Project p: from.getProjects())
