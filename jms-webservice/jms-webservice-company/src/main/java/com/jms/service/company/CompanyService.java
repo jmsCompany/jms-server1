@@ -28,7 +28,9 @@ import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.MessageTypeEnum;
 import com.jms.domain.ws.WSCompany;
+import com.jms.domain.ws.WSSector;
 import com.jms.domainadapter.CompanyAdapter;
+import com.jms.domainadapter.SectorAdapter;
 import com.jms.domainadapter.UserAdapter;
 import com.jms.messages.MessagesUitl;
 import com.jms.repositories.company.CompanyRepository;
@@ -66,6 +68,8 @@ public class CompanyService {
 	@Autowired
 	private RolePrivRepository rolePrivReposity;
 	
+	@Autowired
+	private SectorAdapter sectorAdapter;
 	private static final Logger logger = LogManager.getLogger(CompanyService.class.getCanonicalName());
 	
 	@Transactional(readOnly=true)
@@ -117,6 +121,7 @@ public class CompanyService {
 
 	public Message checkCompanyName(String companyName) 
 	{
+		logger.debug("company name: " + companyName);
 		if(companyName==null)
 			return messagesUitl.getMessage("company.name.required",null,MessageTypeEnum.ERROR);
 		if (companyRepository.findByCompanyName(companyName)== null) 
@@ -194,6 +199,7 @@ public class CompanyService {
         	
         }
    }
+	@Transactional(readOnly=false)
 	public void loadCompaniesFromCSV(String fileName) throws IOException
 	{
 		CsvReader reader = new CsvReader(fileName,',', Charset.forName("UTF-8"));
@@ -212,5 +218,25 @@ public class CompanyService {
 		
 		}
 	}
+	@Transactional(readOnly=false)
+	public Message addSector(WSSector wsSector) throws Exception
+	{
+		 Message msg = checkSector(wsSector);
+		 if(msg.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
+			 return msg;
+		
+		Sector sector = sectorAdapter.toDBSector(wsSector);
+		sectorsRepository.save(sector);
+		return messagesUitl.getMessage("company.sector.success",null,MessageTypeEnum.INFOMATION);
+	}
 	
-}
+	public Message checkSector(WSSector wsSector)
+	{
+		if( companyRepository.findByCompanyName(wsSector.getCompanyName())==null)
+			return messagesUitl.getMessage("company.doesnotexist",null,MessageTypeEnum.ERROR);
+		
+		if(sectorsRepository.findBySectorAndCompanyName(wsSector.getSector(), wsSector.getCompanyName())==null)
+			return messagesUitl.getMessage("company.sector.avaible",null,MessageTypeEnum.INFOMATION);
+		 return messagesUitl.getMessage("company.sector.alreadyexist",null,MessageTypeEnum.ERROR);
+	}
+} 

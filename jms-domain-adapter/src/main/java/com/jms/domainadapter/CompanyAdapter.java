@@ -26,6 +26,9 @@ public class CompanyAdapter{
 		c.setEnabled(wsCompany.getEnabledEnum().getStatusCode());
 		c.setFineTask(wsCompany.getFineTaskEnum().getStatusCode());
 		c.setCompanyCatergory(wsCompany.getCompanyCategoryEnum().getStatusCode());
+		//todo: company size, company type;
+		
+		//c.setSysDicDByCompanySize(sysDicDByCompanySize);
 		return c;
 			
 	}

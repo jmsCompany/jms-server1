@@ -1,7 +1,6 @@
 package com.jms.controller.company;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.*;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -9,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import com.jms.domain.db.Company;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.WSCompany;
+import com.jms.domain.ws.WSSector;
 import com.jms.domainadapter.CompanyAdapter;
-import com.jms.repositories.company.CompanyRepository;
 import com.jms.service.company.CompanyService;
 
 
@@ -54,5 +53,10 @@ public class CompanyController {
 	{
 		return companyService.cancelCompany(idCompany);
 	}
-
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/company/addSector", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public Message addSector(@RequestBody WSSector wsSector) throws Exception
+	{
+		return companyService.addSector(wsSector);
+	}
 }

@@ -3,7 +3,9 @@ package com.jms.controller.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
+
 import com.jms.domain.ws.Message;
+import com.jms.domain.ws.WSRoles;
 import com.jms.service.user.UserService;
 
 @RestController

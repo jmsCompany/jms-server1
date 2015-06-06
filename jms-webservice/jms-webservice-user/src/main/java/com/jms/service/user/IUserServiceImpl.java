@@ -38,7 +38,8 @@ public class IUserServiceImpl implements IUserService{
 			return msg;
 		else
 		{
-			String password =  encode(users.getPassword());
+			//
+			String password =  encode(users.getUsername());
 			users.setPassword(password);
 	        usersRepository.save(users);
 	        Message msgToClient = messagesUitl.getMessage("user.register.success",null,MessageTypeEnum.INFOMATION);

@@ -18,6 +18,9 @@ public class WSCompany {
     private FineTaskEnum fineTaskEnum;
     private EnabledEnum enabledEnum;
     private CompanyCategoryEnum companyCategoryEnum;
+    private int companySize;
+    private int companytype;
+    private  Float  usedSpace;
 
    public WSCompany() {
    }
@@ -108,5 +111,36 @@ public class WSCompany {
 	public void setCompanyCategoryEnum(CompanyCategoryEnum companyCategoryEnum) {
 		this.companyCategoryEnum = companyCategoryEnum;
 	}
+
+
+	public int getCompanySize() {
+		return companySize;
+	}
+
+
+	public void setCompanySize(int companySize) {
+		this.companySize = companySize;
+	}
+
+
+	public int getCompanytype() {
+		return companytype;
+	}
+
+
+	public void setCompanytype(int companytype) {
+		this.companytype = companytype;
+	}
+
+
+	public Float getUsedSpace() {
+		return usedSpace;
+	}
+
+
+	public void setUsedSpace(Float usedSpace) {
+		this.usedSpace = usedSpace;
+	}
+
 
 }
