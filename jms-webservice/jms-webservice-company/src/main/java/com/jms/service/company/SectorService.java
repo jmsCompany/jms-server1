@@ -27,14 +27,18 @@ public class SectorService {
 	public void loadSectorsFromCSV(String fileName) throws IOException{
 		CsvReader reader = new CsvReader(fileName,',', Charset.forName("UTF-8"));
         reader.readHeaders();  //CompanyName Role	Description
+        int seq=1;
 		while(reader.readRecord())
 		{
 			Sector s = new Sector();
 			s.setSector(reader.get("Sector"));
 			s.setDescription(reader.get("Description"));
 			s.setCompany(companyRepository.findByCompanyName(reader.get("CompanyName")));
+			s.setEnabled(1);
+			s.setSeq(seq);
 			logger.debug("sector: " + s.getSector() +", description: " + s.getDescription());
 			save(s);
+			seq++;
 	
 		}
 	}

@@ -153,6 +153,7 @@ public class CompanyService {
 			
 		return  messagesUitl.getMessage("company.cancel.failure",null,MessageTypeEnum.ERROR);
 	}
+	
 	@Transactional(readOnly=false)
 	private void copyDataBetweenCompanies(Company from,Company to)
 	{
