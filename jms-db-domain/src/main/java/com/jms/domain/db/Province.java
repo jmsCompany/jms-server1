@@ -36,7 +36,7 @@ public class Province  implements java.io.Serializable {
        this.cities = cities;
     }
    
-     @Id @GeneratedValue(strategy=IDENTITY)
+     @Id 
     
     @Column(name="ID_PROVINCE", unique=true, nullable=false)
     public Integer getIdProvince() {

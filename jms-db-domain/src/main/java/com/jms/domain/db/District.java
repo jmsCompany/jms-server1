@@ -40,7 +40,7 @@ public class District  implements java.io.Serializable {
        this.companies = companies;
     }
    
-     @Id @GeneratedValue(strategy=IDENTITY)
+     @Id 
     
     @Column(name="ID_DISTRICT", unique=true, nullable=false)
     public Integer getIdDistrict() {

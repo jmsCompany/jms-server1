@@ -186,7 +186,8 @@ CREATE TABLE CITY
 (
 	ID_CITY               INTEGER NOT NULL,
 	CITY                  VARCHAR(32) NULL,
-	ID_PROVINCE           INTEGER NULL
+	ID_PROVINCE           INTEGER NULL,
+	POSTCODE              VARCHAR(20)
 )
 ;
 

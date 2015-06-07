@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.annotation.PostConstruct;
 
 import org.apache.catalina.core.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -21,6 +22,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.jms.service.system.DicService;
+import com.jms.service.system.DistrictService;
 import com.jms.web.CustomizedRestMvcConfiguration;
 import com.jms.web.security.SecurityUtils;
 
@@ -37,12 +40,16 @@ public class Application {
     	
     	ConfigurableApplicationContext ctx= SpringApplication.run(Application.class, args);
 
-    	DatabaseInit initDB = ctx.getBean(DatabaseInit.class);
-    	initDB.init(ctx);
+    	///DatabaseInit initDB = ctx.getBean(DatabaseInit.class);
+    	///initDB.init(ctx);
 
-    	
     	//EmailSenderTest et = ctx.getBean(EmailSenderTest.class);
     	//et.testSendEmail();
+
+    	DicService ds = ctx.getBean(DicService.class);
+    	ds.loadDics();
+    
+    	
     	
     }
     

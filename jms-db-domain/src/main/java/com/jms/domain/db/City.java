@@ -29,6 +29,7 @@ public class City  implements java.io.Serializable {
      private Integer idCity;
      private Province province;
      private String city;
+     private String postcode;
      private Set<District> districts = new HashSet<District>(0);
 
     public City() {
@@ -40,7 +41,7 @@ public class City  implements java.io.Serializable {
        this.districts = districts;
     }
    
-     @Id @GeneratedValue(strategy=IDENTITY)
+     @Id 
     
     @Column(name="ID_CITY", unique=true, nullable=false)
     public Integer getIdCity() {
@@ -76,6 +77,15 @@ public class City  implements java.io.Serializable {
     public void setDistricts(Set<District> districts) {
         this.districts = districts;
     }
+
+    @Column(name="POSTCODE", length=20)
+	public String getPostcode() {
+		return postcode;
+	}
+
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
 
 
 

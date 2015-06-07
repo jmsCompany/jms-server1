@@ -43,6 +43,11 @@
 			<artifactId>jms-webservice-user</artifactId>
 			<version>1.0</version>
 		</dependency>
+			<dependency>
+			<groupId>com.jms</groupId>
+			<artifactId>jms-webservice-system</artifactId>
+			<version>1.0</version>
+		</dependency>
 		
 		<dependency>
 	<groupId>cglib</groupId>
