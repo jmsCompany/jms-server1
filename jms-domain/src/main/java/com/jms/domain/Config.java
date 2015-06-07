@@ -12,4 +12,9 @@ public class Config {
 
 	public static final String companyNature = "CompanyNature";
 	public static final String companyNatureDis = "行业性质";
+	
+	
+	public static final String logoRelativePath = "E:/logo/";
+	public static final String licenseRelativePath = "E:/license/";
+	public static final String docsRelativePath = "E:/docs/";
 }
