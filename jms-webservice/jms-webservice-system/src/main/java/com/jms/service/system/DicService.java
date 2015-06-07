@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jms.domain.Config;
 import com.jms.domain.db.SysDic;
 import com.jms.domain.db.SysDicD;
 import com.jms.repositories.system.SysDicDRepository;
@@ -27,35 +28,38 @@ public class DicService {
 	@Autowired
 	private SysDicDRepository sysDicDRepository;
 
-	private static final String companySize = "CompanySize";
-	private static final String companySizeDis = "公司规模";
 
-	private static final String degree = "Degree";
-	private static final String degreeDis = "学历";
-
-	private static final String companyType = "CompanyType";
-	private static final String companyTypeDis = "行业";
-
-	private static final String companyNature = "CompanyNature";
-	private static final String companyNatureDis = "行业性质";
+	
+	
+	
+	public List<SysDicD> getSysDicDsByDic(String type) {
+		
+		return sysDicDRepository.findDicsByType(type);
+		
+	}
 
 	public void loadDics() {
-		
-		  SysDic companySizeDic = new SysDic();
-		  companySizeDic.setType(companySize);
-		  companySizeDic.setDescription(companySizeDis);
-		  sysDicRepository.save(companySizeDic);
-		  
-		  String[] companySizeArray = new
-		  String[]{"少于50人","50-150人","150-500人",
-		  "500-1000人","1000-5000人","5000-10000人","10000人以上"}; for(String
-		  size:companySizeArray) { SysDicD s = new SysDicD(); s.setName(size);
-		  s.setDescription(size); s.setEnabled(1); s.setSysDic(companySizeDic);
-		  sysDicDRepository.save(s); }
-		
+
+		SysDic companySizeDic = new SysDic();
+		companySizeDic.setType(Config.companySize);
+		companySizeDic.setDescription(Config.companySizeDis);
+		sysDicRepository.save(companySizeDic);
+
+		String[] companySizeArray = new String[] { "少于50人", "50-150人",
+				"150-500人", "500-1000人", "1000-5000人", "5000-10000人",
+				"10000人以上" };
+		for (String size : companySizeArray) {
+			SysDicD s = new SysDicD();
+			s.setName(size);
+			s.setDescription(size);
+			s.setEnabled(1);
+			s.setSysDic(companySizeDic);
+			sysDicDRepository.save(s);
+		}
+
 		SysDic degreeDic = new SysDic();
-		degreeDic.setType(degree);
-		degreeDic.setDescription(degreeDis);
+		degreeDic.setType(Config.degree);
+		degreeDic.setDescription(Config.degreeDis);
 		sysDicRepository.save(degreeDic);
 
 		String[] degreeArray = new String[] { "初中", "高中", "中技", "中专", "大专",
@@ -70,8 +74,8 @@ public class DicService {
 		}
 
 		SysDic typeDic = new SysDic();
-		typeDic.setType(companyType);
-		typeDic.setDescription(companyTypeDis);
+		typeDic.setType(Config.companyType);
+		typeDic.setDescription(Config.companyTypeDis);
 		sysDicRepository.save(typeDic);
 
 		String[] typeArray = new String[] { "计算机/互联网/通信/电子", "会计/金融/银行/保险",
@@ -87,8 +91,8 @@ public class DicService {
 		}
 
 		SysDic natureDic = new SysDic();
-		natureDic.setType(companyNature);
-		natureDic.setDescription(companyNatureDis);
+		natureDic.setType(Config.companyNature);
+		natureDic.setDescription(Config.companyNatureDis);
 		sysDicRepository.save(natureDic);
 
 		String[] natureArray = new String[] { "外资（欧美）", "外资（非欧美）", "合资", "国企",

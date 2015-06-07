@@ -1,17 +1,15 @@
 package com.jms.domain.db;
-// Generated 2015-6-6 20:38:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-7 13:49:29 by Hibernate Tools 3.2.2.GA
 
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -28,7 +26,7 @@ import javax.persistence.Table;
 public class SysDicD  implements java.io.Serializable {
 
 
-     private int idDic;
+     private Integer idDic;
      private SysDic sysDic;
      private String name;
      private int enabled;
@@ -41,14 +39,12 @@ public class SysDicD  implements java.io.Serializable {
     }
 
 	
-    public SysDicD(int idDic, String name, int enabled, String description) {
-        this.idDic = idDic;
+    public SysDicD(String name, int enabled, String description) {
         this.name = name;
         this.enabled = enabled;
         this.description = description;
     }
-    public SysDicD(int idDic, SysDic sysDic, String name, int enabled, String description, Set<Company> companiesForCompanyType, Set<Company> companiesForCompanyNature, Set<Company> companiesForCompanySize) {
-       this.idDic = idDic;
+    public SysDicD(SysDic sysDic, String name, int enabled, String description, Set<Company> companiesForCompanyType, Set<Company> companiesForCompanyNature, Set<Company> companiesForCompanySize) {
        this.sysDic = sysDic;
        this.name = name;
        this.enabled = enabled;
@@ -58,14 +54,14 @@ public class SysDicD  implements java.io.Serializable {
        this.companiesForCompanySize = companiesForCompanySize;
     }
    
-     @Id 
-     @GeneratedValue(strategy=IDENTITY)
+     @Id @GeneratedValue(strategy=IDENTITY)
+    
     @Column(name="ID_DIC", unique=true, nullable=false)
-    public int getIdDic() {
+    public Integer getIdDic() {
         return this.idDic;
     }
     
-    public void setIdDic(int idDic) {
+    public void setIdDic(Integer idDic) {
         this.idDic = idDic;
     }
 @ManyToOne(fetch=FetchType.LAZY)

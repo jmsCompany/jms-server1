@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-6 20:38:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-7 13:49:29 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.HashSet;
@@ -8,8 +8,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,7 +24,7 @@ import javax.persistence.Table;
 public class District  implements java.io.Serializable {
 
 
-     private Integer idDistrict;
+     private int idDistrict;
      private City city;
      private String district;
      private Set<Company> companies = new HashSet<Company>(0);
@@ -34,7 +32,12 @@ public class District  implements java.io.Serializable {
     public District() {
     }
 
-    public District(City city, String district, Set<Company> companies) {
+	
+    public District(int idDistrict) {
+        this.idDistrict = idDistrict;
+    }
+    public District(int idDistrict, City city, String district, Set<Company> companies) {
+       this.idDistrict = idDistrict;
        this.city = city;
        this.district = district;
        this.companies = companies;
@@ -43,11 +46,11 @@ public class District  implements java.io.Serializable {
      @Id 
     
     @Column(name="ID_DISTRICT", unique=true, nullable=false)
-    public Integer getIdDistrict() {
+    public int getIdDistrict() {
         return this.idDistrict;
     }
     
-    public void setIdDistrict(Integer idDistrict) {
+    public void setIdDistrict(int idDistrict) {
         this.idDistrict = idDistrict;
     }
 @ManyToOne(fetch=FetchType.LAZY)

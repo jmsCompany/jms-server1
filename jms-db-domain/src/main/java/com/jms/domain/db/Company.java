@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-6 20:38:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-7 13:49:29 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.Date;
@@ -31,10 +31,12 @@ public class Company  implements java.io.Serializable {
 
      private Integer idCompany;
      private District district;
+     private Documents documentsByLogo;
      private Users users;
      private SysDicD sysDicDByCompanyType;
      private SysDicD sysDicDByCompanyNature;
      private SysDicD sysDicDByCompanySize;
+     private Documents documentsByLicense;
      private String companyName;
      private String description;
      private Date creationTime;
@@ -68,12 +70,14 @@ public class Company  implements java.io.Serializable {
         this.enabled = enabled;
         this.companyCatergory = companyCatergory;
     }
-    public Company(District district, Users users, SysDicD sysDicDByCompanyType, SysDicD sysDicDByCompanyNature, SysDicD sysDicDByCompanySize, String companyName, String description, Date creationTime, int fineTask, int enabled, Float usedSpace, int companyCatergory, String locale, Integer verified, String telephone, String fax, String email, Date establishmentTime, String address, String postcode, String url, Set<Users> userses, Set<Project> projects, Set<Sector> sectors, Set<Roles> roleses) {
+    public Company(District district, Documents documentsByLogo, Users users, SysDicD sysDicDByCompanyType, SysDicD sysDicDByCompanyNature, SysDicD sysDicDByCompanySize, Documents documentsByLicense, String companyName, String description, Date creationTime, int fineTask, int enabled, Float usedSpace, int companyCatergory, String locale, Integer verified, String telephone, String fax, String email, Date establishmentTime, String address, String postcode, String url, Set<Users> userses, Set<Project> projects, Set<Sector> sectors, Set<Roles> roleses) {
        this.district = district;
+       this.documentsByLogo = documentsByLogo;
        this.users = users;
        this.sysDicDByCompanyType = sysDicDByCompanyType;
        this.sysDicDByCompanyNature = sysDicDByCompanyNature;
        this.sysDicDByCompanySize = sysDicDByCompanySize;
+       this.documentsByLicense = documentsByLicense;
        this.companyName = companyName;
        this.description = description;
        this.creationTime = creationTime;
@@ -116,6 +120,15 @@ public class Company  implements java.io.Serializable {
         this.district = district;
     }
 @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="LOGO")
+    public Documents getDocumentsByLogo() {
+        return this.documentsByLogo;
+    }
+    
+    public void setDocumentsByLogo(Documents documentsByLogo) {
+        this.documentsByLogo = documentsByLogo;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="CREATOR", nullable=false)
     public Users getUsers() {
         return this.users;
@@ -150,6 +163,15 @@ public class Company  implements java.io.Serializable {
     
     public void setSysDicDByCompanySize(SysDicD sysDicDByCompanySize) {
         this.sysDicDByCompanySize = sysDicDByCompanySize;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="LICENSE")
+    public Documents getDocumentsByLicense() {
+        return this.documentsByLicense;
+    }
+    
+    public void setDocumentsByLicense(Documents documentsByLicense) {
+        this.documentsByLicense = documentsByLicense;
     }
     
     @Column(name="COMPANY_NAME", nullable=false, length=64)

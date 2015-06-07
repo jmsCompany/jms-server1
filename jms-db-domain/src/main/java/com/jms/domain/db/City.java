@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-6 20:38:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-7 13:49:29 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.HashSet;
@@ -8,8 +8,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,7 +24,7 @@ import javax.persistence.Table;
 public class City  implements java.io.Serializable {
 
 
-     private Integer idCity;
+     private int idCity;
      private Province province;
      private String city;
      private String postcode;
@@ -35,20 +33,26 @@ public class City  implements java.io.Serializable {
     public City() {
     }
 
-    public City(Province province, String city, Set<District> districts) {
+	
+    public City(int idCity) {
+        this.idCity = idCity;
+    }
+    public City(int idCity, Province province, String city, String postcode, Set<District> districts) {
+       this.idCity = idCity;
        this.province = province;
        this.city = city;
+       this.postcode = postcode;
        this.districts = districts;
     }
    
      @Id 
     
     @Column(name="ID_CITY", unique=true, nullable=false)
-    public Integer getIdCity() {
+    public int getIdCity() {
         return this.idCity;
     }
     
-    public void setIdCity(Integer idCity) {
+    public void setIdCity(int idCity) {
         this.idCity = idCity;
     }
 @ManyToOne(fetch=FetchType.LAZY)
@@ -69,6 +73,15 @@ public class City  implements java.io.Serializable {
     public void setCity(String city) {
         this.city = city;
     }
+    
+    @Column(name="POSTCODE", length=20)
+    public String getPostcode() {
+        return this.postcode;
+    }
+    
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="city")
     public Set<District> getDistricts() {
         return this.districts;
@@ -77,15 +90,6 @@ public class City  implements java.io.Serializable {
     public void setDistricts(Set<District> districts) {
         this.districts = districts;
     }
-
-    @Column(name="POSTCODE", length=20)
-	public String getPostcode() {
-		return postcode;
-	}
-
-	public void setPostcode(String postcode) {
-		this.postcode = postcode;
-	}
 
 
 

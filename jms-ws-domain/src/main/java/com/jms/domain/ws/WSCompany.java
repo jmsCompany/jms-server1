@@ -18,9 +18,33 @@ public class WSCompany {
     private FineTaskEnum fineTaskEnum;
     private EnabledEnum enabledEnum;
     private CompanyCategoryEnum companyCategoryEnum;
-    private int companySize;
-    private int companytype;
+   
+    
+    private WSSysDicD companySize;
+    private WSSysDicD companyType;
+    private WSSysDicD companyNature;
+   
+    
+    
     private  Float  usedSpace;
+    
+    
+    private int fineTask;
+    private int enabled;
+    private String locale;
+    private Integer verified;
+    private String telephone;
+    private String fax;
+    private String email;
+    private Date establishmentTime;
+    private String address;
+    private String postcode;
+    private String url;
+    
+    
+    private WSProvince wsProvince;
+    private WSCity wsCity; 
+    private WSDistrict wsDistrict;
 
    public WSCompany() {
    }
@@ -113,24 +137,6 @@ public class WSCompany {
 	}
 
 
-	public int getCompanySize() {
-		return companySize;
-	}
-
-
-	public void setCompanySize(int companySize) {
-		this.companySize = companySize;
-	}
-
-
-	public int getCompanytype() {
-		return companytype;
-	}
-
-
-	public void setCompanytype(int companytype) {
-		this.companytype = companytype;
-	}
 
 
 	public Float getUsedSpace() {
@@ -141,6 +147,181 @@ public class WSCompany {
 	public void setUsedSpace(Float usedSpace) {
 		this.usedSpace = usedSpace;
 	}
+
+
+	public int getFineTask() {
+		return fineTask;
+	}
+
+
+	public void setFineTask(int fineTask) {
+		this.fineTask = fineTask;
+	}
+
+
+	public int getEnabled() {
+		return enabled;
+	}
+
+
+	public void setEnabled(int enabled) {
+		this.enabled = enabled;
+	}
+
+
+
+	public String getLocale() {
+		return locale;
+	}
+
+
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
+
+
+	public Integer getVerified() {
+		return verified;
+	}
+
+
+	public void setVerified(Integer verified) {
+		this.verified = verified;
+	}
+
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+
+	public String getFax() {
+		return fax;
+	}
+
+
+	public void setFax(String fax) {
+		this.fax = fax;
+	}
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+	public Date getEstablishmentTime() {
+		return establishmentTime;
+	}
+
+
+	public void setEstablishmentTime(Date establishmentTime) {
+		this.establishmentTime = establishmentTime;
+	}
+
+
+	public String getAddress() {
+		return address;
+	}
+
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+
+	public String getPostcode() {
+		return postcode;
+	}
+
+
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
+
+
+	public String getUrl() {
+		return url;
+	}
+
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public WSSysDicD getCompanySize() {
+		return companySize;
+	}
+
+
+	public void setCompanySize(WSSysDicD companySize) {
+		this.companySize = companySize;
+	}
+
+
+	public WSSysDicD getCompanyType() {
+		return companyType;
+	}
+
+
+	public void setCompanyType(WSSysDicD companyType) {
+		this.companyType = companyType;
+	}
+
+
+	public WSSysDicD getCompanyNature() {
+		return companyNature;
+	}
+
+
+	public void setCompanyNature(WSSysDicD companyNature) {
+		this.companyNature = companyNature;
+	}
+
+
+	public WSDistrict getWsDistrict() {
+		return wsDistrict;
+	}
+
+
+	public void setWsDistrict(WSDistrict wsDistrict) {
+		this.wsDistrict = wsDistrict;
+	}
+
+
+	public WSCity getWsCity() {
+		return wsCity;
+	}
+
+
+	public void setWsCity(WSCity wsCity) {
+		this.wsCity = wsCity;
+	}
+
+
+
+
+	public WSProvince getWsProvince() {
+		return wsProvince;
+	}
+
+
+	public void setWsProvince(WSProvince wsProvince) {
+		this.wsProvince = wsProvince;
+	}
+
+
+
 
 
 }

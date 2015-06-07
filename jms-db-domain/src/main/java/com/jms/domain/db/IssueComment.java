@@ -1,14 +1,18 @@
 package com.jms.domain.db;
-// Generated 2015-6-6 20:38:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-7 13:49:29 by Hibernate Tools 3.2.2.GA
 
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,7 +31,7 @@ import javax.persistence.TemporalType;
 public class IssueComment  implements java.io.Serializable {
 
 
-     private int idIssueComment;
+     private Integer idIssueComment;
      private Issue issue;
      private IssueComment issueComment;
      private String comment;
@@ -39,10 +43,10 @@ public class IssueComment  implements java.io.Serializable {
     }
 
 	
-    public IssueComment(int idIssueComment) {
+    public IssueComment(Integer idIssueComment) {
         this.idIssueComment = idIssueComment;
     }
-    public IssueComment(int idIssueComment, Issue issue, IssueComment issueComment, String comment, Date creationTime, Date modificationTime, Set<IssueComment> issueComments) {
+    public IssueComment(Integer idIssueComment, Issue issue, IssueComment issueComment, String comment, Date creationTime, Date modificationTime, Set<IssueComment> issueComments) {
        this.idIssueComment = idIssueComment;
        this.issue = issue;
        this.issueComment = issueComment;
@@ -52,14 +56,14 @@ public class IssueComment  implements java.io.Serializable {
        this.issueComments = issueComments;
     }
    
-     @Id 
-    
+
+    @Id @GeneratedValue(strategy=IDENTITY)
     @Column(name="ID_ISSUE_COMMENT", unique=true, nullable=false)
-    public int getIdIssueComment() {
+    public Integer getIdIssueComment() {
         return this.idIssueComment;
     }
     
-    public void setIdIssueComment(int idIssueComment) {
+    public void setIdIssueComment(Integer idIssueComment) {
         this.idIssueComment = idIssueComment;
     }
 @ManyToOne(fetch=FetchType.LAZY)

@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-6 20:38:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-7 13:49:29 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.HashSet;
@@ -36,13 +36,15 @@ public class Documents  implements java.io.Serializable {
      private Set<TaskDoc> taskDocs = new HashSet<TaskDoc>(0);
      private Set<IssueDoc> issueDocs = new HashSet<IssueDoc>(0);
      private Set<ProjectDoc> projectDocs = new HashSet<ProjectDoc>(0);
+     private Set<Company> companiesForLogo = new HashSet<Company>(0);
+     private Set<Company> companiesForLicense = new HashSet<Company>(0);
      private Set<Documents> documentses = new HashSet<Documents>(0);
      private Set<Users> userses = new HashSet<Users>(0);
 
     public Documents() {
     }
 
-    public Documents(Documents documents, String fileName, String name, String description, String relativePath, Integer size, Set<TaskDoc> taskDocs, Set<IssueDoc> issueDocs, Set<ProjectDoc> projectDocs, Set<Documents> documentses, Set<Users> userses) {
+    public Documents(Documents documents, String fileName, String name, String description, String relativePath, Integer size, Set<TaskDoc> taskDocs, Set<IssueDoc> issueDocs, Set<ProjectDoc> projectDocs, Set<Company> companiesForLogo, Set<Company> companiesForLicense, Set<Documents> documentses, Set<Users> userses) {
        this.documents = documents;
        this.fileName = fileName;
        this.name = name;
@@ -52,6 +54,8 @@ public class Documents  implements java.io.Serializable {
        this.taskDocs = taskDocs;
        this.issueDocs = issueDocs;
        this.projectDocs = projectDocs;
+       this.companiesForLogo = companiesForLogo;
+       this.companiesForLicense = companiesForLicense;
        this.documentses = documentses;
        this.userses = userses;
     }
@@ -143,6 +147,22 @@ public class Documents  implements java.io.Serializable {
     
     public void setProjectDocs(Set<ProjectDoc> projectDocs) {
         this.projectDocs = projectDocs;
+    }
+@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="documentsByLogo")
+    public Set<Company> getCompaniesForLogo() {
+        return this.companiesForLogo;
+    }
+    
+    public void setCompaniesForLogo(Set<Company> companiesForLogo) {
+        this.companiesForLogo = companiesForLogo;
+    }
+@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="documentsByLicense")
+    public Set<Company> getCompaniesForLicense() {
+        return this.companiesForLicense;
+    }
+    
+    public void setCompaniesForLicense(Set<Company> companiesForLicense) {
+        this.companiesForLicense = companiesForLicense;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="documents")
     public Set<Documents> getDocumentses() {

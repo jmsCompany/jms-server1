@@ -1,13 +1,17 @@
 package com.jms.domain.db;
-// Generated 2015-6-6 20:38:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-7 13:49:29 by Hibernate Tools 3.2.2.GA
 
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,7 +28,7 @@ import javax.persistence.Table;
 public class Issue  implements java.io.Serializable {
 
 
-     private int idIssue;
+     private Integer idIssue;
      private Project project;
      private String name;
      private String description;
@@ -37,10 +41,10 @@ public class Issue  implements java.io.Serializable {
     }
 
 	
-    public Issue(int idIssue) {
+    public Issue(Integer idIssue) {
         this.idIssue = idIssue;
     }
-    public Issue(int idIssue, Project project, String name, String description, Integer priority, String status, Set<IssueDoc> issueDocs, Set<IssueComment> issueComments) {
+    public Issue(Integer idIssue, Project project, String name, String description, Integer priority, String status, Set<IssueDoc> issueDocs, Set<IssueComment> issueComments) {
        this.idIssue = idIssue;
        this.project = project;
        this.name = name;
@@ -52,13 +56,13 @@ public class Issue  implements java.io.Serializable {
     }
    
      @Id 
-    
+     @GeneratedValue(strategy=IDENTITY)
     @Column(name="ID_ISSUE", unique=true, nullable=false)
-    public int getIdIssue() {
+    public Integer getIdIssue() {
         return this.idIssue;
     }
     
-    public void setIdIssue(int idIssue) {
+    public void setIdIssue(Integer idIssue) {
         this.idIssue = idIssue;
     }
 @ManyToOne(fetch=FetchType.LAZY)

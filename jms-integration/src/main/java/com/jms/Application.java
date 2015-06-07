@@ -46,8 +46,8 @@ public class Application {
     	//EmailSenderTest et = ctx.getBean(EmailSenderTest.class);
     	//et.testSendEmail();
 
-    	DicService ds = ctx.getBean(DicService.class);
-    	ds.loadDics();
+    	//DicService ds = ctx.getBean(DicService.class);
+    	//ds.loadDics();
     
     	
     	

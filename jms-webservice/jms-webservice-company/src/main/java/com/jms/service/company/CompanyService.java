@@ -102,9 +102,8 @@ public class CompanyService {
 		 if(message.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
 				return message;
 		 Users dbUser= userAdapter.toDBUser(wsCompany.getWsUsers());
-		 logger.debug("user id before :  " + dbUser.getIdUser());
 		 iUserServiceImpl.register(dbUser);
-		 logger.debug("user id after:  " + dbUser.getIdUser());
+		 wsCompany.setVerified(0);
 		 Company company = companyAdapter.toDBCompany(wsCompany);
 		 company.setUsers(dbUser);
 		 company.setCreationTime(new Date());
