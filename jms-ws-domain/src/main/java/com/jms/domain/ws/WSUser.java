@@ -1,5 +1,6 @@
 package com.jms.domain.ws;
 
+import org.hibernate.validator.constraints.Email;
 import java.util.Date;
 
 public class WSUser {
@@ -7,6 +8,7 @@ public class WSUser {
 	private String name;
 	private String username;
     private String mobile;
+    @Email
     private String email;
     private String password;
     private Date creationTime;
