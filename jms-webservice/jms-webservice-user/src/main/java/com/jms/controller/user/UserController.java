@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import com.jms.domain.ws.Message;
@@ -28,7 +29,14 @@ public class UserController {
 	public void regist(@RequestBody @Valid WSUser wsUser, BindingResult bindingResult) throws Exception {
 		//return userService.checkLogin(login);
 		if(bindingResult.hasErrors())
+		{
 			System.out.println("error!!!!!!!!!!!!!!!!!!");
+			for(ObjectError e: bindingResult.getAllErrors())
+			{
+				System.out.println("code: " + e.getCode() +", message: " + e.getDefaultMessage());
+			}
+		}
+			
 	}
 
 }

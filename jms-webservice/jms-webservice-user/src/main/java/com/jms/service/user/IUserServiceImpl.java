@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,10 @@ public class IUserServiceImpl implements IUserService{
 	private MessagesUitl messagesUitl;
 	@Autowired
 	private ResourceBundleMessageSource source;
-	private static final String salt ="jms,rocks!";
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	//private static final String salt ="jms,rocks!";
 	
 	public Message register(Users users)
 	{
@@ -96,7 +100,8 @@ public class IUserServiceImpl implements IUserService{
 	}
 	private String encode(String password)
 	{
-		Md5PasswordEncoder md5 = new Md5PasswordEncoder();
-		return md5.encodePassword(password, salt);
+		//Md5PasswordEncoder md5 = new Md5PasswordEncoder();
+		return bCryptPasswordEncoder.encode(password);
+		//return md5.encodePassword(password, salt);
 	}
 }

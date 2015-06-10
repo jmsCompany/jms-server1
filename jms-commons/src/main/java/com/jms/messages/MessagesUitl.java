@@ -15,11 +15,6 @@ public class MessagesUitl {
 	@Autowired
 	private ResourceBundleMessageSource source;
 	
-	/**
-	 * @param strMsgSrc    resource code
-	 * @param enumMsgType  日志类型
-	 * @return
-	 */
 
 	public  Message getMessage(String strMsgSrc , Object[] args ,MessageTypeEnum messageTypeEnum ){
 		Message msg = new Message();
