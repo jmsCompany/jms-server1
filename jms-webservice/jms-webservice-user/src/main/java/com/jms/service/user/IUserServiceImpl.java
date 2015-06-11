@@ -29,8 +29,8 @@ public class IUserServiceImpl implements IUserService{
 	private MessagesUitl messagesUitl;
 	@Autowired
 	private ResourceBundleMessageSource source;
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	//@Autowired
+	//private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	//private static final String salt ="jms,rocks!";
 	
@@ -42,9 +42,7 @@ public class IUserServiceImpl implements IUserService{
 			return msg;
 		else
 		{
-			//
-			String password =  encode(users.getUsername());
-			users.setPassword(password);
+			users.setPassword(new BCryptPasswordEncoder().encode(users.getPassword()));
 	        usersRepository.save(users);
 	        Message msgToClient = messagesUitl.getMessage("user.register.success",null,MessageTypeEnum.INFOMATION);
 			logger.debug(msgToClient.getMessageTypeEnum().toString()  +", "+ msgToClient.getMessage());
@@ -53,7 +51,12 @@ public class IUserServiceImpl implements IUserService{
 	
 	}
 
-
+public void updatePassword(int idUser,String newpassword)
+{
+	Users users = usersRepository.findOne(idUser);
+	users.setPassword(new BCryptPasswordEncoder().encode(newpassword));
+	usersRepository.save(users);
+}
 	public Message checkLogin(String username,String email,String mobile)
 	{
 		logger.debug(" username: " + username+ ", email: " +email +", " +mobile);
@@ -98,10 +101,5 @@ public class IUserServiceImpl implements IUserService{
 		else
 			return null;
 	}
-	private String encode(String password)
-	{
-		//Md5PasswordEncoder md5 = new Md5PasswordEncoder();
-		return bCryptPasswordEncoder.encode(password);
-		//return md5.encodePassword(password, salt);
-	}
+
 }

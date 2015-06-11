@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 
 public class WSUser {
 	
+    private Integer idUser;
 	private String name;
 	private String username;
 	
@@ -30,6 +31,19 @@ public class WSUser {
     private String degree;
     private String emergencyHp;
     
+    private String login;
+    
+    public WSUser(){}
+    
+    public WSUser(WSUser user){
+    	this.idUser = user.getIdUser();
+    	this.username =user.getUsername();
+    	this.email=user.getEmail();
+    	this.mobile=user.getMobile();
+    	this.locale=user.getLocale();
+    	this.login=user.getLogin();
+    	this.password=user.getPassword();
+    }
     public String getEmail() {
     	return email;
     }
@@ -168,6 +182,22 @@ public class WSUser {
 
 	public void setEmergencyHp(String emergencyHp) {
 		this.emergencyHp = emergencyHp;
+	}
+
+	public Integer getIdUser() {
+		return idUser;
+	}
+
+	public void setIdUser(Integer idUser) {
+		this.idUser = idUser;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
 

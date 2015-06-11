@@ -24,6 +24,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.jms.service.system.DicService;
 import com.jms.service.system.DistrictService;
+import com.jms.service.user.IUserServiceImpl;
+import com.jms.service.user.UserService;
 import com.jms.web.CustomizedRestMvcConfiguration;
 import com.jms.web.security.SecurityUtils;
 
@@ -31,7 +33,7 @@ import com.jms.web.security.SecurityUtils;
 
 @SpringBootApplication
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-@Import(CustomizedRestMvcConfiguration.class)
+//@Import(CustomizedRestMvcConfiguration.class)
 @EnableTransactionManagement(proxyTargetClass=true)
 public class Application {
 
@@ -46,8 +48,9 @@ public class Application {
     	//EmailSenderTest et = ctx.getBean(EmailSenderTest.class);
     	//et.testSendEmail();
 
-    	//DicService ds = ctx.getBean(DicService.class);
-    	//ds.loadDics();
+    	IUserServiceImpl ds = ctx.getBean(UserService.class);
+    	ds.updatePassword(3,"hongtao");
+    	
     
     	
     	

@@ -73,7 +73,16 @@ public class Users  implements java.io.Serializable {
     public Users() {
     }
 
-	
+	public Users(Users user){
+		this.idUser = user.idUser;
+		this.username = user.username;
+		this.mobile = user.mobile;
+		this.email = user.email;
+		this.password = user.password;
+		this.locale = user.locale;
+	}
+    
+    
     public Users(String password, int enabled, String locale) {
         this.password = password;
         this.enabled = enabled;
