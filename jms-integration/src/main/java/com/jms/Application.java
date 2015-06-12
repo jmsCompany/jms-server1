@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableEntityLinks
 @SpringBootApplication
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-// @Import(CustomizedRestMvcConfiguration.class)
 @EnableTransactionManagement(proxyTargetClass = true)
 public class Application extends SpringBootServletInitializer {
 
@@ -42,6 +41,7 @@ public class Application extends SpringBootServletInitializer {
 	@PostConstruct
 	public void init() {
 		SecurityContextHolder.clearContext();
+		
 	}
 
 	/**

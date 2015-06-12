@@ -32,7 +32,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
            .authorizeRequests()
                .anyRequest().authenticated()
                .and().httpBasic();
-	    
+	
+	  
 	}
 
 	@Autowired
