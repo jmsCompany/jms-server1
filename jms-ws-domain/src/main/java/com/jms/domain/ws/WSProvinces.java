@@ -3,7 +3,7 @@ package com.jms.domain.ws;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WSProvinces {
+public class WSProvinces implements java.io.Serializable{
 	
 	private List<WSProvince> wsProvinces = new ArrayList<WSProvince>();
 

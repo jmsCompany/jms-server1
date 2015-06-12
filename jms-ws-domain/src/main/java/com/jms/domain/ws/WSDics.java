@@ -3,7 +3,7 @@ package com.jms.domain.ws;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WSDics {
+public class WSDics implements java.io.Serializable{
 	
 	private List<WSSysDicD> wsSysDicDList = new ArrayList<WSSysDicD>();
 

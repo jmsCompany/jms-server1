@@ -4,12 +4,14 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.jms.domain.Config;
 import com.jms.domain.FineTaskEnum;
 import com.jms.domain.db.Company;
+import com.jms.domain.db.Roles;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.WSCompany;
 import com.jms.domain.ws.WSDics;
@@ -20,6 +22,7 @@ import com.jms.domain.ws.WSUser;
 import com.jms.domainadapter.CompanyAdapter;
 import com.jms.service.company.CompanyService;
 import com.jms.system.IDicDService;
+import com.jms.web.security.JMSUserDetails;
 import com.jms.web.security.SecurityUtils;
 
 
@@ -41,8 +44,13 @@ public class CompanyController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="company/view/{idCompany}", method=RequestMethod.GET)
 	public WSCompany getCompany(@PathVariable("idCompany") int idCompany) throws Exception {
-		WSUser u =securityUtils.getCurrentUser();
-		logger.debug("user: " + u.getLogin()+", pass: " + u.getPassword()+", locale:" + u.getLocale());
+		JMSUserDetails u =securityUtils.getCurrentUser();
+		logger.debug("user: " + u.getLogin());
+		
+		for(GrantedAuthority a : u.getAuthorities())
+		{
+			logger.debug("auth: " + a.getAuthority());
+		}
 		Company company= companyService.findCompanyById(idCompany);
 		return companyAdapter.toWSCompany(company);
 	}

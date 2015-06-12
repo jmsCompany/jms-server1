@@ -7,7 +7,7 @@
 		<version>1.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	
+
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jms-integration</artifactId>
 	<packaging>jar</packaging>
@@ -21,42 +21,62 @@
 		</developer>
 	</developers>
 
-
+	<properties>
+		<spring-hateoas.version>0.17.0.RELEASE</spring-hateoas.version>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>com.jms</groupId>
 			<artifactId>jms-api</artifactId>
 			<version>1.0</version>
 		</dependency>
-			<dependency>
+		<dependency>
 			<groupId>com.jms</groupId>
 			<artifactId>jms-webservice-company</artifactId>
 			<version>1.0</version>
 		</dependency>
-			<dependency>
+		<dependency>
 			<groupId>com.jms</groupId>
 			<artifactId>jms-webservice-workmanagement</artifactId>
 			<version>1.0</version>
 		</dependency>
-	<dependency>
+		<dependency>
 			<groupId>com.jms</groupId>
 			<artifactId>jms-webservice-user</artifactId>
 			<version>1.0</version>
 		</dependency>
-			<dependency>
+		<dependency>
 			<groupId>com.jms</groupId>
 			<artifactId>jms-webservice-system</artifactId>
 			<version>1.0</version>
 		</dependency>
-		
+
 		<dependency>
-	<groupId>cglib</groupId>
-	<artifactId>cglib</artifactId>
-	<version>3.1</version>
-</dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>3.1</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.4</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+		</dependency>
 		
+			<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-rest-hal-browser</artifactId>
+		
+		</dependency>
 		
 	</dependencies>
-
-
+	
+	
 </project>

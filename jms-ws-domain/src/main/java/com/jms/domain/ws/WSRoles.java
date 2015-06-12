@@ -1,6 +1,6 @@
 package com.jms.domain.ws;
 
-public class WSRoles {
+public class WSRoles implements java.io.Serializable{
 	private Integer idRole;
 	private String companyName;
 	private String role;

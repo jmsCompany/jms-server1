@@ -1,7 +1,7 @@
 package com.jms.domain.ws;
 
 
-public class WSDistrict {
+public class WSDistrict implements java.io.Serializable{
 
     private int idDistrict;
     private WSCity wsCity;

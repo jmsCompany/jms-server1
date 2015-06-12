@@ -1,6 +1,6 @@
 package com.jms.domain.ws;
 
-public class WSTaskType {
+public class WSTaskType implements java.io.Serializable{
 	private int idTaskType;
 	private String name;
 	public WSTaskType()

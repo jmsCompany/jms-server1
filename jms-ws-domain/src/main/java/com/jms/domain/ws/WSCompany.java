@@ -8,7 +8,7 @@ import com.jms.domain.EnabledEnum;
 import com.jms.domain.FineTaskEnum;
 
 
-public class WSCompany {
+public class WSCompany implements java.io.Serializable{
 	
     private Integer idCompany;
     private WSUser wsUsers;

@@ -2,12 +2,11 @@ package com.jms.repositories.user;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
-
-import com.jms.domain.db.Sector;
 import com.jms.domain.db.Users;
 
-@Repository
+@Repository @RepositoryRestResource(path = "users")
 public interface UsersRepository  extends CrudRepository<Users, Integer> {
 	
 	public Users findByEmail(String email);

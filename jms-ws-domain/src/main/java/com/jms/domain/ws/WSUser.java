@@ -6,7 +6,7 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
-public class WSUser {
+public class WSUser implements java.io.Serializable{
 	
     private Integer idUser;
 	private String name;

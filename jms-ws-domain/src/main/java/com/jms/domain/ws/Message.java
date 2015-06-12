@@ -1,7 +1,7 @@
 package com.jms.domain.ws;
 
 
-public class Message {
+public class Message  implements java.io.Serializable{
 	private String message;
 	private MessageTypeEnum messageTypeEnum;
 	

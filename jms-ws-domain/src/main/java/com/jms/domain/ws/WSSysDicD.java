@@ -1,7 +1,7 @@
 package com.jms.domain.ws;
 
 
-public class WSSysDicD {
+public class WSSysDicD implements java.io.Serializable{
 	
 	private Integer idDic;
 	private String type;

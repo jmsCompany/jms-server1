@@ -1,6 +1,6 @@
 package com.jms.domain.ws;
 
-public class WSModulePriv {
+public class WSModulePriv implements java.io.Serializable{
 
 	private String name;
 	private String description;

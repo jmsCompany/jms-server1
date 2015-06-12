@@ -3,7 +3,7 @@ package com.jms.domain.ws;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WSTaskTypes {
+public class WSTaskTypes implements java.io.Serializable{
 	
 	private List<WSTaskType> taskTypes = new ArrayList<WSTaskType>();
 

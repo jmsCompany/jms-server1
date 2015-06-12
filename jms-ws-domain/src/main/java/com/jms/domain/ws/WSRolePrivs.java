@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class WSRolePrivs {
+public class WSRolePrivs implements java.io.Serializable{
 	private String companyName;
     private String role;
     private List<WSModulePriv> modulePrivList =new ArrayList<WSModulePriv>(0);

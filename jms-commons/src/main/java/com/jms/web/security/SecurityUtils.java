@@ -35,17 +35,17 @@ public class SecurityUtils {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (auth.getPrincipal() instanceof UserDetails) {
-            return ((WSUser) auth.getPrincipal()).getLogin();
+            return ((JMSUserDetails) auth.getPrincipal()).getLogin();
         } else {
             return auth.getPrincipal().toString();
         }
     }
 
-	public WSUser getCurrentUser() {
+	public JMSUserDetails getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (auth.getPrincipal() instanceof UserDetails) {
-            return ((WSUser) auth.getPrincipal());
+            return ((JMSUserDetails) auth.getPrincipal());
         } else {
             return null;
         }

@@ -2,7 +2,7 @@ package com.jms.domain.ws;
 
 
 
-public class WSSector {
+public class WSSector implements java.io.Serializable{
 
     private Integer idSector;
     private String companyName;
