@@ -15,47 +15,47 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.jms.domain.db.Roles;
 import com.jms.domain.db.Users;
+import com.jms.domain.ws.WSUser;
 import com.jms.repositories.user.UsersRepository;
 
 
-
+@Service
 public class SecurityUtils {
 	@Autowired
-	private transient static UsersRepository usersRepository;
+	private  UsersRepository usersRepository;
 	private static final Logger logger = LogManager.getLogger(SecurityUtils.class.getCanonicalName());
 	
-	public static void runAs(String username, String password, String... roles) {
-
-		Assert.notNull(username, "Username must not be null!");
-		Assert.notNull(password, "Password must not be null!");
-
-		SecurityContextHolder.getContext().setAuthentication(
-				new UsernamePasswordAuthenticationToken(username, password, AuthorityUtils.createAuthorityList(roles)));
-		//Locale locale = new Locale("en", "US");
-		//LocaleContextHolder.setLocale(locale);
-		//System.out.println("locale: " + LocaleContextHolder.getLocale());
-		
-	}
-	
-	
-	public static String getUsername() {
+	public String getUsername() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (auth.getPrincipal() instanceof UserDetails) {
-            return ((UserDetails) auth.getPrincipal()).getUsername();
+            return ((WSUser) auth.getPrincipal()).getLogin();
         } else {
             return auth.getPrincipal().toString();
         }
     }
 
-	public static Collection<GrantedAuthority> getAuthorities(String userName) {
-		logger.debug("in getAuthoritiesFromDb");
-		List<GrantedAuthority> l = new ArrayList<GrantedAuthority>();
+	public WSUser getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+        if (auth.getPrincipal() instanceof UserDetails) {
+            return ((WSUser) auth.getPrincipal());
+        } else {
+            return null;
+        }
+    }
+
+	
+	@Transactional(readOnly=true)
+	public  Collection<GrantedAuthority> getAuthorities(String userName) {
+		
+		List<GrantedAuthority> l = new ArrayList<GrantedAuthority>();
 		Users user = usersRepository.findByUsernameOrEmailOrMobile(userName);
 		if(user == null) {
 			return l;

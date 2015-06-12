@@ -67,7 +67,8 @@ public class CompanyService {
 	private IUserService iUserServiceImpl;
 	@Autowired
 	private RolePrivRepository rolePrivReposity;
-	
+	@Autowired 
+	private  SecurityUtils securityUtils;
 	@Autowired
 	private SectorAdapter sectorAdapter;
 	private static final Logger logger = LogManager.getLogger(CompanyService.class.getCanonicalName());
@@ -136,8 +137,8 @@ public class CompanyService {
 	@Transactional(readOnly=false)
 	public Message cancelCompany(int idCompany)
 	{
-		logger.debug("user name: " + SecurityUtils.getUsername());
-		String login =  SecurityUtils.getUsername();
+		logger.debug("user name: " + securityUtils.getUsername());
+		String login =  securityUtils.getUsername();
 		Users u = usersRepository.findByUsernameOrEmailOrMobile(login);
 		if(u==null)
 			 return  messagesUitl.getMessage("nosuchuser",null,MessageTypeEnum.ERROR);

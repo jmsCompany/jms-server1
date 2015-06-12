@@ -48,8 +48,8 @@ public class Application {
     	//EmailSenderTest et = ctx.getBean(EmailSenderTest.class);
     	//et.testSendEmail();
 
-    	IUserServiceImpl ds = ctx.getBean(UserService.class);
-    	ds.updatePassword(3,"hongtao");
+    //	IUserServiceImpl ds = ctx.getBean(UserService.class);
+    //	ds.updatePassword(3,"hongtao");
     	
     
     	
@@ -58,12 +58,6 @@ public class Application {
     
     @PostConstruct
 	public void init() {
-
-		/**
-		 * Due to method-level protections, the security context must be loaded
-		 * with an authentication token containing the necessary privileges.
-		 */
-		SecurityUtils.runAs("admin", "admin", "ROLE_ADMIN");
 
 		SecurityContextHolder.clearContext();
 		

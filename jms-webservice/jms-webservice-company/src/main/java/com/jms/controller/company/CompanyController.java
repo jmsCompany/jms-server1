@@ -1,7 +1,6 @@
 package com.jms.controller.company;
-
-import javax.validation.Valid;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -17,9 +16,11 @@ import com.jms.domain.ws.WSDics;
 import com.jms.domain.ws.WSSector;
 import com.jms.domain.ws.WSTaskType;
 import com.jms.domain.ws.WSTaskTypes;
+import com.jms.domain.ws.WSUser;
 import com.jms.domainadapter.CompanyAdapter;
 import com.jms.service.company.CompanyService;
 import com.jms.system.IDicDService;
+import com.jms.web.security.SecurityUtils;
 
 
 
@@ -33,10 +34,15 @@ public class CompanyController {
 	
 	@Autowired  @Qualifier("dicDService")
 	private IDicDService dicDService;
+	private static final Logger logger = LogManager.getLogger(CompanyController.class.getCanonicalName());
 	
+	@Autowired 
+	private  SecurityUtils securityUtils;
 	@Transactional(readOnly = true)
 	@RequestMapping(value="company/view/{idCompany}", method=RequestMethod.GET)
 	public WSCompany getCompany(@PathVariable("idCompany") int idCompany) throws Exception {
+		WSUser u =securityUtils.getCurrentUser();
+		logger.debug("user: " + u.getLogin()+", pass: " + u.getPassword()+", locale:" + u.getLocale());
 		Company company= companyService.findCompanyById(idCompany);
 		return companyAdapter.toWSCompany(company);
 	}
