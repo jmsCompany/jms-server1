@@ -4,13 +4,13 @@ package com.jms.repositories.system;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.jms.domain.db.Modules;
+import com.jms.domain.db.Module;
 
 
 
 @Repository
-public interface ModulesRepository  extends CrudRepository<Modules, Integer>{
+public interface ModuleRepository  extends CrudRepository<Module, Integer>{
 		
-	public Modules findByName(String name);
+	public Module findByName(String name);
 
 }

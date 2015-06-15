@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.csvreader.CsvReader;
-import com.jms.domain.db.Modules;
+import com.jms.domain.db.Module;
 import com.jms.domain.db.RolePriv;
 import com.jms.domain.db.RolePrivId;
 import com.jms.domain.db.Roles;
@@ -26,7 +26,7 @@ import com.jms.domain.ws.WSSector;
 import com.jms.domainadapter.RoleAdapter;
 import com.jms.messages.MessagesUitl;
 import com.jms.repositories.company.CompanyRepository;
-import com.jms.repositories.system.ModulesRepository;
+import com.jms.repositories.system.ModuleRepository;
 import com.jms.repositories.user.RolePrivRepository;
 import com.jms.repositories.user.RoleRepository;
 
@@ -46,7 +46,7 @@ public class RoleService {
 	private MessagesUitl messagesUitl;
 	@Autowired
 	private RoleAdapter roleAdapter;
-	private @Autowired ModulesRepository modulesRepository;
+	private @Autowired ModuleRepository moduleRepository;
 
 	public void loadRolesFromCSV(String fileName) throws IOException {
 		CsvReader reader = new CsvReader(fileName, ',',
@@ -128,7 +128,7 @@ public class RoleService {
 			return messagesUitl.getMessage("company.role.doesnotexist", null,
 					MessageTypeEnum.ERROR);
 
-		for (Modules mod : modulesRepository.findAll()) {
+		for (Module mod : moduleRepository.findAll()) {
 			RolePrivId id = new RolePrivId(mod.getIdModule(), roles.getIdRole());
 			RolePriv rolePriv = rolePrivRepository.findOne(id);
 			if (rolePriv != null) {
@@ -171,8 +171,8 @@ public class RoleService {
 				.findByRoleAndCompanyName(role, companyName);
 		for (RolePriv rp : roles.getRolePrivs()) {
 			WSModulePriv wsModulePriv = new WSModulePriv();
-			wsModulePriv.setName(rp.getModules().getName());
-			wsModulePriv.setDescription(rp.getModules().getDescription());
+			wsModulePriv.setName(rp.getModule().getName());
+			wsModulePriv.setDescription(rp.getModule().getDescription());
 			wsModulePriv.setPriv(rp.getPriv());
 			wsRolePrivs.getModulePrivList().add(wsModulePriv);
 		}

@@ -2,6 +2,7 @@ package com.jms.domain.ws;
 
 
 public class Message  implements java.io.Serializable{
+	private String code;
 	private String message;
 	private MessageTypeEnum messageTypeEnum;
 	
@@ -25,5 +26,13 @@ public class Message  implements java.io.Serializable{
 	}
 	public void setMessageTypeEnum(MessageTypeEnum messageTypeEnum) {
 		this.messageTypeEnum = messageTypeEnum;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 }

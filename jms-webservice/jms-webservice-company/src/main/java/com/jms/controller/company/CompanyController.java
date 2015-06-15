@@ -1,4 +1,6 @@
 package com.jms.controller.company;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,25 +9,17 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
 import com.jms.domain.Config;
-import com.jms.domain.FineTaskEnum;
 import com.jms.domain.db.Company;
-import com.jms.domain.db.Roles;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.WSCompany;
-import com.jms.domain.ws.WSDics;
 import com.jms.domain.ws.WSSector;
-import com.jms.domain.ws.WSTaskType;
-import com.jms.domain.ws.WSTaskTypes;
-import com.jms.domain.ws.WSUser;
+import com.jms.domain.ws.WSSysDicD;
 import com.jms.domainadapter.CompanyAdapter;
 import com.jms.service.company.CompanyService;
 import com.jms.system.IDicDService;
 import com.jms.web.security.JMSUserDetails;
 import com.jms.web.security.SecurityUtils;
-
-
 
 @RestController
 public class CompanyController {
@@ -89,33 +83,39 @@ public class CompanyController {
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/company/natures", method=RequestMethod.GET)
-	public WSDics getNatures() throws Exception
+	public List<WSSysDicD> getNatures() throws Exception
 	{
 		return dicDService.getDicsByType(Config.companyNature);
 	}
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/company/sizes", method=RequestMethod.GET)
-	public WSDics getSizes() throws Exception
+	public List<WSSysDicD> getSizes() throws Exception
 	{
 		return dicDService.getDicsByType(Config.companySize);
 	}
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/company/types", method=RequestMethod.GET)
-	public WSDics getTypes() throws Exception
+	public List<WSSysDicD> getTypes() throws Exception
 	{
 		return dicDService.getDicsByType(Config.companyType);
+	}
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/company/languages", method=RequestMethod.GET)
+	public List<WSSysDicD> getLanguages() throws Exception
+	{
+		return dicDService.getDicsByType(Config.lang);
 	}
 	
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/company/taskTypes", method=RequestMethod.GET)
-	public WSTaskTypes getTaskTypes()
+	public List<WSSysDicD> getTaskTypes()throws Exception
 	{
-		WSTaskTypes wsTaskTypes = new WSTaskTypes();
-		wsTaskTypes.getTaskTypes().add(new WSTaskType(FineTaskEnum.NORMALTASK.getStatusCode(), FineTaskEnum.NORMALTASK.toString()));
-		wsTaskTypes.getTaskTypes().add(new WSTaskType(FineTaskEnum.FINETASK.getStatusCode(), FineTaskEnum.FINETASK.toString()));
-		return wsTaskTypes;
+		 return dicDService.getDicsByType(Config.taskType);
 	}
+	
+	
 }

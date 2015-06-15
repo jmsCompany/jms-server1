@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-7 13:49:29 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-14 15:39:31 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.HashSet;
@@ -35,6 +35,7 @@ public class Roles  implements java.io.Serializable {
      private String role;
      private String description;
      private Integer level;
+     private Integer enabled;
      private Set<Users> userses = new HashSet<Users>(0);
      private Set<GroupMembers> groupMemberses = new HashSet<GroupMembers>(0);
      private Set<SectorMember> sectorMembers = new HashSet<SectorMember>(0);
@@ -50,13 +51,14 @@ public class Roles  implements java.io.Serializable {
         this.company = company;
         this.role = role;
     }
-    public Roles(Company company, Sector sector, Roles roles, String role, String description, Integer level, Set<Users> userses, Set<GroupMembers> groupMemberses, Set<SectorMember> sectorMembers, Set<Roles> roleses, Set<Groups> groupses, Set<RolePriv> rolePrivs) {
+    public Roles(Company company, Sector sector, Roles roles, String role, String description, Integer level, Integer enabled, Set<Users> userses, Set<GroupMembers> groupMemberses, Set<SectorMember> sectorMembers, Set<Roles> roleses, Set<Groups> groupses, Set<RolePriv> rolePrivs) {
        this.company = company;
        this.sector = sector;
        this.roles = roles;
        this.role = role;
        this.description = description;
        this.level = level;
+       this.enabled = enabled;
        this.userses = userses;
        this.groupMemberses = groupMemberses;
        this.sectorMembers = sectorMembers;
@@ -128,6 +130,15 @@ public class Roles  implements java.io.Serializable {
     
     public void setLevel(Integer level) {
         this.level = level;
+    }
+    
+    @Column(name="ENABLED")
+    public Integer getEnabled() {
+        return this.enabled;
+    }
+    
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
     }
 @ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
     @JoinTable(name="authorities", catalog="jms", joinColumns = { 

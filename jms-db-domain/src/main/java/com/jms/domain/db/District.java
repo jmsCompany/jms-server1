@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-7 13:49:29 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-14 15:39:31 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.HashSet;
@@ -27,6 +27,7 @@ public class District  implements java.io.Serializable {
      private int idDistrict;
      private City city;
      private String district;
+     private Set<Users> userses = new HashSet<Users>(0);
      private Set<Company> companies = new HashSet<Company>(0);
 
     public District() {
@@ -36,10 +37,11 @@ public class District  implements java.io.Serializable {
     public District(int idDistrict) {
         this.idDistrict = idDistrict;
     }
-    public District(int idDistrict, City city, String district, Set<Company> companies) {
+    public District(int idDistrict, City city, String district, Set<Users> userses, Set<Company> companies) {
        this.idDistrict = idDistrict;
        this.city = city;
        this.district = district;
+       this.userses = userses;
        this.companies = companies;
     }
    
@@ -70,6 +72,14 @@ public class District  implements java.io.Serializable {
     
     public void setDistrict(String district) {
         this.district = district;
+    }
+@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="district")
+    public Set<Users> getUserses() {
+        return this.userses;
+    }
+    
+    public void setUserses(Set<Users> userses) {
+        this.userses = userses;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="district")
     public Set<Company> getCompanies() {

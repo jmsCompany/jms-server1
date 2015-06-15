@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.csvreader.CsvReader;
-import com.jms.domain.db.Modules;
+import com.jms.domain.db.Module;
 import com.jms.repositories.company.CompanyRepository;
-import com.jms.repositories.system.ModulesRepository;
+import com.jms.repositories.system.ModuleRepository;
 
 
 @Service
@@ -21,7 +21,7 @@ public class ModuleService {
 	
 	private static final Logger logger = LogManager.getLogger(ModuleService.class.getCanonicalName());
 	@Autowired
-	private ModulesRepository modulesRepository;
+	private ModuleRepository moduleRepository;
 	@Autowired
 	private CompanyRepository companyRepository ;
 	
@@ -30,12 +30,12 @@ public class ModuleService {
         reader.readHeaders();  //Parent,  Name,     Description
 		while(reader.readRecord())
 		{
-			Modules m = new Modules();
+			Module m = new Module();
 			String parentModule = reader.get("Parent");
 			if(!parentModule.isEmpty())
 			{
-				Modules parent = modulesRepository.findByName(parentModule);
-				m.setModules(parent);
+				Module parent = moduleRepository.findByName(parentModule);
+				m.setModule(parent);
 			}
 			m.setDescription(reader.get("Description"));
 			m.setName(reader.get("Name"));
@@ -45,9 +45,9 @@ public class ModuleService {
 		}
 	}
 	
-	public void save(Modules module)
+	public void save(Module module)
 	{
-		modulesRepository.save(module);  //create new 
+		moduleRepository.save(module);  //create new 
 		
 	}
 }

@@ -106,6 +106,75 @@ public class DicService {
 			sysDicDRepository.save(s);
 		}
 
+		SysDic langDic = new SysDic();
+		langDic.setType(Config.lang);
+		langDic.setDescription(Config.langDis);
+		sysDicRepository.save(langDic);
+
+		SysDicD s = new SysDicD();
+		s.setName("zh_CN");
+		s.setDescription("汉语");
+		s.setEnabled(1);
+		s.setSysDic(langDic);
+		sysDicDRepository.save(s);
+		
+		SysDicD s1 = new SysDicD();
+		s1.setName("en_US");
+		s1.setDescription("英语");
+		s1.setEnabled(1);
+		s1.setSysDic(langDic);
+		sysDicDRepository.save(s1);
+		
+		
+		SysDic cataDic = new SysDic();
+		cataDic.setType(Config.companyCatergory);
+		cataDic.setDescription(Config.companyCatergoryDis);
+		sysDicRepository.save(cataDic);
+
+		SysDicD s3 = new SysDicD();
+		s3.setName("NORMAL_COMPANY");
+		s3.setDescription("正规企业");
+		s3.setEnabled(1);
+		s3.setSysDic(cataDic);
+		sysDicDRepository.save(s3);
+		
+		SysDicD s4 = new SysDicD();
+		s4.setName("SYSTEM_COMPANY");
+		s4.setDescription("平台企业");
+		s4.setEnabled(1);
+		s4.setSysDic(cataDic);
+		sysDicDRepository.save(s4);
+		
+		
+		SysDicD s5 = new SysDicD();
+		s5.setName("TEMPLATE_COMPANY");
+		s5.setDescription("模版企业");
+		s5.setEnabled(1);
+		s5.setSysDic(cataDic);
+		sysDicDRepository.save(s5);
+		
+		
+		SysDic taskDic = new SysDic();
+		taskDic.setType(Config.taskType);
+		taskDic.setDescription(Config.taskTypeDis);
+		sysDicRepository.save(taskDic);
+
+		SysDicD s6 = new SysDicD();
+		s6.setName("FINE_TASK");
+		s6.setDescription("精细任务");
+		s6.setEnabled(1);
+		s6.setSysDic(taskDic);
+		sysDicDRepository.save(s6);
+		
+		SysDicD s7 = new SysDicD();
+		s7.setName("NORMAL_TASK");
+		s7.setDescription("正常任务");
+		s7.setEnabled(1);
+		s7.setSysDic(taskDic);
+		sysDicDRepository.save(s7);
+		
+		
+		
 	}
 
 }

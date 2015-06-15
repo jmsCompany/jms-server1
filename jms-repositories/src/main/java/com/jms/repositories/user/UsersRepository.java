@@ -6,7 +6,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 import com.jms.domain.db.Users;
 
-@Repository @RepositoryRestResource(path = "users")
+@Repository
 public interface UsersRepository  extends CrudRepository<Users, Integer> {
 	
 	public Users findByEmail(String email);

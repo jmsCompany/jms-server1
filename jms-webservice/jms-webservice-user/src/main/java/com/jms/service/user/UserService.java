@@ -3,23 +3,24 @@ package com.jms.service.user;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Date;
-import java.util.Locale;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.csvreader.CsvReader;
+import com.jms.domain.Config;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
+import com.jms.repositories.system.SysDicDRepository;
 
 @Service
 @Qualifier("userService")
 @Transactional
 public class UserService extends IUserServiceImpl{
-	
+	@Autowired
+	private SysDicDRepository sysDicDRepository;
 	private static final Logger logger = LogManager.getLogger(UserService.class.getCanonicalName());
 	
 	public void loadUsersFromCSV(String fileName) throws IOException
@@ -38,7 +39,7 @@ public class UserService extends IUserServiceImpl{
 			u.setIdcard(reader.get("id_card"));
 			u.setEnabled(Integer.parseInt(reader.get("enabled")));
 			u.setCreationTime(new Date());
-            u.setLocale(Locale.CHINA.toString());
+			u.setSysDicDByLocale(sysDicDRepository.findDicsByType(Config.lang).get(0));
 			Message msg = register(u);
 			logger.debug(msg.getMessageTypeEnum().toString()  +", "+ msg.getMessage());
 		}

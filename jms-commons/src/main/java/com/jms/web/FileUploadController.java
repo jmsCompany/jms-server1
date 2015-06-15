@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.jms.domain.Config;
 import com.jms.domain.db.Company;
-import com.jms.domain.db.Documents;
+import com.jms.domain.db.Document;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.MessageTypeEnum;
 import com.jms.messages.MessagesUitl;
@@ -30,14 +30,14 @@ public class FileUploadController {
 	
 	
 	@RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
-	public Documents handleFileUpload(
+	public Document handleFileUpload(
 			@RequestParam("description") String description,
 			@RequestParam("file") MultipartFile file) throws IOException {
 		if (!file.isEmpty()) {	
 			String name =""+new Date().getTime();
 			File source = new File(Config.docsRelativePath+name+"_"+file.getOriginalFilename());   
 			file.transferTo(source);   
-			 Documents doc = new Documents();
+			 Document doc = new Document();
 			 doc.setFileName(file.getOriginalFilename());
 			 doc.setDescription(description);
 			 doc.setName(name);
@@ -51,14 +51,14 @@ public class FileUploadController {
 	}
 	
 	@RequestMapping(value = "/logoUpload", method = RequestMethod.POST)
-	public Documents handleLogoUpload(
+	public Document handleLogoUpload(
 			@RequestParam("idCompany") Integer idCompany,
 			@RequestParam("file") MultipartFile file) throws IOException {
 		if (!file.isEmpty()) {	
 			String name =""+new Date().getTime();
 			File source = new File(Config.logoRelativePath+name+"_"+file.getOriginalFilename());   
 			file.transferTo(source);   
-			 Documents doc = new Documents();
+			 Document doc = new Document();
 			 doc.setFileName(file.getOriginalFilename());
 			 doc.setDescription("logo");
 			 doc.setName(name);
@@ -67,21 +67,22 @@ public class FileUploadController {
 			 doc.setSize(size);
 			 documentRepository.save(doc);
 			 Company  company =  companyRepository.findOne(idCompany);
-			 company.setDocumentsByLogo(doc);
+
+			 company.setDocumentByLogo(doc);
 			 companyRepository.save(company);
 			 return doc; 
 		}
         return null;
 	}
 	@RequestMapping(value = "/licenseUpload", method = RequestMethod.POST)
-	public Documents handlicenseUpload(
+	public Document handlicenseUpload(
 			@RequestParam("idCompany") Integer idCompany,
 			@RequestParam("file") MultipartFile file) throws IOException {
 		if (!file.isEmpty()) {	
 			String name =""+new Date().getTime();
 			File source = new File(Config.licenseRelativePath+name+"_"+file.getOriginalFilename());   
 			file.transferTo(source);   
-			 Documents doc = new Documents();
+			 Document doc = new Document();
 			 doc.setFileName(file.getOriginalFilename());
 			 doc.setDescription("logo");
 			 doc.setName(name);
@@ -90,7 +91,7 @@ public class FileUploadController {
 			 doc.setSize(size);
 			 documentRepository.save(doc);
 			 Company  company =  companyRepository.findOne(idCompany);
-			 company.setDocumentsByLicense(doc);
+			 company.setDocumentByLicense(doc);
 			 companyRepository.save(company);
 			 return doc; 
 		}

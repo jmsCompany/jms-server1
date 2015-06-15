@@ -1,7 +1,10 @@
 package com.jms.system;
 
-import com.jms.domain.ws.WSDics;
+import java.util.List;
+
+import com.jms.domain.ws.WSSysDicD;
+
 
 public interface IDicDService {
-	public WSDics getDicsByType(String type) throws Exception;
+	public List<WSSysDicD> getDicsByType(String type) throws Exception;
 }

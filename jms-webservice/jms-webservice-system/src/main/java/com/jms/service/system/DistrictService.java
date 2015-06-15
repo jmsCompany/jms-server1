@@ -2,6 +2,8 @@ package com.jms.service.system;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,18 +14,18 @@ import org.springframework.transaction.annotation.Transactional;
 import com.csvreader.CsvReader;
 import com.jms.domain.db.City;
 import com.jms.domain.db.District;
-import com.jms.domain.db.Modules;
+import com.jms.domain.db.Module;
 import com.jms.domain.db.Province;
-import com.jms.domain.ws.WSCities;
-import com.jms.domain.ws.WSDistricts;
-import com.jms.domain.ws.WSProvinces;
+import com.jms.domain.ws.WSCity;
+import com.jms.domain.ws.WSDistrict;
+import com.jms.domain.ws.WSProvince;
 import com.jms.domainadapter.CityAdapter;
 import com.jms.domainadapter.DistrictAdapter;
 import com.jms.domainadapter.ProvinceAdapter;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.system.CityRepository;
 import com.jms.repositories.system.DistrictRepository;
-import com.jms.repositories.system.ModulesRepository;
+import com.jms.repositories.system.ModuleRepository;
 import com.jms.repositories.system.ProvinceRepository;
 
 
@@ -45,32 +47,32 @@ public class DistrictService {
 	@Autowired
 	private DistrictAdapter districtAdapter;
 	
-	public WSProvinces getProvinces() throws Exception
+	public List<WSProvince> getProvinces() throws Exception
 	{
-		WSProvinces wsProvinces = new WSProvinces();
+		List<WSProvince> wsProvinces = new ArrayList<WSProvince>(0);
 		for(Province province: provinceRepository.findAll())
 		{
-			wsProvinces.getWsProvinces().add(provinceAdapter.toWSProvince(province));
+			wsProvinces.add(provinceAdapter.toWSProvince(province));
 		}
 		return wsProvinces;
 	}
 	
-	public WSCities getCites(Integer idProvince) throws Exception
+	public List<WSCity> getCites(Integer idProvince) throws Exception
 	{
-		WSCities wsCities = new WSCities();
+		List<WSCity> wsCities = new ArrayList<WSCity>(0);
 		for(City c: provinceRepository.findOne(idProvince).getCities())
 		{
-			wsCities.getWscities().add(cityAdapter.toWSCity(c));
+			wsCities.add(cityAdapter.toWSCity(c));
 		}
 		return wsCities;
 	}
 	
-	public WSDistricts getDistricts(Integer idCity) throws Exception
+	public List<WSDistrict> getDistricts(Integer idCity) throws Exception
 	{
-		WSDistricts wsDistricts = new WSDistricts();
+		List<WSDistrict> wsDistricts = new ArrayList<WSDistrict>(0);
 		for(District d: cityRepository.findOne(idCity).getDistricts())
 		{
-			wsDistricts.getWsDistricts().add(districtAdapter.toWSDistrict(d));
+			wsDistricts.add(districtAdapter.toWSDistrict(d));
 		}
 		return wsDistricts;
 	}

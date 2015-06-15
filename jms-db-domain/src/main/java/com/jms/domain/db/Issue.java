@@ -1,17 +1,15 @@
 package com.jms.domain.db;
-// Generated 2015-6-7 13:49:29 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-14 15:39:31 by Hibernate Tools 3.2.2.GA
 
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -29,34 +27,29 @@ public class Issue  implements java.io.Serializable {
 
 
      private Integer idIssue;
+     private SysDicD sysDicDByStatus;
      private Project project;
+     private SysDicD sysDicDByPriority;
      private String name;
      private String description;
-     private Integer priority;
-     private String status;
      private Set<IssueDoc> issueDocs = new HashSet<IssueDoc>(0);
      private Set<IssueComment> issueComments = new HashSet<IssueComment>(0);
 
     public Issue() {
     }
 
-	
-    public Issue(Integer idIssue) {
-        this.idIssue = idIssue;
-    }
-    public Issue(Integer idIssue, Project project, String name, String description, Integer priority, String status, Set<IssueDoc> issueDocs, Set<IssueComment> issueComments) {
-       this.idIssue = idIssue;
+    public Issue(SysDicD sysDicDByStatus, Project project, SysDicD sysDicDByPriority, String name, String description, Set<IssueDoc> issueDocs, Set<IssueComment> issueComments) {
+       this.sysDicDByStatus = sysDicDByStatus;
        this.project = project;
+       this.sysDicDByPriority = sysDicDByPriority;
        this.name = name;
        this.description = description;
-       this.priority = priority;
-       this.status = status;
        this.issueDocs = issueDocs;
        this.issueComments = issueComments;
     }
    
-     @Id 
-     @GeneratedValue(strategy=IDENTITY)
+     @Id @GeneratedValue(strategy=IDENTITY)
+    
     @Column(name="ID_ISSUE", unique=true, nullable=false)
     public Integer getIdIssue() {
         return this.idIssue;
@@ -66,6 +59,15 @@ public class Issue  implements java.io.Serializable {
         this.idIssue = idIssue;
     }
 @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="STATUS")
+    public SysDicD getSysDicDByStatus() {
+        return this.sysDicDByStatus;
+    }
+    
+    public void setSysDicDByStatus(SysDicD sysDicDByStatus) {
+        this.sysDicDByStatus = sysDicDByStatus;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="ID_PROJECT")
     public Project getProject() {
         return this.project;
@@ -73,6 +75,15 @@ public class Issue  implements java.io.Serializable {
     
     public void setProject(Project project) {
         this.project = project;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="PRIORITY")
+    public SysDicD getSysDicDByPriority() {
+        return this.sysDicDByPriority;
+    }
+    
+    public void setSysDicDByPriority(SysDicD sysDicDByPriority) {
+        this.sysDicDByPriority = sysDicDByPriority;
     }
     
     @Column(name="NAME", length=64)
@@ -91,24 +102,6 @@ public class Issue  implements java.io.Serializable {
     
     public void setDescription(String description) {
         this.description = description;
-    }
-    
-    @Column(name="PRIORITY")
-    public Integer getPriority() {
-        return this.priority;
-    }
-    
-    public void setPriority(Integer priority) {
-        this.priority = priority;
-    }
-    
-    @Column(name="STATUS", length=20)
-    public String getStatus() {
-        return this.status;
-    }
-    
-    public void setStatus(String status) {
-        this.status = status;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="issue")
     public Set<IssueDoc> getIssueDocs() {

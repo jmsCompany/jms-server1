@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-7 13:49:29 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-14 15:39:31 by Hibernate Tools 3.2.2.GA
 
 
 import javax.persistence.AttributeOverride;
@@ -24,22 +24,22 @@ public class RolePriv  implements java.io.Serializable {
 
      private RolePrivId id;
      private Roles roles;
-     private Modules modules;
+     private Module module;
      private Integer priv;
 
     public RolePriv() {
     }
 
 	
-    public RolePriv(RolePrivId id, Roles roles, Modules modules) {
+    public RolePriv(RolePrivId id, Roles roles, Module module) {
         this.id = id;
         this.roles = roles;
-        this.modules = modules;
+        this.module = module;
     }
-    public RolePriv(RolePrivId id, Roles roles, Modules modules, Integer priv) {
+    public RolePriv(RolePrivId id, Roles roles, Module module, Integer priv) {
        this.id = id;
        this.roles = roles;
-       this.modules = modules;
+       this.module = module;
        this.priv = priv;
     }
    
@@ -66,12 +66,12 @@ public class RolePriv  implements java.io.Serializable {
     }
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="ID_MODULE", nullable=false, insertable=false, updatable=false)
-    public Modules getModules() {
-        return this.modules;
+    public Module getModule() {
+        return this.module;
     }
     
-    public void setModules(Modules modules) {
-        this.modules = modules;
+    public void setModule(Module module) {
+        this.module = module;
     }
     
     @Column(name="PRIV")

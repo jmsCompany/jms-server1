@@ -15,9 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.csvreader.CsvReader;
+import com.jms.domain.Config;
 import com.jms.domain.EnabledEnum;
-import com.jms.domain.FineTaskEnum;
-import com.jms.domain.SystemUser;
 import com.jms.domain.db.Company;
 import com.jms.domain.db.Project;
 import com.jms.domain.db.RolePriv;
@@ -35,6 +34,7 @@ import com.jms.domainadapter.UserAdapter;
 import com.jms.messages.MessagesUitl;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.company.SectorsRepository;
+import com.jms.repositories.system.SysDicDRepository;
 import com.jms.repositories.user.RolePrivRepository;
 import com.jms.repositories.user.RoleRepository;
 import com.jms.repositories.user.UsersRepository;
@@ -71,6 +71,9 @@ public class CompanyService {
 	private  SecurityUtils securityUtils;
 	@Autowired
 	private SectorAdapter sectorAdapter;
+	
+	@Autowired
+	private SysDicDRepository sysDicDRepository;
 	private static final Logger logger = LogManager.getLogger(CompanyService.class.getCanonicalName());
 	
 	@Transactional(readOnly=true)
@@ -119,6 +122,37 @@ public class CompanyService {
 	}		
 
 
+	
+	
+	
+	@Transactional(readOnly=false)
+	public Message updateCompany(WSCompany wsCompany) throws Exception
+	{
+		int idCompamplany = wsCompany.getIdCompany();
+	    Company company= companyRepository.findOne(idCompamplany);
+	    if(!company.getCompanyName().equals(wsCompany.getCompanyName()))
+	    {
+	    	Message message = checkCompanyName(wsCompany.getCompanyName());
+			if(message.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
+				return message;
+	    }
+
+		 company = companyAdapter.toDBCompany(wsCompany);
+		 companyRepository.save(company);
+		
+		 return  messagesUitl.getMessage("company.success",null,MessageTypeEnum.INFOMATION);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public Message checkCompanyName(String companyName) 
 	{
 		logger.debug("company name: " + companyName);
@@ -188,13 +222,13 @@ public class CompanyService {
         	roleRepository.save(r1);
         	for(RolePriv rp: rpSet)
         	{
-        		logger.debug("module id: " + rp.getModules().getIdModule()+" role id: " +r1.getIdRole());
-        		RolePrivId id = new RolePrivId(rp.getModules().getIdModule(),r1.getIdRole()); 
+        		logger.debug("module id: " + rp.getModule().getIdModule()+" role id: " +r1.getIdRole());
+        		RolePrivId id = new RolePrivId(rp.getModule().getIdModule(),r1.getIdRole()); 
         		RolePriv rp1 = new RolePriv();
         		rp1.setId(id);
         		rp1.setRoles(r1); 
         		rp1.setPriv(rp.getPriv());
-        		rp1.setModules(rp.getModules());
+        		rp1.setModule(rp.getModule());
         		rolePrivReposity.save(rp1);
         	}
         	
@@ -211,10 +245,13 @@ public class CompanyService {
 			templateCompany.setCompanyName(reader.get("CompanyName"));
 			templateCompany.setDescription(reader.get("Description"));
 			templateCompany.setCreationTime(new Date());
-			templateCompany.setUsers(usersRepository.findByUsername(SystemUser.System.toString()));
+			templateCompany.setUsers(usersRepository.findByUsername("system"));
 			templateCompany.setEnabled(EnabledEnum.ROBOT.getStatusCode());
-			templateCompany.setFineTask(FineTaskEnum.NORMALTASK.getStatusCode());
-			templateCompany.setCompanyCatergory(Integer.parseInt(reader.get("CompanyCatergory")));
+			
+			
+			templateCompany.setSysDicDByTaskType(sysDicDRepository.findDicsByType(Config.taskType).get(0));
+			templateCompany.setSysDicDByCompanyCatorgory(sysDicDRepository.findDicsByType(Config.companyCatergory).get(0));
+			
 			companyRepository.save(templateCompany);
 		
 		}

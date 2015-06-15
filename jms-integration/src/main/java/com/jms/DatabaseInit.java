@@ -52,7 +52,7 @@ public class DatabaseInit {
    	     Resource provinceRes = ctx.getResource("classpath:data/province.csv");
    	     Resource cityRes = ctx.getResource("classpath:data/city.csv");
          Resource districtRes = ctx.getResource("classpath:data/district.csv");
-    
+         dicService.loadDics();
 		 userService.loadUsersFromCSV(userRes.getFile().getAbsolutePath());
 		 companyService.loadCompaniesFromCSV(companyRes.getFile().getAbsolutePath());
 		 roleService.loadRolesFromCSV(roleRes.getFile().getAbsolutePath());
@@ -65,7 +65,7 @@ public class DatabaseInit {
 	     districtService.loadCitiesFromCSV(cityRes.getFile().getAbsolutePath());
          districtService.loadDistrictsFromCSV(districtRes.getFile().getAbsolutePath());
 		 
-         dicService.loadDics();
+        
 	}
 
 }

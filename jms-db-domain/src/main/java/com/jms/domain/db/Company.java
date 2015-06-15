@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-7 13:49:29 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-14 15:39:31 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.Date;
@@ -30,29 +30,34 @@ public class Company  implements java.io.Serializable {
 
 
      private Integer idCompany;
+     private SysDicD sysDicDByCompanyCatorgory;
+     private SysDicD sysDicDByLocale;
      private District district;
-     private Documents documentsByLogo;
+     private SysDicD sysDicDByScheme;
+     private Document documentByLogo;
      private Users users;
      private SysDicD sysDicDByCompanyType;
      private SysDicD sysDicDByCompanyNature;
      private SysDicD sysDicDByCompanySize;
-     private Documents documentsByLicense;
+     private Document documentByLicense;
+     private SysDicD sysDicDByTaskType;
      private String companyName;
      private String description;
      private Date creationTime;
-     private int fineTask;
      private int enabled;
      private Float usedSpace;
-     private int companyCatergory;
-     private String locale;
      private Integer verified;
      private String telephone;
      private String fax;
      private String email;
+     private String establishPerson;
      private Date establishmentTime;
      private String address;
      private String postcode;
      private String url;
+     private Float space;
+     private Integer msgAvailableNum;
+     private Integer msgUsedNum;
      private Set<Users> userses = new HashSet<Users>(0);
      private Set<Project> projects = new HashSet<Project>(0);
      private Set<Sector> sectors = new HashSet<Sector>(0);
@@ -62,38 +67,41 @@ public class Company  implements java.io.Serializable {
     }
 
 	
-    public Company(Users users, String companyName, Date creationTime, int fineTask, int enabled, int companyCatergory) {
+    public Company(Users users, String companyName, Date creationTime, int enabled) {
         this.users = users;
         this.companyName = companyName;
         this.creationTime = creationTime;
-        this.fineTask = fineTask;
         this.enabled = enabled;
-        this.companyCatergory = companyCatergory;
     }
-    public Company(District district, Documents documentsByLogo, Users users, SysDicD sysDicDByCompanyType, SysDicD sysDicDByCompanyNature, SysDicD sysDicDByCompanySize, Documents documentsByLicense, String companyName, String description, Date creationTime, int fineTask, int enabled, Float usedSpace, int companyCatergory, String locale, Integer verified, String telephone, String fax, String email, Date establishmentTime, String address, String postcode, String url, Set<Users> userses, Set<Project> projects, Set<Sector> sectors, Set<Roles> roleses) {
+    public Company(SysDicD sysDicDByCompanyCatorgory, SysDicD sysDicDByLocale, District district, SysDicD sysDicDByScheme, Document documentByLogo, Users users, SysDicD sysDicDByCompanyType, SysDicD sysDicDByCompanyNature, SysDicD sysDicDByCompanySize, Document documentByLicense, SysDicD sysDicDByTaskType, String companyName, String description, Date creationTime, int enabled, Float usedSpace, Integer verified, String telephone, String fax, String email, String establishPerson, Date establishmentTime, String address, String postcode, String url, Float space, Integer msgAvailableNum, Integer msgUsedNum, Set<Users> userses, Set<Project> projects, Set<Sector> sectors, Set<Roles> roleses) {
+       this.sysDicDByCompanyCatorgory = sysDicDByCompanyCatorgory;
+       this.sysDicDByLocale = sysDicDByLocale;
        this.district = district;
-       this.documentsByLogo = documentsByLogo;
+       this.sysDicDByScheme = sysDicDByScheme;
+       this.documentByLogo = documentByLogo;
        this.users = users;
        this.sysDicDByCompanyType = sysDicDByCompanyType;
        this.sysDicDByCompanyNature = sysDicDByCompanyNature;
        this.sysDicDByCompanySize = sysDicDByCompanySize;
-       this.documentsByLicense = documentsByLicense;
+       this.documentByLicense = documentByLicense;
+       this.sysDicDByTaskType = sysDicDByTaskType;
        this.companyName = companyName;
        this.description = description;
        this.creationTime = creationTime;
-       this.fineTask = fineTask;
        this.enabled = enabled;
        this.usedSpace = usedSpace;
-       this.companyCatergory = companyCatergory;
-       this.locale = locale;
        this.verified = verified;
        this.telephone = telephone;
        this.fax = fax;
        this.email = email;
+       this.establishPerson = establishPerson;
        this.establishmentTime = establishmentTime;
        this.address = address;
        this.postcode = postcode;
        this.url = url;
+       this.space = space;
+       this.msgAvailableNum = msgAvailableNum;
+       this.msgUsedNum = msgUsedNum;
        this.userses = userses;
        this.projects = projects;
        this.sectors = sectors;
@@ -111,6 +119,24 @@ public class Company  implements java.io.Serializable {
         this.idCompany = idCompany;
     }
 @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="COMPANY_CATORGORY")
+    public SysDicD getSysDicDByCompanyCatorgory() {
+        return this.sysDicDByCompanyCatorgory;
+    }
+    
+    public void setSysDicDByCompanyCatorgory(SysDicD sysDicDByCompanyCatorgory) {
+        this.sysDicDByCompanyCatorgory = sysDicDByCompanyCatorgory;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="LOCALE")
+    public SysDicD getSysDicDByLocale() {
+        return this.sysDicDByLocale;
+    }
+    
+    public void setSysDicDByLocale(SysDicD sysDicDByLocale) {
+        this.sysDicDByLocale = sysDicDByLocale;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="ID_DISTRICT")
     public District getDistrict() {
         return this.district;
@@ -120,13 +146,22 @@ public class Company  implements java.io.Serializable {
         this.district = district;
     }
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="LOGO")
-    public Documents getDocumentsByLogo() {
-        return this.documentsByLogo;
+    @JoinColumn(name="SCHEME")
+    public SysDicD getSysDicDByScheme() {
+        return this.sysDicDByScheme;
     }
     
-    public void setDocumentsByLogo(Documents documentsByLogo) {
-        this.documentsByLogo = documentsByLogo;
+    public void setSysDicDByScheme(SysDicD sysDicDByScheme) {
+        this.sysDicDByScheme = sysDicDByScheme;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="LOGO")
+    public Document getDocumentByLogo() {
+        return this.documentByLogo;
+    }
+    
+    public void setDocumentByLogo(Document documentByLogo) {
+        this.documentByLogo = documentByLogo;
     }
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="CREATOR", nullable=false)
@@ -166,12 +201,21 @@ public class Company  implements java.io.Serializable {
     }
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="LICENSE")
-    public Documents getDocumentsByLicense() {
-        return this.documentsByLicense;
+    public Document getDocumentByLicense() {
+        return this.documentByLicense;
     }
     
-    public void setDocumentsByLicense(Documents documentsByLicense) {
-        this.documentsByLicense = documentsByLicense;
+    public void setDocumentByLicense(Document documentByLicense) {
+        this.documentByLicense = documentByLicense;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="TASK_TYPE")
+    public SysDicD getSysDicDByTaskType() {
+        return this.sysDicDByTaskType;
+    }
+    
+    public void setSysDicDByTaskType(SysDicD sysDicDByTaskType) {
+        this.sysDicDByTaskType = sysDicDByTaskType;
     }
     
     @Column(name="COMPANY_NAME", nullable=false, length=64)
@@ -201,15 +245,6 @@ public class Company  implements java.io.Serializable {
         this.creationTime = creationTime;
     }
     
-    @Column(name="FINE_TASK", nullable=false)
-    public int getFineTask() {
-        return this.fineTask;
-    }
-    
-    public void setFineTask(int fineTask) {
-        this.fineTask = fineTask;
-    }
-    
     @Column(name="ENABLED", nullable=false)
     public int getEnabled() {
         return this.enabled;
@@ -226,24 +261,6 @@ public class Company  implements java.io.Serializable {
     
     public void setUsedSpace(Float usedSpace) {
         this.usedSpace = usedSpace;
-    }
-    
-    @Column(name="COMPANY_CATERGORY", nullable=false)
-    public int getCompanyCatergory() {
-        return this.companyCatergory;
-    }
-    
-    public void setCompanyCatergory(int companyCatergory) {
-        this.companyCatergory = companyCatergory;
-    }
-    
-    @Column(name="LOCALE", length=5)
-    public String getLocale() {
-        return this.locale;
-    }
-    
-    public void setLocale(String locale) {
-        this.locale = locale;
     }
     
     @Column(name="VERIFIED")
@@ -281,6 +298,15 @@ public class Company  implements java.io.Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    @Column(name="ESTABLISH_PERSON", length=20)
+    public String getEstablishPerson() {
+        return this.establishPerson;
+    }
+    
+    public void setEstablishPerson(String establishPerson) {
+        this.establishPerson = establishPerson;
+    }
     @Temporal(TemporalType.DATE)
     @Column(name="ESTABLISHMENT_TIME", length=10)
     public Date getEstablishmentTime() {
@@ -316,6 +342,33 @@ public class Company  implements java.io.Serializable {
     
     public void setUrl(String url) {
         this.url = url;
+    }
+    
+    @Column(name="SPACE", precision=12, scale=0)
+    public Float getSpace() {
+        return this.space;
+    }
+    
+    public void setSpace(Float space) {
+        this.space = space;
+    }
+    
+    @Column(name="MSG_AVAILABLE_NUM")
+    public Integer getMsgAvailableNum() {
+        return this.msgAvailableNum;
+    }
+    
+    public void setMsgAvailableNum(Integer msgAvailableNum) {
+        this.msgAvailableNum = msgAvailableNum;
+    }
+    
+    @Column(name="MSG_USED_NUM")
+    public Integer getMsgUsedNum() {
+        return this.msgUsedNum;
+    }
+    
+    public void setMsgUsedNum(Integer msgUsedNum) {
+        this.msgUsedNum = msgUsedNum;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="company")
     public Set<Users> getUserses() {

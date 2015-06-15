@@ -23,15 +23,14 @@ public class WSCompany implements java.io.Serializable{
     private WSSysDicD companySize;
     private WSSysDicD companyType;
     private WSSysDicD companyNature;
-   
-    
+ 
     
     private  Float  usedSpace;
     
     
-    private int fineTask;
+    private WSSysDicD wsTaskType;
     private int enabled;
-    private String locale;
+    private WSSysDicD locale;
     private Integer verified;
     private String telephone;
     private String fax;
@@ -149,14 +148,7 @@ public class WSCompany implements java.io.Serializable{
 	}
 
 
-	public int getFineTask() {
-		return fineTask;
-	}
 
-
-	public void setFineTask(int fineTask) {
-		this.fineTask = fineTask;
-	}
 
 
 	public int getEnabled() {
@@ -169,15 +161,6 @@ public class WSCompany implements java.io.Serializable{
 	}
 
 
-
-	public String getLocale() {
-		return locale;
-	}
-
-
-	public void setLocale(String locale) {
-		this.locale = locale;
-	}
 
 
 	public Integer getVerified() {
@@ -318,6 +301,26 @@ public class WSCompany implements java.io.Serializable{
 
 	public void setWsProvince(WSProvince wsProvince) {
 		this.wsProvince = wsProvince;
+	}
+
+
+	public WSSysDicD getWsTaskType() {
+		return wsTaskType;
+	}
+
+
+	public void setWsTaskType(WSSysDicD wsTaskType) {
+		this.wsTaskType = wsTaskType;
+	}
+
+
+	public WSSysDicD getLocale() {
+		return locale;
+	}
+
+
+	public void setLocale(WSSysDicD locale) {
+		this.locale = locale;
 	}
 
 

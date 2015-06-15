@@ -18,7 +18,9 @@ public class MessagesUitl {
 
 	public  Message getMessage(String strMsgSrc , Object[] args ,MessageTypeEnum messageTypeEnum ){
 		Message msg = new Message();
+		
 		String message = source.getMessage(strMsgSrc, args, LocalUtil.getLocal());
+		msg.setCode(strMsgSrc);
 		msg.setMessage(message);
 		msg.setMessageTypeEnum(messageTypeEnum);
 		return msg;

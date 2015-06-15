@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-7 13:49:29 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-14 15:39:31 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.Date;
@@ -33,6 +33,7 @@ public class Project  implements java.io.Serializable {
      private Company company;
      private Project project;
      private Users users;
+     private SysDicD sysDicD;
      private String projectName;
      private String description;
      private String projectNumber;
@@ -40,7 +41,6 @@ public class Project  implements java.io.Serializable {
      private Date planEndTime;
      private Date startTime;
      private Date endTime;
-     private String priority;
      private Integer process;
      private int enabled;
      private Set<Issue> issues = new HashSet<Issue>(0);
@@ -58,10 +58,11 @@ public class Project  implements java.io.Serializable {
         this.projectName = projectName;
         this.enabled = enabled;
     }
-    public Project(Company company, Project project, Users users, String projectName, String description, String projectNumber, Date planStartTime, Date planEndTime, Date startTime, Date endTime, String priority, Integer process, int enabled, Set<Issue> issues, Set<ProjectDoc> projectDocs, Set<ProjectParticipant> projectParticipants, Set<Project> projects, Set<Task> tasks) {
+    public Project(Company company, Project project, Users users, SysDicD sysDicD, String projectName, String description, String projectNumber, Date planStartTime, Date planEndTime, Date startTime, Date endTime, Integer process, int enabled, Set<Issue> issues, Set<ProjectDoc> projectDocs, Set<ProjectParticipant> projectParticipants, Set<Project> projects, Set<Task> tasks) {
        this.company = company;
        this.project = project;
        this.users = users;
+       this.sysDicD = sysDicD;
        this.projectName = projectName;
        this.description = description;
        this.projectNumber = projectNumber;
@@ -69,7 +70,6 @@ public class Project  implements java.io.Serializable {
        this.planEndTime = planEndTime;
        this.startTime = startTime;
        this.endTime = endTime;
-       this.priority = priority;
        this.process = process;
        this.enabled = enabled;
        this.issues = issues;
@@ -115,6 +115,15 @@ public class Project  implements java.io.Serializable {
     
     public void setUsers(Users users) {
         this.users = users;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="PRIORITY")
+    public SysDicD getSysDicD() {
+        return this.sysDicD;
+    }
+    
+    public void setSysDicD(SysDicD sysDicD) {
+        this.sysDicD = sysDicD;
     }
     
     @Column(name="PROJECT_NAME", nullable=false, length=64)
@@ -178,15 +187,6 @@ public class Project  implements java.io.Serializable {
     
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
-    }
-    
-    @Column(name="PRIORITY", length=20)
-    public String getPriority() {
-        return this.priority;
-    }
-    
-    public void setPriority(String priority) {
-        this.priority = priority;
     }
     
     @Column(name="PROCESS")

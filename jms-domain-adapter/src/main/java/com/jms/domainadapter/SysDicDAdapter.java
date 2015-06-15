@@ -15,4 +15,5 @@ public class SysDicDAdapter {
 		return wsSysDicD;
 	}
 
+
 }

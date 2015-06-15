@@ -1,25 +1,19 @@
 package com.jms.domain.ws;
 
-import org.hibernate.validator.constraints.Email;
+
 
 import java.util.Date;
-
-import javax.validation.constraints.NotNull;
-
-public class WSUser implements java.io.Serializable{
+public class WSUser extends Message implements java.io.Serializable{
 	
     private Integer idUser;
 	private String name;
+
 	private String username;
-	
     private String mobile;
-    @Email
     private String email;
     private String password;
     private Date creationTime;
     private String locale;
-    
- 
     private String address;
     private String idcard;
     private int enabled;
@@ -30,7 +24,6 @@ public class WSUser implements java.io.Serializable{
     private String major;
     private String degree;
     private String emergencyHp;
-    
     private String login;
     
     public WSUser(){}
@@ -40,7 +33,7 @@ public class WSUser implements java.io.Serializable{
     	this.username =user.getUsername();
     	this.email=user.getEmail();
     	this.mobile=user.getMobile();
-    	this.locale=user.getLocale();
+    	this.setLocale(user.getLocale());
     	this.login=user.getLogin();
     	this.password=user.getPassword();
     }
@@ -94,14 +87,6 @@ public class WSUser implements java.io.Serializable{
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	public String getLocale() {
-		return locale;
-	}
-
-	public void setLocale(String locale) {
-		this.locale = locale;
 	}
 
 	public String getAddress() {
@@ -198,6 +183,14 @@ public class WSUser implements java.io.Serializable{
 
 	public void setLogin(String login) {
 		this.login = login;
+	}
+
+	public String getLocale() {
+		return locale;
+	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
 	}
 
 

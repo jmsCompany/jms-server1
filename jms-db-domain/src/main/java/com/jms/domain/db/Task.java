@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-7 13:49:29 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-14 15:39:31 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.Date;
@@ -30,9 +30,11 @@ public class Task  implements java.io.Serializable {
 
 
      private Integer idTask;
+     private SysDicD sysDicDByStatus;
      private Users usersByAssignee;
      private Users usersByCreator;
      private Project project;
+     private SysDicD sysDicDByPriority;
      private String name;
      private String description;
      private Date creationTime;
@@ -43,8 +45,6 @@ public class Task  implements java.io.Serializable {
      private Date startTime;
      private Date endTime;
      private Integer duration;
-     private String priority;
-     private String status;
      private Integer seq;
      private Set<TaskDoc> taskDocs = new HashSet<TaskDoc>(0);
      private Set<TaskComment> taskComments = new HashSet<TaskComment>(0);
@@ -53,17 +53,17 @@ public class Task  implements java.io.Serializable {
     }
 
 	
-    public Task(String name, Date planStartTime, Date planEndTime, String priority, String status) {
+    public Task(String name, Date planStartTime, Date planEndTime) {
         this.name = name;
         this.planStartTime = planStartTime;
         this.planEndTime = planEndTime;
-        this.priority = priority;
-        this.status = status;
     }
-    public Task(Users usersByAssignee, Users usersByCreator, Project project, String name, String description, Date creationTime, Date modificationTime, Date planStartTime, Date planEndTime, Integer planDuration, Date startTime, Date endTime, Integer duration, String priority, String status, Integer seq, Set<TaskDoc> taskDocs, Set<TaskComment> taskComments) {
+    public Task(SysDicD sysDicDByStatus, Users usersByAssignee, Users usersByCreator, Project project, SysDicD sysDicDByPriority, String name, String description, Date creationTime, Date modificationTime, Date planStartTime, Date planEndTime, Integer planDuration, Date startTime, Date endTime, Integer duration, Integer seq, Set<TaskDoc> taskDocs, Set<TaskComment> taskComments) {
+       this.sysDicDByStatus = sysDicDByStatus;
        this.usersByAssignee = usersByAssignee;
        this.usersByCreator = usersByCreator;
        this.project = project;
+       this.sysDicDByPriority = sysDicDByPriority;
        this.name = name;
        this.description = description;
        this.creationTime = creationTime;
@@ -74,8 +74,6 @@ public class Task  implements java.io.Serializable {
        this.startTime = startTime;
        this.endTime = endTime;
        this.duration = duration;
-       this.priority = priority;
-       this.status = status;
        this.seq = seq;
        this.taskDocs = taskDocs;
        this.taskComments = taskComments;
@@ -90,6 +88,15 @@ public class Task  implements java.io.Serializable {
     
     public void setIdTask(Integer idTask) {
         this.idTask = idTask;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="STATUS")
+    public SysDicD getSysDicDByStatus() {
+        return this.sysDicDByStatus;
+    }
+    
+    public void setSysDicDByStatus(SysDicD sysDicDByStatus) {
+        this.sysDicDByStatus = sysDicDByStatus;
     }
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="ASSIGNEE")
@@ -117,6 +124,15 @@ public class Task  implements java.io.Serializable {
     
     public void setProject(Project project) {
         this.project = project;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="PRIORITY")
+    public SysDicD getSysDicDByPriority() {
+        return this.sysDicDByPriority;
+    }
+    
+    public void setSysDicDByPriority(SysDicD sysDicDByPriority) {
+        this.sysDicDByPriority = sysDicDByPriority;
     }
     
     @Column(name="NAME", nullable=false, length=64)
@@ -207,24 +223,6 @@ public class Task  implements java.io.Serializable {
     
     public void setDuration(Integer duration) {
         this.duration = duration;
-    }
-    
-    @Column(name="PRIORITY", nullable=false, length=20)
-    public String getPriority() {
-        return this.priority;
-    }
-    
-    public void setPriority(String priority) {
-        this.priority = priority;
-    }
-    
-    @Column(name="STATUS", nullable=false, length=20)
-    public String getStatus() {
-        return this.status;
-    }
-    
-    public void setStatus(String status) {
-        this.status = status;
     }
     
     @Column(name="SEQ")

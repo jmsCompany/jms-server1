@@ -42,13 +42,17 @@ public class CompanyAdapter{
 		if(wsCompany==null)
 			return null;
 		Company c = (Company)BeanUtil.shallowCopy(wsCompany,Company.class);
-		c.setEnabled(wsCompany.getEnabledEnum().getStatusCode());
-		c.setFineTask(wsCompany.getFineTaskEnum().getStatusCode());
-		c.setCompanyCatergory(wsCompany.getCompanyCategoryEnum().getStatusCode());
 		
+		if(wsCompany.getEnabledEnum()!=null)
+		   c.setEnabled(wsCompany.getEnabledEnum().getStatusCode());
+		else
+		   c.setEnabled(EnabledEnum.ENABLED.getStatusCode());
+	
+	
 		c.setSysDicDByCompanyNature(sysDicDRepository.findOne(wsCompany.getCompanyNature().getIdDic()));
 		c.setSysDicDByCompanySize(sysDicDRepository.findOne(wsCompany.getCompanySize().getIdDic()));
 		c.setSysDicDByCompanyType(sysDicDRepository.findOne(wsCompany.getCompanyType().getIdDic()));
+		
 		if(wsCompany.getWsDistrict()!=null)
 		{
 			c.setDistrict(districtRepository.findOne(wsCompany.getWsDistrict().getIdDistrict()));
@@ -64,11 +68,8 @@ public class CompanyAdapter{
 			return null;
 		WSCompany wsc = (WSCompany)BeanUtil.shallowCopy(company,WSCompany.class);
 		wsc.setEnabledEnum(findEnabledEnumByStatusCode(company.getEnabled()));
-		wsc.setFineTaskEnum(findFineTaskEnumByStatusCode(company.getFineTask()));
-		wsc.setCompanyCategoryEnum(findCompanyCategoryEnumByStatusCode(company.getCompanyCatergory()));
 		wsc.setWsUsers(userAdapter.toWSUser(company.getUsers()));
 	  
-		
 		WSSysDicD companySize = sysDicDAdapter.toWSSysDicD(company.getSysDicDByCompanySize());
 		WSSysDicD companyNature = sysDicDAdapter.toWSSysDicD(company.getSysDicDByCompanyNature());
 		WSSysDicD companyType = sysDicDAdapter.toWSSysDicD(company.getSysDicDByCompanyType());
@@ -86,15 +87,7 @@ public class CompanyAdapter{
 		return wsc;
 	}
 	
-	private FineTaskEnum findFineTaskEnumByStatusCode(int statusCode)
-	{
-		for(FineTaskEnum e:FineTaskEnum.values())
-	    {
-	    	if(e.getStatusCode()==statusCode)
-	    		return e;
-	    }
-		return null;
-	}
+
 	private EnabledEnum findEnabledEnumByStatusCode(int statusCode)
 	{
 		for(EnabledEnum e:EnabledEnum.values())
@@ -104,13 +97,5 @@ public class CompanyAdapter{
 	    }
 		return null;
 	}
-	private CompanyCategoryEnum findCompanyCategoryEnumByStatusCode(int statusCode)
-	{
-		for(CompanyCategoryEnum e :CompanyCategoryEnum.values())
-	    {
-	    	if(e.getStatusCode()==statusCode)
-	    		return e;
-	    }
-		return null;
-	}
+
 }

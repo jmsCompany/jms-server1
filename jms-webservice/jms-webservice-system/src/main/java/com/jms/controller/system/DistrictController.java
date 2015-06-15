@@ -1,12 +1,14 @@
 package com.jms.controller.system;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import com.jms.domain.ws.WSCities;
-import com.jms.domain.ws.WSDistricts;
-import com.jms.domain.ws.WSProvinces;
+import com.jms.domain.ws.WSCity;
+import com.jms.domain.ws.WSDistrict;
+import com.jms.domain.ws.WSProvince;
 import com.jms.service.system.DistrictService;
 
 @RestController
@@ -17,7 +19,7 @@ public class DistrictController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="provinces", method=RequestMethod.GET)
-	public WSProvinces getProvinces() throws Exception{
+	public List<WSProvince> getProvinces() throws Exception{
 		
 		return districtService.getProvinces();
 	}
@@ -25,14 +27,14 @@ public class DistrictController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="provinces/{idProvince}/cities", method=RequestMethod.GET)
-	public WSCities getCites(@PathVariable("idProvince") Integer idProvince) throws Exception {
+	public List<WSCity> getCites(@PathVariable("idProvince") Integer idProvince) throws Exception {
 		
 		return districtService.getCites(idProvince);
 	}
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="cities/{idCity}/districts", method=RequestMethod.GET)
-	public WSDistricts getDistricts(@PathVariable("idCity")  Integer idCity) throws Exception
+	public List<WSDistrict> getDistricts(@PathVariable("idCity")  Integer idCity) throws Exception
 	{
 		return districtService.getDistricts(idCity);
 	}

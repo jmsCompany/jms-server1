@@ -1,6 +1,7 @@
 package com.jms.web.security;
 
 import java.util.Collection;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.jms.domain.ws.WSUser;
@@ -9,7 +10,6 @@ import com.jms.domain.ws.WSUser;
 public class JMSUserDetails extends WSUser implements UserDetails {
 	private Collection<GrantedAuthority> authorities;
 
-	
 	public JMSUserDetails(WSUser user) {
 		super(user);
 	}

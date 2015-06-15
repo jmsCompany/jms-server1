@@ -1,20 +1,16 @@
 package com.jms.domain.db;
-// Generated 2015-6-7 13:49:29 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-14 15:39:31 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-
 import static javax.persistence.GenerationType.IDENTITY;
-
-import javax.persistence.ElementCollection;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -35,9 +31,15 @@ public class Users  implements java.io.Serializable {
 
 
      private Integer idUser;
+     private SysDicD sysDicDByLocale;
+     private SysDicD sysDicDByStatus;
      private Company company;
+     private District district;
+     private SysDicD sysDicDByScheme;
+     private SysDicD sysDicDByGender;
      private Users users;
-     private Documents documents;
+     private Document document;
+     private Date creationTime;
      private String username;
      private String mobile;
      private String email;
@@ -45,9 +47,6 @@ public class Users  implements java.io.Serializable {
      private String name;
      private String address;
      private String idcard;
-     private Date creationTime;
-     private int enabled;
-     private String locale;
      private String ext;
      private String ENo;
      private String school;
@@ -55,6 +54,9 @@ public class Users  implements java.io.Serializable {
      private String major;
      private String degree;
      private String emergencyHp;
+     private int enabled;
+     private String description;
+     private Date birthday;
      private Set<Trace> traces = new HashSet<Trace>(0);
      private Set<PersistentLogin> persistentLogins = new HashSet<PersistentLogin>(0);
      private Set<Task> tasksForCreator = new HashSet<Task>(0);
@@ -65,33 +67,29 @@ public class Users  implements java.io.Serializable {
      private Set<Task> tasksForAssignee = new HashSet<Task>(0);
      private Set<Roles> roleses = new HashSet<Roles>(0);
      private Set<Users> userses = new HashSet<Users>(0);
-     private Set<Company> companies = new HashSet<Company>(0);
      private Set<Project> projects = new HashSet<Project>(0);
+     private Set<Company> companies = new HashSet<Company>(0);
      private Set<SectorMember> sectorMembers = new HashSet<SectorMember>(0);
      private Set<ProjectParticipant> projectParticipants = new HashSet<ProjectParticipant>(0);
 
     public Users() {
     }
 
-	public Users(Users user){
-		this.idUser = user.idUser;
-		this.username = user.username;
-		this.mobile = user.mobile;
-		this.email = user.email;
-		this.password = user.password;
-		this.locale = user.locale;
-	}
-    
-    
-    public Users(String password, int enabled, String locale) {
+	
+    public Users(String password, int enabled) {
         this.password = password;
         this.enabled = enabled;
-        this.locale = locale;
     }
-    public Users(Company company, Users users, Documents documents, String username, String mobile, String email, String password, String name, String address, String idcard, Date creationTime, int enabled, String locale, String ext, String ENo, String school, Date gradTime, String major, String degree, String emergencyHp, Set<Trace> traces, Set<PersistentLogin> persistentLogins, Set<Task> tasksForCreator, Set<Task> tasksForCreator_1, Set<TaskComment> taskComments, Set<GroupMembers> groupMemberses, Set<Groups> groupses, Set<Task> tasksForAssignee, Set<Roles> roleses, Set<Users> userses, Set<Company> companies, Set<Project> projects, Set<SectorMember> sectorMembers, Set<ProjectParticipant> projectParticipants) {
+    public Users(SysDicD sysDicDByLocale, SysDicD sysDicDByStatus, Company company, District district, SysDicD sysDicDByScheme, SysDicD sysDicDByGender, Users users, Document document, Date creationTime, String username, String mobile, String email, String password, String name, String address, String idcard, String ext, String ENo, String school, Date gradTime, String major, String degree, String emergencyHp, int enabled, String description, Date birthday, Set<Trace> traces, Set<PersistentLogin> persistentLogins, Set<Task> tasksForCreator, Set<Task> tasksForCreator_1, Set<TaskComment> taskComments, Set<GroupMembers> groupMemberses, Set<Groups> groupses, Set<Task> tasksForAssignee, Set<Roles> roleses, Set<Users> userses, Set<Project> projects, Set<Company> companies, Set<SectorMember> sectorMembers, Set<ProjectParticipant> projectParticipants) {
+       this.sysDicDByLocale = sysDicDByLocale;
+       this.sysDicDByStatus = sysDicDByStatus;
        this.company = company;
+       this.district = district;
+       this.sysDicDByScheme = sysDicDByScheme;
+       this.sysDicDByGender = sysDicDByGender;
        this.users = users;
-       this.documents = documents;
+       this.document = document;
+       this.creationTime = creationTime;
        this.username = username;
        this.mobile = mobile;
        this.email = email;
@@ -99,9 +97,6 @@ public class Users  implements java.io.Serializable {
        this.name = name;
        this.address = address;
        this.idcard = idcard;
-       this.creationTime = creationTime;
-       this.enabled = enabled;
-       this.locale = locale;
        this.ext = ext;
        this.ENo = ENo;
        this.school = school;
@@ -109,6 +104,9 @@ public class Users  implements java.io.Serializable {
        this.major = major;
        this.degree = degree;
        this.emergencyHp = emergencyHp;
+       this.enabled = enabled;
+       this.description = description;
+       this.birthday = birthday;
        this.traces = traces;
        this.persistentLogins = persistentLogins;
        this.tasksForCreator = tasksForCreator;
@@ -119,8 +117,8 @@ public class Users  implements java.io.Serializable {
        this.tasksForAssignee = tasksForAssignee;
        this.roleses = roleses;
        this.userses = userses;
-       this.companies = companies;
        this.projects = projects;
+       this.companies = companies;
        this.sectorMembers = sectorMembers;
        this.projectParticipants = projectParticipants;
     }
@@ -136,6 +134,24 @@ public class Users  implements java.io.Serializable {
         this.idUser = idUser;
     }
 @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="LOCALE")
+    public SysDicD getSysDicDByLocale() {
+        return this.sysDicDByLocale;
+    }
+    
+    public void setSysDicDByLocale(SysDicD sysDicDByLocale) {
+        this.sysDicDByLocale = sysDicDByLocale;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="STATUS")
+    public SysDicD getSysDicDByStatus() {
+        return this.sysDicDByStatus;
+    }
+    
+    public void setSysDicDByStatus(SysDicD sysDicDByStatus) {
+        this.sysDicDByStatus = sysDicDByStatus;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="ID_COMPANY")
     public Company getCompany() {
         return this.company;
@@ -143,6 +159,33 @@ public class Users  implements java.io.Serializable {
     
     public void setCompany(Company company) {
         this.company = company;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="ID_DISTRICT")
+    public District getDistrict() {
+        return this.district;
+    }
+    
+    public void setDistrict(District district) {
+        this.district = district;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="SCHEME")
+    public SysDicD getSysDicDByScheme() {
+        return this.sysDicDByScheme;
+    }
+    
+    public void setSysDicDByScheme(SysDicD sysDicDByScheme) {
+        this.sysDicDByScheme = sysDicDByScheme;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="GENDER")
+    public SysDicD getSysDicDByGender() {
+        return this.sysDicDByGender;
+    }
+    
+    public void setSysDicDByGender(SysDicD sysDicDByGender) {
+        this.sysDicDByGender = sysDicDByGender;
     }
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="CREATOR")
@@ -155,12 +198,21 @@ public class Users  implements java.io.Serializable {
     }
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="CV")
-    public Documents getDocuments() {
-        return this.documents;
+    public Document getDocument() {
+        return this.document;
     }
     
-    public void setDocuments(Documents documents) {
-        this.documents = documents;
+    public void setDocument(Document document) {
+        this.document = document;
+    }
+    @Temporal(TemporalType.DATE)
+    @Column(name="CREATION_TIME", length=10)
+    public Date getCreationTime() {
+        return this.creationTime;
+    }
+    
+    public void setCreationTime(Date creationTime) {
+        this.creationTime = creationTime;
     }
     
     @Column(name="USERNAME", length=64)
@@ -225,33 +277,6 @@ public class Users  implements java.io.Serializable {
     public void setIdcard(String idcard) {
         this.idcard = idcard;
     }
-    @Temporal(TemporalType.DATE)
-    @Column(name="CREATION_TIME", length=10)
-    public Date getCreationTime() {
-        return this.creationTime;
-    }
-    
-    public void setCreationTime(Date creationTime) {
-        this.creationTime = creationTime;
-    }
-    
-    @Column(name="ENABLED", nullable=false)
-    public int getEnabled() {
-        return this.enabled;
-    }
-    
-    public void setEnabled(int enabled) {
-        this.enabled = enabled;
-    }
-    
-    @Column(name="LOCALE", nullable=false, length=20)
-    public String getLocale() {
-        return this.locale;
-    }
-    
-    public void setLocale(String locale) {
-        this.locale = locale;
-    }
     
     @Column(name="EXT", length=20)
     public String getExt() {
@@ -314,6 +339,33 @@ public class Users  implements java.io.Serializable {
     
     public void setEmergencyHp(String emergencyHp) {
         this.emergencyHp = emergencyHp;
+    }
+    
+    @Column(name="ENABLED", nullable=false)
+    public int getEnabled() {
+        return this.enabled;
+    }
+    
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
+    }
+    
+    @Column(name="DESCRIPTION", length=256)
+    public String getDescription() {
+        return this.description;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    @Temporal(TemporalType.DATE)
+    @Column(name="BIRTHDAY", length=10)
+    public Date getBirthday() {
+        return this.birthday;
+    }
+    
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="users")
     public Set<Trace> getTraces() {
@@ -396,20 +448,20 @@ public class Users  implements java.io.Serializable {
         this.userses = userses;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="users")
-    public Set<Company> getCompanies() {
-        return this.companies;
-    }
-    
-    public void setCompanies(Set<Company> companies) {
-        this.companies = companies;
-    }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="users")
     public Set<Project> getProjects() {
         return this.projects;
     }
     
     public void setProjects(Set<Project> projects) {
         this.projects = projects;
+    }
+@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="users")
+    public Set<Company> getCompanies() {
+        return this.companies;
+    }
+    
+    public void setCompanies(Set<Company> companies) {
+        this.companies = companies;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="users")
     public Set<SectorMember> getSectorMembers() {

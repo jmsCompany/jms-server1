@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-7 13:49:29 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-14 15:39:31 by Hibernate Tools 3.2.2.GA
 
 
 import javax.persistence.AttributeOverride;
@@ -23,7 +23,7 @@ public class ProjectDoc  implements java.io.Serializable {
 
 
      private ProjectDocId id;
-     private Documents documents;
+     private Document document;
      private Project project;
      private Integer publish;
 
@@ -31,14 +31,14 @@ public class ProjectDoc  implements java.io.Serializable {
     }
 
 	
-    public ProjectDoc(ProjectDocId id, Documents documents, Project project) {
+    public ProjectDoc(ProjectDocId id, Document document, Project project) {
         this.id = id;
-        this.documents = documents;
+        this.document = document;
         this.project = project;
     }
-    public ProjectDoc(ProjectDocId id, Documents documents, Project project, Integer publish) {
+    public ProjectDoc(ProjectDocId id, Document document, Project project, Integer publish) {
        this.id = id;
-       this.documents = documents;
+       this.document = document;
        this.project = project;
        this.publish = publish;
     }
@@ -57,12 +57,12 @@ public class ProjectDoc  implements java.io.Serializable {
     }
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="ID_DOCUMENT", nullable=false, insertable=false, updatable=false)
-    public Documents getDocuments() {
-        return this.documents;
+    public Document getDocument() {
+        return this.document;
     }
     
-    public void setDocuments(Documents documents) {
-        this.documents = documents;
+    public void setDocument(Document document) {
+        this.document = document;
     }
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="ID_PROJECT", nullable=false, insertable=false, updatable=false)
