@@ -26,6 +26,8 @@ public class WSUser extends Message implements java.io.Serializable{
     private String emergencyHp;
     private String login;
     
+    private String JMS_TOKEN;
+    
     public WSUser(){}
     
     public WSUser(WSUser user){
@@ -36,6 +38,7 @@ public class WSUser extends Message implements java.io.Serializable{
     	this.setLocale(user.getLocale());
     	this.login=user.getLogin();
     	this.password=user.getPassword();
+    	this.JMS_TOKEN = user.getJMS_TOKEN();
     }
     public String getEmail() {
     	return email;
@@ -191,6 +194,14 @@ public class WSUser extends Message implements java.io.Serializable{
 
 	public void setLocale(String locale) {
 		this.locale = locale;
+	}
+
+	public String getJMS_TOKEN() {
+		return JMS_TOKEN;
+	}
+
+	public void setJMS_TOKEN(String jMS_TOKEN) {
+		JMS_TOKEN = jMS_TOKEN;
 	}
 
 

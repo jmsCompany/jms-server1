@@ -3,14 +3,12 @@ package com.jms.web.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 @Configuration
 @EnableWebSecurity
@@ -18,28 +16,22 @@ import org.springframework.security.data.repository.query.SecurityEvaluationCont
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired private UserDetailsService userDetailsService;
+	@Autowired private AuthenticationTokenProcessingFilter authenticationTokenProcessingFilter;
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-	    http.httpBasic().and().authorizeRequests().
-				antMatchers("/api").hasAuthority("SYSADMIN").
-				antMatchers("/api/**").hasAuthority("SYSADMIN");
+		http.csrf().disable();
 		http
 		.authorizeRequests()
-			.antMatchers("/company/create").permitAll();
-		http.csrf().disable();
-	     http
-           .authorizeRequests()
-               .anyRequest().authenticated()
-               .and().httpBasic();
-	
-	  
+			.antMatchers("/login").permitAll();
+	    http.addFilter(authenticationTokenProcessingFilter);
+	    http.authorizeRequests().anyRequest().authenticated();
 	}
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth, UserDetailsService userDetailsService) throws Exception {
-		auth
-			.userDetailsService(userDetailsService)
-				.passwordEncoder(new BCryptPasswordEncoder());
+	//	auth
+	//		.userDetailsService(userDetailsService)
+	//			.passwordEncoder(new BCryptPasswordEncoder());
 	}
 	
 	@Bean

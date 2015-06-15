@@ -1,5 +1,7 @@
 package com.jms.service.user;
 
+import java.util.Date;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jms.domain.db.PersistentLogin;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.MessageTypeEnum;
 import com.jms.messages.MessagesUitl;
+import com.jms.repositories.user.PersistentLoginRepository;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.user.IUserService;
 
@@ -30,16 +34,26 @@ public class IUserServiceImpl implements IUserService {
 	private MessagesUitl messagesUitl;
 	@Autowired
 	private ResourceBundleMessageSource source;
+	@Autowired
+	private PersistentLoginRepository persistentLoginRepository;
 
-	// @Autowired
-	// private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-	// private static final String salt ="jms,rocks!";
 
 	public Message register(Users users) {
 		Message msg = checkLogin(users.getUsername(), users.getEmail(),
 				users.getMobile());
-
+        String anyLogin ="";
+        if(users.getUsername()!=null&&!users.getUsername().isEmpty())
+        	anyLogin =users.getUsername();
+        if(anyLogin.isEmpty())
+        {
+        	 if(users.getEmail()!=null&&!users.getEmail().isEmpty())
+             	anyLogin =users.getEmail();
+        }
+        if(anyLogin.isEmpty())
+        {
+        	 if(users.getMobile()!=null&&!users.getMobile().isEmpty())
+             	anyLogin =users.getMobile();
+        }
 		if (msg.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
 			return msg;
 		else {
@@ -50,6 +64,18 @@ public class IUserServiceImpl implements IUserService {
 					"user.register.success", null, MessageTypeEnum.INFOMATION);
 			logger.debug(msgToClient.getMessageTypeEnum().toString() + ", "
 					+ msgToClient.getMessage());
+			PersistentLogin p = new PersistentLogin();
+			p.setLastUesed(new Date());
+			String series = anyLogin+"__"+new BCryptPasswordEncoder().encode(new Date().toString());
+			if(series.length()>64)
+			{
+				System.out.println(series);
+				series =series.substring(0, 63);
+			}
+			p.setSeries(series);
+			p.setToken(series);
+			p.setUsers(users);
+			persistentLoginRepository.save(p);
 			return msgToClient;
 		}
 

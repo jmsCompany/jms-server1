@@ -12,9 +12,7 @@ public class LogInterceptor implements WebRequestInterceptor {
    
     @Override  
     public void preHandle(WebRequest request) throws Exception {  
-       
-    	//logger.debug("principal: " + request.getUserPrincipal());
-    	
+	
     }  
   
 

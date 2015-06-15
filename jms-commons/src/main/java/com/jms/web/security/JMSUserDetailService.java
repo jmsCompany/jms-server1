@@ -20,8 +20,10 @@ public class JMSUserDetailService implements Serializable,
 	@Transactional(readOnly=true)
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
+		
 		Users user = usersRepository.findByUsernameOrEmailOrMobile(username);
 		if (user == null) {
+			
 			throw new UsernameNotFoundException("Could not find user " + username);
 		}
 		WSUser wsUser = new WSUser();

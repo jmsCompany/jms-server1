@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.MessageTypeEnum;
 import com.jms.domain.ws.WSUser;
+import com.jms.domainadapter.UserAdapter;
 import com.jms.service.user.UserService;
 import com.jms.service.user.WSUsersValidator;
 
@@ -22,6 +23,9 @@ public class UserController {
 	
 	@Autowired @Qualifier("userService")
 	private UserService userService;
+	
+	@Autowired 
+	private UserAdapter userAdapter;
 	
 	@Autowired
 	private WSUsersValidator wsUsersValidator;
@@ -42,7 +46,12 @@ public class UserController {
 			wsUser.setCode(bindingResult.getAllErrors().get(0).getCode());
 			wsUser.setMessage(bindingResult.getAllErrors().get(0).getDefaultMessage());
 			wsUser.setMessageTypeEnum(MessageTypeEnum.ERROR);
+			return null;
 	
+		}
+		else
+		{
+			userService.register(userAdapter.toDBUser(wsUser));
 		}
 		return wsUser;
 	

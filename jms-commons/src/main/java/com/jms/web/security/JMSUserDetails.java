@@ -4,11 +4,17 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
 import com.jms.domain.ws.WSUser;
 
 
+
+@Component
 public class JMSUserDetails extends WSUser implements UserDetails {
 	private Collection<GrantedAuthority> authorities;
+	
+	public JMSUserDetails(){}
 
 	public JMSUserDetails(WSUser user) {
 		super(user);
