@@ -15,7 +15,6 @@ public class ErrorHandler {
     //todo email to developer, or report  to jira
     @ExceptionHandler(value = {Exception.class, RuntimeException.class})
     public ErrorResponse defaultErrorHandler(HttpServletRequest request, Exception e) {
-       
     	ErrorResponse response = new ErrorResponse();
     	response.setStatus("10000");
     	response.setPath(request.getRequestURI());
