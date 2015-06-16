@@ -12,7 +12,7 @@
     <Loggers>
 
         <Logger name="com.jms" level="debug" />
-        <Root level="WARN">
+        <Root level="debug">
             <AppenderRef ref="Console"/>
         </Root>
     </Loggers>

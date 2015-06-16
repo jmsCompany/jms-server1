@@ -2,16 +2,19 @@ package com.jms.web.security;
 
 
 import java.io.IOException;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -40,14 +43,16 @@ public class AuthenticationTokenProcessingFilter extends  AbstractPreAuthenticat
 
 	@Override
 	protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-       String token = request.getHeader("JMS-TOKEN");
-	   return tokenUtils.getUserFromToken(token);
+     //  String token = request.getHeader("JMS-TOKEN");
+	//   return tokenUtils.getUserFromToken(token);
+		return null;
 	}
 	@Override
 	protected Object getPreAuthenticatedCredentials(HttpServletRequest request) {
-		String token = request.getHeader("JMS-TOKEN");
-		UserDetails userDetails = tokenUtils.getUserFromToken(token);
-		return userDetails.getPassword();
+		//String token = request.getHeader("JMS-TOKEN");
+		//UserDetails userDetails = tokenUtils.getUserFromToken(token);
+		//return userDetails.getPassword();
+		return null;
 	}
 	
 	@Override
@@ -57,15 +62,16 @@ public class AuthenticationTokenProcessingFilter extends  AbstractPreAuthenticat
 		HttpServletResponse response = (HttpServletResponse) res;
 
 		if (SecurityContextHolder.getContext().getAuthentication() == null) {
-			 String token = request.getHeader("JMS-TOKEN");
+		    String token = request.getHeader("JMS-TOKEN");
 			if (token != null) {
 				 if (tokenUtils.validate(token)) {
-		                UserDetails userDetails = tokenUtils.getUserFromToken(token);
+		                JMSUserDetails userDetails = tokenUtils.getUserFromToken(token);
 		                UsernamePasswordAuthenticationToken authentication = 
 		                        new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword());
 		                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails((HttpServletRequest) request));
-		                SecurityContextHolder.getContext().setAuthentication(authenticationManager.authenticate(authentication));         
-		            }
+		                Authentication authenticated =authenticationManager.authenticate(authentication);
+		                SecurityContextHolder.getContext().setAuthentication(authenticated);         
+				 }
 			}
 
 			chain.doFilter(request, response);

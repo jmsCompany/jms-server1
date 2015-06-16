@@ -38,7 +38,7 @@ public class JMSAuthenticationManager implements AuthenticationManager {
 	private Authentication authenticatedToken(UserDetails userDetails,
 			Authentication original) {
 		UsernamePasswordAuthenticationToken authenticated = new UsernamePasswordAuthenticationToken(
-				userDetails.getUsername(), userDetails.getPassword(),
+				userDetails, userDetails.getPassword(),
 				userDetails.getAuthorities());
 		return authenticated;
 	}

@@ -54,7 +54,7 @@ public class CompanyController {
 	}
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/check/companyName", method=RequestMethod.GET)
+	@RequestMapping(value="/check/companyname", method=RequestMethod.GET)
 	public Message checkCompanyName(@RequestParam("companyName") String companyName) throws Exception {
 		return companyService.checkCompanyName(companyName);
 	}
