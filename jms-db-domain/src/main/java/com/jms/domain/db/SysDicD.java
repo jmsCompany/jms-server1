@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-14 15:39:31 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.HashSet;
@@ -27,11 +27,11 @@ public class SysDicD  implements java.io.Serializable {
 
 
      private Integer idDic;
-     private SysDicD sysDicD;
      private SysDic sysDic;
      private String name;
      private int enabled;
      private String description;
+     private Integer isDefault;
      private Set<Company> companiesForTaskType = new HashSet<Company>(0);
      private Set<Company> companiesForLocale = new HashSet<Company>(0);
      private Set<Task> tasksForPriority = new HashSet<Task>(0);
@@ -47,25 +47,23 @@ public class SysDicD  implements java.io.Serializable {
      private Set<Company> companiesForCompanyNature = new HashSet<Company>(0);
      private Set<Company> companiesForCompanySize = new HashSet<Company>(0);
      private Set<Project> projects = new HashSet<Project>(0);
-     private Set<SysDicD> sysDicDs = new HashSet<SysDicD>(0);
      private Set<Issue> issuesForStatus = new HashSet<Issue>(0);
 
     public SysDicD() {
     }
 
 	
-    public SysDicD(SysDicD sysDicD, String name, int enabled, String description) {
-        this.sysDicD = sysDicD;
+    public SysDicD(String name, int enabled, String description) {
         this.name = name;
         this.enabled = enabled;
         this.description = description;
     }
-    public SysDicD(SysDicD sysDicD, SysDic sysDic, String name, int enabled, String description, Set<Company> companiesForTaskType, Set<Company> companiesForLocale, Set<Task> tasksForPriority, Set<Task> tasksForStatus, Set<Issue> issuesForPriority, Set<Company> companiesForCompanyCatorgory, Set<Users> usersesForLocale, Set<Company> companiesForScheme, Set<Users> usersesForGender, Set<Company> companiesForCompanyType, Set<Users> usersesForScheme, Set<Users> usersesForStatus, Set<Company> companiesForCompanyNature, Set<Company> companiesForCompanySize, Set<Project> projects, Set<SysDicD> sysDicDs, Set<Issue> issuesForStatus) {
-       this.sysDicD = sysDicD;
+    public SysDicD(SysDic sysDic, String name, int enabled, String description, Integer isDefault, Set<Company> companiesForTaskType, Set<Company> companiesForLocale, Set<Task> tasksForPriority, Set<Task> tasksForStatus, Set<Issue> issuesForPriority, Set<Company> companiesForCompanyCatorgory, Set<Users> usersesForLocale, Set<Company> companiesForScheme, Set<Users> usersesForGender, Set<Company> companiesForCompanyType, Set<Users> usersesForScheme, Set<Users> usersesForStatus, Set<Company> companiesForCompanyNature, Set<Company> companiesForCompanySize, Set<Project> projects, Set<Issue> issuesForStatus) {
        this.sysDic = sysDic;
        this.name = name;
        this.enabled = enabled;
        this.description = description;
+       this.isDefault = isDefault;
        this.companiesForTaskType = companiesForTaskType;
        this.companiesForLocale = companiesForLocale;
        this.tasksForPriority = tasksForPriority;
@@ -81,7 +79,6 @@ public class SysDicD  implements java.io.Serializable {
        this.companiesForCompanyNature = companiesForCompanyNature;
        this.companiesForCompanySize = companiesForCompanySize;
        this.projects = projects;
-       this.sysDicDs = sysDicDs;
        this.issuesForStatus = issuesForStatus;
     }
    
@@ -94,15 +91,6 @@ public class SysDicD  implements java.io.Serializable {
     
     public void setIdDic(Integer idDic) {
         this.idDic = idDic;
-    }
-@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="ID_DIC", unique=true, nullable=false, insertable=false, updatable=false)
-    public SysDicD getSysDicD() {
-        return this.sysDicD;
-    }
-    
-    public void setSysDicD(SysDicD sysDicD) {
-        this.sysDicD = sysDicD;
     }
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="TYPE")
@@ -139,6 +127,15 @@ public class SysDicD  implements java.io.Serializable {
     
     public void setDescription(String description) {
         this.description = description;
+    }
+    
+    @Column(name="IS_DEFAULT")
+    public Integer getIsDefault() {
+        return this.isDefault;
+    }
+    
+    public void setIsDefault(Integer isDefault) {
+        this.isDefault = isDefault;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="sysDicDByTaskType")
     public Set<Company> getCompaniesForTaskType() {
@@ -259,14 +256,6 @@ public class SysDicD  implements java.io.Serializable {
     
     public void setProjects(Set<Project> projects) {
         this.projects = projects;
-    }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="sysDicD")
-    public Set<SysDicD> getSysDicDs() {
-        return this.sysDicDs;
-    }
-    
-    public void setSysDicDs(Set<SysDicD> sysDicDs) {
-        this.sysDicDs = sysDicDs;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="sysDicDByStatus")
     public Set<Issue> getIssuesForStatus() {

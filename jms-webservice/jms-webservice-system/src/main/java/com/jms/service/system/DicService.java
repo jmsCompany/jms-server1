@@ -27,10 +27,6 @@ public class DicService {
 	private SysDicRepository sysDicRepository;
 	@Autowired
 	private SysDicDRepository sysDicDRepository;
-
-
-	
-	
 	
 	public List<SysDicD> getSysDicDsByDic(String type) {
 		
@@ -111,12 +107,23 @@ public class DicService {
 		langDic.setDescription(Config.langDis);
 		sysDicRepository.save(langDic);
 
+		
+		
+		
 		SysDicD s = new SysDicD();
 		s.setName("zh_CN");
-		s.setDescription("汉语");
+		s.setDescription("汉语，简体中文");
 		s.setEnabled(1);
 		s.setSysDic(langDic);
 		sysDicDRepository.save(s);
+		
+		SysDicD s0 = new SysDicD();
+		s0.setName("zh_TW");
+		s0.setDescription("汉语，繁体中文");
+		s0.setEnabled(1);
+		s0.setSysDic(langDic);
+		sysDicDRepository.save(s0);
+		
 		
 		SysDicD s1 = new SysDicD();
 		s1.setName("en_US");
@@ -173,7 +180,255 @@ public class DicService {
 		s7.setSysDic(taskDic);
 		sysDicDRepository.save(s7);
 		
+
+		SysDic colorDic = new SysDic();
+		colorDic.setType(Config.colorType);
+		colorDic.setDescription(Config.colorTypeDis);
+		sysDicRepository.save(colorDic);
+
+		SysDicD s8 = new SysDicD();
+		s8.setName("0");
+		s8.setDescription("默认");
+		s8.setEnabled(1);
+		s8.setSysDic(colorDic);
+		sysDicDRepository.save(s8);
 		
+		
+		
+		SysDic gradeDic = new SysDic();
+		gradeDic.setType(Config.gradeType);
+		gradeDic.setDescription(Config.gradeTypeDis);
+		sysDicRepository.save(gradeDic);
+
+		SysDicD s9 = new SysDicD();
+		s9.setName("0");
+		s9.setDescription("不指定");
+		s9.setEnabled(1);
+		s9.setSysDic(gradeDic);
+		sysDicDRepository.save(s9);
+	
+		
+		SysDicD s10 = new SysDicD();
+		s10.setName("1");
+		s10.setDescription("1级别");
+		s10.setEnabled(1);
+		s10.setSysDic(gradeDic);
+		sysDicDRepository.save(s10);
+		
+		
+		SysDicD s11= new SysDicD();
+		s11.setName("2");
+		s11.setDescription("2级别");
+		s11.setEnabled(1);
+		s11.setSysDic(gradeDic);
+		sysDicDRepository.save(s11);
+		
+		SysDicD s12 = new SysDicD();
+		s12.setName("3");
+		s12.setDescription("3级别");
+		s12.setEnabled(1);
+		s12.setSysDic(gradeDic);
+		sysDicDRepository.save(s12);
+		
+		
+		SysDicD s13 = new SysDicD();
+		s13.setName("4");
+		s13.setDescription("4级别");
+		s13.setEnabled(1);
+		s13.setSysDic(gradeDic);
+		sysDicDRepository.save(s13);
+		
+		SysDicD s14 = new SysDicD();
+		s14.setName("5");
+		s14.setDescription("5级别");
+		s14.setEnabled(1);
+		s14.setSysDic(gradeDic);
+		sysDicDRepository.save(s14);
+		
+		
+		
+		SysDic genderDic = new SysDic();
+		genderDic.setType(Config.genderType);
+		genderDic.setDescription(Config.genderTypeDis);
+		sysDicRepository.save(genderDic);
+
+		SysDicD s15 = new SysDicD();
+		s15.setName("0");
+		s15.setDescription("不指定");
+		s15.setEnabled(1);
+		s15.setSysDic(genderDic);
+		sysDicDRepository.save(s15);
+		
+
+		SysDicD s16 = new SysDicD();
+		s16.setName("1");
+		s16.setDescription("男");
+		s16.setEnabled(1);
+		s16.setSysDic(genderDic);
+		sysDicDRepository.save(s16);
+		
+		
+
+		SysDicD s17 = new SysDicD();
+		s17.setName("2");
+		s17.setDescription("女");
+		s17.setEnabled(1);
+		s17.setSysDic(genderDic);
+		sysDicDRepository.save(s17);
+		
+		
+		
+		
+		SysDic employeeStatus = new SysDic();
+		employeeStatus.setType(Config.employeeStatus);
+		employeeStatus.setDescription(Config.employeeStatusDis);
+		sysDicRepository.save(employeeStatus);
+
+		SysDicD s18 = new SysDicD();
+		s18.setName("0");
+		s18.setDescription("在职");
+		s18.setEnabled(1);
+		s18.setSysDic(employeeStatus);
+		sysDicDRepository.save(s18);
+		
+
+		SysDicD s19 = new SysDicD();
+		s19.setName("1");
+		s19.setDescription("离职");
+		s19.setEnabled(1);
+		s19.setSysDic(employeeStatus);
+		sysDicDRepository.save(s19);
+		
+		
+		
+		SysDic generalStatus = new SysDic();
+		generalStatus.setType(Config.generalStatus);
+		generalStatus.setDescription(Config.generalStatusDis);
+		sysDicRepository.save(generalStatus);
+
+		SysDicD s20 = new SysDicD();
+		s20.setName("0");
+		s20.setDescription("有效");
+		s20.setEnabled(1);
+		s20.setSysDic(generalStatus);
+		sysDicDRepository.save(s20);
+		
+
+		SysDicD s21 = new SysDicD();
+		s21.setName("1");
+		s21.setDescription("有效");
+		s21.setEnabled(1);
+		s21.setSysDic(generalStatus);
+		sysDicDRepository.save(s21);
+		
+		
+		
+		SysDic projectStatus = new SysDic();
+		projectStatus.setType(Config.projectStatus);
+		projectStatus.setDescription(Config.projectStatusDis);
+		sysDicRepository.save(projectStatus);
+
+		SysDicD s22 = new SysDicD();
+		s22.setName("0");
+		s22.setDescription("进行");
+		s22.setEnabled(1);
+		s22.setSysDic(projectStatus);
+		sysDicDRepository.save(s22);
+		
+
+		SysDicD s23 = new SysDicD();
+		s23.setName("1");
+		s23.setDescription("结束");
+		s23.setEnabled(1);
+		s23.setSysDic(projectStatus);
+		sysDicDRepository.save(s23);
+		
+		SysDicD s24 = new SysDicD();
+		s24.setName("2");
+		s24.setDescription("撤销");
+		s24.setEnabled(1);
+		s24.setSysDic(projectStatus);
+		sysDicDRepository.save(s24);
+		
+		
+		
+		
+		SysDic taskStatus = new SysDic();
+		taskStatus.setType(Config.taskStatus);
+		taskStatus.setDescription(Config.taskStatusDis);
+		sysDicRepository.save(taskStatus);
+
+		SysDicD s25 = new SysDicD();
+		s25.setName("0");
+		s25.setDescription("发布");
+		s25.setEnabled(1);
+		s25.setSysDic(taskStatus);
+		sysDicDRepository.save(s25);
+		
+		SysDicD s26 = new SysDicD();
+		s26.setName("1");
+		s26.setDescription("接单");
+		s26.setEnabled(1);
+		s26.setSysDic(taskStatus);
+		sysDicDRepository.save(s26);
+		
+		
+		SysDicD s27 = new SysDicD();
+		s27.setName("2");
+		s27.setDescription("进行中");
+		s27.setEnabled(1);
+		s27.setSysDic(taskStatus);
+		sysDicDRepository.save(s27);
+		
+		
+		SysDicD s28 = new SysDicD();
+		s28.setName("3");
+		s28.setDescription("作废");
+		s28.setEnabled(1);
+		s28.setSysDic(taskStatus);
+		sysDicDRepository.save(s28);
+		
+		SysDicD s29 = new SysDicD();
+		s29.setName("4");
+		s29.setDescription("再进行");
+		s29.setEnabled(1);
+		s29.setSysDic(taskStatus);
+		sysDicDRepository.save(s29);
+		
+		SysDicD s30 = new SysDicD();
+		s30.setName("5");
+		s30.setDescription("审核");
+		s30.setEnabled(1);
+		s30.setSysDic(taskStatus);
+		sysDicDRepository.save(s30);
+		
+		
+		SysDicD s31 = new SysDicD();
+		s31.setName("6");
+		s31.setDescription("完成");
+		s31.setEnabled(1);
+		s31.setSysDic(taskStatus);
+		sysDicDRepository.save(s31);
+		
+		
+		SysDic yesOrNo = new SysDic();
+		yesOrNo.setType(Config.yesOrNo);
+		yesOrNo.setDescription(Config.yesOrNoDis);
+		sysDicRepository.save(yesOrNo);
+
+		SysDicD s32 = new SysDicD();
+		s32.setName("0");
+		s32.setDescription("否");
+		s32.setEnabled(1);
+		s32.setSysDic(yesOrNo);
+		sysDicDRepository.save(s32);
+		
+		SysDicD s33 = new SysDicD();
+		s33.setName("1");
+		s33.setDescription("是");
+		s33.setEnabled(1);
+		s33.setSysDic(yesOrNo);
+		sysDicDRepository.save(s33);
 		
 	}
 

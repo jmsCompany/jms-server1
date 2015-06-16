@@ -25,4 +25,33 @@ public class Config {
 	
 	public static final String taskType = "taskType";
 	public static final String taskTypeDis = "任务类型";
+	
+	
+	public static final String colorType = "Color";
+	public static final String colorTypeDis = "颜色";
+	
+	
+	public static final String gradeType = "Grade";
+	public static final String gradeTypeDis = "级别";
+	
+	public static final String genderType = "Gender";
+	public static final String genderTypeDis = "性别";
+	
+	public static final String employeeStatus = "employeeStatus";
+	public static final String employeeStatusDis = "员工状态";
+	
+	public static final String generalStatus = "generalStatus";
+	public static final String generalStatusDis = "一般状态";
+	
+	
+	public static final String projectStatus = "projectStatus";
+	public static final String projectStatusDis = "项目状态";
+	
+
+	public static final String taskStatus = "taskStatus";
+	public static final String taskStatusDis = "任务状态";
+	
+	public static final String yesOrNo = "yesOrNo";
+	public static final String yesOrNoDis = "是否";
+
 }

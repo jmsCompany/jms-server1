@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-14 15:39:31 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
 
 
 import javax.persistence.Column;

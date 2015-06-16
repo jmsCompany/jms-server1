@@ -7,17 +7,13 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.jms.domain.db.PersistentLogin;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.MessageTypeEnum;
 import com.jms.messages.MessagesUitl;
-import com.jms.repositories.user.PersistentLoginRepository;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.user.IUserService;
 
@@ -29,13 +25,12 @@ public class IUserServiceImpl implements IUserService {
 	private static final Logger logger = LogManager
 			.getLogger(IUserServiceImpl.class.getCanonicalName());
 	@Autowired
-	private UsersRepository usersRepository;
+	protected UsersRepository usersRepository;
 	@Autowired
 	private MessagesUitl messagesUitl;
 	@Autowired
 	private ResourceBundleMessageSource source;
-	@Autowired
-	private PersistentLoginRepository persistentLoginRepository;
+
 
 
 	public Message register(Users users) {
@@ -59,23 +54,15 @@ public class IUserServiceImpl implements IUserService {
 		else {
 			users.setPassword(new BCryptPasswordEncoder().encode(users
 					.getPassword()));
+
+			String token = anyLogin+"__"+new BCryptPasswordEncoder().encode(new Date().toString());
+			users.setToken(token);
+			users.setLastLogin(new Date());
 			usersRepository.save(users);
 			Message msgToClient = messagesUitl.getMessage(
 					"user.register.success", null, MessageTypeEnum.INFOMATION);
 			logger.debug(msgToClient.getMessageTypeEnum().toString() + ", "
 					+ msgToClient.getMessage());
-			PersistentLogin p = new PersistentLogin();
-			p.setLastUesed(new Date());
-			String series = anyLogin+"__"+new BCryptPasswordEncoder().encode(new Date().toString());
-			if(series.length()>64)
-			{
-				System.out.println(series);
-				series =series.substring(0, 63);
-			}
-			p.setSeries(series);
-			p.setToken(series);
-			p.setUsers(users);
-			persistentLoginRepository.save(p);
 			return msgToClient;
 		}
 
@@ -95,10 +82,8 @@ public class IUserServiceImpl implements IUserService {
 				&& msg1.getMessageTypeEnum().equals(MessageTypeEnum.ERROR)) {
 			logger.debug("message1: " + msg1.getMessage() + ", type: "
 					+ msg1.getMessageTypeEnum());
-
 			return msg1;
 		}
-
 		Message msg2 = checkLogin(email);
 		if (msg2 != null
 				&& msg2.getMessageTypeEnum().equals(MessageTypeEnum.ERROR)) {
@@ -134,5 +119,4 @@ public class IUserServiceImpl implements IUserService {
 		} else
 			return null;
 	}
-
 }

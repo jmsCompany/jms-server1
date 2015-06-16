@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-14 15:39:31 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.Date;
@@ -35,14 +35,14 @@ public class Project  implements java.io.Serializable {
      private Users users;
      private SysDicD sysDicD;
      private String projectName;
-     private String description;
      private String projectNumber;
+     private String description;
      private Date planStartTime;
      private Date planEndTime;
      private Date startTime;
      private Date endTime;
-     private Integer process;
      private int enabled;
+     private Integer process;
      private Set<Issue> issues = new HashSet<Issue>(0);
      private Set<ProjectDoc> projectDocs = new HashSet<ProjectDoc>(0);
      private Set<ProjectParticipant> projectParticipants = new HashSet<ProjectParticipant>(0);
@@ -58,20 +58,20 @@ public class Project  implements java.io.Serializable {
         this.projectName = projectName;
         this.enabled = enabled;
     }
-    public Project(Company company, Project project, Users users, SysDicD sysDicD, String projectName, String description, String projectNumber, Date planStartTime, Date planEndTime, Date startTime, Date endTime, Integer process, int enabled, Set<Issue> issues, Set<ProjectDoc> projectDocs, Set<ProjectParticipant> projectParticipants, Set<Project> projects, Set<Task> tasks) {
+    public Project(Company company, Project project, Users users, SysDicD sysDicD, String projectName, String projectNumber, String description, Date planStartTime, Date planEndTime, Date startTime, Date endTime, int enabled, Integer process, Set<Issue> issues, Set<ProjectDoc> projectDocs, Set<ProjectParticipant> projectParticipants, Set<Project> projects, Set<Task> tasks) {
        this.company = company;
        this.project = project;
        this.users = users;
        this.sysDicD = sysDicD;
        this.projectName = projectName;
-       this.description = description;
        this.projectNumber = projectNumber;
+       this.description = description;
        this.planStartTime = planStartTime;
        this.planEndTime = planEndTime;
        this.startTime = startTime;
        this.endTime = endTime;
-       this.process = process;
        this.enabled = enabled;
+       this.process = process;
        this.issues = issues;
        this.projectDocs = projectDocs;
        this.projectParticipants = projectParticipants;
@@ -135,15 +135,6 @@ public class Project  implements java.io.Serializable {
         this.projectName = projectName;
     }
     
-    @Column(name="DESCRIPTION", length=256)
-    public String getDescription() {
-        return this.description;
-    }
-    
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    
     @Column(name="PROJECT_NUMBER", length=64)
     public String getProjectNumber() {
         return this.projectNumber;
@@ -151,6 +142,15 @@ public class Project  implements java.io.Serializable {
     
     public void setProjectNumber(String projectNumber) {
         this.projectNumber = projectNumber;
+    }
+    
+    @Column(name="DESCRIPTION", length=256)
+    public String getDescription() {
+        return this.description;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
     }
     @Temporal(TemporalType.DATE)
     @Column(name="PLAN_START_TIME", length=10)
@@ -189,15 +189,6 @@ public class Project  implements java.io.Serializable {
         this.endTime = endTime;
     }
     
-    @Column(name="PROCESS")
-    public Integer getProcess() {
-        return this.process;
-    }
-    
-    public void setProcess(Integer process) {
-        this.process = process;
-    }
-    
     @Column(name="ENABLED", nullable=false)
     public int getEnabled() {
         return this.enabled;
@@ -205,6 +196,15 @@ public class Project  implements java.io.Serializable {
     
     public void setEnabled(int enabled) {
         this.enabled = enabled;
+    }
+    
+    @Column(name="PROCESS")
+    public Integer getProcess() {
+        return this.process;
+    }
+    
+    public void setProcess(Integer process) {
+        this.process = process;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="project")
     public Set<Issue> getIssues() {

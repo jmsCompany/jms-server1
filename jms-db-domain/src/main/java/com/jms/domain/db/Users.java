@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-14 15:39:31 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.Date;
@@ -57,8 +57,9 @@ public class Users  implements java.io.Serializable {
      private int enabled;
      private String description;
      private Date birthday;
+     private Date lastLogin;
+     private String token;
      private Set<Trace> traces = new HashSet<Trace>(0);
-     private Set<PersistentLogin> persistentLogins = new HashSet<PersistentLogin>(0);
      private Set<Task> tasksForCreator = new HashSet<Task>(0);
      private Set<Task> tasksForCreator_1 = new HashSet<Task>(0);
      private Set<TaskComment> taskComments = new HashSet<TaskComment>(0);
@@ -80,7 +81,7 @@ public class Users  implements java.io.Serializable {
         this.password = password;
         this.enabled = enabled;
     }
-    public Users(SysDicD sysDicDByLocale, SysDicD sysDicDByStatus, Company company, District district, SysDicD sysDicDByScheme, SysDicD sysDicDByGender, Users users, Document document, Date creationTime, String username, String mobile, String email, String password, String name, String address, String idcard, String ext, String ENo, String school, Date gradTime, String major, String degree, String emergencyHp, int enabled, String description, Date birthday, Set<Trace> traces, Set<PersistentLogin> persistentLogins, Set<Task> tasksForCreator, Set<Task> tasksForCreator_1, Set<TaskComment> taskComments, Set<GroupMembers> groupMemberses, Set<Groups> groupses, Set<Task> tasksForAssignee, Set<Roles> roleses, Set<Users> userses, Set<Project> projects, Set<Company> companies, Set<SectorMember> sectorMembers, Set<ProjectParticipant> projectParticipants) {
+    public Users(SysDicD sysDicDByLocale, SysDicD sysDicDByStatus, Company company, District district, SysDicD sysDicDByScheme, SysDicD sysDicDByGender, Users users, Document document, Date creationTime, String username, String mobile, String email, String password, String name, String address, String idcard, String ext, String ENo, String school, Date gradTime, String major, String degree, String emergencyHp, int enabled, String description, Date birthday, Date lastLogin, String token, Set<Trace> traces, Set<Task> tasksForCreator, Set<Task> tasksForCreator_1, Set<TaskComment> taskComments, Set<GroupMembers> groupMemberses, Set<Groups> groupses, Set<Task> tasksForAssignee, Set<Roles> roleses, Set<Users> userses, Set<Project> projects, Set<Company> companies, Set<SectorMember> sectorMembers, Set<ProjectParticipant> projectParticipants) {
        this.sysDicDByLocale = sysDicDByLocale;
        this.sysDicDByStatus = sysDicDByStatus;
        this.company = company;
@@ -107,8 +108,9 @@ public class Users  implements java.io.Serializable {
        this.enabled = enabled;
        this.description = description;
        this.birthday = birthday;
+       this.lastLogin = lastLogin;
+       this.token = token;
        this.traces = traces;
-       this.persistentLogins = persistentLogins;
        this.tasksForCreator = tasksForCreator;
        this.tasksForCreator_1 = tasksForCreator_1;
        this.taskComments = taskComments;
@@ -367,6 +369,24 @@ public class Users  implements java.io.Serializable {
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="LAST_LOGIN", length=19)
+    public Date getLastLogin() {
+        return this.lastLogin;
+    }
+    
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+    
+    @Column(name="TOKEN", length=128)
+    public String getToken() {
+        return this.token;
+    }
+    
+    public void setToken(String token) {
+        this.token = token;
+    }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="users")
     public Set<Trace> getTraces() {
         return this.traces;
@@ -374,14 +394,6 @@ public class Users  implements java.io.Serializable {
     
     public void setTraces(Set<Trace> traces) {
         this.traces = traces;
-    }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="users")
-    public Set<PersistentLogin> getPersistentLogins() {
-        return this.persistentLogins;
-    }
-    
-    public void setPersistentLogins(Set<PersistentLogin> persistentLogins) {
-        this.persistentLogins = persistentLogins;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="usersByCreator")
     public Set<Task> getTasksForCreator() {

@@ -4,21 +4,23 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jms.domain.db.PersistentLogin;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.WSUser;
-import com.jms.repositories.user.PersistentLoginRepository;
+import com.jms.repositories.user.UsersRepository;
+
 
 
 @Service("tokenUtils")
 @Transactional(readOnly=true)
 public class TokenUtilsImpl implements TokenUtils {
 
-	@Autowired private PersistentLoginRepository  persistentLoginRepository;
+	@Autowired private UsersRepository  usersRepository;
+	
 	@Autowired
 	private UserDetailsService userDetailsService;
 	@Autowired private SecurityUtils securityUtils;
@@ -32,12 +34,12 @@ public class TokenUtilsImpl implements TokenUtils {
 
 	@Override
 	public String getToken(JMSUserDetails userDetails, Long expiration) {
-		PersistentLogin persistentLogin = persistentLoginRepository.findByUserId(userDetails.getIdUser());
-	    if(persistentLogin!=null)
+		Users user = usersRepository.findOne(userDetails.getIdUser());
+	    if(user!=null)
 	    {
-	    	if(persistentLogin.getLastUesed().getTime()<new Date().getTime()-expiration)
+	    	if(user.getLastLogin().getTime()<new Date().getTime()-expiration)
 	    		return null;
-	    	return persistentLogin.getToken();
+	    	return user.getToken();
 	    }
 		
 	    else
@@ -46,11 +48,11 @@ public class TokenUtilsImpl implements TokenUtils {
 
 	@Override
 	public boolean validate(String token) {
-		PersistentLogin persistentLogin =persistentLoginRepository.findByToken(token);
-	    if(persistentLogin!=null)
+		Users user = usersRepository.findByToken(token);
+	    if(user!=null)
 	    {
 
-	    	if(persistentLogin.getLastUesed().getTime()<new Date().getTime()-TWO_WEEKS_S)
+	    	if(user.getLastLogin().getTime()<new Date().getTime()-TWO_WEEKS_S)
 	    	{
 	    		
 	    		return false;
@@ -69,10 +71,11 @@ public class TokenUtilsImpl implements TokenUtils {
 
 	@Override @Transactional(readOnly=false)
 	public JMSUserDetails getUserFromToken(String token) {
-		PersistentLogin persistentLogin =persistentLoginRepository.findByToken(token);
-		persistentLogin.setLastUesed(new Date());
-		persistentLoginRepository.save(persistentLogin);
-		Users user =  persistentLogin.getUsers();
+		Users user = usersRepository.findByToken(token);
+	
+		user.setLastLogin(new Date());
+		usersRepository.save(user);
+
 		WSUser wsUser = new WSUser();
 		wsUser.setIdUser(user.getIdUser());
 		wsUser.setLocale(user.getSysDicDByLocale().getName());

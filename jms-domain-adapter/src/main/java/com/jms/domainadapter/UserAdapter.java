@@ -32,7 +32,8 @@ public class UserAdapter {
 	public WSUser toWSUser(Users users) throws Exception
 	{
 		WSUser wsUser = (WSUser)BeanUtil.shallowCopy(users,WSUser.class);
-		wsUser.setPassword("********");
+		wsUser.setPassword("*******");
+		wsUser.setToken("*******");
 		return wsUser;
 	}
 

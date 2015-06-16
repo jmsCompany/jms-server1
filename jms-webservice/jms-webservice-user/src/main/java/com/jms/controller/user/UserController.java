@@ -1,16 +1,12 @@
 package com.jms.controller.user;
 
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.MessageTypeEnum;
 import com.jms.domain.ws.WSUser;
@@ -34,6 +30,12 @@ public class UserController {
 		binder.addValidators(wsUsersValidator);
 	}
 
+	@RequestMapping(value="login", method=RequestMethod.POST)
+	public String login(@RequestParam("login") String login,@RequestParam("password") String password) throws Exception {
+		return userService.login(login, password);
+	}
+	
+	
 	@RequestMapping(value="user/checklogin", method=RequestMethod.GET)
 	public Message checkLogin(@RequestParam("login") String login) throws Exception {
 		return userService.checkLogin(login);

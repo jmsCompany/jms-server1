@@ -3,12 +3,15 @@ package com.jms.service.user;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Date;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.csvreader.CsvReader;
 import com.jms.domain.Config;
 import com.jms.domain.db.Users;
@@ -17,12 +20,11 @@ import com.jms.repositories.system.SysDicDRepository;
 
 @Service
 @Qualifier("userService")
-@Transactional
 public class UserService extends IUserServiceImpl{
 	@Autowired
 	private SysDicDRepository sysDicDRepository;
 	private static final Logger logger = LogManager.getLogger(UserService.class.getCanonicalName());
-	
+	@Transactional(readOnly=false)
 	public void loadUsersFromCSV(String fileName) throws IOException
 	{
 		CsvReader reader = new CsvReader(fileName,',', Charset.forName("UTF-8"));
@@ -44,7 +46,18 @@ public class UserService extends IUserServiceImpl{
 			logger.debug(msg.getMessageTypeEnum().toString()  +", "+ msg.getMessage());
 		}
 	}
-	
-	
+	@Transactional(readOnly=true)
+	public String login(String login, String password)
+	{
+		String defaultMsg = "BADPASSWORD";
+	    Users user =	usersRepository.findByUsernameOrEmailOrMobile(login);
+	    if(user!=null)
+	    {
+	    	if(new BCryptPasswordEncoder().matches(password, user.getPassword()))
+	    		defaultMsg = user.getToken();
+	    }
+		return defaultMsg;
+		
+	}
 
 }

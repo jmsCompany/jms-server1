@@ -34,6 +34,7 @@ public class JMSUserDetailService implements Serializable,
 		wsUser.setUsername(user.getUsername());
 		wsUser.setMobile(user.getMobile());
 		wsUser.setPassword(user.getPassword());
+		wsUser.setToken(user.getToken());
 		JMSUserDetails userDetails = new JMSUserDetails(wsUser);
 		userDetails.setAuthorities(securityUtils.getAuthorities(username));
 		return userDetails;
