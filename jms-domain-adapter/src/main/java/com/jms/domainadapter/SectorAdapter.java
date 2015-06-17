@@ -18,8 +18,6 @@ public class SectorAdapter {
 	{
 		Sector sector = (Sector)BeanUtil.shallowCopy(wsSector,Sector.class,null);
 		Company company =companyRepository.findByCompanyName(wsSector.getCompanyName());
-		System.out.println(" company " +wsSector.getCompanyName());
-		System.out.println(" company id " + company.getIdCompany());
 		sector.setCompany(company);
 		return sector;
 	}

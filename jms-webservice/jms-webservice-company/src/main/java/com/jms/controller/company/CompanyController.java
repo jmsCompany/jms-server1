@@ -16,6 +16,7 @@ import com.jms.domain.ws.WSCompany;
 import com.jms.domain.ws.WSSector;
 import com.jms.domainadapter.CompanyAdapter;
 import com.jms.service.company.CompanyService;
+import com.jms.service.company.SectorService;
 import com.jms.system.IDicDService;
 import com.jms.web.security.JMSUserDetails;
 import com.jms.web.security.SecurityUtils;
@@ -27,7 +28,8 @@ public class CompanyController {
 	private CompanyService companyService;
 	@Autowired
 	private CompanyAdapter companyAdapter;
-	
+	@Autowired
+	private SectorService sectorService;
 
 	private static final Logger logger = LogManager.getLogger(CompanyController.class.getCanonicalName());
 	
@@ -79,7 +81,13 @@ public class CompanyController {
 	}
 	
 	
-
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/company/{idCompany}/sectors", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<WSSector> getSectors(@PathVariable("idCompany") Integer idCompany) throws Exception
+	{
+		return sectorService.getSectorsByIdCompany(idCompany);
+	}
+	
 	
 	
 }

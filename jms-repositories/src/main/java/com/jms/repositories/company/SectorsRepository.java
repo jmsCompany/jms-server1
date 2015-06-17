@@ -19,5 +19,7 @@ public interface SectorsRepository  extends CrudRepository<Sector, Integer>{
 	public Sector findBySectorAndCompanyName(String sector,String companyName);
 
 	public List<Sector> findByCompany(Company company);
+	@Query("select s from Sector s where  s.company.idCompany=?1 order by seq")
+	public List<Sector> findByIdCompany(Integer idCompany);
 
 }

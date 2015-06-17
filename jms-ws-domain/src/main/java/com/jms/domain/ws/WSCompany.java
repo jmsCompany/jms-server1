@@ -10,27 +10,21 @@ import com.jms.domain.FineTaskEnum;
 
 public class WSCompany implements java.io.Serializable{
 	
-    private Integer idCompany;
+	private static final long serialVersionUID = -677955905886087907L;
+	private Integer idCompany;
     private WSUser wsUsers;
     private String companyName;
     private String description;
     private Date creationTime;
-    private FineTaskEnum fineTaskEnum;
-    private EnabledEnum enabledEnum;
-    private CompanyCategoryEnum companyCategoryEnum;
-   
-    
+    private WSSysDicD companyCategory;
     private WSSysDicD companySize;
     private WSSysDicD companyType;
     private WSSysDicD companyNature;
- 
-    
-    private  Float  usedSpace;
-    
-    
-    private WSSysDicD wsTaskType;
-    private int enabled;
+    private WSSysDicD scheme;
+    private WSSysDicD taskType;
     private WSSysDicD locale;
+    private  Float  usedSpace;
+    private int enabled;
     private Integer verified;
     private String telephone;
     private String fax;
@@ -41,7 +35,9 @@ public class WSCompany implements java.io.Serializable{
     private String postcode;
     private String url;
     
-    
+    private Float space;
+    private Integer msgAvailableNum;
+    private Integer msgUsedNum;
     private WSProvince wsProvince;
     private WSCity wsCity; 
     private WSDistrict wsDistrict;
@@ -50,12 +46,11 @@ public class WSCompany implements java.io.Serializable{
    }
 
 	
-   public WSCompany(WSUser users, String companyName, Date creationTime, FineTaskEnum fineTaskEnum, EnabledEnum enabledEnum) {
+   public WSCompany(WSUser users, String companyName, Date creationTime) {
 	   this.wsUsers = users;
        this.companyName = companyName;
        this.creationTime = creationTime;
-       this.setFineTaskEnum(fineTaskEnum);
-       this.setEnabledEnum(enabledEnum);
+ 
    }
   
    public Integer getIdCompany() {
@@ -106,39 +101,6 @@ public class WSCompany implements java.io.Serializable{
 		this.creationTime = creationTime;
 	}
 	
-	
-	public EnabledEnum getEnabledEnum() {
-		return enabledEnum;
-	}
-	
-	
-	public void setEnabledEnum(EnabledEnum enabledEnum) {
-		this.enabledEnum = enabledEnum;
-	}
-	
-	
-	public FineTaskEnum getFineTaskEnum() {
-		return fineTaskEnum;
-	}
-	
-	
-	public void setFineTaskEnum(FineTaskEnum fineTaskEnum) {
-		this.fineTaskEnum = fineTaskEnum;
-	}
-
-
-	public CompanyCategoryEnum getCompanyCategoryEnum() {
-		return companyCategoryEnum;
-	}
-
-
-	public void setCompanyCategoryEnum(CompanyCategoryEnum companyCategoryEnum) {
-		this.companyCategoryEnum = companyCategoryEnum;
-	}
-
-
-
-
 	public Float getUsedSpace() {
 		return usedSpace;
 	}
@@ -148,10 +110,6 @@ public class WSCompany implements java.io.Serializable{
 		this.usedSpace = usedSpace;
 	}
 
-
-
-
-
 	public int getEnabled() {
 		return enabled;
 	}
@@ -160,9 +118,6 @@ public class WSCompany implements java.io.Serializable{
 	public void setEnabled(int enabled) {
 		this.enabled = enabled;
 	}
-
-
-
 
 	public Integer getVerified() {
 		return verified;
@@ -304,17 +259,6 @@ public class WSCompany implements java.io.Serializable{
 		this.wsProvince = wsProvince;
 	}
 
-
-	public WSSysDicD getWsTaskType() {
-		return wsTaskType;
-	}
-
-
-	public void setWsTaskType(WSSysDicD wsTaskType) {
-		this.wsTaskType = wsTaskType;
-	}
-
-
 	public WSSysDicD getLocale() {
 		return locale;
 	}
@@ -332,6 +276,66 @@ public class WSCompany implements java.io.Serializable{
 
 	public void setEstablishPerson(String establishPerson) {
 		this.establishPerson = establishPerson;
+	}
+
+
+	public WSSysDicD getScheme() {
+		return scheme;
+	}
+
+
+	public void setScheme(WSSysDicD scheme) {
+		this.scheme = scheme;
+	}
+
+
+	public WSSysDicD getTaskType() {
+		return taskType;
+	}
+
+
+	public void setTaskType(WSSysDicD taskType) {
+		this.taskType = taskType;
+	}
+
+
+	public WSSysDicD getCompanyCategory() {
+		return companyCategory;
+	}
+
+
+	public void setCompanyCategory(WSSysDicD companyCategory) {
+		this.companyCategory = companyCategory;
+	}
+
+
+	public Integer getMsgAvailableNum() {
+		return msgAvailableNum;
+	}
+
+
+	public void setMsgAvailableNum(Integer msgAvailableNum) {
+		this.msgAvailableNum = msgAvailableNum;
+	}
+
+
+	public Integer getMsgUsedNum() {
+		return msgUsedNum;
+	}
+
+
+	public void setMsgUsedNum(Integer msgUsedNum) {
+		this.msgUsedNum = msgUsedNum;
+	}
+
+
+	public Float getSpace() {
+		return space;
+	}
+
+
+	public void setSpace(Float space) {
+		this.space = space;
 	}
 
 

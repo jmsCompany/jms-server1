@@ -3,7 +3,6 @@ package com.jms.domainadapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.jms.domain.EnabledEnum;
 import com.jms.domain.db.Company;
 import com.jms.domain.ws.WSCompany;
 import com.jms.domain.ws.WSSysDicD;
@@ -37,12 +36,7 @@ public class CompanyAdapter {
 		if (wsCompany == null)
 			return null;
 		Company c = (Company) BeanUtil.shallowCopy(wsCompany, Company.class,company);
-
-		if (wsCompany.getEnabledEnum() != null)
-			c.setEnabled(wsCompany.getEnabledEnum().getStatusCode());
-		else
-			c.setEnabled(EnabledEnum.ENABLED.getStatusCode());
-
+        c.setEnabled(1);
 		if (wsCompany.getCompanyNature() != null) {
 			c.setSysDicDByCompanyNature(sysDicDRepository.findOne(wsCompany
 					.getCompanyNature().getIdDic()));
@@ -55,11 +49,29 @@ public class CompanyAdapter {
 			c.setSysDicDByCompanyType(sysDicDRepository.findOne(wsCompany
 					.getCompanyType().getIdDic()));
 		}
-
+		if (wsCompany.getLocale() != null) {
+			c.setSysDicDByLocale(sysDicDRepository.findOne(wsCompany
+					.getLocale().getIdDic()));
+		}
+		if (wsCompany.getScheme() != null) {
+			c.setSysDicDByScheme(sysDicDRepository.findOne(wsCompany
+					.getScheme().getIdDic()));
+		}
+		if (wsCompany.getTaskType() != null) {
+			c.setSysDicDByTaskType(sysDicDRepository.findOne(wsCompany
+					.getTaskType().getIdDic()));
+		}
+		if (wsCompany.getCompanyCategory() != null) {
+			c.setSysDicDByCompanyCatorgory(sysDicDRepository.findOne(wsCompany.getCompanyCategory()
+					.getIdDic()));
+		}
+		
 		if (wsCompany.getWsDistrict() != null) {
 			c.setDistrict(districtRepository.findOne(wsCompany.getWsDistrict()
 					.getIdDistrict()));
 		}
+		
+	
 		return c;
 
 	}
@@ -69,7 +81,6 @@ public class CompanyAdapter {
 			return null;
 		WSCompany wsc = (WSCompany) BeanUtil.shallowCopy(company,
 				WSCompany.class,null);
-		wsc.setEnabledEnum(findEnabledEnumByStatusCode(company.getEnabled()));
 		wsc.setWsUsers(userAdapter.toWSUser(company.getUsers()));
 		if (company.getSysDicDByCompanySize() != null) {
 			WSSysDicD companySize = sysDicDAdapter.toWSSysDicD(company
@@ -87,6 +98,26 @@ public class CompanyAdapter {
 			wsc.setCompanyType(companyType);
 		}
 
+		if (company.getSysDicDByLocale() != null) {
+			WSSysDicD locale = sysDicDAdapter.toWSSysDicD(company
+					.getSysDicDByLocale());
+			wsc.setLocale(locale);
+		}
+		if (company.getSysDicDByScheme() != null) {
+			WSSysDicD scheme = sysDicDAdapter.toWSSysDicD(company
+					.getSysDicDByScheme());
+			wsc.setScheme(scheme);
+		}
+		if (company.getSysDicDByTaskType() != null) {
+			WSSysDicD taskType = sysDicDAdapter.toWSSysDicD(company
+					.getSysDicDByTaskType());
+			wsc.setTaskType(taskType);
+		}
+		if (company.getSysDicDByCompanyCatorgory() != null) {
+			WSSysDicD catagory = sysDicDAdapter.toWSSysDicD(company
+					.getSysDicDByCompanyCatorgory());
+			wsc.setCompanyCategory(catagory);
+		}
 		if (company.getDistrict() != null) {
 			wsc.setWsProvince(provinceAdapter.toWSProvince(company
 					.getDistrict().getCity().getProvince()));
@@ -94,16 +125,7 @@ public class CompanyAdapter {
 			wsc.setWsDistrict(districtAdapter.toWSDistrict(company
 					.getDistrict()));
 		}
-
 		return wsc;
-	}
-
-	private EnabledEnum findEnabledEnumByStatusCode(int statusCode) {
-		for (EnabledEnum e : EnabledEnum.values()) {
-			if (e.getStatusCode() == statusCode)
-				return e;
-		}
-		return null;
 	}
 
 }

@@ -3,6 +3,8 @@ package com.jms.service.company;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.csvreader.CsvReader;
 import com.jms.domain.db.Sector;
+import com.jms.domain.ws.WSSector;
+import com.jms.domainadapter.SectorAdapter;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.company.SectorsRepository;
 
@@ -24,6 +28,8 @@ public class SectorService {
 	private SectorsRepository sectorRepository;
 	@Autowired
 	private CompanyRepository companyRepository ;
+	@Autowired
+	private SectorAdapter sectorAdapter;
 	public void loadSectorsFromCSV(String fileName) throws IOException{
 		CsvReader reader = new CsvReader(fileName,',', Charset.forName("UTF-8"));
         reader.readHeaders();  //CompanyName Role	Description
@@ -55,5 +61,15 @@ public class SectorService {
 			sectorRepository.save(sec);
 		}
 		return s;
+	}
+	
+	public List<WSSector> getSectorsByIdCompany(Integer idCompany) throws Exception
+	{
+		List<WSSector> sectors = new ArrayList<WSSector>(0);
+		for(Sector s: sectorRepository.findByIdCompany(idCompany))
+		{
+			sectors.add(sectorAdapter.toWSSector(s));
+		}
+		return sectors;
 	}
 }

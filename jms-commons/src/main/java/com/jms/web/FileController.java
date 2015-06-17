@@ -100,7 +100,7 @@ public class FileController {
 	}
 
 	@RequestMapping(value = "/licenseUpload", method = RequestMethod.POST)
-	public Document handlicenseUpload(
+	public ResponseEntity<InputStreamResource> handlicenseUpload(
 			@RequestParam("idCompany") Integer idCompany,
 			@RequestParam("file") MultipartFile file) throws IOException {
 		if (!file.isEmpty()) {
@@ -119,7 +119,22 @@ public class FileController {
 			Company company = companyRepository.findOne(idCompany);
 			company.setDocumentByLicense(doc);
 			companyRepository.save(company);
-			return doc;
+			FileSystemResource license = new FileSystemResource(
+					Config.licenseRelativePath + name + "_"
+							+ file.getOriginalFilename());
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+			headers.add("Pragma", "no-cache");
+			headers.add("Expires", "0");
+
+			return ResponseEntity
+					.ok()
+					.headers(headers)
+					.contentLength(license.contentLength())
+					.contentType(
+							MediaType
+									.parseMediaType("application/octet-stream"))
+					.body(new InputStreamResource(license.getInputStream()));
 		}
 		return null;
 	}

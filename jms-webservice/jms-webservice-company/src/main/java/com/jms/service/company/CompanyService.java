@@ -130,7 +130,7 @@ public class CompanyService {
 	{
 		int idCompamplany = wsCompany.getIdCompany();
 	    Company company= companyRepository.findOne(idCompamplany);
-	    if(!company.getCompanyName().equals(wsCompany.getCompanyName()))
+	    if(wsCompany.getCompanyName()!=null&&!company.getCompanyName().equals(wsCompany.getCompanyName()))
 	    {
 	    	Message message = checkCompanyName(wsCompany.getCompanyName());
 			if(message.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
@@ -209,6 +209,8 @@ public class CompanyService {
 		  s1.setCompany(to);
 		  s1.setDescription(s.getDescription());
 		  s1.setSector(s.getSector());
+		  s1.setSeq(s.getSeq());
+		  s1.setEnabled(s.getEnabled());
 		  sectorsRepository.save(s1);
 		}
 	   //copy roles and privileges
