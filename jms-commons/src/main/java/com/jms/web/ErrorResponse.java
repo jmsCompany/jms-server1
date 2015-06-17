@@ -1,12 +1,15 @@
 package com.jms.web;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ErrorResponse {
+public class ErrorResponse implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private Date timestamp;
 	private String path;
     private String message;
-    private String error;
+    private String jmsError;
     private String status;
 	public Date getTimestamp() {
 		return timestamp;
@@ -26,16 +29,17 @@ public class ErrorResponse {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public String getError() {
-		return error;
-	}
-	public void setError(String error) {
-		this.error = error;
-	}
+
 	public String getStatus() {
 		return status;
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getJmsError() {
+		return jmsError;
+	}
+	public void setJmsError(String jmsError) {
+		this.jmsError = jmsError;
 	}
 }

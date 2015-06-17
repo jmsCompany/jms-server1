@@ -30,9 +30,9 @@ public class UserController {
 		binder.addValidators(wsUsersValidator);
 	}
 
-	@RequestMapping(value="login", method=RequestMethod.POST)
-	public String login(@RequestParam("login") String login,@RequestParam("password") String password) throws Exception {
-		return userService.login(login, password);
+	@RequestMapping(value="login", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public String login(@RequestBody WSUser wsUser ) throws Exception {
+		return userService.login(wsUser.getLogin(), wsUser.getPassword());
 	}
 	
 	

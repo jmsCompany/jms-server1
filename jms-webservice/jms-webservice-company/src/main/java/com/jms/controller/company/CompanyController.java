@@ -34,7 +34,7 @@ public class CompanyController {
 	@Autowired 
 	private  SecurityUtils securityUtils;
 	@Transactional(readOnly = true)
-	@RequestMapping(value="company/view/{idCompany}", method=RequestMethod.GET)
+	@RequestMapping(value="company/view/{idCompany}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	public WSCompany getCompany(@PathVariable("idCompany") int idCompany) throws Exception {
 		JMSUserDetails u =securityUtils.getCurrentUser();
 		logger.debug("user: " + u.getLogin());
@@ -47,16 +47,16 @@ public class CompanyController {
 		return companyAdapter.toWSCompany(company);
 	}
 	@Transactional(readOnly = true)
-	@RequestMapping(value="company/view", method=RequestMethod.GET)
+	@RequestMapping(value="company/view", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	public WSCompany getCompany(@RequestParam("idUser") String idUser) throws Exception {
 		Company company= companyService.findCompanyByIdUser(idUser);
 		return companyAdapter.toWSCompany(company);
 	}
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/check/companyname", method=RequestMethod.GET)
-	public Message checkCompanyName(@RequestParam("companyName") String companyName) throws Exception {
-		return companyService.checkCompanyName(companyName);
+	@RequestMapping(value="/check/companyname", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	public Message checkCompanyName(@RequestParam("companyname") String companyname) throws Exception {
+		return companyService.checkCompanyName(companyname);
 	}
 
 	@Transactional(readOnly = false)
@@ -66,13 +66,13 @@ public class CompanyController {
 	}
 	
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/company/cancel", method=RequestMethod.GET)
+	@RequestMapping(value="/company/cancel", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	public Message cancelCompany(@RequestParam("idCompany") int idCompany)
 	{
 		return companyService.cancelCompany(idCompany);
 	}
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/company/addSector", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/company/addSector", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
 	public Message addSector(@RequestBody WSSector wsSector) throws Exception
 	{
 		return companyService.addSector(wsSector);

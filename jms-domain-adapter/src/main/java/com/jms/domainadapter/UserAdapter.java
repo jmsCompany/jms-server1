@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jms.domain.Config;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.WSUser;
 import com.jms.repositories.system.SysDicDRepository;
@@ -23,7 +24,7 @@ public class UserAdapter {
 	{
 		Users u = (Users)BeanUtil.shallowCopy(wsUser,Users.class);
 		if(wsUser.getLocale()==null)
-			u.setSysDicDByLocale(sysDicDRepository.findDicsByType("").get(0));
+			u.setSysDicDByLocale(sysDicDRepository.findDicsByType(Config.lang).get(0));
 		return u;
 			
 	}

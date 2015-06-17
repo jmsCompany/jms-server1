@@ -58,6 +58,8 @@ public class IUserServiceImpl implements IUserService {
 			String token = anyLogin+"__"+new BCryptPasswordEncoder().encode(new Date().toString());
 			users.setToken(token);
 			users.setLastLogin(new Date());
+			users.setCreationTime(new Date());
+			users.setEnabled(1);
 			usersRepository.save(users);
 			Message msgToClient = messagesUitl.getMessage(
 					"user.register.success", null, MessageTypeEnum.INFOMATION);

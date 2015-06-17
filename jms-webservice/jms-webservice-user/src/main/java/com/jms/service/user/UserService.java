@@ -49,12 +49,19 @@ public class UserService extends IUserServiceImpl{
 	@Transactional(readOnly=true)
 	public String login(String login, String password)
 	{
-		String defaultMsg = "BADPASSWORD";
-	    Users user =	usersRepository.findByUsernameOrEmailOrMobile(login);
+		String defaultMsg=null;
+	    Users user =  usersRepository.findByUsernameOrEmailOrMobile(login);
 	    if(user!=null)
 	    {
 	    	if(new BCryptPasswordEncoder().matches(password, user.getPassword()))
+	    	{
+	    		user.setLastLogin(new Date());
+	    		String token = login+"__"+new BCryptPasswordEncoder().encode(new Date().toString());
+				user.setToken(token);
+				usersRepository.save(user);
 	    		defaultMsg = user.getToken();
+	    	}
+	    		
 	    }
 		return defaultMsg;
 		
