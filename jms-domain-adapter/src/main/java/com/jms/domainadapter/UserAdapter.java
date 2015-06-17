@@ -22,7 +22,7 @@ public class UserAdapter {
 	
 	public Users toDBUser(WSUser wsUser) throws Exception
 	{
-		Users u = (Users)BeanUtil.shallowCopy(wsUser,Users.class);
+		Users u = (Users)BeanUtil.shallowCopy(wsUser,Users.class,null);
 		if(wsUser.getLocale()==null)
 			u.setSysDicDByLocale(sysDicDRepository.findDicsByType(Config.lang).get(0));
 		return u;
@@ -32,7 +32,7 @@ public class UserAdapter {
 
 	public WSUser toWSUser(Users users) throws Exception
 	{
-		WSUser wsUser = (WSUser)BeanUtil.shallowCopy(users,WSUser.class);
+		WSUser wsUser = (WSUser)BeanUtil.shallowCopy(users,WSUser.class,null);
 		wsUser.setPassword("*******");
 		wsUser.setToken("*******");
 		return wsUser;

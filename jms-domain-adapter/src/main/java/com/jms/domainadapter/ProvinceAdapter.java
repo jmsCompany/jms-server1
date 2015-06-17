@@ -12,7 +12,7 @@ public class ProvinceAdapter{
 	{
 		if(province==null)
 			return null;
-		WSProvince wsp = (WSProvince)BeanUtil.shallowCopy(province,WSProvince.class);
+		WSProvince wsp = (WSProvince)BeanUtil.shallowCopy(province,WSProvince.class,null);
 		return wsp;
 	}
 	

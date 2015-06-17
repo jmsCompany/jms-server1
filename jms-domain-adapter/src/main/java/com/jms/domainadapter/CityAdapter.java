@@ -14,7 +14,7 @@ public class CityAdapter{
 	{
 		if(city==null)
 			return null;
-		WSCity wsc = (WSCity)BeanUtil.shallowCopy(city,WSCity.class);
+		WSCity wsc = (WSCity)BeanUtil.shallowCopy(city,WSCity.class,null);
 		wsc.setWsProvince(provinceAdapter.toWSProvince(city.getProvince()));
 		return wsc;
 	}

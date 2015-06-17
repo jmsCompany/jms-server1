@@ -10,7 +10,7 @@ public class SysDicDAdapter {
 
 	public WSSysDicD toWSSysDicD(SysDicD sysDicD) throws Exception
 	{
-		WSSysDicD wsSysDicD = (WSSysDicD)BeanUtil.shallowCopy(sysDicD,WSSysDicD.class);
+		WSSysDicD wsSysDicD = (WSSysDicD)BeanUtil.shallowCopy(sysDicD,WSSysDicD.class,null);
 		wsSysDicD.setType(sysDicD.getSysDic().getType());
 		return wsSysDicD;
 	}

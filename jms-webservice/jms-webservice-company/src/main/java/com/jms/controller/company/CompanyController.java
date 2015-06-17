@@ -36,13 +36,6 @@ public class CompanyController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="company/view/{idCompany}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	public WSCompany getCompany(@PathVariable("idCompany") int idCompany) throws Exception {
-		JMSUserDetails u =securityUtils.getCurrentUser();
-		logger.debug("user: " + u.getLogin());
-		
-		for(GrantedAuthority a : u.getAuthorities())
-		{
-			logger.debug("auth: " + a.getAuthority());
-		}
 		Company company= companyService.findCompanyById(idCompany);
 		return companyAdapter.toWSCompany(company);
 	}
@@ -64,6 +57,13 @@ public class CompanyController {
 	public Message createCompany(@RequestBody WSCompany wsCompany) throws Exception {
 		return companyService.registCompany(wsCompany);
 	}
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/company/update", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public Message updateCompany(@RequestBody WSCompany wsCompany) throws Exception {
+		return companyService.updateCompany(wsCompany);
+	}
+	
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/company/cancel", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)

@@ -14,7 +14,7 @@ public class DistrictAdapter{
 	{
 		if(district==null)
 			return null;
-		WSDistrict wsd = (WSDistrict)BeanUtil.shallowCopy(district,WSDistrict.class);
+		WSDistrict wsd = (WSDistrict)BeanUtil.shallowCopy(district,WSDistrict.class,null);
 		wsd.setWsCity(cityAdapter.toWSCity(district.getCity()));
 		return wsd;
 	}

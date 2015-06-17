@@ -5,10 +5,11 @@ import java.util.Date;
 
 public class BeanUtil {
 	
-	public static Object shallowCopy(Object sourceObj,Class targetClass) throws Exception
+	public static Object shallowCopy(Object sourceObj,Class targetClass,Object target) throws Exception
 	{
 		String propertyName = null;
-		Object target =targetClass.newInstance();
+		if(target==null)
+		 target =targetClass.newInstance();
 		if(sourceObj==null)
 			return target;
 		for(Method getterMethod: sourceObj.getClass().getMethods())
@@ -27,7 +28,11 @@ public class BeanUtil {
 						if(setterMethod.getName().equals("set" + propertyName))
 						{
 							Object val = ClassUtil.invokeGetterMethod(sourceObj, "get" + propertyName);
-							ClassUtil.invokeSetterMethod(target, "set"+propertyName,getterMethod.getReturnType(), val);
+							if(val!=null)
+							{
+								ClassUtil.invokeSetterMethod(target, "set"+propertyName,getterMethod.getReturnType(), val);
+							}
+							
 						}
 					}
 					

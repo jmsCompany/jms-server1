@@ -108,7 +108,7 @@ public class CompanyService {
 		 Users dbUser= userAdapter.toDBUser(wsCompany.getWsUsers());
 		 iUserServiceImpl.register(dbUser);
 		 wsCompany.setVerified(0);
-		 Company company = companyAdapter.toDBCompany(wsCompany);
+		 Company company = companyAdapter.toDBCompany(wsCompany,null);
 		 company.setUsers(dbUser);
 		 company.setCreationTime(new Date());
 		 companyRepository.save(company);
@@ -137,10 +137,11 @@ public class CompanyService {
 				return message;
 	    }
 
-		 company = companyAdapter.toDBCompany(wsCompany);
+		 company = companyAdapter.toDBCompany(wsCompany,company);
+		
 		 companyRepository.save(company);
 		
-		 return  messagesUitl.getMessage("company.success",null,MessageTypeEnum.INFOMATION);
+		 return  messagesUitl.getMessage("company.update.success",null,MessageTypeEnum.INFOMATION);
 		
 	}
 	

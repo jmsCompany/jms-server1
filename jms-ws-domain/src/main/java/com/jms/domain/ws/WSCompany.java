@@ -35,6 +35,7 @@ public class WSCompany implements java.io.Serializable{
     private String telephone;
     private String fax;
     private String email;
+    private String establishPerson;
     private Date establishmentTime;
     private String address;
     private String postcode;
@@ -321,6 +322,16 @@ public class WSCompany implements java.io.Serializable{
 
 	public void setLocale(WSSysDicD locale) {
 		this.locale = locale;
+	}
+
+
+	public String getEstablishPerson() {
+		return establishPerson;
+	}
+
+
+	public void setEstablishPerson(String establishPerson) {
+		this.establishPerson = establishPerson;
 	}
 
 

@@ -33,10 +33,10 @@ public class CompanyAdapter {
 	@Autowired
 	private DistrictRepository districtRepository;
 
-	public Company toDBCompany(WSCompany wsCompany) throws Exception {
+	public Company toDBCompany(WSCompany wsCompany,Company company) throws Exception {
 		if (wsCompany == null)
 			return null;
-		Company c = (Company) BeanUtil.shallowCopy(wsCompany, Company.class);
+		Company c = (Company) BeanUtil.shallowCopy(wsCompany, Company.class,company);
 
 		if (wsCompany.getEnabledEnum() != null)
 			c.setEnabled(wsCompany.getEnabledEnum().getStatusCode());
@@ -68,7 +68,7 @@ public class CompanyAdapter {
 		if (company == null)
 			return null;
 		WSCompany wsc = (WSCompany) BeanUtil.shallowCopy(company,
-				WSCompany.class);
+				WSCompany.class,null);
 		wsc.setEnabledEnum(findEnabledEnumByStatusCode(company.getEnabled()));
 		wsc.setWsUsers(userAdapter.toWSUser(company.getUsers()));
 		if (company.getSysDicDByCompanySize() != null) {

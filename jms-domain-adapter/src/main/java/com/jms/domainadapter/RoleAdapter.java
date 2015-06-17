@@ -14,7 +14,7 @@ public class RoleAdapter {
 	private @Autowired  CompanyRepository companyRepository;
 	public Roles toDBRole(WSRoles wsRoles) throws Exception
 	{
-		Roles roles = (Roles)BeanUtil.shallowCopy(wsRoles,Roles.class);
+		Roles roles = (Roles)BeanUtil.shallowCopy(wsRoles,Roles.class,null);
 		Company company =companyRepository.findByCompanyName(wsRoles.getCompanyName());
 		roles.setCompany(company);
 		return roles;
@@ -23,7 +23,7 @@ public class RoleAdapter {
 
 	public WSRoles toWSRole(Roles roles) throws Exception
 	{
-		WSRoles wsRoles = (WSRoles)BeanUtil.shallowCopy(roles,WSRoles.class);
+		WSRoles wsRoles = (WSRoles)BeanUtil.shallowCopy(roles,WSRoles.class,null);
 		wsRoles.setCompanyName(roles.getCompany().getCompanyName());
 		return wsRoles;
 	}

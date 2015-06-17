@@ -16,7 +16,7 @@ public class SectorAdapter {
 	private @Autowired  CompanyRepository companyRepository;
 	public Sector toDBSector(WSSector wsSector) throws Exception
 	{
-		Sector sector = (Sector)BeanUtil.shallowCopy(wsSector,Sector.class);
+		Sector sector = (Sector)BeanUtil.shallowCopy(wsSector,Sector.class,null);
 		Company company =companyRepository.findByCompanyName(wsSector.getCompanyName());
 		System.out.println(" company " +wsSector.getCompanyName());
 		System.out.println(" company id " + company.getIdCompany());
@@ -27,7 +27,7 @@ public class SectorAdapter {
 
 	public WSSector toWSSector(Sector sector) throws Exception
 	{
-		WSSector wsSector = (WSSector)BeanUtil.shallowCopy(sector,WSSector.class);
+		WSSector wsSector = (WSSector)BeanUtil.shallowCopy(sector,WSSector.class,null);
 		wsSector.setCompanyName(sector.getCompany().getCompanyName());
 		return wsSector;
 	}
