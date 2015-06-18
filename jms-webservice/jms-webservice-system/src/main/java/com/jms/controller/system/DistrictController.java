@@ -18,22 +18,21 @@ public class DistrictController {
 	private DistrictService districtService;
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="provinces", method=RequestMethod.GET)
+	@RequestMapping(value="/provinces", method=RequestMethod.GET)
 	public List<WSProvince> getProvinces() throws Exception{
 		
 		return districtService.getProvinces();
 	}
 	
-	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="provinces/{idProvince}/cities", method=RequestMethod.GET)
+	@RequestMapping(value="/provinces/{idProvince}/cities", method=RequestMethod.GET)
 	public List<WSCity> getCites(@PathVariable("idProvince") Integer idProvince) throws Exception {
 		
 		return districtService.getCites(idProvince);
 	}
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="cities/{idCity}/districts", method=RequestMethod.GET)
+	@RequestMapping(value="/cities/{idCity}/districts", method=RequestMethod.GET)
 	public List<WSDistrict> getDistricts(@PathVariable("idCity")  Integer idCity) throws Exception
 	{
 		return districtService.getDistricts(idCity);

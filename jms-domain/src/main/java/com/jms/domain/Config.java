@@ -4,9 +4,6 @@ public class Config {
 	public static final String companySize = "CompanySize";
 	public static final String companySizeDis = "公司规模";
 
-	public static final String degree = "Degree";
-	public static final String degreeDis = "学历";
-
 	public static final String companyType = "CompanyType";
 	public static final String companyTypeDis = "行业";
 
@@ -15,11 +12,9 @@ public class Config {
 	
 	public static final String companyCatergory = "companyCatergory";
 	public static final String companyCatergoryDis = "公司类型";
-	
-	public static final String logoRelativePath = "E:/logo/";
-	public static final String licenseRelativePath = "E:/license/";
-	public static final String docsRelativePath = "E:/docs/";
-	
+	public static final String degree = "Degree";
+	public static final String degreeDis = "学历";
+
 	public static final String lang = "Language";
 	public static final String langDis = "语言";
 	
@@ -53,5 +48,10 @@ public class Config {
 	
 	public static final String yesOrNo = "yesOrNo";
 	public static final String yesOrNoDis = "是否";
+	
+	public static final String logoRelativePath = "E:/logo/";
+	public static final String licenseRelativePath = "E:/license/";
+	public static final String docsRelativePath = "E:/docs/";
+	public static final String cvRelativePath = "E:/cv/";
 
 }

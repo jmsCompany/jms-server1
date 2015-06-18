@@ -1,12 +1,6 @@
 package com.jms.domain.ws;
 
 import java.util.Date;
-import java.util.Locale.Category;
-
-import com.jms.domain.CompanyCategoryEnum;
-import com.jms.domain.EnabledEnum;
-import com.jms.domain.FineTaskEnum;
-
 
 public class WSCompany implements java.io.Serializable{
 	
@@ -34,7 +28,6 @@ public class WSCompany implements java.io.Serializable{
     private String address;
     private String postcode;
     private String url;
-    
     private Float space;
     private Integer msgAvailableNum;
     private Integer msgUsedNum;

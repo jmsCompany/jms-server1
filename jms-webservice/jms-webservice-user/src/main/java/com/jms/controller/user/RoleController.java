@@ -18,13 +18,13 @@ public class RoleController {
 	private RoleService roleService;
 	
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/company/addRole", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/roles/create", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public Message addRole(@RequestBody WSRoles wsRoles) throws Exception
 	{
 		return roleService.addRole(wsRoles);
 	}
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/company/addRolePrivs", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/roles/addroleprivs", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public Message addRolePrivs(@RequestBody WSRolePrivs wsRolePrivs)
 	{
 		return roleService.addRolePrivs(wsRolePrivs);

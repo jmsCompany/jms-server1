@@ -14,12 +14,12 @@ import com.jms.repositories.company.CompanyRepository;
 @Service @Transactional(readOnly=true)
 public class SectorAdapter {
 	private @Autowired  CompanyRepository companyRepository;
-	public Sector toDBSector(WSSector wsSector) throws Exception
+	public Sector toDBSector(WSSector wsSector,Sector sector) throws Exception
 	{
-		Sector sector = (Sector)BeanUtil.shallowCopy(wsSector,Sector.class,null);
+		Sector s = (Sector)BeanUtil.shallowCopy(wsSector,Sector.class,sector);
 		Company company =companyRepository.findByCompanyName(wsSector.getCompanyName());
-		sector.setCompany(company);
-		return sector;
+		s.setCompany(company);
+		return s;
 	}
 
 

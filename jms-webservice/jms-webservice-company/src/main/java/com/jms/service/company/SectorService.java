@@ -14,8 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.csvreader.CsvReader;
 import com.jms.domain.db.Sector;
+import com.jms.domain.ws.Message;
+import com.jms.domain.ws.MessageTypeEnum;
 import com.jms.domain.ws.WSSector;
 import com.jms.domainadapter.SectorAdapter;
+import com.jms.messages.MessagesUitl;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.company.SectorsRepository;
 
@@ -30,6 +33,8 @@ public class SectorService {
 	private CompanyRepository companyRepository ;
 	@Autowired
 	private SectorAdapter sectorAdapter;
+	@Autowired
+	private MessagesUitl messagesUitl;
 	public void loadSectorsFromCSV(String fileName) throws IOException{
 		CsvReader reader = new CsvReader(fileName,',', Charset.forName("UTF-8"));
         reader.readHeaders();  //CompanyName Role	Description
@@ -43,26 +48,44 @@ public class SectorService {
 			s.setEnabled(1);
 			s.setSeq(seq);
 			logger.debug("sector: " + s.getSector() +", description: " + s.getDescription());
-			save(s);
+			sectorRepository.save(s);
 			seq++;
 	
 		}
 	}
 	
-	public Sector save(Sector sec)
+
+	public WSSector save(WSSector wsSector) throws Exception
 	{
-		Sector s =sectorRepository.findBySectorAndCompanyName(sec.getSector(), sec.getCompany().getCompanyName());
-		if(s == null){
-			sectorRepository.save(sec);  //create new 
-		}
-		else
+	    //新建部门
+		if(wsSector.getIdSector()==null)
 		{
-			sec.setIdSector(s.getIdSector());  //update by Id
-			sectorRepository.save(sec);
+			Sector sector =sectorRepository.findBySectorAndCompanyName(wsSector.getSector(), wsSector.getCompanyName());
+		    if(sector!=null)
+		    	throw new Exception("该部门已经存在！");
+		    else
+		    {
+		    	sectorRepository.save(sectorAdapter.toDBSector(wsSector,null));
+		    }
+			
 		}
-		return s;
+		else //修改部门
+		{
+			Sector sector =sectorRepository.findOne(wsSector.getIdSector());
+			Sector sector1 =sectorRepository.findBySectorAndCompanyName(wsSector.getSector(), wsSector.getCompanyName());
+		   if(sector1!=null&&sector1.getIdSector()!=sector.getIdSector())
+		   {
+			   throw new Exception("该部门已经存在！");
+		   }
+		   else
+		   {
+			   sectorRepository.save(sectorAdapter.toDBSector(wsSector,sector)); 
+		   }
+		}
+		
+
+		return wsSector;
 	}
-	
 	public List<WSSector> getSectorsByIdCompany(Integer idCompany) throws Exception
 	{
 		List<WSSector> sectors = new ArrayList<WSSector>(0);
@@ -71,5 +94,22 @@ public class SectorService {
 			sectors.add(sectorAdapter.toWSSector(s));
 		}
 		return sectors;
+	}
+	
+	public WSSector getSector(Integer idSector) throws Exception
+	{
+		Sector sector= sectorRepository.findOne(idSector);
+		return sectorAdapter.toWSSector(sector);
+
+	}
+	
+	public Message checkSector(WSSector wsSector)
+	{
+		if( companyRepository.findByCompanyName(wsSector.getCompanyName())==null)
+			return messagesUitl.getMessage("company.doesnotexist",null,MessageTypeEnum.ERROR);
+		
+		if(sectorRepository.findBySectorAndCompanyName(wsSector.getSector(), wsSector.getCompanyName())==null)
+			return messagesUitl.getMessage("company.sector.avaible",null,MessageTypeEnum.INFOMATION);
+		 return messagesUitl.getMessage("company.sector.alreadyexist",null,MessageTypeEnum.ERROR);
 	}
 }

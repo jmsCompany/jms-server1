@@ -3,7 +3,6 @@ package com.jms.service.user;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Date;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +10,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.csvreader.CsvReader;
 import com.jms.domain.Config;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
+import com.jms.domain.ws.WSUser;
 import com.jms.repositories.system.SysDicDRepository;
 
 @Service
@@ -23,7 +22,25 @@ import com.jms.repositories.system.SysDicDRepository;
 public class UserService extends IUserServiceImpl{
 	@Autowired
 	private SysDicDRepository sysDicDRepository;
+
 	private static final Logger logger = LogManager.getLogger(UserService.class.getCanonicalName());
+	
+	
+	@Transactional(readOnly=false)
+	public WSUser save(WSUser wsUser) throws Exception
+	{
+		if(wsUser.getIdUser()==null)//new user
+		{
+			Users user = userAdapter.toDBUser(wsUser, null);
+			register(user);
+			wsUser.setIdUser(user.getIdUser());
+			
+		}
+		return wsUser;
+	}
+	
+	
+	
 	@Transactional(readOnly=false)
 	public void loadUsersFromCSV(String fileName) throws IOException
 	{
@@ -67,4 +84,6 @@ public class UserService extends IUserServiceImpl{
 		
 	}
 
+
+	
 }

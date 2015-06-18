@@ -1,4 +1,4 @@
-package com.jms.controller.system;
+package com.jms.web;
 
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;

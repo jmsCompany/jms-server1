@@ -1,19 +1,22 @@
 package com.jms.domain.ws;
 
-
-
+import java.util.ArrayList;
 import java.util.Date;
-public class WSUser extends Message implements java.io.Serializable{
+import java.util.List;
+public class WSUser implements java.io.Serializable{
 	
-    private Integer idUser;
+	private static final long serialVersionUID = 1L;
+	private Integer idUser;
 	private String name;
-
 	private String username;
     private String mobile;
     private String email;
     private String password;
     private Date creationTime;
-    private String locale;
+    private WSSysDicD localeD;
+    private WSSysDicD status;
+    private WSSysDicD scheme;
+    private WSSysDicD gender;
     private String address;
     private String idcard;
     private int enabled;
@@ -25,9 +28,13 @@ public class WSUser extends Message implements java.io.Serializable{
     private String degree;
     private String emergencyHp;
     private String login;
-    
+    private String description;
+    private Date birthday;
+    private Date lastLogin;
     private String token;
+    private String locale;
     
+    private List<WSRoles> roleList = new ArrayList<WSRoles>(0);
     public WSUser(){}
     
     public WSUser(WSUser user){
@@ -189,6 +196,72 @@ public class WSUser extends Message implements java.io.Serializable{
 		this.login = login;
 	}
 
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+
+	public WSSysDicD getStatus() {
+		return status;
+	}
+
+	public void setStatus(WSSysDicD status) {
+		this.status = status;
+	}
+
+	public WSSysDicD getScheme() {
+		return scheme;
+	}
+
+	public void setScheme(WSSysDicD scheme) {
+		this.scheme = scheme;
+	}
+
+	public WSSysDicD getGender() {
+		return gender;
+	}
+
+	public void setGender(WSSysDicD gender) {
+		this.gender = gender;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+	public Date getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+	public WSSysDicD getLocaleD() {
+		return localeD;
+	}
+
+	public void setLocaleD(WSSysDicD localeD) {
+		this.localeD = localeD;
+	}
+
 	public String getLocale() {
 		return locale;
 	}
@@ -197,12 +270,12 @@ public class WSUser extends Message implements java.io.Serializable{
 		this.locale = locale;
 	}
 
-	public String getToken() {
-		return token;
+	public List<WSRoles> getRoleList() {
+		return roleList;
 	}
 
-	public void setToken(String token) {
-		this.token = token;
+	public void setRoleList(List<WSRoles> roleList) {
+		this.roleList = roleList;
 	}
 
 
