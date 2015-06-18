@@ -24,13 +24,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement(proxyTargetClass = true)
 public class Application extends SpringBootServletInitializer {
 
-	public static String CURIE_NAMESPACE = "jms";
+/*	public static String CURIE_NAMESPACE = "jms";
 
 	public @Bean CurieProvider curieProvider() {
 		return new DefaultCurieProvider(CURIE_NAMESPACE, new UriTemplate(
 				"http://localhost:8080/alps/{rel}"));
 	}
-
+*/
 	public static void main(String[] args) throws Exception {
 		// SpringApplication.run(Application.class, args);
 
