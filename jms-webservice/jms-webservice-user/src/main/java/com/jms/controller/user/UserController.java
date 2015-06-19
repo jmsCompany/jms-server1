@@ -39,6 +39,10 @@ public class UserController {
 	public Message checkLogin(@RequestParam("login") String login,@RequestParam(required=false, value="idUser") Integer idUser) throws Exception {
 		return userService.checkLogin(login,idUser);
 	}
-	
+	@Transactional(readOnly=false)
+	@RequestMapping(value="/user/save", method=RequestMethod.POST)
+	public WSUser save(@RequestBody WSUser wsUser) throws Exception {
+		return userService.save(wsUser);
+	}
 
 }

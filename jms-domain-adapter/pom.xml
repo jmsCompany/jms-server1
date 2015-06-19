@@ -36,7 +36,7 @@
 			<version>1.0</version>
 		</dependency>
 
-<dependency>
+      <dependency>
 			<groupId>com.jms</groupId>
 			<artifactId>jms-repositories</artifactId>
 			<version>1.0</version>

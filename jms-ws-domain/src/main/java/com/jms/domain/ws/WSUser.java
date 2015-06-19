@@ -19,7 +19,7 @@ public class WSUser implements java.io.Serializable{
     private WSSysDicD gender;
     private String address;
     private String idcard;
-    private int enabled;
+    private Integer enabled;
     private String ext;
     private String ENo;
     private String school;
@@ -116,11 +116,11 @@ public class WSUser implements java.io.Serializable{
 		this.idcard = idcard;
 	}
 
-	public int getEnabled() {
+	public Integer getEnabled() {
 		return enabled;
 	}
 
-	public void setEnabled(int enabled) {
+	public void setEnabled(Integer enabled) {
 		this.enabled = enabled;
 	}
 

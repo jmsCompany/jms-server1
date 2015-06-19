@@ -54,7 +54,7 @@ public class Users  implements java.io.Serializable {
      private String major;
      private String degree;
      private String emergencyHp;
-     private int enabled;
+     private Integer enabled;
      private String description;
      private Date birthday;
      private Date lastLogin;
@@ -77,54 +77,11 @@ public class Users  implements java.io.Serializable {
     }
 
 	
-    public Users(String password, int enabled) {
+    public Users(String password, Integer enabled) {
         this.password = password;
         this.enabled = enabled;
     }
-    public Users(SysDicD sysDicDByLocale, SysDicD sysDicDByStatus, Company company, District district, SysDicD sysDicDByScheme, SysDicD sysDicDByGender, Users users, Document document, Date creationTime, String username, String mobile, String email, String password, String name, String address, String idcard, String ext, String ENo, String school, Date gradTime, String major, String degree, String emergencyHp, int enabled, String description, Date birthday, Date lastLogin, String token, Set<Trace> traces, Set<Task> tasksForCreator, Set<Task> tasksForCreator_1, Set<TaskComment> taskComments, Set<GroupMembers> groupMemberses, Set<Groups> groupses, Set<Task> tasksForAssignee, Set<Roles> roleses, Set<Users> userses, Set<Project> projects, Set<Company> companies, Set<SectorMember> sectorMembers, Set<ProjectParticipant> projectParticipants) {
-       this.sysDicDByLocale = sysDicDByLocale;
-       this.sysDicDByStatus = sysDicDByStatus;
-       this.company = company;
-       this.district = district;
-       this.sysDicDByScheme = sysDicDByScheme;
-       this.sysDicDByGender = sysDicDByGender;
-       this.users = users;
-       this.document = document;
-       this.creationTime = creationTime;
-       this.username = username;
-       this.mobile = mobile;
-       this.email = email;
-       this.password = password;
-       this.name = name;
-       this.address = address;
-       this.idcard = idcard;
-       this.ext = ext;
-       this.ENo = ENo;
-       this.school = school;
-       this.gradTime = gradTime;
-       this.major = major;
-       this.degree = degree;
-       this.emergencyHp = emergencyHp;
-       this.enabled = enabled;
-       this.description = description;
-       this.birthday = birthday;
-       this.lastLogin = lastLogin;
-       this.token = token;
-       this.traces = traces;
-       this.tasksForCreator = tasksForCreator;
-       this.tasksForCreator_1 = tasksForCreator_1;
-       this.taskComments = taskComments;
-       this.groupMemberses = groupMemberses;
-       this.groupses = groupses;
-       this.tasksForAssignee = tasksForAssignee;
-       this.roleses = roleses;
-       this.userses = userses;
-       this.projects = projects;
-       this.companies = companies;
-       this.sectorMembers = sectorMembers;
-       this.projectParticipants = projectParticipants;
-    }
-   
+
      @Id @GeneratedValue(strategy=IDENTITY)
     
     @Column(name="ID_USER", unique=true, nullable=false)
@@ -344,11 +301,11 @@ public class Users  implements java.io.Serializable {
     }
     
     @Column(name="ENABLED", nullable=false)
-    public int getEnabled() {
+    public Integer getEnabled() {
         return this.enabled;
     }
     
-    public void setEnabled(int enabled) {
+    public void setEnabled(Integer enabled) {
         this.enabled = enabled;
     }
     

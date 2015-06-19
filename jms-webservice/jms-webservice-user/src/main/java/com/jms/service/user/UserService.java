@@ -3,6 +3,7 @@ package com.jms.service.user;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Date;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import com.csvreader.CsvReader;
 import com.jms.domain.Config;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
+import com.jms.domain.ws.MessageTypeEnum;
 import com.jms.domain.ws.WSUser;
 import com.jms.repositories.system.SysDicDRepository;
 
@@ -22,23 +24,34 @@ import com.jms.repositories.system.SysDicDRepository;
 public class UserService extends IUserServiceImpl{
 	@Autowired
 	private SysDicDRepository sysDicDRepository;
-
 	private static final Logger logger = LogManager.getLogger(UserService.class.getCanonicalName());
-	
 	
 	@Transactional(readOnly=false)
 	public WSUser save(WSUser wsUser) throws Exception
 	{
-		if(wsUser.getIdUser()==null)//new user
-		{
-			Users user = userAdapter.toDBUser(wsUser, null);
-			register(user);
-			wsUser.setIdUser(user.getIdUser());
-			
-		}
-		return wsUser;
+			Message msg = checkLogin(wsUser.getUsername(), wsUser.getEmail(),
+					wsUser.getMobile(),wsUser.getIdUser());
+	        String anyLogin ="";
+	        if(wsUser.getUsername()!=null&&!wsUser.getUsername().isEmpty())
+	        	anyLogin =wsUser.getUsername();
+	        if(anyLogin.isEmpty())
+	        {
+	        	 if(wsUser.getEmail()!=null&&!wsUser.getEmail().isEmpty())
+	             	anyLogin =wsUser.getEmail();
+	        }
+	        if(anyLogin.isEmpty())
+	        {
+	        	 if(wsUser.getMobile()!=null&&!wsUser.getMobile().isEmpty())
+	             	anyLogin =wsUser.getMobile();
+	        }
+			if (msg.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
+				throw new java.lang.Exception(msg.getMessage());
+			Users dbUser = usersRepository.findOne(wsUser.getIdUser());
+			dbUser = userAdapter.toDBUser(wsUser, dbUser);
+			usersRepository.save(dbUser);
+			wsUser.setIdUser(dbUser.getIdUser());
+			return wsUser;
 	}
-	
 	
 	
 	@Transactional(readOnly=false)
