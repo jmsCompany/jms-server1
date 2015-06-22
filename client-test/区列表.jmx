@@ -50,7 +50,7 @@
               </elementProp>
             </collectionProp>
           </elementProp>
-          <stringProp name="HTTPSampler.domain">localhost</stringProp>
+          <stringProp name="HTTPSampler.domain">115.28.24.76</stringProp>
           <stringProp name="HTTPSampler.port">8080</stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
@@ -69,12 +69,8 @@
         <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP信息头管理器" enabled="true">
           <collectionProp name="HeaderManager.headers">
             <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">Content-type</stringProp>
-              <stringProp name="Header.value">application/json</stringProp>
-            </elementProp>
-            <elementProp name="" elementType="Header">
               <stringProp name="Header.name">JMS-TOKEN</stringProp>
-              <stringProp name="Header.value">system__$2a$10$tz9fDMSxGaz9fI2.De3.be8okoGU9vVhQUaWU2hLvErDImnqqAEa2</stringProp>
+              <stringProp name="Header.value">system__$2a$10$GfmjUU1OdyCRuXfcI4XnteCuWFWJ0JrDay19oFrJv.CghTTWx6hZC</stringProp>
             </elementProp>
           </collectionProp>
         </HeaderManager>
