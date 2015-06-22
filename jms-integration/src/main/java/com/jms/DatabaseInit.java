@@ -20,8 +20,6 @@ import com.jms.service.user.RoleService;
 import com.jms.service.user.UserService;
 import com.jms.service.workmanagement.ProjectService;
 
-
-
 @Service
 @Transactional
 public class DatabaseInit {
@@ -43,7 +41,8 @@ public class DatabaseInit {
 	{
 		if(usersRepository.findByUsername("system")!=null)
 			return;
-   	     Resource userRes = ctx.getResource("classpath:data/users.csv");
+
+		 Resource userRes = ctx.getResource("classpath:data/users.csv");
    	     Resource companyRes = ctx.getResource("classpath:data/company.csv");
    	     Resource roleRes=  ctx.getResource("classpath:data/roles.csv");
    	     Resource sectorRes=  ctx.getResource("classpath:data/sectors.csv");
@@ -52,6 +51,7 @@ public class DatabaseInit {
    	     Resource provinceRes = ctx.getResource("classpath:data/province.csv");
    	     Resource cityRes = ctx.getResource("classpath:data/city.csv");
          Resource districtRes = ctx.getResource("classpath:data/district.csv");
+         
          dicService.loadDics();
          
 		 userService.loadUsersFromCSV(userRes.getInputStream());
@@ -60,13 +60,13 @@ public class DatabaseInit {
 		 sectorService.loadSectorsFromCSV(sectorRes.getInputStream());
 		 moduleService.loadModulesFromCSV(moudleRes.getInputStream());
 		 rolePrivService.loadRolesPrivFromCSV(rolePrivRes.getInputStream());
+
 		 projectService.createGenerialProject();
 		  
 	     districtService.loadProvicesFromCSV(provinceRes.getInputStream());
 	     districtService.loadCitiesFromCSV(cityRes.getInputStream());
          districtService.loadDistrictsFromCSV(districtRes.getInputStream());
 		 
-        
 	}
 
 }

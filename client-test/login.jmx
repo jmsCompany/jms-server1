@@ -35,7 +35,7 @@
                 <stringProp name="Argument.value">{&#xd;
 	&quot;login&quot;:&quot;system&quot;,&#xd;
 	&quot;password&quot;:&quot;system&quot;&#xd;
-	}</stringProp>
+}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>

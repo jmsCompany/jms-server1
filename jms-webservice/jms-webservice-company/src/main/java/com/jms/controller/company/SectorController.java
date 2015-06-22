@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
 import com.jms.domain.ws.WSSector;
 import com.jms.domain.ws.WSUser;
 import com.jms.service.company.SectorService;
@@ -27,7 +26,7 @@ public class SectorController {
 	private static final Logger logger = LogManager.getLogger(SectorController.class.getCanonicalName());
 	
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/sector/create", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/sector/save", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
 	public WSSector addSector(@RequestBody WSSector wsSector) throws Exception
 	{
 		return sectorService.save(wsSector);

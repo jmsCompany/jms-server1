@@ -48,9 +48,9 @@ public class CompanyController {
 	public WSCompany getCompany(@RequestParam("idUser") String idUser) throws Exception {
 		return companyAdapter.toWSCompany(companyService.findCompanyByIdUser(idUser));
 	}
-	
+
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/company/cancel", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/company/cancel", method=RequestMethod.DELETE, produces=MediaType.APPLICATION_JSON_VALUE)
 	public Message cancelCompany(@RequestParam("idCompany") int idCompany)
 	{
 		return companyService.cancelCompany(idCompany);
