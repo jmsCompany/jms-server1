@@ -1,6 +1,7 @@
 package com.jms.service.user;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import org.apache.logging.log4j.LogManager;
@@ -35,8 +36,8 @@ public class RolePrivService {
 	private RolePrivRepository rolePrivReposity;
 	
 	
-	public void loadRolesPrivFromCSV(String fileName) throws IOException{
-		CsvReader reader = new CsvReader(fileName,',', Charset.forName("UTF-8"));
+	public void loadRolesPrivFromCSV(InputStream inputStream) throws IOException{
+		CsvReader reader = new CsvReader(inputStream,',', Charset.forName("UTF-8"));
         reader.readHeaders();  //CompanyName,Module,Role,Priv
 		while(reader.readRecord())
 		{

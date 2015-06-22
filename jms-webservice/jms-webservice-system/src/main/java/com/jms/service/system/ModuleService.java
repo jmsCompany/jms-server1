@@ -1,6 +1,7 @@
 package com.jms.service.system;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import org.apache.logging.log4j.LogManager;
@@ -25,8 +26,8 @@ public class ModuleService {
 	@Autowired
 	private CompanyRepository companyRepository ;
 	
-	public void loadModulesFromCSV(String fileName) throws IOException{
-		CsvReader reader = new CsvReader(fileName,',', Charset.forName("UTF-8"));
+	public void loadModulesFromCSV(InputStream inputStream) throws IOException{
+		CsvReader reader = new CsvReader(inputStream,',', Charset.forName("UTF-8"));
         reader.readHeaders();  //Parent,  Name,     Description
 		while(reader.readRecord())
 		{

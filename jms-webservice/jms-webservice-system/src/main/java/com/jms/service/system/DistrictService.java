@@ -1,6 +1,7 @@
 package com.jms.service.system;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,8 +78,8 @@ public class DistrictService {
 		return wsDistricts;
 	}
 	
-	public void loadProvicesFromCSV(String fileName) throws IOException{
-		CsvReader reader = new CsvReader(fileName,',', Charset.forName("UTF-8"));
+	public void loadProvicesFromCSV(InputStream inputStream) throws IOException{
+		CsvReader reader = new CsvReader(inputStream,',', Charset.forName("UTF-8"));
       //  reader.readHeaders();  //Parent,  Name,     Description
 		while(reader.readRecord())
 		{
@@ -91,8 +92,8 @@ public class DistrictService {
 		}
 	}
 	
-	public void loadCitiesFromCSV(String fileName) throws IOException{
-		CsvReader reader = new CsvReader(fileName,',', Charset.forName("UTF-8"));
+	public void loadCitiesFromCSV(InputStream inputStream) throws IOException{
+		CsvReader reader = new CsvReader(inputStream,',', Charset.forName("UTF-8"));
       //  reader.readHeaders();  //Parent,  Name,     Description
 		while(reader.readRecord())
 		{
@@ -113,8 +114,8 @@ public class DistrictService {
 	
 	
 	
-	public void loadDistrictsFromCSV(String fileName) throws IOException{
-		CsvReader reader = new CsvReader(fileName,',', Charset.forName("UTF-8"));
+	public void loadDistrictsFromCSV(InputStream inputStream) throws IOException{
+		CsvReader reader = new CsvReader(inputStream,',', Charset.forName("UTF-8"));
       //  reader.readHeaders();  //Parent,  Name,     Description
 		while(reader.readRecord())
 		{

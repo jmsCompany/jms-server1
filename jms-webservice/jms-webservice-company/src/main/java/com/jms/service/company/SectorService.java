@@ -2,6 +2,7 @@ package com.jms.service.company;
 
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +36,8 @@ public class SectorService {
 	private SectorAdapter sectorAdapter;
 	@Autowired
 	private MessagesUitl messagesUitl;
-	public void loadSectorsFromCSV(String fileName) throws IOException{
-		CsvReader reader = new CsvReader(fileName,',', Charset.forName("UTF-8"));
+	public void loadSectorsFromCSV(InputStream inputStream) throws IOException{
+		CsvReader reader = new CsvReader(inputStream,',', Charset.forName("UTF-8"));
         reader.readHeaders();  //CompanyName Role	Description
         int seq=1;
 		while(reader.readRecord())

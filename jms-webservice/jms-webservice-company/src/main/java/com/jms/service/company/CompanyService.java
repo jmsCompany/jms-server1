@@ -1,6 +1,7 @@
 package com.jms.service.company;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Set;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.csvreader.CsvReader;
 import com.jms.domain.Config;
 import com.jms.domain.EnabledEnum;
@@ -231,8 +233,8 @@ public class CompanyService {
 	}
 
 	@Transactional(readOnly = false)
-	public void loadCompaniesFromCSV(String fileName) throws IOException {
-		CsvReader reader = new CsvReader(fileName, ',',
+	public void loadCompaniesFromCSV(InputStream inputStream) throws IOException {
+		CsvReader reader = new CsvReader(inputStream, ',',
 				Charset.forName("UTF-8"));
 		reader.readHeaders(); // CompanyCatergory (NORMAL_COMPANY(0),
 								// SYSTEM_COMPANY(1),

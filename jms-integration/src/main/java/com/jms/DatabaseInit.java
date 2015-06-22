@@ -53,17 +53,18 @@ public class DatabaseInit {
    	     Resource cityRes = ctx.getResource("classpath:data/city.csv");
          Resource districtRes = ctx.getResource("classpath:data/district.csv");
          dicService.loadDics();
-		 userService.loadUsersFromCSV(userRes.getFile().getAbsolutePath());
-		 companyService.loadCompaniesFromCSV(companyRes.getFile().getAbsolutePath());
-		 roleService.loadRolesFromCSV(roleRes.getFile().getAbsolutePath());
-		 sectorService.loadSectorsFromCSV(sectorRes.getFile().getAbsolutePath());
-		 moduleService.loadModulesFromCSV(moudleRes.getFile().getAbsolutePath());
-		 rolePrivService.loadRolesPrivFromCSV(rolePrivRes.getFile().getAbsolutePath());
+         
+		 userService.loadUsersFromCSV(userRes.getInputStream());
+		 companyService.loadCompaniesFromCSV(companyRes.getInputStream());
+		 roleService.loadRolesFromCSV(roleRes.getInputStream());
+		 sectorService.loadSectorsFromCSV(sectorRes.getInputStream());
+		 moduleService.loadModulesFromCSV(moudleRes.getInputStream());
+		 rolePrivService.loadRolesPrivFromCSV(rolePrivRes.getInputStream());
 		 projectService.createGenerialProject();
 		  
-	     districtService.loadProvicesFromCSV(provinceRes.getFile().getAbsolutePath());
-	     districtService.loadCitiesFromCSV(cityRes.getFile().getAbsolutePath());
-         districtService.loadDistrictsFromCSV(districtRes.getFile().getAbsolutePath());
+	     districtService.loadProvicesFromCSV(provinceRes.getInputStream());
+	     districtService.loadCitiesFromCSV(cityRes.getInputStream());
+         districtService.loadDistrictsFromCSV(districtRes.getInputStream());
 		 
         
 	}

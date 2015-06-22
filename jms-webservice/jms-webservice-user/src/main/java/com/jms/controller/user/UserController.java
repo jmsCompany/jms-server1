@@ -28,7 +28,7 @@ public class UserController {
 	public void initBinder(final WebDataBinder binder) {
 		binder.addValidators(wsUsersValidator);
 	}
-
+	@Transactional(readOnly=false)
 	@RequestMapping(value="/login", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public String login(@RequestBody WSUser wsUser) throws Exception {
 		return userService.login(wsUser.getLogin(), wsUser.getPassword());

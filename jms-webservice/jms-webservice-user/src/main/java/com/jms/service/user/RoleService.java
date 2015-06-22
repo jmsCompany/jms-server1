@@ -1,6 +1,7 @@
 package com.jms.service.user;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +49,8 @@ public class RoleService {
 	private RoleAdapter roleAdapter;
 	private @Autowired ModuleRepository moduleRepository;
 
-	public void loadRolesFromCSV(String fileName) throws IOException {
-		CsvReader reader = new CsvReader(fileName, ',',
+	public void loadRolesFromCSV(InputStream inputStream) throws IOException {
+		CsvReader reader = new CsvReader(inputStream, ',',
 				Charset.forName("UTF-8"));
 
 		reader.readHeaders(); // CompanyName, Role Description
