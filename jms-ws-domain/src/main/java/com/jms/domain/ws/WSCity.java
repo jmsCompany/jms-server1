@@ -3,14 +3,14 @@ package com.jms.domain.ws;
 
 public class WSCity implements java.io.Serializable{
 	
-    private int idCity;
+    private Long idCity;
     private WSProvince wsProvince;
     private String city;
     private String postcode;
-	public int getIdCity() {
+	public Long getIdCity() {
 		return idCity;
 	}
-	public void setIdCity(int idCity) {
+	public void setIdCity(Long idCity) {
 		this.idCity = idCity;
 	}
 	public WSProvince getWsProvince() {

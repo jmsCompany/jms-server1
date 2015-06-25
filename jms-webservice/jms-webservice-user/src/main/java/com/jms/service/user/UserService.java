@@ -73,7 +73,7 @@ public class UserService extends IUserServiceImpl{
 			u.setMobile(reader.get("mobile"));
 			u.setAddress(reader.get("address"));
 			u.setIdcard(reader.get("id_card"));
-			u.setEnabled(Integer.parseInt(reader.get("enabled")));
+			u.setEnabled(Long.parseLong(reader.get("enabled")));
 			u.setCreationTime(new Date());
 			u.setSysDicDByLocale(sysDicDRepository.findDicsByType(Config.lang).get(0));
 			Message msg = register(u);

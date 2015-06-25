@@ -3,13 +3,13 @@ package com.jms.domain.ws;
 
 public class WSDistrict implements java.io.Serializable{
 
-    private int idDistrict;
+    private Long idDistrict;
     private WSCity wsCity;
     private String district;
-	public int getIdDistrict() {
+	public Long getIdDistrict() {
 		return idDistrict;
 	}
-	public void setIdDistrict(int idDistrict) {
+	public void setIdDistrict(Long idDistrict) {
 		this.idDistrict = idDistrict;
 	}
 	public WSCity getWsCity() {

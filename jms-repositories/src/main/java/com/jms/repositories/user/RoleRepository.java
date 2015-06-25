@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.jms.domain.db.Roles;
 
 @Repository
-public interface RoleRepository  extends CrudRepository<Roles, Integer>{
+public interface RoleRepository  extends CrudRepository<Roles, Long>{
 	
 	@Query("select r from Roles r where r.role=?1 and r.company.companyName=?2")	
 	public Roles findByRoleAndCompanyName(String role,String companyName);

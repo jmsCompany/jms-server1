@@ -39,14 +39,14 @@ public class SectorService {
 	public void loadSectorsFromCSV(InputStream inputStream) throws IOException{
 		CsvReader reader = new CsvReader(inputStream,',', Charset.forName("UTF-8"));
         reader.readHeaders();  //CompanyName Role	Description
-        int seq=1;
+        long seq=1;
 		while(reader.readRecord())
 		{
 			Sector s = new Sector();
 			s.setSector(reader.get("Sector"));
 			s.setDescription(reader.get("Description"));
 			s.setCompany(companyRepository.findByCompanyName(reader.get("CompanyName")));
-			s.setEnabled(1);
+			s.setEnabled(1l);
 			s.setSeq(seq);
 			logger.debug("sector: " + s.getSector() +", description: " + s.getDescription());
 			sectorRepository.save(s);
@@ -87,7 +87,7 @@ public class SectorService {
 
 		return wsSector;
 	}
-	public List<WSSector> getSectorsByIdCompany(Integer idCompany) throws Exception
+	public List<WSSector> getSectorsByIdCompany(Long idCompany) throws Exception
 	{
 		List<WSSector> sectors = new ArrayList<WSSector>(0);
 		for(Sector s: sectorRepository.findByIdCompany(idCompany))
@@ -97,7 +97,7 @@ public class SectorService {
 		return sectors;
 	}
 	
-	public WSSector getSector(Integer idSector) throws Exception
+	public WSSector getSector(Long idSector) throws Exception
 	{
 		Sector sector= sectorRepository.findOne(idSector);
 		return sectorAdapter.toWSSector(sector);

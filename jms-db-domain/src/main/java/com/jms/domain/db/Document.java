@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-25 9:56:24 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.HashSet;
@@ -26,13 +26,13 @@ import javax.persistence.Table;
 public class Document  implements java.io.Serializable {
 
 
-     private Integer idDocument;
+     private Long idDocument;
      private Document document;
      private String fileName;
      private String name;
      private String description;
      private String relativePath;
-     private Integer size;
+     private Long size;
      private Set<TaskDoc> taskDocs = new HashSet<TaskDoc>(0);
      private Set<IssueDoc> issueDocs = new HashSet<IssueDoc>(0);
      private Set<ProjectDoc> projectDocs = new HashSet<ProjectDoc>(0);
@@ -44,7 +44,7 @@ public class Document  implements java.io.Serializable {
     public Document() {
     }
 
-    public Document(Document document, String fileName, String name, String description, String relativePath, Integer size, Set<TaskDoc> taskDocs, Set<IssueDoc> issueDocs, Set<ProjectDoc> projectDocs, Set<Document> documents, Set<Company> companiesForLogo, Set<Company> companiesForLicense, Set<Users> userses) {
+    public Document(Document document, String fileName, String name, String description, String relativePath, Long size, Set<TaskDoc> taskDocs, Set<IssueDoc> issueDocs, Set<ProjectDoc> projectDocs, Set<Document> documents, Set<Company> companiesForLogo, Set<Company> companiesForLicense, Set<Users> userses) {
        this.document = document;
        this.fileName = fileName;
        this.name = name;
@@ -63,11 +63,11 @@ public class Document  implements java.io.Serializable {
      @Id @GeneratedValue(strategy=IDENTITY)
     
     @Column(name="ID_DOCUMENT", unique=true, nullable=false)
-    public Integer getIdDocument() {
+    public Long getIdDocument() {
         return this.idDocument;
     }
     
-    public void setIdDocument(Integer idDocument) {
+    public void setIdDocument(Long idDocument) {
         this.idDocument = idDocument;
     }
 @ManyToOne(fetch=FetchType.LAZY)
@@ -117,11 +117,11 @@ public class Document  implements java.io.Serializable {
     }
     
     @Column(name="SIZE")
-    public Integer getSize() {
+    public Long getSize() {
         return this.size;
     }
     
-    public void setSize(Integer size) {
+    public void setSize(Long size) {
         this.size = size;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="document")

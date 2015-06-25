@@ -3,16 +3,16 @@ package com.jms.domain.ws;
 public class WSSysDicD implements java.io.Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private Integer idDic;
+	private Long idDic;
 	private String type;
 	private String name;
 	private String description;
-	private int enabled;
+	private Long enabled;
 	public WSSysDicD()
 	{
 		
 	}
-	public WSSysDicD(Integer idDic,String type,String name,String description, int enabled)
+	public WSSysDicD(Long idDic,String type,String name,String description, Long enabled)
 	{
 		this.idDic=idDic;
 		this.type=type;
@@ -27,11 +27,11 @@ public class WSSysDicD implements java.io.Serializable{
 		this.name = name;
 	}
 
-	public Integer getIdDic() {
+	public Long getIdDic() {
 		return idDic;
 	}
 
-	public void setIdDic(Integer idDic) {
+	public void setIdDic(Long idDic) {
 		this.idDic = idDic;
 	}
 
@@ -48,10 +48,10 @@ public class WSSysDicD implements java.io.Serializable{
 	public void setType(String type) {
 		this.type = type;
 	}
-	public int getEnabled() {
+	public Long getEnabled() {
 		return enabled;
 	}
-	public void setEnabled(int enabled) {
+	public void setEnabled(Long enabled) {
 		this.enabled = enabled;
 	}
 	

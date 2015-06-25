@@ -4,7 +4,7 @@ public class WSModulePriv implements java.io.Serializable{
 
 	private String name;
 	private String description;
-	private Integer priv;
+	private Long priv;
 	
 	public String getName() {
 		return name;
@@ -18,10 +18,10 @@ public class WSModulePriv implements java.io.Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Integer getPriv() {
+	public Long getPriv() {
 		return priv;
 	}
-	public void setPriv(Integer priv) {
+	public void setPriv(Long priv) {
 		this.priv = priv;
 	}
 }

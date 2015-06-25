@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-25 9:56:24 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.Date;
@@ -29,7 +29,7 @@ import javax.persistence.TemporalType;
 public class TaskComment  implements java.io.Serializable {
 
 
-     private Integer idComment;
+     private Long idComment;
      private Users users;
      private Task task;
      private TaskComment taskComment;
@@ -54,11 +54,11 @@ public class TaskComment  implements java.io.Serializable {
      @Id @GeneratedValue(strategy=IDENTITY)
     
     @Column(name="ID_COMMENT", unique=true, nullable=false)
-    public Integer getIdComment() {
+    public Long getIdComment() {
         return this.idComment;
     }
     
-    public void setIdComment(Integer idComment) {
+    public void setIdComment(Long idComment) {
         this.idComment = idComment;
     }
 @ManyToOne(fetch=FetchType.LAZY)

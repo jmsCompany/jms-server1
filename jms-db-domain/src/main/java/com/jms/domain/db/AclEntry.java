@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-25 9:56:24 by Hibernate Tools 3.2.2.GA
 
 
 import javax.persistence.Column;
@@ -27,8 +27,8 @@ public class AclEntry  implements java.io.Serializable {
      private Long id;
      private AclSid aclSid;
      private AclObjectIdentity aclObjectIdentity;
-     private int aceOrder;
-     private int mask;
+     private Long aceOrder;
+     private Long mask;
      private boolean granting;
      private boolean auditSuccess;
      private boolean auditFailure;
@@ -36,7 +36,7 @@ public class AclEntry  implements java.io.Serializable {
     public AclEntry() {
     }
 
-    public AclEntry(AclSid aclSid, AclObjectIdentity aclObjectIdentity, int aceOrder, int mask, boolean granting, boolean auditSuccess, boolean auditFailure) {
+    public AclEntry(AclSid aclSid, AclObjectIdentity aclObjectIdentity, Long aceOrder, Long mask, boolean granting, boolean auditSuccess, boolean auditFailure) {
        this.aclSid = aclSid;
        this.aclObjectIdentity = aclObjectIdentity;
        this.aceOrder = aceOrder;
@@ -76,20 +76,20 @@ public class AclEntry  implements java.io.Serializable {
     }
     
     @Column(name="ace_order", nullable=false)
-    public int getAceOrder() {
+    public Long getAceOrder() {
         return this.aceOrder;
     }
     
-    public void setAceOrder(int aceOrder) {
+    public void setAceOrder(Long aceOrder) {
         this.aceOrder = aceOrder;
     }
     
     @Column(name="mask", nullable=false)
-    public int getMask() {
+    public Long getMask() {
         return this.mask;
     }
     
-    public void setMask(int mask) {
+    public void setMask(Long mask) {
         this.mask = mask;
     }
     

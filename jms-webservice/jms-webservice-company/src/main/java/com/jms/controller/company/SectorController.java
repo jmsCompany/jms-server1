@@ -34,20 +34,20 @@ public class SectorController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/sectors", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-	public List<WSSector> getSectors(@RequestParam("idCompany") Integer idCompany) throws Exception
+	public List<WSSector> getSectors(@RequestParam("idCompany") Long idCompany) throws Exception
 	{
 		return sectorService.getSectorsByIdCompany(idCompany);
 	}
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/sector/view/{idSector}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-	public WSSector getSector(@PathVariable("idSector") Integer idSector) throws Exception
+	public WSSector getSector(@PathVariable("idSector") Long idSector) throws Exception
 	{
 		return sectorService.getSector(idSector);
 	}
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/sector/{idSector}/members", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-	public List<WSUser> getUsersByIdSector(@PathVariable("idSector") Integer idSector) throws Exception
+	public List<WSUser> getUsersByIdSector(@PathVariable("idSector") Long idSector) throws Exception
 	{
 		return iUserServiceImpl.getUsersByIdSector(idSector);
 	}

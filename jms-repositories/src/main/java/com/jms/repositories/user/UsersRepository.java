@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.jms.domain.db.Users;
 
 @Repository
-public interface UsersRepository  extends CrudRepository<Users, Integer> {
+public interface UsersRepository  extends CrudRepository<Users, Long> {
 	
 	public Users findByEmail(String email);
 	public Users findByMobile(String mobile);
@@ -20,6 +20,6 @@ public interface UsersRepository  extends CrudRepository<Users, Integer> {
 	public Users findByToken(String token);
 	
 	@Query("select u from Users u inner join fetch u.sectorMembers s where s.id.idSector=?1")	
-	public List<Users> findUsersByIdSector(int idSector);
+	public List<Users> findUsersByIdSector(Long idSector);
 }
 

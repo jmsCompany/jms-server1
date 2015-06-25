@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-25 9:56:24 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.HashSet;
@@ -24,7 +24,7 @@ import javax.persistence.Table;
 public class City  implements java.io.Serializable {
 
 
-     private int idCity;
+     private Long idCity;
      private Province province;
      private String city;
      private String postcode;
@@ -34,10 +34,10 @@ public class City  implements java.io.Serializable {
     }
 
 	
-    public City(int idCity) {
+    public City(Long idCity) {
         this.idCity = idCity;
     }
-    public City(int idCity, Province province, String city, String postcode, Set<District> districts) {
+    public City(Long idCity, Province province, String city, String postcode, Set<District> districts) {
        this.idCity = idCity;
        this.province = province;
        this.city = city;
@@ -48,11 +48,11 @@ public class City  implements java.io.Serializable {
      @Id 
     
     @Column(name="ID_CITY", unique=true, nullable=false)
-    public int getIdCity() {
+    public Long getIdCity() {
         return this.idCity;
     }
     
-    public void setIdCity(int idCity) {
+    public void setIdCity(Long idCity) {
         this.idCity = idCity;
     }
 @ManyToOne(fetch=FetchType.LAZY)

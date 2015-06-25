@@ -109,11 +109,11 @@ public class RoleService {
 				MessageTypeEnum.ERROR);
 	}
 
-	public void addRolePriv(int idRole, int idModule) {
+	public void addRolePriv(Long idRole, Long idModule) {
 		RolePrivId id = new RolePrivId(idModule, idRole);
 		RolePriv rp = new RolePriv();
 		rp.setId(id);
-		rp.setPriv(1);
+		rp.setPriv(1l);
 		rolePrivRepository.save(rp);
 	}
 
@@ -139,7 +139,7 @@ public class RoleService {
 					rolePriv.setPriv(wsRolePrivs.getModulePrivList().get(idx)
 							.getPriv());
 				} else {
-					rolePriv.setPriv(0);
+					rolePriv.setPriv(0l);
 
 				}
 				rolePrivRepository.save(rolePriv);
@@ -152,7 +152,7 @@ public class RoleService {
 					rolePriv.setPriv(wsRolePrivs.getModulePrivList().get(idx)
 							.getPriv());
 				} else {
-					rolePriv.setPriv(0);
+					rolePriv.setPriv(0l);
 
 				}
 				rolePrivRepository.save(rolePriv);

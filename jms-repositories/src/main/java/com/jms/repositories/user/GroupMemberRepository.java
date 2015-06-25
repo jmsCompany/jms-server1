@@ -14,6 +14,6 @@ import com.jms.domain.db.GroupMembersId;
 public interface GroupMemberRepository extends CrudRepository<GroupMembers, GroupMembersId>{
 	
 	@Query("select gm from GroupMembers gm where gm.id.idGroup=?1")
-	public List<GroupMembers> findGroupMembersByGroupId(int idGroup);
+	public List<GroupMembers> findGroupMembersByGroupId(Long idGroup);
 
 }

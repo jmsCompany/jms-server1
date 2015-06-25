@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-25 9:56:24 by Hibernate Tools 3.2.2.GA
 
 
 import javax.persistence.Column;
@@ -12,33 +12,33 @@ import javax.persistence.Embeddable;
 public class RolePrivId  implements java.io.Serializable {
 
 
-     private int idModule;
-     private int idRole;
+     private Long idModule;
+     private Long idRole;
 
     public RolePrivId() {
     }
 
-    public RolePrivId(int idModule, int idRole) {
+    public RolePrivId(Long idModule, Long idRole) {
        this.idModule = idModule;
        this.idRole = idRole;
     }
    
 
     @Column(name="ID_MODULE", nullable=false)
-    public int getIdModule() {
+    public Long getIdModule() {
         return this.idModule;
     }
     
-    public void setIdModule(int idModule) {
+    public void setIdModule(Long idModule) {
         this.idModule = idModule;
     }
 
     @Column(name="ID_ROLE", nullable=false)
-    public int getIdRole() {
+    public Long getIdRole() {
         return this.idRole;
     }
     
-    public void setIdRole(int idRole) {
+    public void setIdRole(Long idRole) {
         this.idRole = idRole;
     }
 
@@ -49,15 +49,15 @@ public class RolePrivId  implements java.io.Serializable {
 		 if ( !(other instanceof RolePrivId) ) return false;
 		 RolePrivId castOther = ( RolePrivId ) other; 
          
-		 return (this.getIdModule()==castOther.getIdModule())
- && (this.getIdRole()==castOther.getIdRole());
+		 return ( (this.getIdModule()==castOther.getIdModule()) || ( this.getIdModule()!=null && castOther.getIdModule()!=null && this.getIdModule().equals(castOther.getIdModule()) ) )
+ && ( (this.getIdRole()==castOther.getIdRole()) || ( this.getIdRole()!=null && castOther.getIdRole()!=null && this.getIdRole().equals(castOther.getIdRole()) ) );
    }
    
    public int hashCode() {
          int result = 17;
          
-         result = 37 * result + this.getIdModule();
-         result = 37 * result + this.getIdRole();
+         result = 37 * result + ( getIdModule() == null ? 0 : this.getIdModule().hashCode() );
+         result = 37 * result + ( getIdRole() == null ? 0 : this.getIdRole().hashCode() );
          return result;
    }   
 

@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-25 9:56:24 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.HashSet;
@@ -28,14 +28,14 @@ import javax.persistence.Table;
 public class Roles  implements java.io.Serializable {
 
 
-     private Integer idRole;
+     private Long idRole;
      private Company company;
      private Sector sector;
      private Roles roles;
      private String role;
      private String description;
-     private Integer level;
-     private Integer enabled;
+     private Long level;
+     private Long enabled;
      private Set<Users> userses = new HashSet<Users>(0);
      private Set<GroupMembers> groupMemberses = new HashSet<GroupMembers>(0);
      private Set<SectorMember> sectorMembers = new HashSet<SectorMember>(0);
@@ -51,7 +51,7 @@ public class Roles  implements java.io.Serializable {
         this.company = company;
         this.role = role;
     }
-    public Roles(Company company, Sector sector, Roles roles, String role, String description, Integer level, Integer enabled, Set<Users> userses, Set<GroupMembers> groupMemberses, Set<SectorMember> sectorMembers, Set<Roles> roleses, Set<Groups> groupses, Set<RolePriv> rolePrivs) {
+    public Roles(Company company, Sector sector, Roles roles, String role, String description, Long level, Long enabled, Set<Users> userses, Set<GroupMembers> groupMemberses, Set<SectorMember> sectorMembers, Set<Roles> roleses, Set<Groups> groupses, Set<RolePriv> rolePrivs) {
        this.company = company;
        this.sector = sector;
        this.roles = roles;
@@ -70,11 +70,11 @@ public class Roles  implements java.io.Serializable {
      @Id @GeneratedValue(strategy=IDENTITY)
     
     @Column(name="ID_ROLE", unique=true, nullable=false)
-    public Integer getIdRole() {
+    public Long getIdRole() {
         return this.idRole;
     }
     
-    public void setIdRole(Integer idRole) {
+    public void setIdRole(Long idRole) {
         this.idRole = idRole;
     }
 @ManyToOne(fetch=FetchType.LAZY)
@@ -124,20 +124,20 @@ public class Roles  implements java.io.Serializable {
     }
     
     @Column(name="LEVEL")
-    public Integer getLevel() {
+    public Long getLevel() {
         return this.level;
     }
     
-    public void setLevel(Integer level) {
+    public void setLevel(Long level) {
         this.level = level;
     }
     
     @Column(name="ENABLED")
-    public Integer getEnabled() {
+    public Long getEnabled() {
         return this.enabled;
     }
     
-    public void setEnabled(Integer enabled) {
+    public void setEnabled(Long enabled) {
         this.enabled = enabled;
     }
 @ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)

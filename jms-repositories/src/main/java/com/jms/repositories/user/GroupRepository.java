@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.jms.domain.db.Groups;
 
 @Repository
-public interface GroupRepository extends CrudRepository<Groups, Integer>{
+public interface GroupRepository extends CrudRepository<Groups, Long>{
 
 }

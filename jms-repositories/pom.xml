@@ -13,7 +13,9 @@
 	<packaging>jar</packaging>
 	<name>jms-repositories</name>
 	<description>jms-repositories</description>
-
+	<properties>
+<org.aspectj.version>1.8.2</org.aspectj.version>
+</properties>
 	<developers>
 		<developer>
 			<name>Hongtao Ren</name>
@@ -42,6 +44,10 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
+		
+	
+		
+
 	</dependencies>
 
 </project>

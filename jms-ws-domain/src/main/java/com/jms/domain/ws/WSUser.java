@@ -6,7 +6,7 @@ import java.util.List;
 public class WSUser implements java.io.Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	private Integer idUser;
+	private Long idUser;
 	private String name;
 	private String username;
     private String mobile;
@@ -19,7 +19,7 @@ public class WSUser implements java.io.Serializable{
     private WSSysDicD gender;
     private String address;
     private String idcard;
-    private Integer enabled;
+    private Long enabled;
     private String ext;
     private String ENo;
     private String school;
@@ -116,11 +116,11 @@ public class WSUser implements java.io.Serializable{
 		this.idcard = idcard;
 	}
 
-	public Integer getEnabled() {
+	public Long getEnabled() {
 		return enabled;
 	}
 
-	public void setEnabled(Integer enabled) {
+	public void setEnabled(Long enabled) {
 		this.enabled = enabled;
 	}
 
@@ -180,11 +180,11 @@ public class WSUser implements java.io.Serializable{
 		this.emergencyHp = emergencyHp;
 	}
 
-	public Integer getIdUser() {
+	public Long getIdUser() {
 		return idUser;
 	}
 
-	public void setIdUser(Integer idUser) {
+	public void setIdUser(Long idUser) {
 		this.idUser = idUser;
 	}
 

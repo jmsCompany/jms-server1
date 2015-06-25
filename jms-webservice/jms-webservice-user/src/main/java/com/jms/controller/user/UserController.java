@@ -36,7 +36,7 @@ public class UserController {
 	
 	
 	@RequestMapping(value="/user/checklogin", method=RequestMethod.GET)
-	public Message checkLogin(@RequestParam("login") String login,@RequestParam(required=false, value="idUser") Integer idUser) throws Exception {
+	public Message checkLogin(@RequestParam("login") String login,@RequestParam(required=false, value="idUser") Long idUser) throws Exception {
 		return userService.checkLogin(login,idUser);
 	}
 	@Transactional(readOnly=false)

@@ -8,7 +8,7 @@ import com.jms.domain.db.District;
 import com.jms.domain.db.Province;
 
 @Repository
-public interface DistrictRepository extends CrudRepository<District, Integer>{
+public interface DistrictRepository extends CrudRepository<District, Long>{
 
 
 }

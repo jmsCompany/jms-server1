@@ -14,7 +14,7 @@ import com.jms.domain.db.SysDic;
 import com.jms.domain.db.SysDicD;
 
 @Repository
-public interface SysDicDRepository extends CrudRepository<SysDicD, Integer>{
+public interface SysDicDRepository extends CrudRepository<SysDicD, Long>{
 
 	@Query("select s from SysDicD s where s.sysDic.type=?1 ")	
 	public List<SysDicD> findDicsByType(String type);

@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-25 9:56:24 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.HashSet;
@@ -26,12 +26,12 @@ import javax.persistence.Table;
 public class Sector  implements java.io.Serializable {
 
 
-     private Integer idSector;
+     private Long idSector;
      private Company company;
      private String sector;
      private String description;
-     private Integer enabled;
-     private Integer seq;
+     private Long enabled;
+     private Long seq;
      private Set<Roles> roleses = new HashSet<Roles>(0);
      private Set<SectorMember> sectorMembers = new HashSet<SectorMember>(0);
 
@@ -42,7 +42,7 @@ public class Sector  implements java.io.Serializable {
     public Sector(Company company) {
         this.company = company;
     }
-    public Sector(Company company, String sector, String description, Integer enabled, Integer seq, Set<Roles> roleses, Set<SectorMember> sectorMembers) {
+    public Sector(Company company, String sector, String description, Long enabled, Long seq, Set<Roles> roleses, Set<SectorMember> sectorMembers) {
        this.company = company;
        this.sector = sector;
        this.description = description;
@@ -55,11 +55,11 @@ public class Sector  implements java.io.Serializable {
      @Id @GeneratedValue(strategy=IDENTITY)
     
     @Column(name="ID_SECTOR", unique=true, nullable=false)
-    public Integer getIdSector() {
+    public Long getIdSector() {
         return this.idSector;
     }
     
-    public void setIdSector(Integer idSector) {
+    public void setIdSector(Long idSector) {
         this.idSector = idSector;
     }
 @ManyToOne(fetch=FetchType.LAZY)
@@ -91,20 +91,20 @@ public class Sector  implements java.io.Serializable {
     }
     
     @Column(name="ENABLED")
-    public Integer getEnabled() {
+    public Long getEnabled() {
         return this.enabled;
     }
     
-    public void setEnabled(Integer enabled) {
+    public void setEnabled(Long enabled) {
         this.enabled = enabled;
     }
     
     @Column(name="SEQ")
-    public Integer getSeq() {
+    public Long getSeq() {
         return this.seq;
     }
     
-    public void setSeq(Integer seq) {
+    public void setSeq(Long seq) {
         this.seq = seq;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="sector")

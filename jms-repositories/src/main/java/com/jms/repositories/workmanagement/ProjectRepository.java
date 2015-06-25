@@ -13,7 +13,7 @@ import com.jms.domain.db.Project;
 
 
 @Repository
-public interface ProjectRepository  extends CrudRepository<Project, Integer>{
+public interface ProjectRepository  extends CrudRepository<Project, Long>{
 		
 	public List<Project> findByCompany(Company company);
 }

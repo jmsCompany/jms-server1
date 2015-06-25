@@ -40,13 +40,13 @@ public class CompanyController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="company/view/{idCompany}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-	public WSCompany getCompany(@PathVariable("idCompany") int idCompany) throws Exception {
+	public WSCompany getCompany(@PathVariable("idCompany") Long idCompany) throws Exception {
 		return companyAdapter.toWSCompany(companyService.findCompanyById(idCompany));
 	}
 	@Transactional(readOnly = true)
 	@RequestMapping(value="company/view", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-	public WSCompany getCompany(@RequestParam("idUser") String idUser) throws Exception {
-		return companyAdapter.toWSCompany(companyService.findCompanyByIdUser(idUser));
+	public WSCompany getCompany(@RequestParam("login") String login) throws Exception {
+		return companyAdapter.toWSCompany(companyService.findCompanyByLogin(login));
 	}
 
 	@Transactional(readOnly = false)
@@ -58,7 +58,7 @@ public class CompanyController {
 
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/check/companyname", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-	public Message checkCompanyName(@RequestParam("companyname") String companyname,@RequestParam(required=false,value="idCompany") Integer idCompany) throws Exception {
+	public Message checkCompanyName(@RequestParam("companyname") String companyname,@RequestParam(required=false,value="idCompany") Long idCompany) throws Exception {
 		return companyService.checkCompanyName(companyname,idCompany);
 	}
 
