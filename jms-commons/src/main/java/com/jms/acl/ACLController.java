@@ -36,11 +36,6 @@ public class ACLController {
 	@Autowired
 	private UsersRepository usersRepository;
 	
-	@Autowired
-	private SecuredObjService securedObjService;
-	
-	@Autowired
-	private SecuredObjDAO securedObjDAO;
     
     public static Permission getPermissionFromNumber(int permNum) {
     	switch(permNum) {

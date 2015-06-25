@@ -30,7 +30,7 @@ import javax.persistence.Transient;
 @Table(name="company"
     ,catalog="jms"
 )
-public class Company extends AbstractSecuredObject  implements java.io.Serializable {
+public class Company extends AbstractSecuredEntity  implements java.io.Serializable {
 
 
      private Long idCompany;
