@@ -407,13 +407,16 @@ public class Company extends AbstractSecuredEntity  implements java.io.Serializa
         this.roleses = roleses;
     }
 
-  @Override @Transient
+   @Transient
   public Long getId()
   {
 	  return this.getIdCompany();
   }
 
-
+   @Transient
+	public Users getUser() {
+		return this.getUsers();
+	}
 }
 
 

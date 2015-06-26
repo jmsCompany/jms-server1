@@ -11,10 +11,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.csvreader.CsvReader;
+import com.jms.acl.SecurityACLDAO;
 import com.jms.domain.Config;
 import com.jms.domain.EnabledEnum;
 import com.jms.domain.db.Company;
@@ -74,6 +75,10 @@ public class CompanyService {
 
 	@Autowired
 	private SysDicDRepository sysDicDRepository;
+
+	
+	@Autowired
+	private SecurityACLDAO securityACLDAO;
 	private static final Logger logger = LogManager
 			.getLogger(CompanyService.class.getCanonicalName());
 
@@ -116,6 +121,7 @@ public class CompanyService {
 		companyRepository.save(company);
 		dbUser.setCompany(company);
 		usersRepository.save(dbUser);
+		securityACLDAO.addPermission(company, Company.class, BasePermission.ADMINISTRATION);
 		// todo: find template company by some rules!!
 		Company templateCompany = companyRepository
 				.findByCompanyName("零售业企业模版");

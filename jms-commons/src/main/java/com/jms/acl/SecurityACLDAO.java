@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
+import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.acls.model.AccessControlEntry;
 import org.springframework.security.acls.model.MutableAcl;
 import org.springframework.security.acls.model.MutableAclService;
@@ -22,11 +24,31 @@ import com.jms.domain.db.AbstractSecuredEntity;
 public class SecurityACLDAO {
 	private static Logger logger = LoggerFactory.getLogger(SecurityACLDAO.class);
 
-    private MutableAclService mutableAclService;
+   @Autowired private MutableAclService mutableAclService;
 
 	public SecurityACLDAO() {
 	}
 
+	@Transactional(readOnly = false)
+	public void addPermission(AbstractSecuredEntity element,
+			Class domainClass,Permission permission) {
+        MutableAcl acl;
+        System.out.println("class: "+domainClass.getCanonicalName() +", id: " +element.getId());
+        ObjectIdentity oid = new ObjectIdentityImpl(domainClass, element.getId());
+        try {
+            acl = (MutableAcl) mutableAclService.readAclById(oid);
+        } catch (NotFoundException nfe) {
+            acl = mutableAclService.createAcl(oid);
+        }
+
+        acl.insertAce(acl.getEntries().size(), permission, new PrincipalSid(""+element.getUser().getIdUser()), true);
+        mutableAclService.updateAcl(acl);
+
+      
+    
+	
+		
+	}
 	@Transactional(readOnly = false)
     public void addPermission(AbstractSecuredEntity element, Sid recipient, Permission permission) {
         MutableAcl acl;
@@ -74,6 +96,27 @@ public class SecurityACLDAO {
         }
 		return true;
     }
+
+	@Transactional
+	public void deletePermission(AbstractSecuredEntity element,
+			Class domainClass, Sid recipient, Permission permission) {
+
+        ObjectIdentity oid = new ObjectIdentityImpl(domainClass, element.getId());
+        MutableAcl acl = (MutableAcl) mutableAclService.readAclById(oid);
+
+        // Remove all permissions associated with this particular recipient (string equality to KISS)
+        List<AccessControlEntry> entries = acl.getEntries();
+
+        for (int i = 0; i < entries.size(); i++) {
+            if (entries.get(i).getSid().equals(recipient) && entries.get(i).getPermission().equals(permission)) {
+                acl.deleteAce(i);
+            }
+        }
+
+        mutableAclService.updateAcl(acl);
+
+		
+	}
 
 	/*
 	 * Check if ACE - Access Control Entry exists already

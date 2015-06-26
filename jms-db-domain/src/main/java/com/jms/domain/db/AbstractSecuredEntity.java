@@ -1,15 +1,16 @@
 package com.jms.domain.db;
 
 import java.io.Serializable;
-import javax.persistence.MappedSuperclass;
 
+import javax.persistence.Transient;
 
-@MappedSuperclass
 public abstract class AbstractSecuredEntity implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-
+	@Transient
     private Long id;
+	@Transient
+    private Users user;
 
     public Long getId() {
         return id;
@@ -39,5 +40,13 @@ public abstract class AbstractSecuredEntity implements Serializable {
 		if (id != other.id)
 			return false;
 		return true;
+	}
+
+	public Users getUser() {
+		return user;
+	}
+
+	public void setUser(Users user) {
+		this.user = user;
 	}
 }
