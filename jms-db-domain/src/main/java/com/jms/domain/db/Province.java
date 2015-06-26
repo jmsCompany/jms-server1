@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-25 9:56:24 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.HashSet;
@@ -22,7 +22,7 @@ import javax.persistence.Table;
 public class Province  implements java.io.Serializable {
 
 
-     private int idProvince;
+     private Long idProvince;
      private String province;
      private Set<City> cities = new HashSet<City>(0);
 
@@ -30,10 +30,10 @@ public class Province  implements java.io.Serializable {
     }
 
 	
-    public Province(int idProvince) {
+    public Province(Long idProvince) {
         this.idProvince = idProvince;
     }
-    public Province(int idProvince, String province, Set<City> cities) {
+    public Province(Long idProvince, String province, Set<City> cities) {
        this.idProvince = idProvince;
        this.province = province;
        this.cities = cities;
@@ -42,11 +42,11 @@ public class Province  implements java.io.Serializable {
      @Id 
     
     @Column(name="ID_PROVINCE", unique=true, nullable=false)
-    public int getIdProvince() {
+    public Long getIdProvince() {
         return this.idProvince;
     }
     
-    public void setIdProvince(int idProvince) {
+    public void setIdProvince(Long idProvince) {
         this.idProvince = idProvince;
     }
     

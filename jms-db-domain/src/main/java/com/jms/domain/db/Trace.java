@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-25 9:56:24 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.Date;
@@ -25,7 +25,7 @@ import javax.persistence.TemporalType;
 public class Trace  implements java.io.Serializable {
 
 
-     private Integer idTrace;
+     private Long idTrace;
      private Users users;
      private String actionType;
      private Date traceTime;
@@ -52,11 +52,11 @@ public class Trace  implements java.io.Serializable {
      @Id @GeneratedValue(strategy=IDENTITY)
     
     @Column(name="ID_TRACE", unique=true, nullable=false)
-    public Integer getIdTrace() {
+    public Long getIdTrace() {
         return this.idTrace;
     }
     
-    public void setIdTrace(Integer idTrace) {
+    public void setIdTrace(Long idTrace) {
         this.idTrace = idTrace;
     }
 @ManyToOne(fetch=FetchType.LAZY)

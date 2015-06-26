@@ -3,15 +3,15 @@ package com.jms.domain;
 public enum EnabledEnum {
 
 	//ROBOT only for testing purpose
-	DISENABLED(0), ENABLED(1), ROBOT(2);
+	DISENABLED(0l), ENABLED(1l), ROBOT(2l);
 	 
-	private int statusCode;
+	private Long statusCode;
  
-	private EnabledEnum(int s) {
+	private EnabledEnum(Long s) {
 		statusCode = s;
 	}
  
-	public int getStatusCode() {
+	public Long getStatusCode() {
 		return statusCode;
 	}
 }

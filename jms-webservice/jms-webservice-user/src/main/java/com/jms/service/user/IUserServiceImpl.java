@@ -62,7 +62,7 @@ public class IUserServiceImpl implements IUserService {
 			users.setPassword(new BCryptPasswordEncoder().encode(users
 					.getPassword()));
 			users.setCreationTime(new Date());
-			users.setEnabled(1);
+			users.setEnabled(1l);
 			usersRepository.save(users);
 			Message msgToClient = messagesUitl.getMessage(
 					"user.register.success", null, MessageTypeEnum.INFOMATION);
@@ -73,13 +73,13 @@ public class IUserServiceImpl implements IUserService {
 
 	}
 
-	public void updatePassword(int idUser, String newpassword) {
+	public void updatePassword(Long idUser, String newpassword) {
 		Users users = usersRepository.findOne(idUser);
 		users.setPassword(new BCryptPasswordEncoder().encode(newpassword));
 		usersRepository.save(users);
 	}
 
-	public Message checkLogin(String username, String email, String mobile,Integer idUser) {
+	public Message checkLogin(String username, String email, String mobile,Long idUser) {
 		logger.debug(" username: " + username + ", email: " + email + ", "
 				+ mobile);
 		Message msg1 = checkLogin(username,idUser);
@@ -112,7 +112,7 @@ public class IUserServiceImpl implements IUserService {
 
 	}
 
-	public Message checkLogin(String login, Integer idUser) {
+	public Message checkLogin(String login, Long idUser) {
 		if (login != null && !login.isEmpty()) {
 			Users u = usersRepository.findByUsernameOrEmailOrMobile(login);
 			if(idUser==null)
@@ -147,7 +147,7 @@ public class IUserServiceImpl implements IUserService {
 	}
 	
 	@Transactional(readOnly=true)
-	public List<WSUser> getUsersByIdSector(int idSector) throws Exception
+	public List<WSUser> getUsersByIdSector(Long idSector) throws Exception
 	{
 		List<WSUser> wsUsers = new ArrayList<WSUser>(0);
 		for(Users u:usersRepository.findUsersByIdSector(idSector))

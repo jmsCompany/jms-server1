@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-25 9:56:24 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.Date;
@@ -29,7 +29,7 @@ import javax.persistence.TemporalType;
 public class Task  implements java.io.Serializable {
 
 
-     private Integer idTask;
+     private Long idTask;
      private SysDicD sysDicDByStatus;
      private Users usersByAssignee;
      private Users usersByCreator;
@@ -41,11 +41,11 @@ public class Task  implements java.io.Serializable {
      private Date modificationTime;
      private Date planStartTime;
      private Date planEndTime;
-     private Integer planDuration;
+     private Long planDuration;
      private Date startTime;
      private Date endTime;
-     private Integer duration;
-     private Integer seq;
+     private Long duration;
+     private Long seq;
      private Set<TaskDoc> taskDocs = new HashSet<TaskDoc>(0);
      private Set<TaskComment> taskComments = new HashSet<TaskComment>(0);
 
@@ -58,7 +58,7 @@ public class Task  implements java.io.Serializable {
         this.planStartTime = planStartTime;
         this.planEndTime = planEndTime;
     }
-    public Task(SysDicD sysDicDByStatus, Users usersByAssignee, Users usersByCreator, Project project, SysDicD sysDicDByPriority, String name, String description, Date creationTime, Date modificationTime, Date planStartTime, Date planEndTime, Integer planDuration, Date startTime, Date endTime, Integer duration, Integer seq, Set<TaskDoc> taskDocs, Set<TaskComment> taskComments) {
+    public Task(SysDicD sysDicDByStatus, Users usersByAssignee, Users usersByCreator, Project project, SysDicD sysDicDByPriority, String name, String description, Date creationTime, Date modificationTime, Date planStartTime, Date planEndTime, Long planDuration, Date startTime, Date endTime, Long duration, Long seq, Set<TaskDoc> taskDocs, Set<TaskComment> taskComments) {
        this.sysDicDByStatus = sysDicDByStatus;
        this.usersByAssignee = usersByAssignee;
        this.usersByCreator = usersByCreator;
@@ -82,11 +82,11 @@ public class Task  implements java.io.Serializable {
      @Id @GeneratedValue(strategy=IDENTITY)
     
     @Column(name="ID_TASK", unique=true, nullable=false)
-    public Integer getIdTask() {
+    public Long getIdTask() {
         return this.idTask;
     }
     
-    public void setIdTask(Integer idTask) {
+    public void setIdTask(Long idTask) {
         this.idTask = idTask;
     }
 @ManyToOne(fetch=FetchType.LAZY)
@@ -190,11 +190,11 @@ public class Task  implements java.io.Serializable {
     }
     
     @Column(name="PLAN_DURATION")
-    public Integer getPlanDuration() {
+    public Long getPlanDuration() {
         return this.planDuration;
     }
     
-    public void setPlanDuration(Integer planDuration) {
+    public void setPlanDuration(Long planDuration) {
         this.planDuration = planDuration;
     }
     @Temporal(TemporalType.DATE)
@@ -217,20 +217,20 @@ public class Task  implements java.io.Serializable {
     }
     
     @Column(name="DURATION")
-    public Integer getDuration() {
+    public Long getDuration() {
         return this.duration;
     }
     
-    public void setDuration(Integer duration) {
+    public void setDuration(Long duration) {
         this.duration = duration;
     }
     
     @Column(name="SEQ")
-    public Integer getSeq() {
+    public Long getSeq() {
         return this.seq;
     }
     
-    public void setSeq(Integer seq) {
+    public void setSeq(Long seq) {
         this.seq = seq;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="task")

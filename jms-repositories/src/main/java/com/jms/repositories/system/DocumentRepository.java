@@ -7,6 +7,6 @@ import com.jms.domain.db.Document;
 
 
 @Repository
-public interface DocumentRepository extends CrudRepository<Document, Integer>{
+public interface DocumentRepository extends CrudRepository<Document, Long>{
 
 }

@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-25 9:56:24 by Hibernate Tools 3.2.2.GA
 
 
 import javax.persistence.AttributeOverride;
@@ -25,7 +25,7 @@ public class IssueDoc  implements java.io.Serializable {
      private IssueDocId id;
      private Issue issue;
      private Document document;
-     private Integer publish;
+     private Long publish;
 
     public IssueDoc() {
     }
@@ -36,7 +36,7 @@ public class IssueDoc  implements java.io.Serializable {
         this.issue = issue;
         this.document = document;
     }
-    public IssueDoc(IssueDocId id, Issue issue, Document document, Integer publish) {
+    public IssueDoc(IssueDocId id, Issue issue, Document document, Long publish) {
        this.id = id;
        this.issue = issue;
        this.document = document;
@@ -75,11 +75,11 @@ public class IssueDoc  implements java.io.Serializable {
     }
     
     @Column(name="PUBLISH")
-    public Integer getPublish() {
+    public Long getPublish() {
         return this.publish;
     }
     
-    public void setPublish(Integer publish) {
+    public void setPublish(Long publish) {
         this.publish = publish;
     }
 

@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-25 9:56:24 by Hibernate Tools 3.2.2.GA
 
 
 import javax.persistence.Column;
@@ -12,33 +12,33 @@ import javax.persistence.Embeddable;
 public class ProjectDocId  implements java.io.Serializable {
 
 
-     private int idProject;
-     private int idDocument;
+     private Long idProject;
+     private Long idDocument;
 
     public ProjectDocId() {
     }
 
-    public ProjectDocId(int idProject, int idDocument) {
+    public ProjectDocId(Long idProject, Long idDocument) {
        this.idProject = idProject;
        this.idDocument = idDocument;
     }
    
 
     @Column(name="ID_PROJECT", nullable=false)
-    public int getIdProject() {
+    public Long getIdProject() {
         return this.idProject;
     }
     
-    public void setIdProject(int idProject) {
+    public void setIdProject(Long idProject) {
         this.idProject = idProject;
     }
 
     @Column(name="ID_DOCUMENT", nullable=false)
-    public int getIdDocument() {
+    public Long getIdDocument() {
         return this.idDocument;
     }
     
-    public void setIdDocument(int idDocument) {
+    public void setIdDocument(Long idDocument) {
         this.idDocument = idDocument;
     }
 
@@ -49,15 +49,15 @@ public class ProjectDocId  implements java.io.Serializable {
 		 if ( !(other instanceof ProjectDocId) ) return false;
 		 ProjectDocId castOther = ( ProjectDocId ) other; 
          
-		 return (this.getIdProject()==castOther.getIdProject())
- && (this.getIdDocument()==castOther.getIdDocument());
+		 return ( (this.getIdProject()==castOther.getIdProject()) || ( this.getIdProject()!=null && castOther.getIdProject()!=null && this.getIdProject().equals(castOther.getIdProject()) ) )
+ && ( (this.getIdDocument()==castOther.getIdDocument()) || ( this.getIdDocument()!=null && castOther.getIdDocument()!=null && this.getIdDocument().equals(castOther.getIdDocument()) ) );
    }
    
    public int hashCode() {
          int result = 17;
          
-         result = 37 * result + this.getIdProject();
-         result = 37 * result + this.getIdDocument();
+         result = 37 * result + ( getIdProject() == null ? 0 : this.getIdProject().hashCode() );
+         result = 37 * result + ( getIdDocument() == null ? 0 : this.getIdDocument().hashCode() );
          return result;
    }   
 

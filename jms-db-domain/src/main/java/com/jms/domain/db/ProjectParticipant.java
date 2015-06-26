@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-25 9:56:24 by Hibernate Tools 3.2.2.GA
 
 
 import javax.persistence.AttributeOverride;
@@ -25,7 +25,7 @@ public class ProjectParticipant  implements java.io.Serializable {
      private ProjectParticipantId id;
      private Users users;
      private Project project;
-     private Integer isCharge;
+     private Long isCharge;
 
     public ProjectParticipant() {
     }
@@ -36,7 +36,7 @@ public class ProjectParticipant  implements java.io.Serializable {
         this.users = users;
         this.project = project;
     }
-    public ProjectParticipant(ProjectParticipantId id, Users users, Project project, Integer isCharge) {
+    public ProjectParticipant(ProjectParticipantId id, Users users, Project project, Long isCharge) {
        this.id = id;
        this.users = users;
        this.project = project;
@@ -75,11 +75,11 @@ public class ProjectParticipant  implements java.io.Serializable {
     }
     
     @Column(name="IS_CHARGE")
-    public Integer getIsCharge() {
+    public Long getIsCharge() {
         return this.isCharge;
     }
     
-    public void setIsCharge(Integer isCharge) {
+    public void setIsCharge(Long isCharge) {
         this.isCharge = isCharge;
     }
 

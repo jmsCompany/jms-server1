@@ -11,10 +11,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.csvreader.CsvReader;
+import com.jms.acl.SecurityACLDAO;
 import com.jms.domain.Config;
 import com.jms.domain.EnabledEnum;
 import com.jms.domain.db.Company;
@@ -74,11 +75,15 @@ public class CompanyService {
 
 	@Autowired
 	private SysDicDRepository sysDicDRepository;
+
+	
+	@Autowired
+	private SecurityACLDAO securityACLDAO;
 	private static final Logger logger = LogManager
 			.getLogger(CompanyService.class.getCanonicalName());
 
 	@Transactional(readOnly = true)
-	public Company findCompanyById(int idCompany) {
+	public Company findCompanyById(Long idCompany) {
 		Company company = companyRepository.findOne(idCompany);
 		if (company.getEnabled() == EnabledEnum.DISENABLED.getStatusCode())
 			return null;
@@ -86,8 +91,8 @@ public class CompanyService {
 	}
 
 	@Transactional(readOnly = true)
-	public Company findCompanyByIdUser(String idUser) {
-		Users u = usersRepository.findByUsernameOrEmailOrMobile(idUser);
+	public Company findCompanyByLogin(String login) {
+		Users u = usersRepository.findByUsernameOrEmailOrMobile(login);
 		if (u == null)
 			return null;
 		Company company = u.getCompany();
@@ -109,13 +114,14 @@ public class CompanyService {
 			return message;
 		Users dbUser = userAdapter.toDBUser(wsCompany.getWsUsers(), null);
 		iUserServiceImpl.register(dbUser);
-		wsCompany.setVerified(0);
+		wsCompany.setVerified(0l);
 		Company company = companyAdapter.toDBCompany(wsCompany, null);
 		company.setUsers(dbUser);
 		company.setCreationTime(new Date());
 		companyRepository.save(company);
 		dbUser.setCompany(company);
 		usersRepository.save(dbUser);
+		securityACLDAO.addPermission(company, Company.class, BasePermission.ADMINISTRATION);
 		// todo: find template company by some rules!!
 		Company templateCompany = companyRepository
 				.findByCompanyName("零售业企业模版");
@@ -127,7 +133,7 @@ public class CompanyService {
 
 	@Transactional(readOnly = false)
 	public Message updateCompany(WSCompany wsCompany) throws Exception {
-		Integer idCompamplany = wsCompany.getIdCompany();
+		Long idCompamplany = wsCompany.getIdCompany();
 		Company company = companyRepository.findOne(idCompamplany);
 		Message message = checkCompanyName(wsCompany.getCompanyName(),
 				idCompamplany);
@@ -140,7 +146,7 @@ public class CompanyService {
 
 	}
 
-	public Message checkCompanyName(String companyName, Integer idCompany) {
+	public Message checkCompanyName(String companyName, Long idCompany) {
 
 		String dbCompanyName = "";
 		if (idCompany != null) {

@@ -1,20 +1,20 @@
 package com.jms.domain.ws;
 
 public class WSRoles implements java.io.Serializable{
-	private Integer idRole;
+	private Long idRole;
 	private String companyName;
 	private String role;
 	private String description;
-	private Integer level;
-	private Integer idSector;
+	private Long level;
+	private Long idSector;
 	private String sector;
-	private Integer enabled;
-	 private Integer isprimary;;
-	public Integer getIdRole() {
+	private Long enabled;
+	 private Long isprimary;;
+	public Long getIdRole() {
 		return idRole;
 	}
 
-	public void setIdRole(Integer idRole) {
+	public void setIdRole(Long idRole) {
 		this.idRole = idRole;
 	}
 
@@ -42,19 +42,19 @@ public class WSRoles implements java.io.Serializable{
 		this.description = description;
 	}
 
-	public Integer getLevel() {
+	public Long getLevel() {
 		return level;
 	}
 
-	public void setLevel(Integer level) {
+	public void setLevel(Long level) {
 		this.level = level;
 	}
 
-	public Integer getIdSector() {
+	public Long getIdSector() {
 		return idSector;
 	}
 
-	public void setIdSector(Integer idSector) {
+	public void setIdSector(Long idSector) {
 		this.idSector = idSector;
 	}
 
@@ -66,19 +66,19 @@ public class WSRoles implements java.io.Serializable{
 		this.sector = sector;
 	}
 
-	public Integer getEnabled() {
+	public Long getEnabled() {
 		return enabled;
 	}
 
-	public void setEnabled(Integer enabled) {
+	public void setEnabled(Long enabled) {
 		this.enabled = enabled;
 	}
 
-	public Integer getIsprimary() {
+	public Long getIsprimary() {
 		return isprimary;
 	}
 
-	public void setIsprimary(Integer isprimary) {
+	public void setIsprimary(Long isprimary) {
 		this.isprimary = isprimary;
 	}
 

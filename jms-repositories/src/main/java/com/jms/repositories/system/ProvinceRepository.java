@@ -7,7 +7,7 @@ import com.jms.domain.db.City;
 import com.jms.domain.db.Province;
 
 @Repository
-public interface ProvinceRepository extends CrudRepository<Province, Integer>{
+public interface ProvinceRepository extends CrudRepository<Province, Long>{
 
 
 }

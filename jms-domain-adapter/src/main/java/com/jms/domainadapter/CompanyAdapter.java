@@ -36,7 +36,7 @@ public class CompanyAdapter {
 		if (wsCompany == null)
 			return null;
 		Company c = (Company) BeanUtil.shallowCopy(wsCompany, Company.class,company);
-        c.setEnabled(1);
+        c.setEnabled(1l);
 		if (wsCompany.getCompanyNature() != null) {
 			c.setSysDicDByCompanyNature(sysDicDRepository.findOne(wsCompany
 					.getCompanyNature().getIdDic()));

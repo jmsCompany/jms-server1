@@ -9,7 +9,7 @@ import com.jms.domain.db.Province;
 import com.jms.domain.db.SysDic;
 
 @Repository
-public interface SysDicRepository extends CrudRepository<SysDic, String>{
+public interface SysDicRepository extends CrudRepository<SysDic, Long>{
 
 
 }

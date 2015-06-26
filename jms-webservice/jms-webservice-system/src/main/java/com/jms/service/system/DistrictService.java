@@ -58,7 +58,7 @@ public class DistrictService {
 		return wsProvinces;
 	}
 	
-	public List<WSCity> getCites(Integer idProvince) throws Exception
+	public List<WSCity> getCites(Long idProvince) throws Exception
 	{
 		List<WSCity> wsCities = new ArrayList<WSCity>(0);
 		for(City c: provinceRepository.findOne(idProvince).getCities())
@@ -68,7 +68,7 @@ public class DistrictService {
 		return wsCities;
 	}
 	
-	public List<WSDistrict> getDistricts(Integer idCity) throws Exception
+	public List<WSDistrict> getDistricts(Long idCity) throws Exception
 	{
 		List<WSDistrict> wsDistricts = new ArrayList<WSDistrict>(0);
 		for(District d: cityRepository.findOne(idCity).getDistricts())
@@ -84,7 +84,7 @@ public class DistrictService {
 		while(reader.readRecord())
 		{
 			Province p = new Province();
-			p.setIdProvince(Integer.parseInt(reader.get(0).trim()));
+			p.setIdProvince(Long.parseLong(reader.get(0).trim()));
 		    p.setProvince(reader.get(1).trim());
 			logger.debug("Province: " + reader.get(1));
 			provinceRepository.save(p); 
@@ -97,10 +97,10 @@ public class DistrictService {
       //  reader.readHeaders();  //Parent,  Name,     Description
 		while(reader.readRecord())
 		{
-			int idCity = Integer.parseInt(reader.get(0).trim());
+			Long idCity = Long.parseLong(reader.get(0).trim());
 			String scity = reader.get(1).trim();
 			String postcode =reader.get(2).trim();
-			int idProvince = Integer.parseInt(reader.get(3).trim());
+			Long idProvince = Long.parseLong(reader.get(3).trim());
 			Province province = provinceRepository.findOne(idProvince);
 			City  city = new City();
 			city.setCity(scity);
@@ -119,10 +119,10 @@ public class DistrictService {
       //  reader.readHeaders();  //Parent,  Name,     Description
 		while(reader.readRecord())
 		{
-			int idDistrict = Integer.parseInt(reader.get(0).trim());
+			Long idDistrict = Long.parseLong(reader.get(0).trim());
 			String sdistrict = reader.get(1).trim();
 			
-			int idCity = Integer.parseInt(reader.get(2).trim());
+			Long idCity = Long.parseLong(reader.get(2).trim());
 			City city = cityRepository.findOne(idCity);
 			District  district = new District();
 			district.setIdDistrict(idDistrict);

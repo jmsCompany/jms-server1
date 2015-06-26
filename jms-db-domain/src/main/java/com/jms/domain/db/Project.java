@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-25 9:56:24 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.Date;
@@ -29,7 +29,7 @@ import javax.persistence.TemporalType;
 public class Project  implements java.io.Serializable {
 
 
-     private Integer idProject;
+     private Long idProject;
      private Company company;
      private Project project;
      private Users users;
@@ -41,8 +41,8 @@ public class Project  implements java.io.Serializable {
      private Date planEndTime;
      private Date startTime;
      private Date endTime;
-     private int enabled;
-     private Integer process;
+     private Long enabled;
+     private Long process;
      private Set<Issue> issues = new HashSet<Issue>(0);
      private Set<ProjectDoc> projectDocs = new HashSet<ProjectDoc>(0);
      private Set<ProjectParticipant> projectParticipants = new HashSet<ProjectParticipant>(0);
@@ -53,12 +53,12 @@ public class Project  implements java.io.Serializable {
     }
 
 	
-    public Project(Company company, String projectName, int enabled) {
+    public Project(Company company, String projectName, Long enabled) {
         this.company = company;
         this.projectName = projectName;
         this.enabled = enabled;
     }
-    public Project(Company company, Project project, Users users, SysDicD sysDicD, String projectName, String projectNumber, String description, Date planStartTime, Date planEndTime, Date startTime, Date endTime, int enabled, Integer process, Set<Issue> issues, Set<ProjectDoc> projectDocs, Set<ProjectParticipant> projectParticipants, Set<Project> projects, Set<Task> tasks) {
+    public Project(Company company, Project project, Users users, SysDicD sysDicD, String projectName, String projectNumber, String description, Date planStartTime, Date planEndTime, Date startTime, Date endTime, Long enabled, Long process, Set<Issue> issues, Set<ProjectDoc> projectDocs, Set<ProjectParticipant> projectParticipants, Set<Project> projects, Set<Task> tasks) {
        this.company = company;
        this.project = project;
        this.users = users;
@@ -82,11 +82,11 @@ public class Project  implements java.io.Serializable {
      @Id @GeneratedValue(strategy=IDENTITY)
     
     @Column(name="ID_PROJECT", unique=true, nullable=false)
-    public Integer getIdProject() {
+    public Long getIdProject() {
         return this.idProject;
     }
     
-    public void setIdProject(Integer idProject) {
+    public void setIdProject(Long idProject) {
         this.idProject = idProject;
     }
 @ManyToOne(fetch=FetchType.LAZY)
@@ -190,20 +190,20 @@ public class Project  implements java.io.Serializable {
     }
     
     @Column(name="ENABLED", nullable=false)
-    public int getEnabled() {
+    public Long getEnabled() {
         return this.enabled;
     }
     
-    public void setEnabled(int enabled) {
+    public void setEnabled(Long enabled) {
         this.enabled = enabled;
     }
     
     @Column(name="PROCESS")
-    public Integer getProcess() {
+    public Long getProcess() {
         return this.process;
     }
     
-    public void setProcess(Integer process) {
+    public void setProcess(Long process) {
         this.process = process;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="project")

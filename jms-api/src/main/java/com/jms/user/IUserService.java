@@ -12,10 +12,10 @@ public interface IUserService {
 	@Transactional(readOnly=false)
 	public Message register(Users users);
 	@Transactional(readOnly=true)
-	public Message checkLogin(String login,Integer idUser);
+	public Message checkLogin(String login,Long idUser);
 	@Transactional(readOnly=true)
-	public Message checkLogin(String username,String email,String mobile,Integer idUser);
+	public Message checkLogin(String username,String email,String mobile,Long idUser);
 	@Transactional(readOnly=true)
-	public List<WSUser> getUsersByIdSector(int idSector) throws Exception;
+	public List<WSUser> getUsersByIdSector(Long idSector) throws Exception;
 }
 

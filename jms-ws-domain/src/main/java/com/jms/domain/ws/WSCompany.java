@@ -5,7 +5,7 @@ import java.util.Date;
 public class WSCompany implements java.io.Serializable{
 	
 	private static final long serialVersionUID = -677955905886087907L;
-	private Integer idCompany;
+	private Long idCompany;
     private WSUser wsUsers;
     private String companyName;
     private String description;
@@ -18,8 +18,8 @@ public class WSCompany implements java.io.Serializable{
     private WSSysDicD taskType;
     private WSSysDicD locale;
     private  Float  usedSpace;
-    private int enabled;
-    private Integer verified;
+    private Long enabled;
+    private Long verified;
     private String telephone;
     private String fax;
     private String email;
@@ -29,8 +29,8 @@ public class WSCompany implements java.io.Serializable{
     private String postcode;
     private String url;
     private Float space;
-    private Integer msgAvailableNum;
-    private Integer msgUsedNum;
+    private Long msgAvailableNum;
+    private Long msgUsedNum;
     private WSProvince wsProvince;
     private WSCity wsCity; 
     private WSDistrict wsDistrict;
@@ -46,11 +46,11 @@ public class WSCompany implements java.io.Serializable{
  
    }
   
-   public Integer getIdCompany() {
+   public Long getIdCompany() {
        return this.idCompany;
    }
    
-   public void setIdCompany(Integer idCompany) {
+   public void setIdCompany(Long idCompany) {
        this.idCompany = idCompany;
    }
 
@@ -103,21 +103,21 @@ public class WSCompany implements java.io.Serializable{
 		this.usedSpace = usedSpace;
 	}
 
-	public int getEnabled() {
+	public Long getEnabled() {
 		return enabled;
 	}
 
 
-	public void setEnabled(int enabled) {
+	public void setEnabled(Long enabled) {
 		this.enabled = enabled;
 	}
 
-	public Integer getVerified() {
+	public Long getVerified() {
 		return verified;
 	}
 
 
-	public void setVerified(Integer verified) {
+	public void setVerified(Long verified) {
 		this.verified = verified;
 	}
 
@@ -302,22 +302,22 @@ public class WSCompany implements java.io.Serializable{
 	}
 
 
-	public Integer getMsgAvailableNum() {
+	public Long getMsgAvailableNum() {
 		return msgAvailableNum;
 	}
 
 
-	public void setMsgAvailableNum(Integer msgAvailableNum) {
+	public void setMsgAvailableNum(Long msgAvailableNum) {
 		this.msgAvailableNum = msgAvailableNum;
 	}
 
 
-	public Integer getMsgUsedNum() {
+	public Long getMsgUsedNum() {
 		return msgUsedNum;
 	}
 
 
-	public void setMsgUsedNum(Integer msgUsedNum) {
+	public void setMsgUsedNum(Long msgUsedNum) {
 		this.msgUsedNum = msgUsedNum;
 	}
 

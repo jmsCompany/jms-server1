@@ -54,7 +54,7 @@ public class FileController {
 			doc.setDescription(description);
 			doc.setName(name);
 			doc.setRelativePath(Config.docsRelativePath);
-			int size = (int) (file.getSize() / 1024);
+			Long size =(file.getSize() / 1024);
 			doc.setSize(size);
 			documentRepository.save(doc);
 			return doc;
@@ -64,7 +64,7 @@ public class FileController {
 
 	@RequestMapping(value = "/logoUpload", method = RequestMethod.POST)
 	public ResponseEntity<InputStreamResource> handleLogoUpload(
-			@RequestParam("idCompany") Integer idCompany,
+			@RequestParam("idCompany") Long idCompany,
 			@RequestParam("file") MultipartFile file) throws IOException {
 		if (!file.isEmpty()) {
 			String name = "" + new Date().getTime();
@@ -76,7 +76,7 @@ public class FileController {
 			doc.setDescription("logo");
 			doc.setName(name);
 			doc.setRelativePath(Config.logoRelativePath);
-			int size = (int) (file.getSize() / 1024);
+			Long size = (file.getSize() / 1024);
 			doc.setSize(size);
 			documentRepository.save(doc);
 			Company company = companyRepository.findOne(idCompany);
@@ -104,7 +104,7 @@ public class FileController {
 
 	@RequestMapping(value = "/licenseUpload", method = RequestMethod.POST)
 	public ResponseEntity<InputStreamResource> handlicenseUpload(
-			@RequestParam("idCompany") Integer idCompany,
+			@RequestParam("idCompany") Long idCompany,
 			@RequestParam("file") MultipartFile file) throws IOException {
 		if (!file.isEmpty()) {
 			String name = "" + new Date().getTime();
@@ -116,7 +116,7 @@ public class FileController {
 			doc.setDescription("logo");
 			doc.setName(name);
 			doc.setRelativePath(Config.licenseRelativePath);
-			int size = (int) (file.getSize() / 1024);
+			Long size = (file.getSize() / 1024);
 			doc.setSize(size);
 			documentRepository.save(doc);
 			Company company = companyRepository.findOne(idCompany);
@@ -143,7 +143,7 @@ public class FileController {
 	}
 	
 	@RequestMapping(value = "/download/{idDocument}", method = RequestMethod.GET)
-	public ResponseEntity<InputStreamResource> download(@PathVariable("idDocument") Integer idDocument) throws IOException
+	public ResponseEntity<InputStreamResource> download(@PathVariable("idDocument") Long idDocument) throws IOException
 	{
 		
 		Document d = documentRepository.findOne(idDocument);
@@ -170,7 +170,7 @@ public class FileController {
 	
 	@RequestMapping(value = "/cvUpload", method = RequestMethod.POST)
 	public Document handleCVUpload(
-			@RequestParam("idUser") Integer idUser,
+			@RequestParam("idUser") Long idUser,
 			@RequestParam("file") MultipartFile file) throws IOException {
 		if (!file.isEmpty()) {
 			String name = "" + new Date().getTime();
@@ -182,7 +182,7 @@ public class FileController {
 			doc.setDescription("CV");
 			doc.setName(name);
 			doc.setRelativePath(Config.cvRelativePath);
-			int size = (int) (file.getSize() / 1024);
+			Long size =  (file.getSize() / 1024);
 			doc.setSize(size);
 			documentRepository.save(doc);
 			Users user = usersRepository.findOne(idUser);

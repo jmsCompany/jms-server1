@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-25 9:56:24 by Hibernate Tools 3.2.2.GA
 
 
 import javax.persistence.Column;
@@ -12,33 +12,33 @@ import javax.persistence.Embeddable;
 public class IssueDocId  implements java.io.Serializable {
 
 
-     private int idIssue;
-     private int idDocument;
+     private Long idIssue;
+     private Long idDocument;
 
     public IssueDocId() {
     }
 
-    public IssueDocId(int idIssue, int idDocument) {
+    public IssueDocId(Long idIssue, Long idDocument) {
        this.idIssue = idIssue;
        this.idDocument = idDocument;
     }
    
 
     @Column(name="ID_ISSUE", nullable=false)
-    public int getIdIssue() {
+    public Long getIdIssue() {
         return this.idIssue;
     }
     
-    public void setIdIssue(int idIssue) {
+    public void setIdIssue(Long idIssue) {
         this.idIssue = idIssue;
     }
 
     @Column(name="ID_DOCUMENT", nullable=false)
-    public int getIdDocument() {
+    public Long getIdDocument() {
         return this.idDocument;
     }
     
-    public void setIdDocument(int idDocument) {
+    public void setIdDocument(Long idDocument) {
         this.idDocument = idDocument;
     }
 
@@ -49,15 +49,15 @@ public class IssueDocId  implements java.io.Serializable {
 		 if ( !(other instanceof IssueDocId) ) return false;
 		 IssueDocId castOther = ( IssueDocId ) other; 
          
-		 return (this.getIdIssue()==castOther.getIdIssue())
- && (this.getIdDocument()==castOther.getIdDocument());
+		 return ( (this.getIdIssue()==castOther.getIdIssue()) || ( this.getIdIssue()!=null && castOther.getIdIssue()!=null && this.getIdIssue().equals(castOther.getIdIssue()) ) )
+ && ( (this.getIdDocument()==castOther.getIdDocument()) || ( this.getIdDocument()!=null && castOther.getIdDocument()!=null && this.getIdDocument().equals(castOther.getIdDocument()) ) );
    }
    
    public int hashCode() {
          int result = 17;
          
-         result = 37 * result + this.getIdIssue();
-         result = 37 * result + this.getIdDocument();
+         result = 37 * result + ( getIdIssue() == null ? 0 : this.getIdIssue().hashCode() );
+         result = 37 * result + ( getIdDocument() == null ? 0 : this.getIdDocument().hashCode() );
          return result;
    }   
 

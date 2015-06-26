@@ -44,7 +44,7 @@ public class RolePrivService {
 			
 			String module = reader.get("Module");
 			String role = reader.get("Role");
-			int priv = Integer.parseInt(reader.get("Priv"));
+			Long priv = Long.parseLong(reader.get("Priv"));
 			
 			Module m = moduleRepository.findByName(module);
 			Roles r =roleRepository.findByRoleAndCompanyName(role, reader.get("CompanyName"));

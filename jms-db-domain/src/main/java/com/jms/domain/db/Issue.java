@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2015-6-16 15:01:20 by Hibernate Tools 3.2.2.GA
+// Generated 2015-6-25 9:56:24 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.HashSet;
@@ -26,7 +26,7 @@ import javax.persistence.Table;
 public class Issue  implements java.io.Serializable {
 
 
-     private Integer idIssue;
+     private Long idIssue;
      private SysDicD sysDicDByStatus;
      private Project project;
      private SysDicD sysDicDByPriority;
@@ -51,11 +51,11 @@ public class Issue  implements java.io.Serializable {
      @Id @GeneratedValue(strategy=IDENTITY)
     
     @Column(name="ID_ISSUE", unique=true, nullable=false)
-    public Integer getIdIssue() {
+    public Long getIdIssue() {
         return this.idIssue;
     }
     
-    public void setIdIssue(Integer idIssue) {
+    public void setIdIssue(Long idIssue) {
         this.idIssue = idIssue;
     }
 @ManyToOne(fetch=FetchType.LAZY)
