@@ -11,6 +11,7 @@ import com.jms.domain.db.Users;
 import com.jms.domain.ws.WSUser;
 import com.jms.repositories.user.UsersRepository;
 
+
 @Service("userDetailService")
 public class JMSUserDetailService implements Serializable,
 		UserDetailsService {

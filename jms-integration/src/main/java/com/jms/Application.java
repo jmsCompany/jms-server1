@@ -1,6 +1,8 @@
 package com.jms;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -45,7 +47,7 @@ public class Application extends SpringBootServletInitializer {
 
 	@PostConstruct
 	public void init() {
-	//	SecurityContextHolder.clearContext();
+		SecurityContextHolder.clearContext();
 	
 		
 	}
