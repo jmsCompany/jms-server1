@@ -9,9 +9,14 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import scala.annotation.meta.getter;
 
 import com.jms.domain.db.SectorMember;
 import com.jms.domain.db.Users;
@@ -149,6 +154,14 @@ public class IUserServiceImpl implements IUserService {
 	@Transactional(readOnly=true)
 	public List<WSUser> getUsersByIdSector(Long idSector) throws Exception
 	{
+		//Pageable p = new PageRequest(0,1);
+		// Page<Users> requestedPage = usersRepository.findAll(p);
+		// for(Users u:requestedPage.getContent())
+		// {
+		//	 logger.debug("uid:   "+u.getIdUser());
+		// }
+		//return requestedPage.getContent();
+
 		List<WSUser> wsUsers = new ArrayList<WSUser>(0);
 		for(Users u:usersRepository.findUsersByIdSector(idSector))
 		{

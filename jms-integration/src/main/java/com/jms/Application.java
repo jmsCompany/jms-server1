@@ -3,6 +3,7 @@ package com.jms;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -21,6 +22,9 @@ import org.springframework.security.acls.jdbc.JdbcMutableAclService;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
 
 //@EnableEntityLinks
 @SpringBootApplication
@@ -28,6 +32,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement(proxyTargetClass = true)
 public class Application extends SpringBootServletInitializer {
 
+    private static final String DISPATCHER_SERVLET_NAME = "dispatcher";
+    private static final String DISPATCHER_SERVLET_MAPPING = "/jms/";
 /*	public static String CURIE_NAMESPACE = "jms";
 
 	public @Bean CurieProvider curieProvider() {
@@ -35,6 +41,7 @@ public class Application extends SpringBootServletInitializer {
 				"http://localhost:8080/alps/{rel}"));
 	}
 */
+
 	public static void main(String[] args) throws Exception {
 		// SpringApplication.run(Application.class, args);
 

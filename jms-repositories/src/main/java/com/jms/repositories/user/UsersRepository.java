@@ -2,15 +2,14 @@ package com.jms.repositories.user;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
 import com.jms.domain.db.Users;
 
 @Repository
-public interface UsersRepository  extends CrudRepository<Users, Long> {
+public interface UsersRepository extends JpaRepository<Users, Long> {
 	
 	public Users findByEmail(String email);
 	public Users findByMobile(String mobile);
