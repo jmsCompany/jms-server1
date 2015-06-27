@@ -264,4 +264,6 @@ public class SecuredObjectService {
 		return sidPerm;
 	}
 	
+//	public void changeOwner()
+	
 }

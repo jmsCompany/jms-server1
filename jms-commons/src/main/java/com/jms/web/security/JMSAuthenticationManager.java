@@ -25,8 +25,10 @@ public class JMSAuthenticationManager implements AuthenticationManager {
 	public Authentication authenticate(Authentication authentication)
 			throws AuthenticationException {
 		UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
-		String login = token.getName();
+	
+		String login = token.getName();  //实际上是用户ID
 		String password = (String) token.getCredentials();
+	
 		UserDetails userDetails = userDetailsService.loadUserByUsername(login);
 		if (password.equals(userDetails.getPassword()))
 			return authenticatedToken(userDetails, authentication);

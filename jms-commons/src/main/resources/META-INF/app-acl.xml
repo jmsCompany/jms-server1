@@ -61,10 +61,6 @@
 		<property name="classIdentityQuery" value="SELECT @@IDENTITY" />
 		<property name="sidIdentityQuery" value="SELECT @@IDENTITY" />
 		
-		<!-- Uncomment to use PostgreSQL
-        <property name="classIdentityQuery" value="select currval(pg_get_serial_sequence('acl_class', 'id'))"/>
-        <property name="sidIdentityQuery" value="select currval(pg_get_serial_sequence('acl_sid', 'id'))"/>
-        -->
 	</bean>
 
     

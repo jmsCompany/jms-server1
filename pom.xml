@@ -79,12 +79,12 @@
 		</plugins>
 	</build>
 	<repositories>
-<repository>
+        
+        <repository>
             <id>oschina-repos</id>
             <name>Oschina Releases</name>
             <url>http://maven.oschina.net/content/groups/public</url>
         </repository>
-        
         <repository>
             <id>java-repos</id>
             <name>Java Repository</name>

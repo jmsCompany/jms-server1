@@ -18,10 +18,11 @@ public class JMSUserDetailService implements Serializable,
 	@Autowired private UsersRepository usersRepository;
 	@Autowired private SecurityUtils securityUtils;
 	@Transactional(readOnly=true)
+	//时间上USERID
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
 		
-		Users user = usersRepository.findByUsernameOrEmailOrMobile(username);
+		Users user = usersRepository.findOne(Long.parseLong(username));
 		if (user == null) {
 			
 			throw new UsernameNotFoundException("Could not find user " + username);
@@ -39,4 +40,6 @@ public class JMSUserDetailService implements Serializable,
 		userDetails.setAuthorities(securityUtils.getAuthorities(username));
 		return userDetails;
 	}
+	
+
 }

@@ -45,7 +45,7 @@ public class Application extends SpringBootServletInitializer {
 
 	@PostConstruct
 	public void init() {
-		SecurityContextHolder.clearContext();
+	//	SecurityContextHolder.clearContext();
 	
 		
 	}

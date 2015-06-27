@@ -2,6 +2,7 @@ package com.jms.web.security;
 
 import java.util.Collection;
 
+import org.springframework.security.acls.jdbc.BasicLookupStrategy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ public class JMSUserDetails extends WSUser implements UserDetails {
 	}
 
 	public Collection<? extends GrantedAuthority> getAuthorities() {
+	
 		return this.authorities;
 	}
 
@@ -29,7 +31,7 @@ public class JMSUserDetails extends WSUser implements UserDetails {
 		this.authorities=authorities;
 	}
 	public String getUsername() {
-		return getLogin();
+		return ""+getIdUser();
 	}
 
 	public boolean isAccountNonExpired() {

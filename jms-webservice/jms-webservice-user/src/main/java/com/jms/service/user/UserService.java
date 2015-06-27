@@ -90,7 +90,7 @@ public class UserService extends IUserServiceImpl{
 	    	if(new BCryptPasswordEncoder().matches(password, user.getPassword()))
 	    	{
 	    		user.setLastLogin(new Date());
-	    		String token = login+"__"+new BCryptPasswordEncoder().encode(new Date().toString());
+	    		String token = user.getIdUser()+"__"+new BCryptPasswordEncoder().encode(new Date().toString());
 				user.setToken(token);
 				usersRepository.save(user);
 	    		defaultMsg = user.getToken();

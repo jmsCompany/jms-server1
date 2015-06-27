@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.domain.PrincipalSid;
+import org.springframework.security.acls.jdbc.JdbcMutableAclService;
 import org.springframework.security.acls.model.AccessControlEntry;
 import org.springframework.security.acls.model.MutableAcl;
 import org.springframework.security.acls.model.MutableAclService;
@@ -14,11 +15,13 @@ import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.security.acls.model.ObjectIdentity;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.acls.model.Sid;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.jms.domain.db.AbstractSecuredEntity;
+import com.jms.web.security.JMSUserDetails;
 
 @Repository
 public class SecurityACLDAO {
@@ -33,7 +36,7 @@ public class SecurityACLDAO {
 	public void addPermission(AbstractSecuredEntity element,
 			Class domainClass,Permission permission) {
         MutableAcl acl;
-        System.out.println("class: "+domainClass.getCanonicalName() +", id: " +element.getId());
+		//  System.out.println("!"+((JMSUserDetails)(SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getIdUser());
         ObjectIdentity oid = new ObjectIdentityImpl(domainClass, element.getId());
         try {
             acl = (MutableAcl) mutableAclService.readAclById(oid);
@@ -42,12 +45,9 @@ public class SecurityACLDAO {
         }
 
         acl.insertAce(acl.getEntries().size(), permission, new PrincipalSid(""+element.getUser().getIdUser()), true);
+     
         mutableAclService.updateAcl(acl);
 
-      
-    
-	
-		
 	}
 	@Transactional(readOnly = false)
     public void addPermission(AbstractSecuredEntity element, Sid recipient, Permission permission) {
@@ -60,7 +60,6 @@ public class SecurityACLDAO {
         } catch (NotFoundException nfe) {
             acl = mutableAclService.createAcl(oid);
         }
-
         acl.insertAce(acl.getEntries().size(), permission, recipient, true);
         mutableAclService.updateAcl(acl);
 

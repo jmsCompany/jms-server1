@@ -12,8 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.security.acls.domain.BasePermission;
+import org.springframework.security.acls.model.Sid;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.csvreader.CsvReader;
 import com.jms.acl.SecurityACLDAO;
 import com.jms.domain.Config;
@@ -28,6 +34,7 @@ import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.MessageTypeEnum;
 import com.jms.domain.ws.WSCompany;
+import com.jms.domain.ws.WSUser;
 import com.jms.domainadapter.CompanyAdapter;
 import com.jms.domainadapter.SectorAdapter;
 import com.jms.domainadapter.UserAdapter;
@@ -40,6 +47,7 @@ import com.jms.repositories.user.RoleRepository;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.repositories.workmanagement.ProjectRepository;
 import com.jms.user.IUserService;
+import com.jms.web.security.JMSUserDetails;
 import com.jms.web.security.SecurityUtils;
 
 @Service
@@ -76,7 +84,6 @@ public class CompanyService {
 	@Autowired
 	private SysDicDRepository sysDicDRepository;
 
-	
 	@Autowired
 	private SecurityACLDAO securityACLDAO;
 	private static final Logger logger = LogManager
@@ -121,6 +128,15 @@ public class CompanyService {
 		companyRepository.save(company);
 		dbUser.setCompany(company);
 		usersRepository.save(dbUser);
+		WSUser wsUser = new WSUser();
+		wsUser.setIdUser(dbUser.getIdUser());
+		wsUser.setUsername(""+dbUser.getIdUser());
+		JMSUserDetails userDetails = new JMSUserDetails(wsUser);
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+				userDetails, "***********",
+				null);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		  System.out.println("!"+((JMSUserDetails)(SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getIdUser());
 		securityACLDAO.addPermission(company, Company.class, BasePermission.ADMINISTRATION);
 		// todo: find template company by some rules!!
 		Company templateCompany = companyRepository
