@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.jms.domain.db.Company;
 
 @Repository
-public interface CompanyRepository extends RevisionRepository<Company, Long, Integer>,JpaRepository<Company, Long> {
+public interface CompanyRepository extends JpaRepository<Company, Long> {
 	public Company findByCompanyName(String companyName);
 
 }
