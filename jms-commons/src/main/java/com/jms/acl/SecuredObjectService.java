@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.acls.AclPermissionEvaluator;
 import org.springframework.security.acls.domain.BasePermission;
@@ -38,7 +41,8 @@ public class SecuredObjectService {
 	@Autowired private SecurityUtils securityUtils;
 	@Autowired private SecuredObjDAO securedObjDAO;
 	@Autowired  private MutableAclService mutableAclService;
-    
+	@PersistenceContext
+	private EntityManager em ;
 	@Transactional(readOnly = true)
 	public Map<String, Object> getSecuredObjectsWithPermissions(
 			List<AbstractSecuredEntity> secureObjList) {
@@ -70,10 +74,7 @@ public class SecuredObjectService {
 
 	}
 	
-	@Transactional(readOnly = true)
-	public <T extends AbstractSecuredEntity> T find(Class<T> clazz, Long id) {
-		return securedObjDAO.find(clazz, id);
-	}
+
 	@Transactional(readOnly = true)
 	public Map<String, String> findSidPermissionMap(Class clazz, Long id,
 			String sidType) {

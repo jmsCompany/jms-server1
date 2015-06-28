@@ -161,6 +161,7 @@ public class IUserServiceImpl implements IUserService {
 		//	 logger.debug("uid:   "+u.getIdUser());
 		// }
 		//return requestedPage.getContent();
+	
 
 		List<WSUser> wsUsers = new ArrayList<WSUser>(0);
 		for(Users u:usersRepository.findUsersByIdSector(idSector))

@@ -1,50 +1,22 @@
 package com.jms;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.web.ErrorMvcAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
-import org.springframework.hateoas.UriTemplate;
-import org.springframework.hateoas.config.EnableEntityLinks;
-import org.springframework.hateoas.hal.CurieProvider;
-import org.springframework.hateoas.hal.DefaultCurieProvider;
-import org.springframework.security.acls.jdbc.JdbcMutableAclService;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
 
-//@EnableEntityLinks
 @SpringBootApplication
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @EnableTransactionManagement(proxyTargetClass = true)
 public class Application extends SpringBootServletInitializer {
 
-    private static final String DISPATCHER_SERVLET_NAME = "dispatcher";
-    private static final String DISPATCHER_SERVLET_MAPPING = "/jms/";
-/*	public static String CURIE_NAMESPACE = "jms";
-
-	public @Bean CurieProvider curieProvider() {
-		return new DefaultCurieProvider(CURIE_NAMESPACE, new UriTemplate(
-				"http://localhost:8080/alps/{rel}"));
-	}
-*/
-
 	public static void main(String[] args) throws Exception {
 		// SpringApplication.run(Application.class, args);
-
 		ConfigurableApplicationContext ctx = SpringApplication.run(
 				Application.class, args);
 
@@ -68,7 +40,6 @@ public class Application extends SpringBootServletInitializer {
 	@Override
 	protected SpringApplicationBuilder configure(
 			SpringApplicationBuilder application) {
-		//application.initializers(initializers)
 		return application.sources(Application.class);
 	}
 }

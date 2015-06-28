@@ -1,8 +1,12 @@
 package com.jms.domain.db;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.persistence.Transient;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 public abstract class AbstractSecuredEntity implements Serializable {
 	
@@ -11,7 +15,8 @@ public abstract class AbstractSecuredEntity implements Serializable {
     private Long id;
 	@Transient
     private Users user;
-
+	//@CreatedDate LocalDateTime createdDate;
+	//@LastModifiedDate LocalDateTime modifiedDate;
     public Long getId() {
         return id;
     }

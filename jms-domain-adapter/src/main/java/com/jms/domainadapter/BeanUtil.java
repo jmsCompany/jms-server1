@@ -36,7 +36,7 @@ public class BeanUtil {
 							Object val = ClassUtil.invokeGetterMethod(sourceObj, "get" + propertyName);
 							if(val!=null)
 							{
-								logger.debug("set: "+propertyName +", val: " + val);
+							//	logger.debug("set: "+propertyName +", val: " + val);
 								ClassUtil.invokeSetterMethod(target, "set"+propertyName,getterMethod.getReturnType(), val);
 							}
 							
