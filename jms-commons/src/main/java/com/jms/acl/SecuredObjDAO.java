@@ -7,13 +7,8 @@ import com.jms.domain.db.AbstractSecuredEntity;
 
 @Repository("securedObjDAO")
 public class SecuredObjDAO {
-	
-	protected EntityManager em = null;
-
 	@PersistenceContext
-	public void setEntityManager(EntityManager em) {
-		this.em = em;
-	}
+	private EntityManager em ;
 
 	public <T extends AbstractSecuredEntity> T find(Class<T> clazz, Long id) {
 		return em.find(clazz, id);
