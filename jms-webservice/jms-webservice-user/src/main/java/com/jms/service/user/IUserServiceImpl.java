@@ -16,8 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import scala.annotation.meta.getter;
-
+import com.jms.domain.db.Groups;
 import com.jms.domain.db.SectorMember;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
@@ -26,6 +25,8 @@ import com.jms.domain.ws.WSRoles;
 import com.jms.domain.ws.WSUser;
 import com.jms.domainadapter.UserAdapter;
 import com.jms.messages.MessagesUitl;
+import com.jms.repositories.user.GroupRepository;
+import com.jms.repositories.user.GroupTypeRepository;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.user.IUserService;
 
@@ -69,6 +70,9 @@ public class IUserServiceImpl implements IUserService {
 			users.setCreationTime(new Date());
 			users.setEnabled(1l);
 			usersRepository.save(users);
+			
+	
+			
 			Message msgToClient = messagesUitl.getMessage(
 					"user.register.success", null, MessageTypeEnum.INFOMATION);
 			logger.debug(msgToClient.getMessageTypeEnum().toString() + ", "

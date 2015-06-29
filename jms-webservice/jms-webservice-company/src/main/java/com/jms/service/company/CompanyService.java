@@ -24,7 +24,9 @@ import com.csvreader.CsvReader;
 import com.jms.acl.SecurityACLDAO;
 import com.jms.domain.Config;
 import com.jms.domain.EnabledEnum;
+import com.jms.domain.GroupTypeEnum;
 import com.jms.domain.db.Company;
+import com.jms.domain.db.Groups;
 import com.jms.domain.db.Project;
 import com.jms.domain.db.RolePriv;
 import com.jms.domain.db.RolePrivId;
@@ -42,6 +44,8 @@ import com.jms.messages.MessagesUitl;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.company.SectorsRepository;
 import com.jms.repositories.system.SysDicDRepository;
+import com.jms.repositories.user.GroupRepository;
+import com.jms.repositories.user.GroupTypeRepository;
 import com.jms.repositories.user.RolePrivRepository;
 import com.jms.repositories.user.RoleRepository;
 import com.jms.repositories.user.UsersRepository;
@@ -86,6 +90,11 @@ public class CompanyService {
 
 	@Autowired
 	private SecurityACLDAO securityACLDAO;
+	@Autowired
+	protected GroupRepository groupRepository;
+
+	@Autowired
+	protected GroupTypeRepository groupTypeRepository;
 	private static final Logger logger = LogManager
 			.getLogger(CompanyService.class.getCanonicalName());
 
@@ -128,6 +137,24 @@ public class CompanyService {
 		companyRepository.save(company);
 		dbUser.setCompany(company);
 		usersRepository.save(dbUser);
+		Groups g = new Groups();
+		g.setCompany(company);
+		g.setUsers(dbUser);
+		g.setCreationTime(new Date());
+		g.setDescription("全公司成员");
+		g.setGroupName("全公司成员");
+	    g.setGroupType(groupTypeRepository.findByGroupType(GroupTypeEnum.Company.name()));
+	    groupRepository.save(g);
+	    
+		Groups g1 = new Groups();
+		g1.setCompany(company);
+		g1.setUsers(dbUser);
+		g1.setCreationTime(new Date());
+		g1.setGroupName(""+dbUser.getIdUser());
+		g1.setDescription(dbUser.getName());
+	    g1.setGroupType(groupTypeRepository.findByGroupType(GroupTypeEnum.User.name()));
+	    groupRepository.save(g1);
+	    
 		WSUser wsUser = new WSUser();
 		wsUser.setIdUser(dbUser.getIdUser());
 		wsUser.setUsername(""+dbUser.getIdUser());
@@ -136,7 +163,7 @@ public class CompanyService {
 				userDetails, "***********",
 				null);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		  System.out.println("!"+((JMSUserDetails)(SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getIdUser());
+		//  System.out.println("!"+((JMSUserDetails)(SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getIdUser());
 		securityACLDAO.addPermission(company, Company.class, BasePermission.ADMINISTRATION);
 		// todo: find template company by some rules!!
 		Company templateCompany = companyRepository
