@@ -60,7 +60,8 @@ public class SecurityUtils {
 		if(user == null) {
 			return l;
 		}
-		for(final Roles role : user.getRoleses()) {
+		//todo:
+	/*	for(final Roles role : user.getRoleses()) {
 			l.add( new GrantedAuthority() {
 				private static final long serialVersionUID = 1L;
 				
@@ -75,7 +76,7 @@ public class SecurityUtils {
 				}
 			});
 		}
-		
+		*/
 		return l;		
 	}	
 	

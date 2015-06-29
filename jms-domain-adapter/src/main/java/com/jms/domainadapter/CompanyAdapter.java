@@ -81,7 +81,7 @@ public class CompanyAdapter {
 			return null;
 		WSCompany wsc = (WSCompany) BeanUtil.shallowCopy(company,
 				WSCompany.class,null);
-		wsc.setWsUsers(userAdapter.toWSUser(company.getUsers()));
+		wsc.setWsUsers(userAdapter.toWSUser(company.getUser()));
 		if (company.getSysDicDByCompanySize() != null) {
 			WSSysDicD companySize = sysDicDAdapter.toWSSysDicD(company
 					.getSysDicDByCompanySize());

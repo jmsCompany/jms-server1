@@ -123,7 +123,7 @@ public class CompanyService {
 		iUserServiceImpl.register(dbUser);
 		wsCompany.setVerified(0l);
 		Company company = companyAdapter.toDBCompany(wsCompany, null);
-		company.setUsers(dbUser);
+		company.setUser(dbUser);
 		company.setCreationTime(new Date());
 		companyRepository.save(company);
 		dbUser.setCompany(company);
@@ -266,7 +266,7 @@ public class CompanyService {
 			templateCompany.setCompanyName(reader.get("CompanyName"));
 			templateCompany.setDescription(reader.get("Description"));
 			templateCompany.setCreationTime(new Date());
-			templateCompany.setUsers(usersRepository.findByUsername("system"));
+			templateCompany.setUser(usersRepository.findByUsername("system"));
 			templateCompany.setEnabled(EnabledEnum.ROBOT.getStatusCode());
 
 			templateCompany.setSysDicDByTaskType(sysDicDRepository

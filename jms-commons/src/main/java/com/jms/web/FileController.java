@@ -120,7 +120,7 @@ public class FileController {
 			doc.setSize(size);
 			documentRepository.save(doc);
 			Company company = companyRepository.findOne(idCompany);
-			company.setDocumentByLicense(doc);
+			company.setDocumentByLicence(doc);
 			companyRepository.save(company);
 			FileSystemResource license = new FileSystemResource(
 					Config.licenseRelativePath + name + "_"

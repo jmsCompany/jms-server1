@@ -4,8 +4,6 @@
    <type-mapping>
      <sql-type jdbc-type="INTEGER" hibernate-type="Long"/>
     </type-mapping>
-
-    <table-filter match-name=".*" package="com.jms.domain.db" />
-    
+    <table-filter match-name=".*" package="com.jms.domain.db.k" />
 </hibernate-reverse-engineering>
 
