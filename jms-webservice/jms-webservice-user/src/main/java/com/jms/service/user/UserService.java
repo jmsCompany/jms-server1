@@ -3,7 +3,9 @@ package com.jms.service.user;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.csvreader.CsvReader;
+import com.jms.audit.AudiReaderService;
 import com.jms.domain.Config;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
@@ -27,6 +30,8 @@ import com.jms.repositories.system.SysDicDRepository;
 public class UserService extends IUserServiceImpl{
 	@Autowired
 	private SysDicDRepository sysDicDRepository;
+	@Autowired
+	private AudiReaderService audiReaderService;
 	private static final Logger logger = LogManager.getLogger(UserService.class.getCanonicalName());
 	
 	@Transactional(readOnly=false)
@@ -101,6 +106,11 @@ public class UserService extends IUserServiceImpl{
 		
 	}
 
+	@Transactional(readOnly=true)
+     public List<Users> findRevisions(Long idUser)
+     {
+    	return audiReaderService.getRevisions(Users.class, 4l);
 
+     }
 	
 }
