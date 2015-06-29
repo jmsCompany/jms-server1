@@ -49,7 +49,7 @@ public class SysDic  implements java.io.Serializable {
        this.sysDicDs = sysDicDs;
     }
    
-     @Id @GeneratedValue(strategy=IDENTITY)
+     @Id 
     
     @Column(name="TYPE", unique=true, nullable=false, length=64)
     public String getType() {

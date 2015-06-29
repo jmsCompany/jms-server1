@@ -273,7 +273,7 @@ public class CompanyService {
 					.findDicsByType(Config.taskType).get(0));
 			templateCompany.setSysDicDByCompanyCatorgory(sysDicDRepository
 					.findDicsByType(Config.companyCatergory).get(0));
-
+			templateCompany.setUsersByCreator(usersRepository.findByUsername("system"));
 			companyRepository.save(templateCompany);
 
 		}
