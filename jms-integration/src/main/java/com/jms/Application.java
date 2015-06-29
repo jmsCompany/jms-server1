@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.jms.domain.db.Users;
+import com.jms.service.user.GroupTypeService;
 import com.jms.service.user.UserService;
 
 @SpringBootApplication
@@ -24,15 +25,17 @@ public class Application extends SpringBootServletInitializer {
 		// SpringApplication.run(Application.class, args);
 		ConfigurableApplicationContext ctx = SpringApplication.run(
 				Application.class, args);
-
-		//DatabaseInit initDB = ctx.getBean(DatabaseInit.class);
-		//initDB.init(ctx);
+		/*
+		DatabaseInit initDB = ctx.getBean(DatabaseInit.class);
+		initDB.init(ctx);
 		
 		UserService userService = ctx.getBean(UserService.class);
 		for(Users u: userService.findRevisions(4l))
 		{
 			System.out.println("uid:" + u.getIdUser() +" ,token: " + u.getToken());
-		}
+		}*/
+		GroupTypeService groupTypeService = ctx.getBean(GroupTypeService.class);
+		groupTypeService.loadGroupTypes();
 	}
 
 	@PostConstruct

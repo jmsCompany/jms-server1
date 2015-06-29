@@ -15,6 +15,7 @@ import com.jms.service.company.SectorService;
 import com.jms.service.system.DicService;
 import com.jms.service.system.DistrictService;
 import com.jms.service.system.ModuleService;
+import com.jms.service.user.GroupTypeService;
 import com.jms.service.user.RolePrivService;
 import com.jms.service.user.RoleService;
 import com.jms.service.user.UserService;
@@ -34,6 +35,7 @@ public class DatabaseInit {
 	@Autowired private ProjectService  projectService;
 	@Autowired private DistrictService districtService;
 	@Autowired private DicService dicService;
+	@Autowired private GroupTypeService groupTypeService;
 
 	//在系统初装的执行切只能执行一次，读取csv文件的数据到数据库中。
 	//todo:详细说明系统预设的所有信息，已经这些信息的用途
@@ -53,6 +55,7 @@ public class DatabaseInit {
          Resource districtRes = ctx.getResource("classpath:data/district.csv");
          
          dicService.loadDics();
+         groupTypeService.loadGroupTypes();
          
 		 userService.loadUsersFromCSV(userRes.getInputStream());
 		 companyService.loadCompaniesFromCSV(companyRes.getInputStream());

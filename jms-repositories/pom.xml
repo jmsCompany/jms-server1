@@ -7,15 +7,15 @@
 		<version>1.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	
+
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>jms-repositories</artifactId>
 	<packaging>jar</packaging>
 	<name>jms-repositories</name>
 	<description>jms-repositories</description>
 	<properties>
-<org.aspectj.version>1.8.2</org.aspectj.version>
-</properties>
+		<org.aspectj.version>1.8.2</org.aspectj.version>
+	</properties>
 	<developers>
 		<developer>
 			<name>Hongtao Ren</name>
@@ -24,7 +24,7 @@
 	</developers>
 
 	<dependencies>
-    	<dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
 			<exclusions>
@@ -44,9 +44,9 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
-		
-	
-		
+
+
+
 
 	</dependencies>
 
