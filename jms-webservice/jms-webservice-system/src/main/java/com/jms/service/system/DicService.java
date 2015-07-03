@@ -308,7 +308,7 @@ public class DicService {
 
 		SysDicD s20 = new SysDicD();
 		s20.setName("0");
-		s20.setDescription("有效");
+		s20.setDescription("无效");
 		s20.setEnabled(1l);
 		s20.setSysDic(generalStatus);
 		sysDicDRepository.save(s20);

@@ -25,17 +25,18 @@ public class Application extends SpringBootServletInitializer {
 		// SpringApplication.run(Application.class, args);
 		ConfigurableApplicationContext ctx = SpringApplication.run(
 				Application.class, args);
-		/*
+		
 		DatabaseInit initDB = ctx.getBean(DatabaseInit.class);
 		initDB.init(ctx);
-		
+		/*
 		UserService userService = ctx.getBean(UserService.class);
 		for(Users u: userService.findRevisions(4l))
 		{
 			System.out.println("uid:" + u.getIdUser() +" ,token: " + u.getToken());
-		}*/
+		}
 		GroupTypeService groupTypeService = ctx.getBean(GroupTypeService.class);
 		groupTypeService.loadGroupTypes();
+		*/
 	}
 
 	@PostConstruct

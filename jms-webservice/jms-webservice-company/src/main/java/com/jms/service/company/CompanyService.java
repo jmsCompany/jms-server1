@@ -145,7 +145,7 @@ public class CompanyService {
 		g.setGroupName("全公司成员");
 	    g.setGroupType(groupTypeRepository.findByGroupType(GroupTypeEnum.Company.name()));
 	    groupRepository.save(g);
-	    
+	
 		Groups g1 = new Groups();
 		g1.setCompany(company);
 		g1.setUsers(dbUser);
@@ -243,7 +243,7 @@ public class CompanyService {
 			p1.setCompany(to);
 			p1.setProjectName(p.getProjectName());
 			p1.setDescription(p.getDescription());
-			p1.setEnabled(p.getEnabled());
+			p1.setSysDicDByStatus(p.getSysDicDByStatus());
 			projectRepository.save(p1);
 		}
 		// copy sectors
