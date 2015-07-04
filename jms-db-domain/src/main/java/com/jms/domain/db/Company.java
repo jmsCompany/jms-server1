@@ -130,7 +130,7 @@ public class Company  extends AbstractSecuredEntity implements java.io.Serializa
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
-    
+  
     @Column(name="ID_COMPANY", unique=true, nullable=false)
     public Long getIdCompany() {
         return this.idCompany;
