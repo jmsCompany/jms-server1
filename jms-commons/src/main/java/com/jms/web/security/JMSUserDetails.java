@@ -2,11 +2,9 @@ package com.jms.web.security;
 
 import java.util.Collection;
 
-import org.springframework.security.acls.jdbc.BasicLookupStrategy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
 import com.jms.domain.ws.WSUser;
 
 
@@ -47,7 +45,10 @@ public class JMSUserDetails extends WSUser implements UserDetails {
 	}
 
 	public boolean isEnabled() {
-		return true;
+		if(getEnabled().longValue()==0l)
+		   return false;
+		else
+			return true;
 	}
 
 	private static final long serialVersionUID = 5639683223516504866L;

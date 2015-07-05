@@ -36,13 +36,12 @@
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
           <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-          <stringProp name="HTTPSampler.path">/jms/sector/1/members</stringProp>
+          <stringProp name="HTTPSampler.path">/jms/dic/CompanyNature</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
           <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <stringProp name="HTTPSampler.implementation">Java</stringProp>
           <boolProp name="HTTPSampler.monitor">false</boolProp>
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
@@ -51,7 +50,7 @@
           <collectionProp name="HeaderManager.headers">
             <elementProp name="" elementType="Header">
               <stringProp name="Header.name">JMS-TOKEN</stringProp>
-              <stringProp name="Header.value">1__$2a$10$zYSSJLftjjGaxIHCcoKgWeur8VthUcTKK2gJ2dYdoKlpOZUP4gaRi</stringProp>
+              <stringProp name="Header.value">1__$2a$10$4len3D9BusxCRYwlru6DHuBNLYOPwUNqWMCnWRPGC1A.unAANJ5E2</stringProp>
             </elementProp>
           </collectionProp>
         </HeaderManager>

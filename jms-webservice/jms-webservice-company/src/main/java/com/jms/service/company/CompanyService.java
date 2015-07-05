@@ -133,6 +133,7 @@ public class CompanyService {
 		wsCompany.setVerified(0l);
 		Company company = companyAdapter.toDBCompany(wsCompany, null);
 		company.setUser(dbUser);
+		company.setUsersByCreator(dbUser);
 		company.setCreationTime(new Date());
 		companyRepository.save(company);
 		dbUser.setCompany(company);
@@ -141,8 +142,8 @@ public class CompanyService {
 		g.setCompany(company);
 		g.setUsers(dbUser);
 		g.setCreationTime(new Date());
-		g.setDescription("全公司成员");
-		g.setGroupName("全公司成员");
+		g.setDescription("全公司");
+		g.setGroupName("全公司");
 	    g.setGroupType(groupTypeRepository.findByGroupType(GroupTypeEnum.Company.name()));
 	    groupRepository.save(g);
 	
@@ -192,27 +193,48 @@ public class CompanyService {
 	public Message checkCompanyName(String companyName, Long idCompany) {
 
 		String dbCompanyName = "";
+		//已有公司修改
 		if (idCompany != null) {
 			Company company = companyRepository.findOne(idCompany);
 			dbCompanyName = company.getCompanyName();
-		}
-
-		if (companyName == null || companyName.isEmpty())
-			return messagesUitl.getMessage("company.name.required", null,
-					MessageTypeEnum.ERROR);
-		if (companyRepository.findByCompanyName(companyName) == null) {
-			return messagesUitl.getMessage("company.name.available", null,
-					MessageTypeEnum.INFOMATION);
-		} else {
-			if (idCompany != null && companyName.equals(dbCompanyName))
+			if(companyName != null &&!companyName.isEmpty())
+			{
+				if(companyRepository.findByCompanyName(companyName) == null||companyName.equals(dbCompanyName))
+				{
+					return messagesUitl.getMessage("company.name.available", null,
+							MessageTypeEnum.INFOMATION);
+				}
+				else
+				{
+					return messagesUitl.getMessage("company.alreadyexist", null,
+							MessageTypeEnum.ERROR);
+				}
+			}
+			else
 				return messagesUitl.getMessage("company.name.available", null,
 						MessageTypeEnum.INFOMATION);
-			else
-				return messagesUitl.getMessage("company.alreadyexist", null,
-						MessageTypeEnum.ERROR);
 		}
-
+		else
+		{
+			if (companyName == null || companyName.isEmpty())
+				return messagesUitl.getMessage("company.name.required", null,
+						MessageTypeEnum.ERROR);
+			else
+			{
+				if (companyRepository.findByCompanyName(companyName) == null) {
+					return messagesUitl.getMessage("company.name.available", null,
+							MessageTypeEnum.INFOMATION);
+				} 
+				else
+				{
+					return messagesUitl.getMessage("company.alreadyexist", null,
+							MessageTypeEnum.ERROR);
+				}
+			}
+		}
 	}
+
+	
 
 	@Transactional(readOnly = false)
 	public Message cancelCompany(int idCompany) {

@@ -46,6 +46,7 @@ public class WSUser implements java.io.Serializable{
     	this.login=user.getLogin();
     	this.password=user.getPassword();
     	this.token =user.getToken();
+    	this.enabled=user.getEnabled();
  
     }
     public String getEmail() {

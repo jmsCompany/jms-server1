@@ -38,9 +38,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http
 		.authorizeRequests().antMatchers("/company/create").permitAll()
 		.antMatchers("/error").permitAll()
-		.antMatchers("/check/**").permitAll()
-		.antMatchers("/dic/**").permitAll()
-		.antMatchers("/download/**").permitAll()
+		//.antMatchers("/check/**").permitAll()
+		//.antMatchers("/dic/**").permitAll()
+		//.antMatchers("/download/**").permitAll()
 		.antMatchers("/login").permitAll();
 	    http.addFilter(authenticationTokenProcessingFilter);
 	    http.authorizeRequests().anyRequest().authenticated();

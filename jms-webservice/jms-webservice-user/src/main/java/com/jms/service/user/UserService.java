@@ -87,7 +87,7 @@ public class UserService extends IUserServiceImpl{
 	{
 		String defaultMsg=null;
 	    Users user =  usersRepository.findByUsernameOrEmailOrMobile(login);
-	    if(user!=null)
+	    if(user!=null&&user.getEnabled()==11)
 	    {
 	    	if(new BCryptPasswordEncoder().matches(password, user.getPassword()))
 	    	{

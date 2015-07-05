@@ -65,11 +65,11 @@ public class AuthenticationTokenProcessingFilter extends  AbstractPreAuthenticat
 			if (token != null) {
 				 if (tokenUtils.validate(token)) {
 		                JMSUserDetails userDetails = tokenUtils.getUserFromToken(token);
-		                UsernamePasswordAuthenticationToken authentication = 
-		                        new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword());
-		                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails((HttpServletRequest) request));
-		                Authentication authenticated =authenticationManager.authenticate(authentication);
-		                SecurityContextHolder.getContext().setAuthentication(authenticated);         
+		                	   UsernamePasswordAuthenticationToken authentication = 
+				                        new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword());
+				                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails((HttpServletRequest) request));
+				                Authentication authenticated =authenticationManager.authenticate(authentication);
+				                SecurityContextHolder.getContext().setAuthentication(authenticated);         
 				 }
 			}
 

@@ -27,37 +27,17 @@
       </ThreadGroup>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP请求" enabled="true">
-          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{&#xd;
-    &quot;idUser&quot;: 1,&#xd;
-    &quot;name&quot;: &quot;系统管理员&quot;,&#xd;
-    &quot;gender&quot;: {&#xd;
-        &quot;idDic&quot;: 56&#xd;
-    },&#xd;
-    &quot;username&quot;: &quot;system&quot;,&#xd;
-    &quot;mobile&quot;: &quot;&quot;,&#xd;
-    &quot;email&quot;: &quot;system@jms.com&quot;,&#xd;
-    &quot;status&quot;: {&#xd;
-        &quot;idDic&quot;: 57&#xd;
-    },&#xd;
-    &quot;ext&quot;: &quot;120&quot;&#xd;
-}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-            </collectionProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="用户定义的变量" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
           </elementProp>
           <stringProp name="HTTPSampler.domain">localhost</stringProp>
-          <stringProp name="HTTPSampler.port">8080</stringProp>
+          <stringProp name="HTTPSampler.port">8443</stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
           <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-          <stringProp name="HTTPSampler.path">/user/save</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <stringProp name="HTTPSampler.path">/jms/provinces/1/cities</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -74,7 +54,7 @@
             </elementProp>
             <elementProp name="" elementType="Header">
               <stringProp name="Header.name">JMS-TOKEN</stringProp>
-              <stringProp name="Header.value">system__$2a$10$tz9fDMSxGaz9fI2.De3.be8okoGU9vVhQUaWU2hLvErDImnqqAEa2</stringProp>
+              <stringProp name="Header.value">1__$2a$10$4len3D9BusxCRYwlru6DHuBNLYOPwUNqWMCnWRPGC1A.unAANJ5E2</stringProp>
             </elementProp>
           </collectionProp>
         </HeaderManager>

@@ -50,13 +50,13 @@
               </elementProp>
             </collectionProp>
           </elementProp>
-          <stringProp name="HTTPSampler.domain">115.28.24.76</stringProp>
-          <stringProp name="HTTPSampler.port">8080</stringProp>
+          <stringProp name="HTTPSampler.domain">localhost</stringProp>
+          <stringProp name="HTTPSampler.port">8443</stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
           <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-          <stringProp name="HTTPSampler.path">/cities/5/districts</stringProp>
+          <stringProp name="HTTPSampler.path">/jms/provinces</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -69,8 +69,12 @@
         <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP信息头管理器" enabled="true">
           <collectionProp name="HeaderManager.headers">
             <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-type</stringProp>
+              <stringProp name="Header.value">application/json</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
               <stringProp name="Header.name">JMS-TOKEN</stringProp>
-              <stringProp name="Header.value">system__$2a$10$GfmjUU1OdyCRuXfcI4XnteCuWFWJ0JrDay19oFrJv.CghTTWx6hZC</stringProp>
+              <stringProp name="Header.value">1__$2a$10$4len3D9BusxCRYwlru6DHuBNLYOPwUNqWMCnWRPGC1A.unAANJ5E2</stringProp>
             </elementProp>
           </collectionProp>
         </HeaderManager>
