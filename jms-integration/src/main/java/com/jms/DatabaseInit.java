@@ -9,6 +9,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jms.domain.db.Company;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.service.company.CompanyService;
 import com.jms.service.company.SectorService;
@@ -38,16 +39,12 @@ public class DatabaseInit {
 	@Autowired private GroupTypeService groupTypeService;
 
 	//在系统初装的执行切只能执行一次，读取csv文件的数据到数据库中。
-	//todo:详细说明系统预设的所有信息，已经这些信息的用途
+	//todo:详细说明系统预设的所有信息这些信息的用途
 	public void init(ConfigurableApplicationContext ctx) throws IOException
 	{
 		if(usersRepository.findByUsername("system")!=null)
 			return;
 
-		 Resource userRes = ctx.getResource("classpath:data/users.csv");
-   	     Resource companyRes = ctx.getResource("classpath:data/company.csv");
-   	     Resource roleRes=  ctx.getResource("classpath:data/roles.csv");
-   	     Resource sectorRes=  ctx.getResource("classpath:data/sectors.csv");
    	     Resource moudleRes=  ctx.getResource("classpath:data/modules.csv");
    	     Resource rolePrivRes=  ctx.getResource("classpath:data/role_priv.csv");
    	     Resource provinceRes = ctx.getResource("classpath:data/province.csv");
@@ -56,11 +53,11 @@ public class DatabaseInit {
          
          dicService.loadDics();
          groupTypeService.loadGroupTypes();
-         
-		 userService.loadUsersFromCSV(userRes.getInputStream());
-		 companyService.loadCompaniesFromCSV(companyRes.getInputStream());
-		 roleService.loadRolesFromCSV(roleRes.getInputStream());
-		 sectorService.loadSectorsFromCSV(sectorRes.getInputStream());
+         userService.createDefaultUsers();
+         Company templateCompany = companyService.createTemplateCompany();
+		 roleService.createDefaultRoles(templateCompany);
+		 sectorService.createDefaultSectors(templateCompany);
+
 		 moduleService.loadModulesFromCSV(moudleRes.getInputStream());
 		 rolePrivService.loadRolesPrivFromCSV(rolePrivRes.getInputStream());
 

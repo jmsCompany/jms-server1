@@ -26,6 +26,8 @@ import com.jms.domain.Config;
 import com.jms.domain.EnabledEnum;
 import com.jms.domain.GroupTypeEnum;
 import com.jms.domain.db.Company;
+import com.jms.domain.db.GroupMembers;
+import com.jms.domain.db.GroupMembersId;
 import com.jms.domain.db.Groups;
 import com.jms.domain.db.Project;
 import com.jms.domain.db.RolePriv;
@@ -44,6 +46,7 @@ import com.jms.messages.MessagesUitl;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.company.SectorsRepository;
 import com.jms.repositories.system.SysDicDRepository;
+import com.jms.repositories.user.GroupMemberRepository;
 import com.jms.repositories.user.GroupRepository;
 import com.jms.repositories.user.GroupTypeRepository;
 import com.jms.repositories.user.RolePrivRepository;
@@ -91,7 +94,9 @@ public class CompanyService {
 	@Autowired
 	private SecurityACLDAO securityACLDAO;
 	@Autowired
-	protected GroupRepository groupRepository;
+	private GroupRepository groupRepository;
+	@Autowired
+	private GroupMemberRepository groupMemberRepository;
 
 	@Autowired
 	protected GroupTypeRepository groupTypeRepository;
@@ -138,6 +143,10 @@ public class CompanyService {
 		companyRepository.save(company);
 		dbUser.setCompany(company);
 		usersRepository.save(dbUser);
+		
+	/*
+		
+		
 		Groups g = new Groups();
 		g.setCompany(company);
 		g.setUsers(dbUser);
@@ -146,6 +155,13 @@ public class CompanyService {
 		g.setGroupName("全公司");
 	    g.setGroupType(groupTypeRepository.findByGroupType(GroupTypeEnum.Company.name()));
 	    groupRepository.save(g);
+	    GroupMembers gm = new GroupMembers(); 
+	    GroupMembersId id = new GroupMembersId();
+	    id.setIdGroup(g.getIdGroup());
+	    id.setIdUser(dbUser.getIdUser());
+	    gm.setId(id);
+	    gm.setRoles(role);
+	    groupMemberRepository.save(gm);
 	
 		Groups g1 = new Groups();
 		g1.setCompany(company);
@@ -156,6 +172,15 @@ public class CompanyService {
 	    g1.setGroupType(groupTypeRepository.findByGroupType(GroupTypeEnum.User.name()));
 	    groupRepository.save(g1);
 	    
+	    GroupMembers gm1 = new GroupMembers(); 
+	    GroupMembersId id1 = new GroupMembersId();
+	    id1.setIdGroup(g1.getIdGroup());
+	    id1.setIdUser(dbUser.getIdUser());
+	    gm1.setId(id1);
+	    gm1.setRoles(role1);
+	    groupMemberRepository.save(gm1);
+	    */
+	    
 		WSUser wsUser = new WSUser();
 		wsUser.setIdUser(dbUser.getIdUser());
 		wsUser.setUsername(""+dbUser.getIdUser());
@@ -164,11 +189,10 @@ public class CompanyService {
 				userDetails, "***********",
 				null);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		//  System.out.println("!"+((JMSUserDetails)(SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getIdUser());
 		securityACLDAO.addPermission(company, Company.class, BasePermission.ADMINISTRATION);
 		// todo: find template company by some rules!!
 		Company templateCompany = companyRepository
-				.findByCompanyName("零售业企业模版");
+				.findByCompanyName("企业模版");
 		copyDataBetweenCompanies(templateCompany, company);
 		return messagesUitl.getMessage("company.success", null,
 				MessageTypeEnum.INFOMATION);
@@ -302,7 +326,7 @@ public class CompanyService {
 
 		}
 	}
-
+/*
 	@Transactional(readOnly = false)
 	public void loadCompaniesFromCSV(InputStream inputStream) throws IOException {
 		CsvReader reader = new CsvReader(inputStream, ',',
@@ -327,5 +351,25 @@ public class CompanyService {
 
 		}
 	}
+	
+	*/
+	@Transactional(readOnly = false)
+	public Company createTemplateCompany()
+	{
+		Company templateCompany = new Company();
+		templateCompany.setCompanyName("企业模版");
+		templateCompany.setDescription("一般企业模版");
+		templateCompany.setCreationTime(new Date());
+		templateCompany.setUser(usersRepository.findByUsername("system"));
+		templateCompany.setEnabled(EnabledEnum.ROBOT.getStatusCode());
 
+		templateCompany.setSysDicDByTaskType(sysDicDRepository
+				.findDicsByType(Config.taskType).get(0));
+		templateCompany.setSysDicDByCompanyCatorgory(sysDicDRepository
+				.findDicsByType(Config.companyCatergory).get(0));
+		templateCompany.setUsersByCreator(usersRepository.findByUsername("system"));
+		companyRepository.save(templateCompany);
+		return templateCompany;
+	}
+	
 }

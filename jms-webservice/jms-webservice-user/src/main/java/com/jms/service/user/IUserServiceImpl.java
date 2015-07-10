@@ -70,9 +70,7 @@ public class IUserServiceImpl implements IUserService {
 			users.setCreationTime(new Date());
 			users.setEnabled(1l);
 			usersRepository.save(users);
-			
-	
-			
+
 			Message msgToClient = messagesUitl.getMessage(
 					"user.register.success", null, MessageTypeEnum.INFOMATION);
 			logger.debug(msgToClient.getMessageTypeEnum().toString() + ", "

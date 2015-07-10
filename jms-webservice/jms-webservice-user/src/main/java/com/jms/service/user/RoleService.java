@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.csvreader.CsvReader;
+import com.jms.domain.db.Company;
 import com.jms.domain.db.Module;
 import com.jms.domain.db.RolePriv;
 import com.jms.domain.db.RolePrivId;
@@ -65,7 +66,23 @@ public class RoleService {
 			save(r);
 		}
 	}
-
+ 
+	public void createDefaultRoles(Company company)
+	{
+		save("user","一般用户",company);
+		save("admin","管理员",company);
+		save("sector_supervisor","部门经理",company);
+	}
+	
+	public Roles save(String role,String description,Company company)
+	{
+		Roles r = new Roles();
+		r.setCompany(company);
+		r.setRole(role);
+		r.setDescription(description);
+        return save(r);
+	}
+	
 	public Roles save(Roles role) {
 		Roles r;
 		if (role.getCompany() == null) {

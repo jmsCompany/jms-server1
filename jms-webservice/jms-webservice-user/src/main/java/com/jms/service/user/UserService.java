@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.csvreader.CsvReader;
 import com.jms.audit.AudiReaderService;
 import com.jms.domain.Config;
+import com.jms.domain.db.Groups;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.MessageTypeEnum;
@@ -58,7 +60,7 @@ public class UserService extends IUserServiceImpl{
 			return wsUser;
 	}
 	
-	
+	/*
 	@Transactional(readOnly=false)
 	public void loadUsersFromCSV(InputStream inputStream) throws IOException
 	{
@@ -81,6 +83,20 @@ public class UserService extends IUserServiceImpl{
 			Message msg = register(u);
 			logger.debug(msg.getMessageTypeEnum().toString()  +", "+ msg.getMessage());
 		}
+	}
+	*/
+	@Transactional(readOnly=true)
+	public void createDefaultUsers()
+	{
+		Users system = new Users();
+		system.setUsername("system");
+		system.setPassword("system");
+		register(system);
+		Users admin = new Users();
+		admin.setUsername("admin");
+		admin.setPassword("admin");
+		register(admin);
+
 	}
 	@Transactional(readOnly=true)
 	public String login(String login, String password)
@@ -106,7 +122,7 @@ public class UserService extends IUserServiceImpl{
 	@Transactional(readOnly=true)
      public List<Users> findRevisions(Long idUser)
      {
-    	return audiReaderService.getRevisions(Users.class, 4l);
+    	return audiReaderService.getRevisions(Users.class, idUser);
 
      }
 	

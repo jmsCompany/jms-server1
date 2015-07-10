@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.csvreader.CsvReader;
+import com.jms.domain.db.Company;
 import com.jms.domain.db.Sector;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.MessageTypeEnum;
@@ -55,7 +56,25 @@ public class SectorService {
 		}
 	}
 	
+	public void  createDefaultSectors(Company company)
+	{
+		 createSector("全公司","全公司",1l, company);
+		 createSector("财务部","财务部",2l, company);
+		 createSector("总裁办","总裁办",3l, company);
+		 createSector("项目办","项目办",4l, company);
+	}
 
+	
+	public void createSector(String sector,String description,Long seq, Company company)
+	{
+		Sector s = new Sector();
+		s.setSector(sector);
+		s.setDescription(description);
+		s.setCompany(company);
+		s.setEnabled(1l);
+		s.setSeq(seq);
+		sectorRepository.save(s);
+	}
 	public WSSector save(WSSector wsSector) throws Exception
 	{
 	    //新建部门
