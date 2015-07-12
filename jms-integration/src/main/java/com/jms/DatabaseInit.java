@@ -47,6 +47,7 @@ public class DatabaseInit {
 
    	     Resource moudleRes=  ctx.getResource("classpath:data/modules.csv");
    	     Resource rolePrivRes=  ctx.getResource("classpath:data/role_priv.csv");
+   	   
    	     Resource provinceRes = ctx.getResource("classpath:data/province.csv");
    	     Resource cityRes = ctx.getResource("classpath:data/city.csv");
          Resource districtRes = ctx.getResource("classpath:data/district.csv");
