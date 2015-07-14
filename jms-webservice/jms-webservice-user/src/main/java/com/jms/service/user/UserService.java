@@ -85,12 +85,13 @@ public class UserService extends IUserServiceImpl{
 		}
 	}
 	*/
-	@Transactional(readOnly=true)
+	@Transactional(readOnly=false)
 	public void createDefaultUsers()
 	{
 		Users system = new Users();
 		system.setUsername("system");
 		system.setPassword("system");
+		
 		register(system);
 		Users admin = new Users();
 		admin.setUsername("admin");
@@ -98,7 +99,7 @@ public class UserService extends IUserServiceImpl{
 		register(admin);
 
 	}
-	@Transactional(readOnly=true)
+	@Transactional(readOnly=false)
 	public String login(String login, String password)
 	{
 		String defaultMsg=null;

@@ -69,9 +69,11 @@ public class RoleService {
  
 	public void createDefaultRoles(Company company)
 	{
-		save("user","一般用户",company);
+		save("user","员工",company);
 		save("admin","管理员",company);
+		save("group_admin","组管理员",company);
 		save("sector_supervisor","部门经理",company);
+		save("manager","总经理",company);
 	}
 	
 	public Roles save(String role,String description,Company company)

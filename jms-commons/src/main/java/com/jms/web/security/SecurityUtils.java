@@ -40,7 +40,17 @@ public class SecurityUtils {
             return auth.getPrincipal().toString();
         }
     }
-
+	public Users getCurrentDBUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Long userid;
+        if (auth.getPrincipal() instanceof UserDetails) {
+        	userid =((JMSUserDetails) auth.getPrincipal()).getIdUser();
+        } else {
+        	userid = null;
+        }
+        
+       return usersRepository.findOne(userid);
+    }
 	public JMSUserDetails getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 

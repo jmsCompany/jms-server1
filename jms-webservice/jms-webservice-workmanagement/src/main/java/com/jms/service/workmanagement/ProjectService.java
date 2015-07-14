@@ -21,7 +21,7 @@ import com.jms.repositories.workmanagement.ProjectRepository;
 
 @Service
 @Transactional
-public class ProjectService<DicService> {
+public class ProjectService {
 
 	private static final Logger logger = LogManager
 			.getLogger(ProjectService.class.getCanonicalName());
@@ -35,9 +35,8 @@ public class ProjectService<DicService> {
 	@Autowired
 	private SysDicDRepository sysDicDRepository;
 
-	public void createGenerialProject() {
+	public void createGenerialProject(Company company) {
 
-		for (Company c : companyRepository.findAll()) {
 			Project p = new Project();
 			p.setProjectName(messagesUitl.getMessage(
 					"workmanagement.project.generialprojectname", null,
@@ -46,13 +45,13 @@ public class ProjectService<DicService> {
 					"workmanagement.project.generialprojectdescription", null,
 					MessageTypeEnum.INFOMATION).getMessage());
 			p.setSysDicDByStatus(sysDicDRepository.findDicsByTypeAndName(Config.projectStatus, "0").get());
-			p.setCompany(c);
+			p.setCompany(company);
 
 			logger.debug("projectName: " + p.getProjectName()
 					+ ", projectNumber: " + p.getProjectNumber()
 					+ ", description: " + p.getDescription()
 					+ ", CompanyName: " + p.getCompany().getCompanyName());
 			projectRepository.save(p);
-		}
+		
 	}
 }

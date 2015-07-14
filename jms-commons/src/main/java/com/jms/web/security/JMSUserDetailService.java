@@ -19,7 +19,7 @@ public class JMSUserDetailService implements Serializable,
 	@Autowired private UsersRepository usersRepository;
 	@Autowired private SecurityUtils securityUtils;
 	@Transactional(readOnly=true)
-	//时间上USERID
+	//实际上是USERID
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
 		
@@ -30,7 +30,8 @@ public class JMSUserDetailService implements Serializable,
 		}
 		WSUser wsUser = new WSUser();
 		wsUser.setIdUser(user.getIdUser());
-		wsUser.setLocale(user.getSysDicDByLocale().getName());
+		if(user.getSysDicDByLocale()!=null)
+		  wsUser.setLocale(user.getSysDicDByLocale().getName());
 		wsUser.setEmail(user.getEmail());
 		wsUser.setLogin(username);
 		wsUser.setUsername(user.getUsername());

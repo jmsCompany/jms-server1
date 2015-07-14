@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.csvreader.CsvReader;
+import com.jms.domain.GroupTypeEnum;
 import com.jms.domain.db.Company;
+import com.jms.domain.db.GroupMembers;
+import com.jms.domain.db.GroupMembersId;
+import com.jms.domain.db.Groups;
 import com.jms.domain.db.Sector;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.MessageTypeEnum;
@@ -23,6 +28,9 @@ import com.jms.domainadapter.SectorAdapter;
 import com.jms.messages.MessagesUitl;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.company.SectorsRepository;
+import com.jms.repositories.user.GroupRepository;
+import com.jms.repositories.user.GroupTypeRepository;
+import com.jms.web.security.SecurityUtils;
 
 @Service
 @Transactional
@@ -37,6 +45,9 @@ public class SectorService {
 	private SectorAdapter sectorAdapter;
 	@Autowired
 	private MessagesUitl messagesUitl;
+	@Autowired private GroupRepository groupRepository;
+	@Autowired private SecurityUtils securityUtils;
+	@Autowired private GroupTypeRepository groupTypeRepository;
 	public void loadSectorsFromCSV(InputStream inputStream) throws IOException{
 		CsvReader reader = new CsvReader(inputStream,',', Charset.forName("UTF-8"));
         reader.readHeaders();  //CompanyName Role	Description
@@ -74,6 +85,22 @@ public class SectorService {
 		s.setEnabled(1l);
 		s.setSeq(seq);
 		sectorRepository.save(s);
+		Groups g = new Groups();
+		g.setCompany(company);
+		g.setUsers(securityUtils.getCurrentDBUser());
+		g.setCreationTime(new Date());
+		g.setDescription(description);
+		g.setGroupName(sector);
+		if(sector.equals("全公司"))
+		{
+			 g.setGroupType(groupTypeRepository.findByGroupType(GroupTypeEnum.Company.name()));
+		}
+		else
+		{
+			g.setGroupType(groupTypeRepository.findByGroupType(GroupTypeEnum.Sector.name()));
+		}
+	    groupRepository.save(g);
+
 	}
 	public WSSector save(WSSector wsSector) throws Exception
 	{

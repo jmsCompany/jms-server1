@@ -53,5 +53,6 @@ public class Config {
 	public static final String licenseRelativePath = "E:/license/";
 	public static final String docsRelativePath = "E:/docs/";
 	public static final String cvRelativePath = "E:/cv/";
+	public static final String picRelativePath = "E:/pic/";
 
 }

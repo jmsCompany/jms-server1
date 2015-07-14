@@ -302,29 +302,16 @@ public class CompanyService {
 			s1.setEnabled(s.getEnabled());
 			sectorsRepository.save(s1);
 		}
-		// copy roles and privileges
+		// copy roles
 		for (Roles r : from.getRoleses()) {
-			Set<RolePriv> rpSet = r.getRolePrivs();
 			Roles r1 = new Roles();
 			r1.setRole(r.getRole());
 			r1.setDescription(r.getDescription());
 			r1.setCompany(to);
 			r1.setLevel(r.getLevel());
 			roleRepository.save(r1);
-			for (RolePriv rp : rpSet) {
-				logger.debug("module id: " + rp.getModule().getIdModule()
-						+ " role id: " + r1.getIdRole());
-				RolePrivId id = new RolePrivId(rp.getModule().getIdModule(),
-						r1.getIdRole());
-				RolePriv rp1 = new RolePriv();
-				rp1.setId(id);
-				rp1.setRoles(r1);
-				rp1.setPriv(rp.getPriv());
-				rp1.setModule(rp.getModule());
-				rolePrivReposity.save(rp1);
-			}
-
 		}
+		//todo: copy groups
 	}
 /*
 	@Transactional(readOnly = false)
@@ -358,16 +345,15 @@ public class CompanyService {
 	{
 		Company templateCompany = new Company();
 		templateCompany.setCompanyName("企业模版");
-		templateCompany.setDescription("一般企业模版");
+		templateCompany.setDescription("企业模版");
 		templateCompany.setCreationTime(new Date());
-		templateCompany.setUser(usersRepository.findByUsername("system"));
 		templateCompany.setEnabled(EnabledEnum.ROBOT.getStatusCode());
 
 		templateCompany.setSysDicDByTaskType(sysDicDRepository
 				.findDicsByType(Config.taskType).get(0));
 		templateCompany.setSysDicDByCompanyCatorgory(sysDicDRepository
 				.findDicsByType(Config.companyCatergory).get(0));
-		templateCompany.setUsersByCreator(usersRepository.findByUsername("system"));
+		templateCompany.setUsersByCreator(usersRepository.findByUsername("admin"));
 		companyRepository.save(templateCompany);
 		return templateCompany;
 	}
