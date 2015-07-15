@@ -49,10 +49,10 @@ public class Config {
 	public static final String yesOrNo = "yesOrNo";
 	public static final String yesOrNoDis = "是否";
 	
-	public static final String logoRelativePath = "E:/logo/";
-	public static final String licenseRelativePath = "E:/license/";
-	public static final String docsRelativePath = "E:/docs/";
-	public static final String cvRelativePath = "E:/cv/";
-	public static final String picRelativePath = "E:/pic/";
+	public static final String logoRelativePath = "C:/jms_file/logo/";
+	public static final String licenseRelativePath = "C:/jms_file/license/";
+	public static final String docsRelativePath = "C:/jms_file/docs/";
+	public static final String cvRelativePath = "C:/jms_file/cv/";
+	public static final String picRelativePath = "C:/jms_file/pic/";
 
 }
