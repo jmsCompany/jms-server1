@@ -21,6 +21,7 @@ import com.jms.domain.db.GroupMembers;
 import com.jms.domain.db.GroupMembersId;
 import com.jms.domain.db.Groups;
 import com.jms.domain.db.Sector;
+import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.MessageTypeEnum;
 import com.jms.domain.ws.WSSector;
@@ -28,8 +29,10 @@ import com.jms.domainadapter.SectorAdapter;
 import com.jms.messages.MessagesUitl;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.company.SectorsRepository;
+import com.jms.repositories.user.GroupMemberRepository;
 import com.jms.repositories.user.GroupRepository;
 import com.jms.repositories.user.GroupTypeRepository;
+import com.jms.repositories.user.RoleRepository;
 import com.jms.web.security.SecurityUtils;
 
 @Service
@@ -48,6 +51,9 @@ public class SectorService {
 	@Autowired private GroupRepository groupRepository;
 	@Autowired private SecurityUtils securityUtils;
 	@Autowired private GroupTypeRepository groupTypeRepository;
+	@Autowired private RoleRepository roleRepository;
+	@Autowired private GroupMemberRepository groupMemberRepository;
+
 	public void loadSectorsFromCSV(InputStream inputStream) throws IOException{
 		CsvReader reader = new CsvReader(inputStream,',', Charset.forName("UTF-8"));
         reader.readHeaders();  //CompanyName Role	Description
@@ -93,13 +99,23 @@ public class SectorService {
 		g.setGroupName(sector);
 		if(sector.equals("全公司"))
 		{
-			 g.setGroupType(groupTypeRepository.findByGroupType(GroupTypeEnum.Company.name()));
+			    Users dbUser=securityUtils.getCurrentDBUser();
+			    g.setGroupType(groupTypeRepository.findByGroupType(GroupTypeEnum.Company.name()));
+			    groupRepository.save(g);
+			    GroupMembers gm1 = new GroupMembers(); 
+			    GroupMembersId id1 = new GroupMembersId();
+			    id1.setIdGroup(g.getIdGroup());
+			    id1.setIdUser(dbUser.getIdUser());
+			    gm1.setId(id1);
+			    gm1.setRoles(roleRepository.findByRoleAndCompanyName("user", company.getCompanyName()));
+			    groupMemberRepository.save(gm1);
 		}
 		else
 		{
-			g.setGroupType(groupTypeRepository.findByGroupType(GroupTypeEnum.Sector.name()));
+			  g.setGroupType(groupTypeRepository.findByGroupType(GroupTypeEnum.Sector.name()));
+			  groupRepository.save(g);
 		}
-	    groupRepository.save(g);
+	  
 
 	}
 	public WSSector save(WSSector wsSector) throws Exception
@@ -112,21 +128,36 @@ public class SectorService {
 		    	throw new Exception("该部门已经存在！");
 		    else
 		    {
-		    	sectorRepository.save(sectorAdapter.toDBSector(wsSector,null));
+		    	Sector dbsector = sectorAdapter.toDBSector(wsSector,null);
+		    	sectorRepository.save(dbsector);
+		    	Groups g = new Groups();
+				g.setCompany(dbsector.getCompany());
+				g.setUsers(securityUtils.getCurrentDBUser());
+				g.setCreationTime(new Date());
+				g.setDescription(wsSector.getDescription());
+				g.setGroupName(wsSector.getSector());
+				g.setGroupType(groupTypeRepository.findByGroupType(GroupTypeEnum.Sector.name()));
+				groupRepository.save(g);
 		    }
 			
 		}
 		else //修改部门
 		{
-			Sector sector =sectorRepository.findOne(wsSector.getIdSector());
-			Sector sector1 =sectorRepository.findBySectorAndCompanyName(wsSector.getSector(), wsSector.getCompanyName());
-		   if(sector1!=null&&sector1.getIdSector()!=sector.getIdSector())
+		   Sector sector =sectorRepository.findOne(wsSector.getIdSector());
+		   if(sector.getSector().equals("全公司"))
+			   throw new Exception("全公司不能被修改");
+		   Sector sector1 =sectorRepository.findBySectorAndCompanyName(wsSector.getSector(), wsSector.getCompanyName());
+		   if(sector1!=null&&sector1.getIdSector().equals(sector.getIdSector()))
 		   {
 			   throw new Exception("该部门已经存在！");
 		   }
 		   else
 		   {
 			   sectorRepository.save(sectorAdapter.toDBSector(wsSector,sector)); 
+			   Groups g = groupRepository.findGroupByGroupNameAndCompany(sector.getSector(), sector.getCompany().getIdCompany(), GroupTypeEnum.Sector.name());
+		       g.setGroupName(wsSector.getSector());
+		       g.setDescription(wsSector.getDescription());
+		       groupRepository.save(g);
 		   }
 		}
 		

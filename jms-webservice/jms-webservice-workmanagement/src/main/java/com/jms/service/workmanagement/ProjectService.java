@@ -46,7 +46,7 @@ public class ProjectService {
 					MessageTypeEnum.INFOMATION).getMessage());
 			p.setSysDicDByStatus(sysDicDRepository.findDicsByTypeAndName(Config.projectStatus, "0").get());
 			p.setCompany(company);
-
+            p.setUsers(company.getUsersByCreator());
 			logger.debug("projectName: " + p.getProjectName()
 					+ ", projectNumber: " + p.getProjectNumber()
 					+ ", description: " + p.getDescription()

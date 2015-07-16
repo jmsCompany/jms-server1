@@ -63,7 +63,7 @@ public class SecurityACLDAO {
         acl.insertAce(acl.getEntries().size(), permission, recipient, true);
         mutableAclService.updateAcl(acl);
 
-        logger.debug("Added permission " + permission + " for Sid " + recipient + " contact " + element);
+     //   logger.debug("Added permission " + permission + " for Sid " + recipient + " contact " + element);
     }
 
 	@Transactional(readOnly = false)

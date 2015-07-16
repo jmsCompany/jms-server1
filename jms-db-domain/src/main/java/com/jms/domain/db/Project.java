@@ -21,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.envers.AuditTable;
 import org.hibernate.envers.Audited;
@@ -34,7 +35,7 @@ import org.hibernate.envers.Audited;
 @Table(name="project"
     ,catalog="jms"
 )
-public class Project  implements java.io.Serializable {
+public class Project  extends AbstractSecuredEntity implements java.io.Serializable {
 
 
      private Long idProject;
@@ -245,6 +246,14 @@ public class Project  implements java.io.Serializable {
     }
 
 
+    @Override @Transient
+    public Long getId() {
+        return this.getIdProject();
+    }
+   @Override  @Transient
+  	public Users getUser() {
+  		return this.getUsers();
+  	}
 
 
 }

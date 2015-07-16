@@ -104,7 +104,7 @@ public class UserService extends IUserServiceImpl{
 	{
 		String defaultMsg=null;
 	    Users user =  usersRepository.findByUsernameOrEmailOrMobile(login);
-	    if(user!=null&&user.getEnabled()==11)
+	    if(user!=null&&user.getEnabled().longValue()==1l)
 	    {
 	    	if(new BCryptPasswordEncoder().matches(password, user.getPassword()))
 	    	{

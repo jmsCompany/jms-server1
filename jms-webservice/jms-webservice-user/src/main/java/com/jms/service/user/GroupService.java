@@ -11,6 +11,7 @@ import com.jms.domain.db.Company;
 import com.jms.domain.db.GroupMembers;
 import com.jms.domain.db.GroupMembersId;
 import com.jms.domain.db.Groups;
+import com.jms.domain.db.Sector;
 import com.jms.domain.db.Users;
 import com.jms.repositories.user.GroupMemberRepository;
 import com.jms.repositories.user.GroupRepository;
@@ -50,4 +51,8 @@ public class GroupService {
 	    groupMemberRepository.save(gm1);
 	}
 
+	public void addUserToDefaultGroup()
+	{
+		
+	}
 }

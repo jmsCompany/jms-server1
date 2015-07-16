@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.security.acls.domain.BasePermission;
+import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.model.Sid;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -143,43 +144,6 @@ public class CompanyService {
 		companyRepository.save(company);
 		dbUser.setCompany(company);
 		usersRepository.save(dbUser);
-		
-	/*
-		
-		
-		Groups g = new Groups();
-		g.setCompany(company);
-		g.setUsers(dbUser);
-		g.setCreationTime(new Date());
-		g.setDescription("全公司");
-		g.setGroupName("全公司");
-	    g.setGroupType(groupTypeRepository.findByGroupType(GroupTypeEnum.Company.name()));
-	    groupRepository.save(g);
-	    GroupMembers gm = new GroupMembers(); 
-	    GroupMembersId id = new GroupMembersId();
-	    id.setIdGroup(g.getIdGroup());
-	    id.setIdUser(dbUser.getIdUser());
-	    gm.setId(id);
-	    gm.setRoles(role);
-	    groupMemberRepository.save(gm);
-	
-		Groups g1 = new Groups();
-		g1.setCompany(company);
-		g1.setUsers(dbUser);
-		g1.setCreationTime(new Date());
-		g1.setGroupName(""+dbUser.getIdUser());
-		g1.setDescription(dbUser.getName());
-	    g1.setGroupType(groupTypeRepository.findByGroupType(GroupTypeEnum.User.name()));
-	    groupRepository.save(g1);
-	    
-	    GroupMembers gm1 = new GroupMembers(); 
-	    GroupMembersId id1 = new GroupMembersId();
-	    id1.setIdGroup(g1.getIdGroup());
-	    id1.setIdUser(dbUser.getIdUser());
-	    gm1.setId(id1);
-	    gm1.setRoles(role1);
-	    groupMemberRepository.save(gm1);
-	    */
 	    
 		WSUser wsUser = new WSUser();
 		wsUser.setIdUser(dbUser.getIdUser());
@@ -283,15 +247,7 @@ public class CompanyService {
 
 	@Transactional(readOnly = false)
 	private void copyDataBetweenCompanies(Company from, Company to) {
-		// copy projects
-		for (Project p : from.getProjects()) {
-			Project p1 = new Project();
-			p1.setCompany(to);
-			p1.setProjectName(p.getProjectName());
-			p1.setDescription(p.getDescription());
-			p1.setSysDicDByStatus(p.getSysDicDByStatus());
-			projectRepository.save(p1);
-		}
+
 		// copy sectors
 		for (Sector s : from.getSectors()) {
 			Sector s1 = new Sector();
@@ -312,6 +268,78 @@ public class CompanyService {
 			roleRepository.save(r1);
 		}
 		//todo: copy groups
+		
+		for(Groups g:from.getGroupses())
+		{
+			if(g.getGroupType().getGroupType().equals(GroupTypeEnum.Sector.name()))
+			{
+				Groups g1 = new Groups();
+				g1.setCompany(to);
+				g1.setCreationTime(new Date());
+				g1.setGroupName(g.getGroupName());
+				g1.setGroupType(g.getGroupType());
+				g1.setDescription(g.getDescription());
+				g1.setUsers(securityUtils.getCurrentDBUser());
+				groupRepository.save(g1);
+			}
+			else if(g.getGroupType().getGroupType().equals(GroupTypeEnum.Company.name()))
+			{
+				Groups g1 = new Groups();
+				g1.setCompany(to);
+				g1.setCreationTime(new Date());
+				g1.setGroupName(g.getGroupName());
+				g1.setGroupType(g.getGroupType());
+				g1.setDescription(g.getDescription());
+				g1.setUsers(securityUtils.getCurrentDBUser());
+				groupRepository.save(g1);
+				  GroupMembers gm1 = new GroupMembers(); 
+				    GroupMembersId id1 = new GroupMembersId();
+				    id1.setIdGroup(g.getIdGroup());
+				    id1.setIdUser(securityUtils.getCurrentDBUser().getIdUser());
+				    gm1.setId(id1);
+				    gm1.setRoles(roleRepository.findByRoleAndCompanyName("user", to.getCompanyName()));
+				    groupMemberRepository.save(gm1);
+			}
+			else
+			{
+				   Users dbUser=securityUtils.getCurrentDBUser();
+					Groups g1 = new Groups();
+					g1.setCompany(to);
+					g1.setUsers(dbUser);
+					g1.setCreationTime(new Date());
+					g1.setGroupName(""+dbUser.getIdUser());
+					g1.setDescription(dbUser.getName());
+				    g1.setGroupType(groupTypeRepository.findByGroupType(GroupTypeEnum.User.name()));
+				    groupRepository.save(g1);
+				    
+				    GroupMembers gm1 = new GroupMembers(); 
+				    GroupMembersId id1 = new GroupMembersId();
+				    id1.setIdGroup(g1.getIdGroup());
+				    id1.setIdUser(dbUser.getIdUser());
+				    gm1.setId(id1);
+				    gm1.setRoles(roleRepository.findByRoleAndCompanyName("admin", to.getCompanyName()));
+				    groupMemberRepository.save(gm1);
+			}
+		
+		}
+		
+		//System.out.println("projects: "+from.getProjects().size());
+		// copy projects
+		for (Project p : projectRepository.findByCompany(from)) {
+			Project p1 = new Project();
+			p1.setCompany(to);
+			p1.setProjectName(p.getProjectName());
+			p1.setDescription(p.getDescription());
+			p1.setSysDicDByStatus(p.getSysDicDByStatus());
+			p1.setUsers(securityUtils.getCurrentDBUser());
+			projectRepository.save(p1);
+			securityACLDAO.addPermission(p1, Project.class, BasePermission.ADMINISTRATION);
+			Groups  group= groupRepository.findGroupByGroupNameAndCompany("全公司", to.getIdCompany(), GroupTypeEnum.Company.name());
+			GrantedAuthoritySid sid = new GrantedAuthoritySid("GROUP_"+group.getIdGroup());
+			logger.debug("pid: " + p1.getIdProject());
+			logger.debug("id: " + p1.getId());
+			securityACLDAO.addPermission(p1, sid, BasePermission.READ);
+		}
 	}
 /*
 	@Transactional(readOnly = false)
