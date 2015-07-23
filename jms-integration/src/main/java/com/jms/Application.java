@@ -6,8 +6,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -15,12 +17,18 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.jms.domain.db.Users;
 import com.jms.service.user.GroupTypeService;
 import com.jms.service.user.UserService;
+import com.jms.service.workmanagement.ProjectService;
+import com.jms.web.AccessControlAllowFilter;
+import com.jms.web.JsonpCallbackFilter;
 
 @SpringBootApplication
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @EnableTransactionManagement(proxyTargetClass = true)
 public class Application extends SpringBootServletInitializer {
 
+	 JsonpCallbackFilter jsonpFilter = new JsonpCallbackFilter();
+	 AccessControlAllowFilter acaFilter = new AccessControlAllowFilter();
+	 
 	public static void main(String[] args) throws Exception {
 		// SpringApplication.run(Application.class, args);
 		ConfigurableApplicationContext ctx = SpringApplication.run(
@@ -37,6 +45,9 @@ public class Application extends SpringBootServletInitializer {
 		GroupTypeService groupTypeService = ctx.getBean(GroupTypeService.class);
 		groupTypeService.loadGroupTypes();
 		*/
+		
+	//	ProjectService projectService = ctx.getBean(ProjectService.class);
+	//	projectService.SecuredObjectServiceTest();
 	}
 
 	@PostConstruct
@@ -45,13 +56,22 @@ public class Application extends SpringBootServletInitializer {
 
 
 	}
+	   @Bean
+	    public FilterRegistrationBean jsonpFilter() {
+	     //   System.out.println("Setting up jsonpFilter with " + jsonpFilter.toString());
 
-	/**
-	 * Allows the application to be started when being deployed into a Servlet 3
-	 * container.
-	 * 
-	 * @see org.springframework.boot.web.SpringBootServletInitializer#configure(org.springframework.boot.builder.SpringApplicationBuilder)
-	 */
+	        FilterRegistrationBean filterRegBean = new FilterRegistrationBean();
+	        filterRegBean.setFilter(jsonpFilter);
+	        return filterRegBean;
+	    }
+	   @Bean
+	    public FilterRegistrationBean acaFilter() {
+	     //   System.out.println("Setting up jsonpFilter with " + jsonpFilter.toString());
+
+	        FilterRegistrationBean filterRegBean = new FilterRegistrationBean();
+	        filterRegBean.setFilter(acaFilter);
+	        return filterRegBean;
+	    }
 	@Override
 	protected SpringApplicationBuilder configure(
 			SpringApplicationBuilder application) {

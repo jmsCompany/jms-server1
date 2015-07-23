@@ -26,26 +26,6 @@ public class ModuleService {
 	@Autowired
 	private CompanyRepository companyRepository ;
 	
-	public void loadModulesFromCSV(InputStream inputStream) throws IOException{
-		CsvReader reader = new CsvReader(inputStream,',', Charset.forName("UTF-8"));
-        reader.readHeaders();  //Parent,  Name,     Description
-		while(reader.readRecord())
-		{
-			Module m = new Module();
-			String parentModule = reader.get("Parent");
-			if(!parentModule.isEmpty())
-			{
-				Module parent = moduleRepository.findByName(parentModule);
-				m.setModule(parent);
-			}
-			m.setDescription(reader.get("Description"));
-			m.setName(reader.get("Name"));
-			logger.debug("Modules: " + m.getName() +", description: " + m.getDescription());
-			save(m); 
-	
-		}
-	}
-	
 	public void save(Module module)
 	{
 		moduleRepository.save(module);  //create new 

@@ -15,21 +15,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.csvreader.CsvReader;
 import com.jms.domain.db.Company;
 import com.jms.domain.db.Module;
-import com.jms.domain.db.RolePriv;
-import com.jms.domain.db.RolePrivId;
 import com.jms.domain.db.Roles;
 import com.jms.domain.db.Sector;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.MessageTypeEnum;
 import com.jms.domain.ws.WSModulePriv;
-import com.jms.domain.ws.WSRolePrivs;
 import com.jms.domain.ws.WSRoles;
 import com.jms.domain.ws.WSSector;
 import com.jms.domainadapter.RoleAdapter;
 import com.jms.messages.MessagesUitl;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.system.ModuleRepository;
-import com.jms.repositories.user.RolePrivRepository;
 import com.jms.repositories.user.RoleRepository;
 
 @Service
@@ -42,8 +38,7 @@ public class RoleService {
 	private CompanyRepository companyRepository;
 	@Autowired
 	private RoleRepository roleRepository;
-	@Autowired
-	private RolePrivRepository rolePrivRepository;
+
 	@Autowired
 	private MessagesUitl messagesUitl;
 	@Autowired
@@ -128,76 +123,9 @@ public class RoleService {
 				MessageTypeEnum.ERROR);
 	}
 
-	public void addRolePriv(Long idRole, Long idModule) {
-		RolePrivId id = new RolePrivId(idModule, idRole);
-		RolePriv rp = new RolePriv();
-		rp.setId(id);
-		rp.setPriv(1l);
-		rolePrivRepository.save(rp);
-	}
 
-	public Message addRolePrivs(WSRolePrivs wsRolePrivs) {
-		String companyName = wsRolePrivs.getCompanyName();
-		if (companyName == null || companyName.isEmpty())
-			return messagesUitl.getMessage("company.doesnotexist", null,
-					MessageTypeEnum.ERROR);
-		String role = wsRolePrivs.getRole();
-		Roles roles = roleRepository
-				.findByRoleAndCompanyName(role, companyName);
-		if (roles == null)
-			return messagesUitl.getMessage("company.role.doesnotexist", null,
-					MessageTypeEnum.ERROR);
+	
 
-		for (Module mod : moduleRepository.findAll()) {
-			RolePrivId id = new RolePrivId(mod.getIdModule(), roles.getIdRole());
-			RolePriv rolePriv = rolePrivRepository.findOne(id);
-			if (rolePriv != null) {
-				int idx = checkModuleInTheList(mod.getName(),
-						wsRolePrivs.getModulePrivList());
-				if (idx != -1) {
-					rolePriv.setPriv(wsRolePrivs.getModulePrivList().get(idx)
-							.getPriv());
-				} else {
-					rolePriv.setPriv(0l);
-
-				}
-				rolePrivRepository.save(rolePriv);
-			} else {
-				int idx = checkModuleInTheList(mod.getName(),
-						wsRolePrivs.getModulePrivList());
-				rolePriv = new RolePriv();
-				rolePriv.setId(id);
-				if (idx != -1) {
-					rolePriv.setPriv(wsRolePrivs.getModulePrivList().get(idx)
-							.getPriv());
-				} else {
-					rolePriv.setPriv(0l);
-
-				}
-				rolePrivRepository.save(rolePriv);
-			}
-
-		}
-
-		return messagesUitl.getMessage("company.role.priv.success", null,
-				MessageTypeEnum.INFOMATION);
-	}
-
-	public WSRolePrivs getRolePrivs(String companyName, String role) {
-		WSRolePrivs wsRolePrivs = new WSRolePrivs();
-		wsRolePrivs.setCompanyName(companyName);
-		wsRolePrivs.setRole(role);
-		Roles roles = roleRepository
-				.findByRoleAndCompanyName(role, companyName);
-		for (RolePriv rp : roles.getRolePrivs()) {
-			WSModulePriv wsModulePriv = new WSModulePriv();
-			wsModulePriv.setName(rp.getModule().getName());
-			wsModulePriv.setDescription(rp.getModule().getDescription());
-			wsModulePriv.setPriv(rp.getPriv());
-			wsRolePrivs.getModulePrivList().add(wsModulePriv);
-		}
-		return wsRolePrivs;
-	}
 
 	private int checkModuleInTheList(String module,
 			List<WSModulePriv> wsModulePrivList) {

@@ -25,6 +25,7 @@ import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.domain.PrincipalSid;
 
+import com.jms.domain.GroupTypeEnum;
 import com.jms.domain.db.AbstractSecuredEntity;
 import com.jms.web.security.SecurityUtils;
 
@@ -107,7 +108,6 @@ public class SecuredObjectService {
 				} else {
 					GrantedAuthoritySid r = (GrantedAuthoritySid) sid;
 					String group = r.getGrantedAuthority();
-					group = group.substring(5);
 					sidPermMap.put(group, perm);
 
 				}

@@ -31,8 +31,6 @@ import com.jms.domain.db.GroupMembers;
 import com.jms.domain.db.GroupMembersId;
 import com.jms.domain.db.Groups;
 import com.jms.domain.db.Project;
-import com.jms.domain.db.RolePriv;
-import com.jms.domain.db.RolePrivId;
 import com.jms.domain.db.Roles;
 import com.jms.domain.db.Sector;
 import com.jms.domain.db.Users;
@@ -50,7 +48,6 @@ import com.jms.repositories.system.SysDicDRepository;
 import com.jms.repositories.user.GroupMemberRepository;
 import com.jms.repositories.user.GroupRepository;
 import com.jms.repositories.user.GroupTypeRepository;
-import com.jms.repositories.user.RolePrivRepository;
 import com.jms.repositories.user.RoleRepository;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.repositories.workmanagement.ProjectRepository;
@@ -82,8 +79,6 @@ public class CompanyService {
 	@Autowired
 	@Qualifier("iUserServiceImpl")
 	private IUserService iUserServiceImpl;
-	@Autowired
-	private RolePrivRepository rolePrivReposity;
 	@Autowired
 	private SecurityUtils securityUtils;
 	@Autowired
@@ -335,9 +330,7 @@ public class CompanyService {
 			projectRepository.save(p1);
 			securityACLDAO.addPermission(p1, Project.class, BasePermission.ADMINISTRATION);
 			Groups  group= groupRepository.findGroupByGroupNameAndCompany("全公司", to.getIdCompany(), GroupTypeEnum.Company.name());
-			GrantedAuthoritySid sid = new GrantedAuthoritySid("GROUP_"+group.getIdGroup());
-			logger.debug("pid: " + p1.getIdProject());
-			logger.debug("id: " + p1.getId());
+			GrantedAuthoritySid sid = new GrantedAuthoritySid(""+group.getIdGroup());
 			securityACLDAO.addPermission(p1, sid, BasePermission.READ);
 		}
 	}

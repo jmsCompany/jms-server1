@@ -1,15 +1,14 @@
 package com.jms.service.workmanagement;
 
-import java.util.Date;
 
+import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import com.jms.acl.SecuredObjectService;
 import com.jms.domain.Config;
-import com.jms.domain.EnabledEnum;
 import com.jms.domain.db.Company;
 import com.jms.domain.db.Project;
 import com.jms.domain.ws.MessageTypeEnum;
@@ -34,6 +33,9 @@ public class ProjectService {
 	private MessagesUitl messagesUitl;
 	@Autowired
 	private SysDicDRepository sysDicDRepository;
+	
+	@Autowired
+	private SecuredObjectService securedObjectService;
 
 	public void createGenerialProject(Company company) {
 
@@ -53,5 +55,23 @@ public class ProjectService {
 					+ ", CompanyName: " + p.getCompany().getCompanyName());
 			projectRepository.save(p);
 		
+	}
+	
+	public void SecuredObjectServiceTest()
+	{
+		 Map<String, String> map = securedObjectService.findSidPermissionMap(Project.class, 4l, "group");
+	       for(String m:map.keySet())
+	       {
+	    	   
+	    	   System.out.println("group id: " + m +", permission: " + map.get(m));
+	       }
+	       
+	  	 Map<String, String> map1 = securedObjectService.findSidPermissionMap(Project.class, 4l, "user");
+	       for(String m:map1.keySet())
+	       {
+	    	   
+	    	   System.out.println("user id: " + m +", permission: " + map1.get(m));
+	       }
+	       
 	}
 }

@@ -186,7 +186,7 @@ public class FileController {
 			doc.setSize(size);
 			documentRepository.save(doc);
 			Users user = usersRepository.findOne(idUser);
-			user.setDocument(doc);
+			user.setDocumentByCv(doc);
 			usersRepository.save(user);
 			return doc;
 		}

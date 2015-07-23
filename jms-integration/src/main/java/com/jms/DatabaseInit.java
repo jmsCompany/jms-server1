@@ -29,7 +29,6 @@ import com.jms.service.system.DistrictService;
 import com.jms.service.system.ModuleService;
 import com.jms.service.user.GroupService;
 import com.jms.service.user.GroupTypeService;
-import com.jms.service.user.RolePrivService;
 import com.jms.service.user.RoleService;
 import com.jms.service.user.UserService;
 import com.jms.service.workmanagement.ProjectService;
@@ -52,8 +51,6 @@ public class DatabaseInit {
 	private ModuleService moduleService;
 	@Autowired
 	private CompanyService companyService;
-	@Autowired
-	private RolePrivService rolePrivService;
 	@Autowired
 	private ProjectService projectService;
 	@Autowired
