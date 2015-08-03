@@ -6,8 +6,11 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+
 import com.jms.domain.ws.Message;
+import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSUser;
+import com.jms.domain.ws.WSUserProfile;
 import com.jms.domainadapter.UserAdapter;
 import com.jms.service.user.UserService;
 import com.jms.service.user.WSUsersValidator;
@@ -30,14 +33,23 @@ public class UserController {
 	}
 	@Transactional(readOnly=false)
 	@RequestMapping(value="/login", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public String login(@RequestBody WSUser wsUser) throws Exception {
-		return userService.login(wsUser.getLogin(), wsUser.getPassword());
+	public WSUserProfile login(@RequestBody WSUser wsUser) throws Exception {
+		WSUserProfile userProfile = new WSUserProfile();
+		String token = userService.login(wsUser.getLogin(), wsUser.getPassword());
+		System.out.println("token: " + token);
+		userProfile.setLogin(wsUser.getLogin());
+		userProfile.setToken(token);
+		return userProfile;
 	}
 	
 	
-	@RequestMapping(value="/user/checklogin", method=RequestMethod.GET)
-	public Message checkLogin(@RequestParam("login") String login,@RequestParam(required=false, value="idUser") Long idUser) throws Exception {
-		return userService.checkLogin(login,idUser);
+	@RequestMapping(value="/check/username", method=RequestMethod.GET)
+	public Valid checkLogin(@RequestParam("login") String login,@RequestParam(required=false, value="idUser") Long idUser) throws Exception {
+		System.out.println("check login: " + login);
+		Boolean returnVal = userService.checkLogin(login,idUser);
+		Valid valid = new Valid();
+		valid.setValid(returnVal);
+		return valid;
 	}
 	@Transactional(readOnly=false)
 	@RequestMapping(value="/user/save", method=RequestMethod.POST)

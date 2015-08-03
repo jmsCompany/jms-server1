@@ -39,7 +39,6 @@ import com.jms.domain.ws.MessageTypeEnum;
 import com.jms.domain.ws.WSCompany;
 import com.jms.domain.ws.WSUser;
 import com.jms.domainadapter.CompanyAdapter;
-import com.jms.domainadapter.SectorAdapter;
 import com.jms.domainadapter.UserAdapter;
 import com.jms.messages.MessagesUitl;
 import com.jms.repositories.company.CompanyRepository;
@@ -81,8 +80,7 @@ public class CompanyService {
 	private IUserService iUserServiceImpl;
 	@Autowired
 	private SecurityUtils securityUtils;
-	@Autowired
-	private SectorAdapter sectorAdapter;
+
 
 	@Autowired
 	private SysDicDRepository sysDicDRepository;
@@ -120,15 +118,15 @@ public class CompanyService {
 	}
 
 	@Transactional(readOnly = false)
-	public Message registCompany(WSCompany wsCompany) throws Exception {
-		Message message = checkCompanyName(wsCompany.getCompanyName(), null);
-		if (message.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
-			return message;
-		message = iUserServiceImpl.checkLogin(wsCompany.getWsUsers()
+	public Boolean registCompany(WSCompany wsCompany) throws Exception {
+		Boolean valid = checkCompanyName(wsCompany.getCompanyName(), null);
+		if (!valid)
+			return false;
+		Boolean userValid = iUserServiceImpl.checkLogin(wsCompany.getWsUsers()
 				.getUsername(), wsCompany.getWsUsers().getEmail(), wsCompany
 				.getWsUsers().getMobile(), null);
-		if (message.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
-			return message;
+		if (!userValid)
+			return false;
 		Users dbUser = userAdapter.toDBUser(wsCompany.getWsUsers(), null);
 		iUserServiceImpl.register(dbUser);
 		wsCompany.setVerified(0l);
@@ -153,27 +151,25 @@ public class CompanyService {
 		Company templateCompany = companyRepository
 				.findByCompanyName("企业模版");
 		copyDataBetweenCompanies(templateCompany, company);
-		return messagesUitl.getMessage("company.success", null,
-				MessageTypeEnum.INFOMATION);
+		return true;
 
 	}
 
 	@Transactional(readOnly = false)
-	public Message updateCompany(WSCompany wsCompany) throws Exception {
+	public Boolean updateCompany(WSCompany wsCompany) throws Exception {
 		Long idCompamplany = wsCompany.getIdCompany();
 		Company company = companyRepository.findOne(idCompamplany);
-		Message message = checkCompanyName(wsCompany.getCompanyName(),
+		Boolean valid= checkCompanyName(wsCompany.getCompanyName(),
 				idCompamplany);
-		if (message.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
-			return message;
+		if (!valid)
+			return false;
 		company = companyAdapter.toDBCompany(wsCompany, company);
 		companyRepository.save(company);
-		return messagesUitl.getMessage("company.update.success", null,
-				MessageTypeEnum.INFOMATION);
+		return true;
 
 	}
 
-	public Message checkCompanyName(String companyName, Long idCompany) {
+	public Boolean checkCompanyName(String companyName, Long idCompany) {
 
 		String dbCompanyName = "";
 		//已有公司修改
@@ -184,34 +180,28 @@ public class CompanyService {
 			{
 				if(companyRepository.findByCompanyName(companyName) == null||companyName.equals(dbCompanyName))
 				{
-					return messagesUitl.getMessage("company.name.available", null,
-							MessageTypeEnum.INFOMATION);
+					return true;
 				}
 				else
 				{
-					return messagesUitl.getMessage("company.alreadyexist", null,
-							MessageTypeEnum.ERROR);
+					return false;
 				}
 			}
 			else
-				return messagesUitl.getMessage("company.name.available", null,
-						MessageTypeEnum.INFOMATION);
+				return true;
 		}
 		else
 		{
 			if (companyName == null || companyName.isEmpty())
-				return messagesUitl.getMessage("company.name.required", null,
-						MessageTypeEnum.ERROR);
+				return false;
 			else
 			{
 				if (companyRepository.findByCompanyName(companyName) == null) {
-					return messagesUitl.getMessage("company.name.available", null,
-							MessageTypeEnum.INFOMATION);
+					return true;
 				} 
 				else
 				{
-					return messagesUitl.getMessage("company.alreadyexist", null,
-							MessageTypeEnum.ERROR);
+					return false;
 				}
 			}
 		}

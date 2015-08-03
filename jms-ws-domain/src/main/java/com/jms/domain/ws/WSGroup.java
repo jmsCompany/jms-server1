@@ -1,32 +1,18 @@
 package com.jms.domain.ws;
 
+import java.util.Date;
 
+public class WSGroup implements java.io.Serializable{
 
-public class WSSector implements java.io.Serializable{
-
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = -748466226685624795L;
-	private Long idSector;
+	private Long idGroup;
     private String companyName;
-    private String sector;
+    private String groupName;
     private String description;
     private Long enabled;
     private Long seq;
-	public Long getIdSector() {
-		return idSector;
-	}
-	public void setIdSector(Long idSector) {
-		this.idSector = idSector;
-	}
-
-	public String getSector() {
-		return sector;
-	}
-	public void setSector(String sector) {
-		this.sector = sector;
-	}
+	private String type;
+    private Date creationTime;
 	public String getDescription() {
 		return description;
 	}
@@ -50,5 +36,29 @@ public class WSSector implements java.io.Serializable{
 	}
 	public void setSeq(Long seq) {
 		this.seq = seq;
+	}
+	public Long getIdGroup() {
+		return idGroup;
+	}
+	public void setIdGroup(Long idGroup) {
+		this.idGroup = idGroup;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public Date getCreationTime() {
+		return creationTime;
+	}
+	public void setCreationTime(Date creationTime) {
+		this.creationTime = creationTime;
+	}
+	public String getGroupName() {
+		return groupName;
+	}
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
 	}
 }

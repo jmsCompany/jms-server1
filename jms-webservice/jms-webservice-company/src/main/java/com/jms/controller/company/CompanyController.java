@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.jms.domain.ws.Message;
+import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSCompany;
 import com.jms.domain.ws.WSTest;
 import com.jms.domainadapter.CompanyAdapter;
@@ -37,12 +38,13 @@ public class CompanyController {
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/company/create", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public Message createCompany(@RequestBody WSCompany wsCompany) throws Exception {
+	public Boolean createCompany(@RequestBody WSCompany wsCompany) throws Exception {
+		System.out.println("call company registed: " +wsCompany.getCompanyName());
 		return companyService.registCompany(wsCompany);
 	}
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/company/update", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public Message updateCompany(@RequestBody WSCompany wsCompany) throws Exception {
+	public Boolean updateCompany(@RequestBody WSCompany wsCompany) throws Exception {
 		return companyService.updateCompany(wsCompany);
 	}
 	
@@ -90,8 +92,13 @@ public class CompanyController {
 
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/check/companyname", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-	public Message checkCompanyName(@RequestParam("companyname") String companyname,@RequestParam(required=false,value="idCompany") Long idCompany) throws Exception {
-		return companyService.checkCompanyName(companyname,idCompany);
+	public Valid checkCompanyName(@RequestParam("companyname") String companyname,@RequestParam(required=false,value="idCompany") Long idCompany) throws Exception {
+		
+		//System.out.print("company name: " + companyname);
+		Boolean returnVal= companyService.checkCompanyName(companyname,idCompany);
+		Valid valid = new Valid();
+		valid.setValid(returnVal);
+		return valid;
 	}
 
 

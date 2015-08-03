@@ -18,7 +18,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
 	public Users findByUsernameOrEmailOrMobile(String login);
 	public Users findByToken(String token);
 	
-	@Query("select u from Users u inner join fetch u.sectorMembers s where s.id.idSector=?1")	
-	public List<Users> findUsersByIdSector(Long idSector);
+	@Query("select u from Users u inner join fetch u.groupMemberses g where g.id.idGroup=?1")	
+	public List<Users> findUsersByIdGroup(Long idGroup);
 }
 

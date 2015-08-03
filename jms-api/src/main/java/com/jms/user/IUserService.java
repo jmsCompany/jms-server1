@@ -10,12 +10,12 @@ import com.jms.domain.ws.WSUser;
 
 public interface IUserService {
 	@Transactional(readOnly=false)
-	public Message register(Users users);
+	public Boolean register(Users users);
 	@Transactional(readOnly=true)
-	public Message checkLogin(String login,Long idUser);
+	public Boolean checkLogin(String login,Long idUser);
 	@Transactional(readOnly=true)
-	public Message checkLogin(String username,String email,String mobile,Long idUser);
+	public Boolean checkLogin(String username,String email,String mobile,Long idUser);
 	@Transactional(readOnly=true)
-	public List<WSUser> getUsersByIdSector(Long idSector) throws Exception;
+	public List<WSUser> getUsersByIdGroup(Long idGroup) throws Exception;
 }
 

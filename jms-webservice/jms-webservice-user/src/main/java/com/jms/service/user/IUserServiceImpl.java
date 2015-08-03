@@ -46,8 +46,8 @@ public class IUserServiceImpl implements IUserService {
 
 	@Autowired protected UserAdapter userAdapter;
 
-	public Message register(Users users) {
-		Message msg = checkLogin(users.getUsername(), users.getEmail(),
+	public Boolean register(Users users) {
+		Boolean valid = checkLogin(users.getUsername(), users.getEmail(),
 				users.getMobile(),null);
         String anyLogin ="";
         if(users.getUsername()!=null&&!users.getUsername().isEmpty())
@@ -62,20 +62,15 @@ public class IUserServiceImpl implements IUserService {
         	 if(users.getMobile()!=null&&!users.getMobile().isEmpty())
              	anyLogin =users.getMobile();
         }
-		if (msg.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
-			return msg;
+		if (!valid)
+			return false;
 		else {
 			users.setPassword(new BCryptPasswordEncoder().encode(users
 					.getPassword()));
 			users.setCreationTime(new Date());
 			users.setEnabled(1l);
 			usersRepository.save(users);
-
-			Message msgToClient = messagesUitl.getMessage(
-					"user.register.success", null, MessageTypeEnum.INFOMATION);
-			logger.debug(msgToClient.getMessageTypeEnum().toString() + ", "
-					+ msgToClient.getMessage());
-			return msgToClient;
+			return true;
 		}
 
 	}
@@ -86,50 +81,32 @@ public class IUserServiceImpl implements IUserService {
 		usersRepository.save(users);
 	}
 
-	public Message checkLogin(String username, String email, String mobile,Long idUser) {
-		logger.debug(" username: " + username + ", email: " + email + ", "
-				+ mobile);
-		Message msg1 = checkLogin(username,idUser);
-		if (msg1 != null
-				&& msg1.getMessageTypeEnum().equals(MessageTypeEnum.ERROR)) {
-			logger.debug("message1: " + msg1.getMessage() + ", type: "
-					+ msg1.getMessageTypeEnum());
-			return msg1;
-		}
-		Message msg2 = checkLogin(email,idUser);
-		if (msg2 != null
-				&& msg2.getMessageTypeEnum().equals(MessageTypeEnum.ERROR)) {
-			logger.debug("message2: " + msg2.getMessage() + ", type: "
-					+ msg2.getMessageTypeEnum());
-			return msg2;
-		}
+	public Boolean checkLogin(String username, String email, String mobile,Long idUser) {
 
-		Message msg3 = checkLogin(mobile,idUser);
-		if (msg3 != null
-				&& msg3.getMessageTypeEnum().equals(MessageTypeEnum.ERROR)) {
-			logger.debug("message3: " + msg3.getMessage() + ", type: "
-					+ msg3.getMessageTypeEnum());
-			return msg3;
-		}
-		if (msg1 == null && msg2 == null && msg3 == null)
-			return messagesUitl.getMessage("user.register.error.atleastone",
-					null, MessageTypeEnum.ERROR);
-		return messagesUitl.getMessage("user.register.ok", null,
-				MessageTypeEnum.INFOMATION);
+		Boolean valid = checkLogin(username,idUser);
+		if (!valid)
+			return false;
+	    Boolean valid1 = checkLogin(email,idUser);
+		if (!valid1)
+			return false;
+       Boolean valid2 = checkLogin(mobile,idUser);
+		if (!valid2)
+			return false;
+		if (valid&&valid1&&valid2)
+			return true;
+		return false;
 
 	}
 
-	public Message checkLogin(String login, Long idUser) {
+	public Boolean checkLogin(String login, Long idUser) {
 		if (login != null && !login.isEmpty()) {
 			Users u = usersRepository.findByUsernameOrEmailOrMobile(login);
 			if(idUser==null)
 			{
 				if (u != null)
-					return messagesUitl.getMessage("user.register.error",
-							new Object[] { login }, MessageTypeEnum.ERROR);
+					return false;
 				else
-					return messagesUitl.getMessage("user.name.available", null,
-							MessageTypeEnum.INFOMATION);
+					return true;
 			}
 			else
 			{
@@ -137,24 +114,21 @@ public class IUserServiceImpl implements IUserService {
 				if(u != null)
 				{
 					if(u.getIdUser().equals(u1.getIdUser()))
-						return messagesUitl.getMessage("user.name.available", null,
-								MessageTypeEnum.INFOMATION);
+						return true;
 					else
-						return messagesUitl.getMessage("user.register.error",
-								new Object[] { login }, MessageTypeEnum.ERROR);
+						return false;
 				}
 			
 				else
-					return messagesUitl.getMessage("user.name.available", null,
-							MessageTypeEnum.INFOMATION);
+					return true;
 			}
 		
 		} else
-			return null;
+			return true;
 	}
 	
 	@Transactional(readOnly=true)
-	public List<WSUser> getUsersByIdSector(Long idSector) throws Exception
+	public List<WSUser> getUsersByIdGroup(Long idGroup) throws Exception
 	{
 		//Pageable p = new PageRequest(0,1);
 		// Page<Users> requestedPage = usersRepository.findAll(p);
@@ -166,7 +140,7 @@ public class IUserServiceImpl implements IUserService {
 	
 
 		List<WSUser> wsUsers = new ArrayList<WSUser>(0);
-		for(Users u:usersRepository.findUsersByIdSector(idSector))
+		for(Users u:usersRepository.findUsersByIdGroup(idGroup))
 		{
 			WSUser wsuser =userAdapter.toWSUser(u);
 			for(SectorMember sm:u.getSectorMembers())

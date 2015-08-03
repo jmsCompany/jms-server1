@@ -22,11 +22,9 @@ import com.jms.domain.db.Company;
 import com.jms.domain.db.Users;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.service.company.CompanyService;
-import com.jms.service.company.SectorService;
 import com.jms.service.system.AppsService;
 import com.jms.service.system.DicService;
 import com.jms.service.system.DistrictService;
-import com.jms.service.system.ModuleService;
 import com.jms.service.user.GroupService;
 import com.jms.service.user.GroupTypeService;
 import com.jms.service.user.RoleService;
@@ -45,10 +43,6 @@ public class DatabaseInit {
 	private UserService userService;
 	@Autowired
 	private RoleService roleService;
-	@Autowired
-	private SectorService sectorService;
-	@Autowired
-	private ModuleService moduleService;
 	@Autowired
 	private CompanyService companyService;
 	@Autowired
@@ -88,7 +82,7 @@ public class DatabaseInit {
 		
 		Company templateCompany = companyService.createTemplateCompany();
 		roleService.createDefaultRoles(templateCompany);
-		sectorService.createDefaultSectors(templateCompany);
+		
 		groupService.createDefaultGroups(templateCompany);
 		projectService.createGenerialProject(templateCompany);
 		appsService.createInitalApps();

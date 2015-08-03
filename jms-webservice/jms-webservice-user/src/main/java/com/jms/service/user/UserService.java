@@ -36,7 +36,7 @@ public class UserService extends IUserServiceImpl{
 	@Transactional(readOnly=false)
 	public WSUser save(WSUser wsUser) throws Exception
 	{
-			Message msg = checkLogin(wsUser.getUsername(), wsUser.getEmail(),
+			Boolean userValid = checkLogin(wsUser.getUsername(), wsUser.getEmail(),
 					wsUser.getMobile(),wsUser.getIdUser());
 	        String anyLogin ="";
 	        if(wsUser.getUsername()!=null&&!wsUser.getUsername().isEmpty())
@@ -51,8 +51,8 @@ public class UserService extends IUserServiceImpl{
 	        	 if(wsUser.getMobile()!=null&&!wsUser.getMobile().isEmpty())
 	             	anyLogin =wsUser.getMobile();
 	        }
-			if (msg.getMessageTypeEnum().equals(MessageTypeEnum.ERROR))
-				throw new java.lang.Exception(msg.getMessage());
+			if (!userValid)
+				throw new java.lang.Exception("用户已经被注册了");
 			Users dbUser = usersRepository.findOne(wsUser.getIdUser());
 			dbUser = userAdapter.toDBUser(wsUser, dbUser);
 			usersRepository.save(dbUser);

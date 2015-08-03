@@ -3,6 +3,8 @@ package com.jms.web.security;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,13 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.WSUser;
 import com.jms.repositories.user.UsersRepository;
+import com.jms.web.AccessControlAllowFilter;
 
 
 
 @Service("tokenUtils")
 @Transactional(readOnly=true)
 public class TokenUtilsImpl implements TokenUtils {
-
+	private static Log LOGGER = LogFactory.getLog(TokenUtilsImpl.class);
 	@Autowired private UsersRepository  usersRepository;
 	
 	@Autowired
@@ -49,24 +52,16 @@ public class TokenUtilsImpl implements TokenUtils {
 	@Override
 	public boolean validate(String token) {
 		Users user = usersRepository.findByToken(token);
+		boolean flag =false;
 	    if(user!=null)
 	    {
-
 	    	if(user.getLastLogin().getTime()<new Date().getTime()-TWO_WEEKS_S)
-	    	{
-	    		
-	    		return false;
-	    	}
-	    		
+	    		flag = false;
 	    	else
-	    	{
-	    		return true;
-	    	}
-	    		
+	    		flag = true;	
 	    }
-		  
-	    else
-	      return false;
+	    	return flag;
+     
 	}
 
 	@Override @Transactional(readOnly=false)
@@ -78,11 +73,15 @@ public class TokenUtilsImpl implements TokenUtils {
 
 		WSUser wsUser = new WSUser();
 		wsUser.setIdUser(user.getIdUser());
-		wsUser.setLocale(user.getSysDicDByLocale().getName());
+		if(user.getSysDicDByLocale()!=null)
+		{
+			wsUser.setLocale(user.getSysDicDByLocale().getName());
+		}
+		
 		wsUser.setEmail(user.getEmail());
 		String username =token.substring(0, token.indexOf("__"));
 		wsUser.setLogin(username);
-		wsUser.setUsername(user.getUsername());
+		wsUser.setUsername(username);
 		wsUser.setMobile(user.getMobile());
 		wsUser.setPassword(user.getPassword());
 		JMSUserDetails userDetails = new JMSUserDetails(wsUser);
