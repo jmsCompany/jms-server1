@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.jms.domain.ws.WSCity;
 import com.jms.domain.ws.WSDistrict;
 import com.jms.domain.ws.WSProvince;
+import com.jms.domain.ws.WSSelectObj;
 import com.jms.service.system.DistrictService;
 
 @RestController
@@ -19,21 +20,21 @@ public class DistrictController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/provinces", method=RequestMethod.GET)
-	public List<WSProvince> getProvinces() throws Exception{
+	public List<WSSelectObj> getProvinces() throws Exception{
 		
 		return districtService.getProvinces();
 	}
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/provinces/{idProvince}/cities", method=RequestMethod.GET)
-	public List<WSCity> getCites(@PathVariable("idProvince") Long idProvince) throws Exception {
+	public List<WSSelectObj> getCites(@PathVariable("idProvince") Long idProvince) throws Exception {
 		
 		return districtService.getCites(idProvince);
 	}
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/cities/{idCity}/districts", method=RequestMethod.GET)
-	public List<WSDistrict> getDistricts(@PathVariable("idCity")  Long idCity) throws Exception
+	public List<WSSelectObj> getDistricts(@PathVariable("idCity")  Long idCity) throws Exception
 	{
 		return districtService.getDistricts(idCity);
 	}

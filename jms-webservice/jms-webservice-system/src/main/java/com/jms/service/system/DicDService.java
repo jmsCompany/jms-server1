@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jms.domain.db.SysDicD;
+import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSSysDicD;
 import com.jms.domainadapter.SysDicDAdapter;
 import com.jms.repositories.system.SysDicDRepository;
@@ -31,6 +32,20 @@ public class DicDService implements IDicDService{
 		for(SysDicD sysDicD: sysDicDRepository.findDicsByType(type))
 		{
 			wsDics.add(sysDicDAdapter.toWSSysDicD(sysDicD));
+		}
+		return wsDics;
+		
+	}
+	
+	public List<WSSelectObj> getSelectObjByType(String type) throws Exception {
+		List<WSSelectObj> wsDics = new ArrayList<WSSelectObj>(0);
+		
+		for(SysDicD sysDicD: sysDicDRepository.findDicsByType(type))
+		{
+			WSSelectObj so = new WSSelectObj();
+			so.setId(sysDicD.getIdDic());
+			so.setName(sysDicD.getDescription());
+			wsDics.add(so);
 		}
 		return wsDics;
 		

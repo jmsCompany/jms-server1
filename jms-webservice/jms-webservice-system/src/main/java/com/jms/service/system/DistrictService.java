@@ -20,6 +20,7 @@ import com.jms.domain.db.Province;
 import com.jms.domain.ws.WSCity;
 import com.jms.domain.ws.WSDistrict;
 import com.jms.domain.ws.WSProvince;
+import com.jms.domain.ws.WSSelectObj;
 import com.jms.domainadapter.CityAdapter;
 import com.jms.domainadapter.DistrictAdapter;
 import com.jms.domainadapter.ProvinceAdapter;
@@ -48,32 +49,41 @@ public class DistrictService {
 	@Autowired
 	private DistrictAdapter districtAdapter;
 	
-	public List<WSProvince> getProvinces() throws Exception
+	public List<WSSelectObj> getProvinces() throws Exception
 	{
-		List<WSProvince> wsProvinces = new ArrayList<WSProvince>(0);
+		List<WSSelectObj> wsProvinces = new ArrayList<WSSelectObj>(0);
 		for(Province province: provinceRepository.findAll())
 		{
-			wsProvinces.add(provinceAdapter.toWSProvince(province));
+			WSSelectObj so = new WSSelectObj();
+			so.setId(province.getIdProvince());
+			so.setName(province.getProvince());
+			wsProvinces.add(so);
 		}
 		return wsProvinces;
 	}
 	
-	public List<WSCity> getCites(Long idProvince) throws Exception
+	public List<WSSelectObj> getCites(Long idProvince) throws Exception
 	{
-		List<WSCity> wsCities = new ArrayList<WSCity>(0);
+		List<WSSelectObj> wsCities = new ArrayList<WSSelectObj>(0);
 		for(City c: provinceRepository.findOne(idProvince).getCities())
 		{
-			wsCities.add(cityAdapter.toWSCity(c));
+			WSSelectObj so = new WSSelectObj();
+			so.setId(c.getIdCity());
+			so.setName(c.getCity());
+			wsCities.add(so);
 		}
 		return wsCities;
 	}
 	
-	public List<WSDistrict> getDistricts(Long idCity) throws Exception
+	public List<WSSelectObj> getDistricts(Long idCity) throws Exception
 	{
-		List<WSDistrict> wsDistricts = new ArrayList<WSDistrict>(0);
+		List<WSSelectObj> wsDistricts = new ArrayList<WSSelectObj>(0);
 		for(District d: cityRepository.findOne(idCity).getDistricts())
 		{
-			wsDistricts.add(districtAdapter.toWSDistrict(d));
+			WSSelectObj so = new WSSelectObj();
+			so.setId(d.getIdDistrict());
+			so.setName(d.getDistrict());
+			wsDistricts.add(so);
 		}
 		return wsDistricts;
 	}
