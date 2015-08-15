@@ -97,6 +97,12 @@ public class UserService extends IUserServiceImpl{
 		admin.setUsername("admin");
 		admin.setPassword("admin");
 		register(admin);
+		
+		
+		Users user = new Users();
+		user.setUsername("user");
+		user.setPassword("user");
+		register(user);
 
 	}
 	@Transactional(readOnly=false)

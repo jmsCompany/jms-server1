@@ -36,9 +36,12 @@ public class UserController {
 	public WSUserProfile login(@RequestBody WSUser wsUser) throws Exception {
 		WSUserProfile userProfile = new WSUserProfile();
 		String token = userService.login(wsUser.getLogin(), wsUser.getPassword());
-		System.out.println("token: " + token);
 		userProfile.setLogin(wsUser.getLogin());
 		userProfile.setToken(token);
+		userProfile.setIdUser(wsUser.getIdUser());
+		userProfile.setLogoURL("www.logo.com");
+		userProfile.setIdCompany(2l);
+		userProfile.setUsername("");
 		return userProfile;
 	}
 	

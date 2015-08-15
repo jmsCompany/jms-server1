@@ -15,19 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.csvreader.CsvReader;
 import com.jms.domain.db.City;
 import com.jms.domain.db.District;
-import com.jms.domain.db.Module;
 import com.jms.domain.db.Province;
-import com.jms.domain.ws.WSCity;
-import com.jms.domain.ws.WSDistrict;
-import com.jms.domain.ws.WSProvince;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domainadapter.CityAdapter;
 import com.jms.domainadapter.DistrictAdapter;
 import com.jms.domainadapter.ProvinceAdapter;
-import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.system.CityRepository;
 import com.jms.repositories.system.DistrictRepository;
-import com.jms.repositories.system.ModuleRepository;
 import com.jms.repositories.system.ProvinceRepository;
 
 

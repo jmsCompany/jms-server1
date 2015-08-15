@@ -39,7 +39,6 @@ public class CompanyController {
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/company/create", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public Boolean createCompany(@RequestBody WSCompany wsCompany) throws Exception {
-		System.out.println("call company registed: " +wsCompany.getCompanyName());
 		return companyService.registCompany(wsCompany);
 	}
 	@Transactional(readOnly = false)
@@ -73,25 +72,25 @@ public class CompanyController {
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="company/view/{idCompany}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="company/view/{idCompany}", method=RequestMethod.GET)
 	public WSCompany getCompany(@PathVariable("idCompany") Long idCompany) throws Exception {
 		return companyAdapter.toWSCompany(companyService.findCompanyById(idCompany));
 	}
 	@Transactional(readOnly = true)
-	@RequestMapping(value="company/view", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="company/view", method=RequestMethod.GET)
 	public WSCompany getCompany(@RequestParam("login") String login) throws Exception {
 		return companyAdapter.toWSCompany(companyService.findCompanyByLogin(login));
 	}
 
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/company/cancel", method=RequestMethod.DELETE, produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/company/cancel", method=RequestMethod.DELETE)
 	public Message cancelCompany(@RequestParam("idCompany") int idCompany)
 	{
 		return companyService.cancelCompany(idCompany);
 	}
 
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/check/companyname", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/check/companyname", method=RequestMethod.GET)
 	public Valid checkCompanyName(@RequestParam("companyname") String companyname,@RequestParam(required=false,value="idCompany") Long idCompany) throws Exception {
 		
 		//System.out.print("company name: " + companyname);

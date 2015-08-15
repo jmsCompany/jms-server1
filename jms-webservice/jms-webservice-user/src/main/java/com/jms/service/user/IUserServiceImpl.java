@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jms.domain.db.Groups;
-import com.jms.domain.db.SectorMember;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.MessageTypeEnum;
@@ -143,18 +142,7 @@ public class IUserServiceImpl implements IUserService {
 		for(Users u:usersRepository.findUsersByIdGroup(idGroup))
 		{
 			WSUser wsuser =userAdapter.toWSUser(u);
-			for(SectorMember sm:u.getSectorMembers())
-			{
-				WSRoles wsRoles = new WSRoles();
-				wsRoles.setIdRole(sm.getRoles().getIdRole());
-				wsRoles.setRole(sm.getRoles().getRole());
-				wsRoles.setEnabled(sm.getRoles().getEnabled());
-                wsRoles.setIdSector(sm.getId().getIdSector());
-                wsRoles.setSector(sm.getSector().getSector());
-                wsRoles.setLevel(sm.getRoles().getLevel());
-                wsRoles.setIsprimary(sm.getIsprimary());
-                wsuser.getRoleList().add(wsRoles);
-			}
+			
 			wsUsers.add(wsuser);
 		}
 		return wsUsers;

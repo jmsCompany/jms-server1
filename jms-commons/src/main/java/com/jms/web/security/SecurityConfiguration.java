@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.http.HttpMethod;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -35,14 +36,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
+	    
 		http
 		.authorizeRequests().antMatchers("/company/create").permitAll()
 		.antMatchers("/error").permitAll()
 		.antMatchers("/check/**").permitAll()
 		.antMatchers("/dic/**").permitAll()
 		//.antMatchers("/download/**").permitAll()
-		.antMatchers("/login").permitAll();
-	    http.addFilter(authenticationTokenProcessingFilter);
+		.antMatchers("/login").permitAll()
+		.antMatchers(HttpMethod.OPTIONS,"/**").permitAll();
+		http.addFilter(authenticationTokenProcessingFilter);
 	    http.authorizeRequests().anyRequest().authenticated();
 	}
 

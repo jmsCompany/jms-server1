@@ -23,6 +23,7 @@ import com.jms.repositories.user.GroupMemberRepository;
 import com.jms.repositories.user.GroupRepository;
 import com.jms.repositories.user.GroupTypeRepository;
 import com.jms.repositories.user.RoleRepository;
+import com.jms.repositories.user.UsersRepository;
 import com.jms.web.security.SecurityUtils;
 
 @Service
@@ -43,6 +44,8 @@ public class GroupService {
 	private GroupsAdapter groupsAdapter;
 	@Autowired
 	private CompanyRepository companyRepository;
+	@Autowired
+	private UsersRepository usersRepository;
 
 	public void createDefaultGroups(Company company) {
 		Users dbUser = securityUtils.getCurrentDBUser();
@@ -60,6 +63,9 @@ public class GroupService {
 		Roles userRole = roleRepository.findByRoleAndCompanyName(
 				SystemRoleEnum.user.name(), company.getCompanyName());
 		addUserToDefaultGroup(dbUser, selfGroup, userRole);
+		
+		Users normalUser = usersRepository.findByUsername("user");
+		addUserToDefaultGroup(normalUser, companyGroup, userRole);
 	}
 
 	public Groups createGroup(Company company, GroupTypeEnum groupTyppe,

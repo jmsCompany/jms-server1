@@ -42,7 +42,7 @@ public class CompanyAdapter {
 					.getCompanyNature().getIdDic()));
 		}
 		if (wsCompany.getCompanySize() != null) {
-			c.setSysDicDByCompanyNature(sysDicDRepository.findOne(wsCompany
+			c.setSysDicDByCompanySize(sysDicDRepository.findOne(wsCompany
 					.getCompanySize().getIdDic()));
 		}
 		if (wsCompany.getCompanyType() != null) {

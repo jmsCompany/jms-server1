@@ -72,6 +72,14 @@ public class DatabaseInit {
 		dicService.loadDics();
 		groupTypeService.loadGroupTypes();
 		userService.createDefaultUsers();
+	
+		
+		Resource provinceRes = ctx.getResource("classpath:data/province.csv");
+		Resource cityRes = ctx.getResource("classpath:data/city.csv");
+		Resource districtRes = ctx.getResource("classpath:data/district.csv");
+		districtService.loadProvicesFromCSV(provinceRes.getInputStream());
+		districtService.loadCitiesFromCSV(cityRes.getInputStream());
+		districtService.loadDistrictsFromCSV(districtRes.getInputStream());
 
 		UserDetails userDetails = userDetailService.loadUserByUsername(""+usersRepository.findByUsername("admin").getIdUser());
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
@@ -85,14 +93,11 @@ public class DatabaseInit {
 		
 		groupService.createDefaultGroups(templateCompany);
 		projectService.createGenerialProject(templateCompany);
-		appsService.createInitalApps();
-
-		Resource provinceRes = ctx.getResource("classpath:data/province.csv");
-		Resource cityRes = ctx.getResource("classpath:data/city.csv");
-		Resource districtRes = ctx.getResource("classpath:data/district.csv");
-		districtService.loadProvicesFromCSV(provinceRes.getInputStream());
-		districtService.loadCitiesFromCSV(cityRes.getInputStream());
-		districtService.loadDistrictsFromCSV(districtRes.getInputStream());
+	
+		
+		Resource appsRes = ctx.getResource("classpath:data/apps.csv");
+		appsService.createInitalApps(appsRes.getInputStream(), templateCompany);
+	
 
 	}
 

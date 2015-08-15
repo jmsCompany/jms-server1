@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.jms.domain.db.Users;
+import com.jms.service.system.AppsService;
 import com.jms.service.user.GroupTypeService;
 import com.jms.service.user.UserService;
 import com.jms.service.workmanagement.ProjectService;
@@ -26,52 +27,51 @@ import com.jms.web.JsonpCallbackFilter;
 @EnableTransactionManagement(proxyTargetClass = true)
 public class Application extends SpringBootServletInitializer {
 
-	 JsonpCallbackFilter jsonpFilter = new JsonpCallbackFilter();
-	 AccessControlAllowFilter acaFilter = new AccessControlAllowFilter();
-	 
+	// JsonpCallbackFilter jsonpFilter = new JsonpCallbackFilter();
+	AccessControlAllowFilter acaFilter = new AccessControlAllowFilter();
+
 	public static void main(String[] args) throws Exception {
 		// SpringApplication.run(Application.class, args);
 		ConfigurableApplicationContext ctx = SpringApplication.run(
 				Application.class, args);
-		
+
 		DatabaseInit initDB = ctx.getBean(DatabaseInit.class);
 		initDB.init(ctx);
+
 		/*
-		UserService userService = ctx.getBean(UserService.class);
-		for(Users u: userService.findRevisions(4l))
-		{
-			System.out.println("uid:" + u.getIdUser() +" ,token: " + u.getToken());
-		}
-		GroupTypeService groupTypeService = ctx.getBean(GroupTypeService.class);
-		groupTypeService.loadGroupTypes();
-		*/
-		
-	//	ProjectService projectService = ctx.getBean(ProjectService.class);
-	//	projectService.SecuredObjectServiceTest();
+		 * UserService userService = ctx.getBean(UserService.class); for(Users
+		 * u: userService.findRevisions(4l)) { System.out.println("uid:" +
+		 * u.getIdUser() +" ,token: " + u.getToken()); } GroupTypeService
+		 * groupTypeService = ctx.getBean(GroupTypeService.class);
+		 * groupTypeService.loadGroupTypes();
+		 */
+
+		// ProjectService projectService = ctx.getBean(ProjectService.class);
+		// projectService.SecuredObjectServiceTest();
 	}
 
 	@PostConstruct
 	public void init() {
 		SecurityContextHolder.clearContext();
 
-
 	}
-	   @Bean
-	    public FilterRegistrationBean jsonpFilter() {
-	     //   System.out.println("Setting up jsonpFilter with " + jsonpFilter.toString());
 
-	        FilterRegistrationBean filterRegBean = new FilterRegistrationBean();
-	        filterRegBean.setFilter(jsonpFilter);
-	        return filterRegBean;
-	    }
-	   @Bean
-	    public FilterRegistrationBean acaFilter() {
-	     //   System.out.println("Setting up jsonpFilter with " + jsonpFilter.toString());
+	// @Bean
+	// public FilterRegistrationBean jsonpFilter() {
+	// System.out.println("Setting up jsonpFilter with " +
+	// jsonpFilter.toString());
 
-	        FilterRegistrationBean filterRegBean = new FilterRegistrationBean();
-	        filterRegBean.setFilter(acaFilter);
-	        return filterRegBean;
-	    }
+	// FilterRegistrationBean filterRegBean = new FilterRegistrationBean();
+	// filterRegBean.setFilter(jsonpFilter);
+	// return filterRegBean;
+	// }
+	@Bean
+	public FilterRegistrationBean acaFilter() {
+		FilterRegistrationBean filterRegBean = new FilterRegistrationBean();
+		filterRegBean.setFilter(acaFilter);
+		return filterRegBean;
+	}
+
 	@Override
 	protected SpringApplicationBuilder configure(
 			SpringApplicationBuilder application) {
