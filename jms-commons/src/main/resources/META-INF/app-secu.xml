@@ -14,7 +14,7 @@
         <b:property name="permissionEvaluator" ref="permissionEvaluator"/>
     </b:bean>
    
-    <b:bean id="permissionEvaluator" class="org.springframework.security.acls.AclPermissionEvaluator">
+    <b:bean id="permissionEvaluator" class="com.jms.acl.JMSPermissionEvaluator">
         <b:constructor-arg ref="mutableAclService"/>
     </b:bean>
     

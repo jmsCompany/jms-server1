@@ -36,7 +36,6 @@ public class SecurityACLDAO {
 	public void addPermission(AbstractSecuredEntity element,
 			Class domainClass,Permission permission) {
         MutableAcl acl;
-		//  System.out.println("!"+((JMSUserDetails)(SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getIdUser());
         ObjectIdentity oid = new ObjectIdentityImpl(domainClass, element.getId());
         try {
             acl = (MutableAcl) mutableAclService.readAclById(oid);

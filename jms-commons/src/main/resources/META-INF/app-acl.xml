@@ -34,15 +34,15 @@
 					<list>
 						<bean
 							class="org.springframework.security.core.authority.GrantedAuthorityImpl">
-							<constructor-arg value="ROLE_ADMINISTRATOR" />
+							<constructor-arg value="admin" />
 						</bean>
 						<bean
 							class="org.springframework.security.core.authority.GrantedAuthorityImpl">
-							<constructor-arg value="ROLE_ADMINISTRATOR" />
+							<constructor-arg value="admin" />
 						</bean>
 						<bean
 							class="org.springframework.security.core.authority.GrantedAuthorityImpl">
-							<constructor-arg value="ROLE_ADMINISTRATOR" />
+							<constructor-arg value="admin" />
 						</bean>
 					</list>
 				</constructor-arg>
@@ -52,9 +52,9 @@
 			<bean class="org.springframework.security.acls.domain.ConsoleAuditLogger" />
 		</constructor-arg>
 	</bean>
-
+<!-- class="org.springframework.security.acls.jdbc.JdbcMutableAclService" -->
 	<bean id="mutableAclService"
-		class="org.springframework.security.acls.jdbc.JdbcMutableAclService">
+		class="com.jms.acl.MyJdbcMutableAclService">
 		<constructor-arg ref="dataSource" />
 		<constructor-arg ref="lookupStrategy" />
 		<constructor-arg ref="aclCache" />

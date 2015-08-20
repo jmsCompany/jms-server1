@@ -79,13 +79,13 @@ public class TokenUtilsImpl implements TokenUtils {
 		}
 		
 		wsUser.setEmail(user.getEmail());
-		String username =token.substring(0, token.indexOf("__"));
-		wsUser.setLogin(username);
-		wsUser.setUsername(username);
+		//String username =token.substring(0, token.indexOf("__"));
+		wsUser.setLogin(""+user.getIdUser());
+		wsUser.setUsername(user.getUsername());
 		wsUser.setMobile(user.getMobile());
 		wsUser.setPassword(user.getPassword());
 		JMSUserDetails userDetails = new JMSUserDetails(wsUser);
-		userDetails.setAuthorities(securityUtils.getAuthorities(username));
+		userDetails.setAuthorities(securityUtils.getAuthorities(user.getIdUser()));
 		return userDetails;
 	}
 

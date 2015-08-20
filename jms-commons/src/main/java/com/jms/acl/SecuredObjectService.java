@@ -1,11 +1,13 @@
 package com.jms.acl;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.acls.AclPermissionEvaluator;
@@ -18,22 +20,26 @@ import org.springframework.security.acls.model.Permission;
 import org.springframework.security.acls.model.Sid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.domain.PrincipalSid;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import com.jms.domain.GroupTypeEnum;
 import com.jms.domain.db.AbstractSecuredEntity;
+import com.jms.domain.db.Users;
+import com.jms.web.security.JMSUserDetailService;
+import com.jms.web.security.JMSUserDetails;
 import com.jms.web.security.SecurityUtils;
 
 @Service
 public class SecuredObjectService {
 
-	private final static Permission[] HAS_DELETE = new Permission[] {
-			BasePermission.DELETE, BasePermission.ADMINISTRATION };
 	private final static Permission[] HAS_ADMIN = new Permission[] { BasePermission.ADMINISTRATION };
 	private final static Permission[] HAS_READ = new Permission[] {
 			BasePermission.ADMINISTRATION, BasePermission.READ };
@@ -48,37 +54,61 @@ public class SecuredObjectService {
 	private MutableAclService mutableAclService;
 	@PersistenceContext
 	private EntityManager em;
+	@Autowired
+	private PermissionEvaluator permissionEvaluator;
+	@Autowired
+	private JMSUserDetailService userDetailService;
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
 	@Transactional(readOnly = true)
-	public Map<String, Object> getSecuredObjectsWithPermissions(
-			List<AbstractSecuredEntity> secureObjList) {
-		PermissionEvaluator permissionEvaluator = new AclPermissionEvaluator(
-				mutableAclService);
-		Map<AbstractSecuredEntity, Boolean> hasDelete = new HashMap<AbstractSecuredEntity, Boolean>(
+	public <T extends AbstractSecuredEntity> Map<T,String> getSecuredObjectsWithPermissions(
+			List<T> secureObjList) {
+	
+		Map<T, String> pMap = new LinkedHashMap<T, String>(
 				secureObjList.size());
-		Map<AbstractSecuredEntity, Boolean> hasAdmin = new HashMap<AbstractSecuredEntity, Boolean>(
-				secureObjList.size());
-		Map<AbstractSecuredEntity, Boolean> hasRead = new HashMap<AbstractSecuredEntity, Boolean>(
-				secureObjList.size());
+		
 		Authentication user = SecurityContextHolder.getContext()
 				.getAuthentication();
-
-		for (AbstractSecuredEntity obj : secureObjList) {
-			hasDelete.put(obj, Boolean.valueOf(permissionEvaluator
-					.hasPermission(user, obj, HAS_DELETE)));
-			hasAdmin.put(obj, Boolean.valueOf(permissionEvaluator
-					.hasPermission(user, obj, HAS_ADMIN)));
-			hasRead.put(obj, Boolean.valueOf(permissionEvaluator.hasPermission(
-					user, obj, HAS_READ)));
+		
+		for (T obj : secureObjList) {
+			if(permissionEvaluator
+					.hasPermission(user, obj, HAS_ADMIN))
+					pMap.put(obj, "ADMIN");
+			else if(permissionEvaluator
+					.hasPermission(user, obj, HAS_READ))
+				    pMap.put(obj, "READ");
 		}
-
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("objList", secureObjList);
-		model.put("hasDeletePermission", hasDelete);
-		model.put("hasAdminPermission", hasAdmin);
-		model.put("hasReadPermission", hasRead);
-		return model;
-
+		
+		return pMap;
+			
+	}
+	
+	
+	@Transactional(readOnly = true)
+	public <T extends AbstractSecuredEntity> Map<T,String> getSecuredObjectsWithPermissions(
+			Users user, List<T> secureObjList) {
+	
+		Map<T, String> pMap = new LinkedHashMap<T, String>(
+				secureObjList.size());
+		
+		JMSUserDetails userDetails = (JMSUserDetails)userDetailService.loadUserByUsername(""+user.getIdUser());
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+				userDetails.getUsername(), userDetails.getPassword());
+		Authentication userAuth = authenticationManager
+				.authenticate(authentication);
+		
+		for (T obj : secureObjList) {
+			if(permissionEvaluator
+					.hasPermission(userAuth, obj, HAS_ADMIN))
+					pMap.put(obj, "ADMIN");
+			else if(permissionEvaluator
+					.hasPermission(userAuth, obj, HAS_READ))
+				    pMap.put(obj, "READ");
+		}
+		
+		return pMap;
+			
 	}
 
 	@Transactional(readOnly = true)
@@ -107,6 +137,7 @@ public class SecuredObjectService {
 
 				} else {
 					GrantedAuthoritySid r = (GrantedAuthoritySid) sid;
+				
 					String group = r.getGrantedAuthority();
 					sidPermMap.put(group, perm);
 
@@ -162,7 +193,7 @@ public class SecuredObjectService {
 			if (sidPerm.getType().equalsIgnoreCase("user")) {
 				recipient = new PrincipalSid(sidPerm.getSid());
 			} else if (sidPerm.getType().equalsIgnoreCase("group")) {
-				recipient = new GrantedAuthoritySid("ROLE_" + sidPerm.getSid());
+				recipient = new GrantedAuthoritySid(sidPerm.getSid());
 			} else {
 				recipient = new PrincipalSid(sidPerm.getSid());
 			}
@@ -196,7 +227,7 @@ public class SecuredObjectService {
 		if (type.equalsIgnoreCase("user")) {
 			recipient = new PrincipalSid(sid);
 		} else if (type.equalsIgnoreCase("group")) {
-			recipient = new GrantedAuthoritySid("ROLE_" + sid);
+			recipient = new GrantedAuthoritySid(sid);
 		} else {
 			recipient = new PrincipalSid(sid);
 		}
@@ -218,7 +249,7 @@ public class SecuredObjectService {
 		if (type.equalsIgnoreCase("user")) {
 			recipient = new PrincipalSid(sid);
 		} else if (type.equalsIgnoreCase("group")) {
-			recipient = new GrantedAuthoritySid("ROLE_" + sid);
+			recipient = new GrantedAuthoritySid(sid);
 		} else {
 			recipient = new PrincipalSid(sid);
 		}
@@ -241,6 +272,5 @@ public class SecuredObjectService {
 		return sidPerm;
 	}
 
-	// public void changeOwner()
 
 }

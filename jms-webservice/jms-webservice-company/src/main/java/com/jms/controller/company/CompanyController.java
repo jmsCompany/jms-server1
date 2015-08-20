@@ -1,6 +1,7 @@
 package com.jms.controller.company;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,11 +14,17 @@ import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import com.jms.acl.SecuredObjectService;
+import com.jms.domain.db.AbstractSecuredEntity;
+import com.jms.domain.db.Apps;
+import com.jms.domain.db.Project;
+import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSCompany;
 import com.jms.domain.ws.WSTest;
 import com.jms.domainadapter.CompanyAdapter;
+import com.jms.repositories.system.AppsRepository;
 import com.jms.service.company.CompanyService;
 import com.jms.user.IUserService;
 import com.jms.web.security.SecurityUtils;
@@ -33,6 +40,10 @@ public class CompanyController {
 	private IUserService iUserServiceImpl;
 	@Autowired 
 	private  SecurityUtils securityUtils;
+	@Autowired 
+	private SecuredObjectService securedObjectService;
+	@Autowired 
+	private AppsRepository appsRepository;
 
 	private static final Logger logger = LogManager.getLogger(CompanyController.class.getCanonicalName());
 	
@@ -46,6 +57,22 @@ public class CompanyController {
 	public Boolean updateCompany(@RequestBody WSCompany wsCompany) throws Exception {
 		return companyService.updateCompany(wsCompany);
 	}
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/company/apps", method=RequestMethod.GET)
+	public Boolean appTest() throws Exception {
+		
+		Users u = securityUtils.getCurrentDBUser();
+		logger.debug("user id: " + u.getIdUser());
+		
+		Map<Apps, String> smap=securedObjectService.getSecuredObjectsWithPermissions(appsRepository.findAll());
+		for(Apps a :smap.keySet())
+		{
+			System.out.println("app name: " + a.getId() +", access right: " + smap.get(a));
+		}
+		return true;
+	}
+	
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/dic/test", method=RequestMethod.GET)

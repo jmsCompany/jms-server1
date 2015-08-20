@@ -54,15 +54,12 @@ public class GroupService {
 		createGroup(company, GroupTypeEnum.Sector, "财务部", "财务部", 1l);
 		createGroup(company, GroupTypeEnum.Sector, "总裁办", "总裁办", 2l);
 		createGroup(company, GroupTypeEnum.Sector, "项目办", "项目办", 3l);
-		Groups selfGroup = createGroup(company, GroupTypeEnum.User,
-				"" + dbUser.getIdUser(), "" + dbUser.getIdUser(), null);
-
+		
 		Roles adminRole = roleRepository.findByRoleAndCompanyName(
 				SystemRoleEnum.admin.name(), company.getCompanyName());
 		addUserToDefaultGroup(dbUser, companyGroup, adminRole);
 		Roles userRole = roleRepository.findByRoleAndCompanyName(
 				SystemRoleEnum.user.name(), company.getCompanyName());
-		addUserToDefaultGroup(dbUser, selfGroup, userRole);
 		
 		Users normalUser = usersRepository.findByUsername("user");
 		addUserToDefaultGroup(normalUser, companyGroup, userRole);

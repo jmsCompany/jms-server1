@@ -10,7 +10,7 @@ public class WSUserProfile implements java.io.Serializable{
 	private String token;
 	private String logoURL;
 	private Long idCompany;
-	private String username;
+	private String name;
 	private List<WSMenu> WSMenuList;
 	public String getToken() {
 		return token;
@@ -36,12 +36,7 @@ public class WSUserProfile implements java.io.Serializable{
 	public void setWSMenuList(List<WSMenu> wSMenuList) {
 		WSMenuList = wSMenuList;
 	}
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
+	
 	public Long getIdCompany() {
 		return idCompany;
 	}
@@ -53,6 +48,12 @@ public class WSUserProfile implements java.io.Serializable{
 	}
 	public void setLogoURL(String logoURL) {
 		this.logoURL = logoURL;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

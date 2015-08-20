@@ -1,12 +1,8 @@
 package com.jms.domain.db;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import javax.persistence.Transient;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 public abstract class AbstractSecuredEntity implements Serializable {
 	
@@ -15,8 +11,7 @@ public abstract class AbstractSecuredEntity implements Serializable {
     private Long id;
 	@Transient
     private Users user;
-	//@CreatedDate LocalDateTime createdDate;
-	//@LastModifiedDate LocalDateTime modifiedDate;
+
     public Long getId() {
         return id;
     }
@@ -24,7 +19,7 @@ public abstract class AbstractSecuredEntity implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
+/*
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -32,7 +27,7 @@ public abstract class AbstractSecuredEntity implements Serializable {
 		result = prime * result + (int) (id ^ (id >>> 32));
 		return result;
 	}
-
+*/
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

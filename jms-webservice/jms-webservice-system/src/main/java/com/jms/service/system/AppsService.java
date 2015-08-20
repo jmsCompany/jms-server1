@@ -54,18 +54,14 @@ public class AppsService {
 			apps.setUrl(reader.get(3).trim());
 			appsRepository.save(apps);
 			String isAdmin = reader.get(2).trim();
-			if(isAdmin.equals("1"))
-			{
-				securityACLDAO.addPermission(apps, pid, BasePermission.READ);
-			}
-			else
+			if(isAdmin.equals("0"))
 			{
 				securityACLDAO.addPermission(apps, sid, BasePermission.READ);
+
 			}
-		
+				securityACLDAO.addPermission(apps, pid, BasePermission.ADMINISTRATION);
 	
 		}
-		
 		
 		
 		

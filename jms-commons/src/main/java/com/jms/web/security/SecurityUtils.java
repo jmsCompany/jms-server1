@@ -2,8 +2,10 @@ package com.jms.web.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import com.jms.domain.db.GroupMembers;
 import com.jms.domain.db.Roles;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.WSUser;
@@ -63,21 +66,23 @@ public class SecurityUtils {
 
 	
 	@Transactional(readOnly=true)
-	public  Collection<GrantedAuthority> getAuthorities(String userName) {
+	public  Collection<GrantedAuthority> getAuthorities(Long idUser) {
 		
 		List<GrantedAuthority> l = new ArrayList<GrantedAuthority>();
-		Users user = usersRepository.findByUsernameOrEmailOrMobile(userName);
+		Users user = usersRepository.findOne(idUser);
 		if(user == null) {
 			return l;
 		}
+		
+		Map<String,String> roles = new HashMap<String,String>();
 		//todo:
-	/*	for(final Roles role : user.getRoleses()) {
+	   for(final GroupMembers gm : user.getGroupMemberses()) {
 			l.add( new GrantedAuthority() {
 				private static final long serialVersionUID = 1L;
 				
 				@Override
 				public String getAuthority() {
-					return role.getRole();
+					return ""+gm.getId().getIdGroup();
 				}
 				
 				@Override
@@ -85,33 +90,30 @@ public class SecurityUtils {
 					return getAuthority();
 				}
 			});
+			String role = gm.getRoles().getRole();
+			if(!roles.containsKey(role))
+			{
+				roles.put(role, role);
+				l.add( new GrantedAuthority() {
+					private static final long serialVersionUID = 1L;
+					
+					@Override
+					public String getAuthority() {
+						return role;
+					}
+					
+					@Override
+					public String toString() {
+						return getAuthority();
+					}
+				});
+			}
+		
 		}
-		*/
+		
 		return l;		
 	}	
 	
-	public static ArrayList<String> getUserRoles() {
-		Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
-		Collection<? extends GrantedAuthority> authorities = auth
-				.getAuthorities();
-		ArrayList<String> currentUserRoles = new ArrayList<String>();
-		for (GrantedAuthority authority : authorities) {
-			currentUserRoles.add(authority.getAuthority());
-		}
-		if (logger.isDebugEnabled()) {
-			logger.debug("currentUserRoles:" + currentUserRoles);
-		}
-		return currentUserRoles;
-	}
+	
     
-    public static boolean doesUserHasRole(String role) {
-    	ArrayList<String> currentUserRoles = getUserRoles();
-    	for(String s : currentUserRoles) {
-    		if(s.equals(role)) {
-    			return true;
-    		}
-    	}
-    	return false;
-    } 
 }

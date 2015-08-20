@@ -28,7 +28,7 @@ import javax.persistence.Table;
 public class Apps  extends AbstractSecuredEntity implements java.io.Serializable {
 
 
-     private Long id;
+     private Long idApp;
      private String groups;
      private String appName;
      private String description;
@@ -57,12 +57,12 @@ public class Apps  extends AbstractSecuredEntity implements java.io.Serializable
      @Id @GeneratedValue(strategy=IDENTITY)
     
     @Column(name="ID", unique=true, nullable=false)
-    public Long getId() {
-        return this.id;
+    public Long getIdApp() {
+        return this.idApp;
     }
     
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdApp(Long idApp) {
+        this.idApp = idApp;
     }
     
     @Column(name="GROUPS", length=64)
@@ -146,7 +146,10 @@ public class Apps  extends AbstractSecuredEntity implements java.io.Serializable
     }
 
 
-
+    @Override @Transient
+    public Long getId() {
+        return this.getIdApp();
+    }
 }
 
 

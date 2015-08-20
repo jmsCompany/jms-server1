@@ -1,6 +1,10 @@
 package com.jms.service.company;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +12,20 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
+import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.jms.acl.SecuredObjectService;
 import com.jms.acl.SecurityACLDAO;
 import com.jms.domain.Config;
 import com.jms.domain.EnabledEnum;
 import com.jms.domain.GroupTypeEnum;
+import com.jms.domain.SystemRoleEnum;
+import com.jms.domain.db.Apps;
 import com.jms.domain.db.Company;
 import com.jms.domain.db.GroupMembers;
 import com.jms.domain.db.GroupMembersId;
@@ -31,6 +41,7 @@ import com.jms.domainadapter.CompanyAdapter;
 import com.jms.domainadapter.UserAdapter;
 import com.jms.messages.MessagesUitl;
 import com.jms.repositories.company.CompanyRepository;
+import com.jms.repositories.system.AppsRepository;
 import com.jms.repositories.system.SysDicDRepository;
 import com.jms.repositories.user.GroupMemberRepository;
 import com.jms.repositories.user.GroupRepository;
@@ -76,6 +87,10 @@ public class CompanyService {
 	private GroupMemberRepository groupMemberRepository;
 	@Autowired
 	protected GroupTypeRepository groupTypeRepository;
+	@Autowired 
+	private SecuredObjectService securedObjectService;
+	@Autowired 
+	private AppsRepository appsRepository;
 	private static final Logger logger = LogManager
 			.getLogger(CompanyService.class.getCanonicalName());
 
@@ -124,8 +139,18 @@ public class CompanyService {
 		wsUser.setIdUser(dbUser.getIdUser());
 		wsUser.setUsername("" + dbUser.getIdUser());
 		JMSUserDetails userDetails = new JMSUserDetails(wsUser);
+		List<GrantedAuthority> l = new ArrayList<GrantedAuthority>();
+		l.add(new GrantedAuthority() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getAuthority() {
+				// TODO Auto-generated method stub
+				return "admin";
+			}
+		});
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-				userDetails, "***********", null);
+				userDetails, "***********", l);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		securityACLDAO.addPermission(company, Company.class,
 				BasePermission.ADMINISTRATION);
@@ -212,62 +237,32 @@ public class CompanyService {
 			r1.setLevel(r.getLevel());
 			roleRepository.save(r1);
 		}
-		// todo: copy groups
 
+		Users creator = securityUtils.getCurrentDBUser();
+		 Long companyGroupId=-1l;
 		for (Groups g : from.getGroupses()) {
-			if (g.getGroupType().getGroupType()
-					.equals(GroupTypeEnum.Sector.name())) {
 				Groups g1 = new Groups();
 				g1.setCompany(to);
 				g1.setCreationTime(new Date());
 				g1.setGroupName(g.getGroupName());
 				g1.setGroupType(g.getGroupType());
 				g1.setDescription(g.getDescription());
-				g1.setUsers(securityUtils.getCurrentDBUser());
+				g1.setUsers(creator);
 				groupRepository.save(g1);
-			} else if (g.getGroupType().getGroupType()
+			 if (g.getGroupType().getGroupType()
 					.equals(GroupTypeEnum.Company.name())) {
-				Groups g1 = new Groups();
-				g1.setCompany(to);
-				g1.setCreationTime(new Date());
-				g1.setGroupName(g.getGroupName());
-				g1.setGroupType(g.getGroupType());
-				g1.setDescription(g.getDescription());
-				g1.setUsers(securityUtils.getCurrentDBUser());
-				groupRepository.save(g1);
-				GroupMembers gm1 = new GroupMembers();
-				GroupMembersId id1 = new GroupMembersId();
-				id1.setIdGroup(g.getIdGroup());
-				id1.setIdUser(securityUtils.getCurrentDBUser().getIdUser());
-				gm1.setId(id1);
-				gm1.setRoles(roleRepository.findByRoleAndCompanyName("user",
-						to.getCompanyName()));
-				groupMemberRepository.save(gm1);
-			} else {
-				Users dbUser = securityUtils.getCurrentDBUser();
-				Groups g1 = new Groups();
-				g1.setCompany(to);
-				g1.setUsers(dbUser);
-				g1.setCreationTime(new Date());
-				g1.setGroupName("" + dbUser.getIdUser());
-				g1.setDescription(dbUser.getName());
-				g1.setGroupType(groupTypeRepository
-						.findByGroupType(GroupTypeEnum.User.name()));
-				groupRepository.save(g1);
-
+				companyGroupId = g1.getIdGroup();
 				GroupMembers gm1 = new GroupMembers();
 				GroupMembersId id1 = new GroupMembersId();
 				id1.setIdGroup(g1.getIdGroup());
-				id1.setIdUser(dbUser.getIdUser());
+				id1.setIdUser(securityUtils.getCurrentDBUser().getIdUser());
 				gm1.setId(id1);
-				gm1.setRoles(roleRepository.findByRoleAndCompanyName("admin",
+				gm1.setRoles(roleRepository.findByRoleAndCompanyName(SystemRoleEnum.admin.name(),
 						to.getCompanyName()));
 				groupMemberRepository.save(gm1);
-			}
-
+			} 
 		}
 
-		// System.out.println("projects: "+from.getProjects().size());
 		// copy projects
 		for (Project p : projectRepository.findByCompany(from)) {
 			Project p1 = new Project();
@@ -285,6 +280,27 @@ public class CompanyService {
 					+ group.getIdGroup());
 			securityACLDAO.addPermission(p1, sid, BasePermission.READ);
 			
+		}
+		List<Apps> appList =appsRepository.findAll();
+		Users admin = from.getUsersByCreator();
+		//copy apps
+		Map<Apps, String> smap= securedObjectService.getSecuredObjectsWithPermissions(admin, appList);
+		
+		PrincipalSid pid = new PrincipalSid(""+creator.getIdUser());
+		//logger.debug("creator id: " + creator.getIdUser());
+		for(Apps a: smap.keySet())
+		{
+			securityACLDAO.addPermission(a, pid, BasePermission.ADMINISTRATION);
+		}
+
+		Users normalUser = usersRepository.findByUsername("user");
+		GrantedAuthoritySid sid = new GrantedAuthoritySid(""
+				+ companyGroupId);
+		Map<Apps, String> smap1= securedObjectService.getSecuredObjectsWithPermissions(normalUser,appList );
+	
+		for(Apps a: smap1.keySet())
+		{
+			securityACLDAO.addPermission(a, sid, BasePermission.READ);
 		}
 	}
 
