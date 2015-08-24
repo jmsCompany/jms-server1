@@ -62,7 +62,6 @@ public class AuthenticationTokenProcessingFilter extends  AbstractPreAuthenticat
 
 		if (SecurityContextHolder.getContext().getAuthentication() == null) {
 		    String token = request.getHeader("JMS-TOKEN");
-		  ;
 			if (token != null) {
 				 if (tokenUtils.validate(token)) {
 		                JMSUserDetails userDetails = tokenUtils.getUserFromToken(token);

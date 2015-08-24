@@ -108,6 +108,7 @@ public class SecurityACLDAO {
         for (int i = 0; i < entries.size(); i++) {
             if (entries.get(i).getSid().equals(recipient) && entries.get(i).getPermission().equals(permission)) {
                 acl.deleteAce(i);
+                
             }
         }
 
@@ -145,6 +146,8 @@ public class SecurityACLDAO {
         //ObjectIdentity oid = new ObjectIdentityImpl(AbstractSecuredEntity.class, element.getId());
         ObjectIdentity oid = new ObjectIdentityImpl(element);
         mutableAclService.deleteAcl(oid, false);
+        
+       
     }
 
 	@Transactional(readOnly = false)

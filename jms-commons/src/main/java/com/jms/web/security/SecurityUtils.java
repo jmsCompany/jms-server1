@@ -4,27 +4,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
-
 import com.jms.domain.db.GroupMembers;
-import com.jms.domain.db.Roles;
 import com.jms.domain.db.Users;
-import com.jms.domain.ws.WSUser;
 import com.jms.repositories.user.UsersRepository;
 
 
@@ -56,7 +47,6 @@ public class SecurityUtils {
     }
 	public JMSUserDetails getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         if (auth.getPrincipal() instanceof UserDetails) {
             return ((JMSUserDetails) auth.getPrincipal());
         } else {
@@ -75,8 +65,13 @@ public class SecurityUtils {
 		}
 		
 		Map<String,String> roles = new HashMap<String,String>();
+		Map<Long,String> groups = new HashMap<Long,String>();
 		//todo:
 	   for(final GroupMembers gm : user.getGroupMemberses()) {
+		   
+		   if(groups.containsKey(gm.getId().getIdGroup()))
+			   continue;
+		   groups.put(gm.getId().getIdGroup(), ""+gm.getId().getIdGroup());
 			l.add( new GrantedAuthority() {
 				private static final long serialVersionUID = 1L;
 				

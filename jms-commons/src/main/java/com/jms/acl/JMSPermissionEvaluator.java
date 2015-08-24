@@ -60,10 +60,9 @@ public class JMSPermissionEvaluator implements PermissionEvaluator {
     }
 
     private boolean checkPermission(Authentication authentication, ObjectIdentity oid, Object permission) {
-        System.out.println("authentication.getPrincipal()" + authentication.getPrincipal());
+     //   System.out.println("authentication.getPrincipal()" + authentication.getPrincipal());
         Collection<? extends GrantedAuthority> authorities = ((JMSUserDetails)authentication.getPrincipal()).getAuthorities();
         List<Sid> sids = new ArrayList<Sid>();
-
         sids.add(new PrincipalSid(authentication));
         for (GrantedAuthority authority : authorities) {
             sids.add(new GrantedAuthoritySid(authority));

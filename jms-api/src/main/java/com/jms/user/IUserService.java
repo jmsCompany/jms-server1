@@ -1,10 +1,7 @@
 package com.jms.user;
 import java.util.List;
-
 import org.springframework.transaction.annotation.Transactional;
-
 import com.jms.domain.db.Users;
-import com.jms.domain.ws.Message;
 import com.jms.domain.ws.WSUser;
 
 

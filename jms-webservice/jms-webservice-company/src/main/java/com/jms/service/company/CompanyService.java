@@ -23,7 +23,9 @@ import com.jms.acl.SecuredObjectService;
 import com.jms.acl.SecurityACLDAO;
 import com.jms.domain.Config;
 import com.jms.domain.EnabledEnum;
+import com.jms.domain.EventTypeEnum;
 import com.jms.domain.GroupTypeEnum;
+import com.jms.domain.NotificationMethodEnum;
 import com.jms.domain.SystemRoleEnum;
 import com.jms.domain.db.Apps;
 import com.jms.domain.db.Company;
@@ -49,6 +51,7 @@ import com.jms.repositories.user.GroupTypeRepository;
 import com.jms.repositories.user.RoleRepository;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.repositories.workmanagement.ProjectRepository;
+import com.jms.system.INotificationService;
 import com.jms.user.IUserService;
 import com.jms.web.security.JMSUserDetails;
 import com.jms.web.security.SecurityUtils;
@@ -87,10 +90,14 @@ public class CompanyService {
 	private GroupMemberRepository groupMemberRepository;
 	@Autowired
 	protected GroupTypeRepository groupTypeRepository;
-	@Autowired 
+	@Autowired
 	private SecuredObjectService securedObjectService;
-	@Autowired 
+	@Autowired
 	private AppsRepository appsRepository;
+	
+	@Autowired
+	private INotificationService notificationService;
+
 	private static final Logger logger = LogManager
 			.getLogger(CompanyService.class.getCanonicalName());
 
@@ -239,17 +246,23 @@ public class CompanyService {
 		}
 
 		Users creator = securityUtils.getCurrentDBUser();
-		 Long companyGroupId=-1l;
+		Long companyGroupId = -1l;
+
 		for (Groups g : from.getGroupses()) {
-				Groups g1 = new Groups();
-				g1.setCompany(to);
-				g1.setCreationTime(new Date());
-				g1.setGroupName(g.getGroupName());
-				g1.setGroupType(g.getGroupType());
-				g1.setDescription(g.getDescription());
-				g1.setUsers(creator);
-				groupRepository.save(g1);
-			 if (g.getGroupType().getGroupType()
+			if (g.getGroupType().getGroupType().equals("User"))
+				continue;
+			Groups g1 = new Groups();
+			g1.setCompany(to);
+			g1.setCreationTime(new Date());
+			g1.setGroupName(g.getGroupName());
+			g1.setGroupType(g.getGroupType());
+			g1.setDescription(g.getDescription());
+			g1.setUsers(creator);
+			groupRepository.save(g1);
+			List<Long> idGroups = new ArrayList<Long>();
+			idGroups.add(g1.getIdGroup());
+			notificationService.createNotification(to, g1, EventTypeEnum.create, NotificationMethodEnum.sys, idGroups);
+			if (g.getGroupType().getGroupType()
 					.equals(GroupTypeEnum.Company.name())) {
 				companyGroupId = g1.getIdGroup();
 				GroupMembers gm1 = new GroupMembers();
@@ -257,12 +270,34 @@ public class CompanyService {
 				id1.setIdGroup(g1.getIdGroup());
 				id1.setIdUser(securityUtils.getCurrentDBUser().getIdUser());
 				gm1.setId(id1);
-				gm1.setRoles(roleRepository.findByRoleAndCompanyName(SystemRoleEnum.admin.name(),
-						to.getCompanyName()));
+				gm1.setRoles(roleRepository.findByRoleAndCompanyName(
+						SystemRoleEnum.admin.name(), from.getCompanyName()));
 				groupMemberRepository.save(gm1);
-			} 
+			}
 		}
 
+		Groups himself = new Groups();
+		himself.setCompany(to);
+		himself.setCreationTime(new Date());
+		himself.setGroupName("" + creator.getIdUser());
+		himself.setGroupType(groupTypeRepository
+				.findByGroupType(GroupTypeEnum.User.name()));
+		himself.setDescription("" + creator.getIdUser());
+		himself.setUsers(creator);
+		groupRepository.save(himself);
+		GroupMembers gm = new GroupMembers();
+		GroupMembersId id = new GroupMembersId();
+		id.setIdGroup(himself.getIdGroup());
+		id.setIdUser(securityUtils.getCurrentDBUser().getIdUser());
+		gm.setId(id);
+		gm.setRoles(roleRepository.findByRoleAndCompanyName(
+				SystemRoleEnum.user.name(), from.getCompanyName()));
+		groupMemberRepository.save(gm);
+		
+		Groups group = groupRepository.findGroupByGroupNameAndCompany(
+				"全公司", to.getIdCompany(), GroupTypeEnum.Company.name());
+		List<Long> idGroups = new ArrayList<Long>();
+		idGroups.add(group.getIdGroup());
 		// copy projects
 		for (Project p : projectRepository.findByCompany(from)) {
 			Project p1 = new Project();
@@ -274,34 +309,35 @@ public class CompanyService {
 			projectRepository.save(p1);
 			securityACLDAO.addPermission(p1, Project.class,
 					BasePermission.ADMINISTRATION);
-			Groups group = groupRepository.findGroupByGroupNameAndCompany(
-					"全公司", to.getIdCompany(), GroupTypeEnum.Company.name());
 			GrantedAuthoritySid sid = new GrantedAuthoritySid(""
 					+ group.getIdGroup());
 			securityACLDAO.addPermission(p1, sid, BasePermission.READ);
-			
+			notificationService.createNotification(to, p, EventTypeEnum.create, NotificationMethodEnum.sys, idGroups);
+
 		}
-		List<Apps> appList =appsRepository.findAll();
+		List<Apps> appList = appsRepository.findAll();
 		Users admin = from.getUsersByCreator();
-		//copy apps
-		Map<Apps, String> smap= securedObjectService.getSecuredObjectsWithPermissions(admin, appList);
-		
-		PrincipalSid pid = new PrincipalSid(""+creator.getIdUser());
-		//logger.debug("creator id: " + creator.getIdUser());
-		for(Apps a: smap.keySet())
-		{
+		// copy apps
+		Map<Apps, String> smap = securedObjectService
+				.getSecuredObjectsWithPermissions(admin, appList);
+
+		PrincipalSid pid = new PrincipalSid("" + creator.getIdUser());
+		// logger.debug("creator id: " + creator.getIdUser());
+		for (Apps a : smap.keySet()) {
 			securityACLDAO.addPermission(a, pid, BasePermission.ADMINISTRATION);
 		}
 
 		Users normalUser = usersRepository.findByUsername("user");
-		GrantedAuthoritySid sid = new GrantedAuthoritySid(""
-				+ companyGroupId);
-		Map<Apps, String> smap1= securedObjectService.getSecuredObjectsWithPermissions(normalUser,appList );
-	
-		for(Apps a: smap1.keySet())
-		{
+		GrantedAuthoritySid sid = new GrantedAuthoritySid("" + companyGroupId);
+		Map<Apps, String> smap1 = securedObjectService
+				.getSecuredObjectsWithPermissions(normalUser, appList);
+
+		for (Apps a : smap1.keySet()) {
 			securityACLDAO.addPermission(a, sid, BasePermission.READ);
 		}
+		
+	
+		notificationService.createNotification(to, to, EventTypeEnum.create, NotificationMethodEnum.sys, idGroups);
 	}
 
 	@Transactional(readOnly = false)
@@ -318,7 +354,6 @@ public class CompanyService {
 		templateCompany.setUsersByCreator(usersRepository
 				.findByUsername("admin"));
 		companyRepository.save(templateCompany);
-
 		Users user = usersRepository.findByUsername("user");
 		user.setCompany(templateCompany);
 		usersRepository.save(user);

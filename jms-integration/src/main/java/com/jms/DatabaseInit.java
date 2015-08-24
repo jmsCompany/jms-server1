@@ -25,6 +25,8 @@ import com.jms.service.company.CompanyService;
 import com.jms.service.system.AppsService;
 import com.jms.service.system.DicService;
 import com.jms.service.system.DistrictService;
+import com.jms.service.system.JmsEventService;
+import com.jms.service.system.NotiMethodService;
 import com.jms.service.user.GroupService;
 import com.jms.service.user.GroupTypeService;
 import com.jms.service.user.RoleService;
@@ -61,10 +63,16 @@ public class DatabaseInit {
 	private UserDetailsService userDetailService;
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private NotiMethodService notiMethodService;
+	@Autowired
+	private JmsEventService jmsEventService;
 
 	// 在系统初装的执行切只能执行一次，读取csv文件的数据到数据库中。
 	// todo:详细说明系统预设的所有信息这些信息的用途
 	public void init(ConfigurableApplicationContext ctx) throws IOException {
+		
 		if (usersRepository.findByUsername("admin") != null)
 			return;
 
@@ -72,7 +80,8 @@ public class DatabaseInit {
 		dicService.loadDics();
 		groupTypeService.loadGroupTypes();
 		userService.createDefaultUsers();
-	
+		notiMethodService.createNotiMethods();
+		jmsEventService.createJmsEvents();
 		
 		Resource provinceRes = ctx.getResource("classpath:data/province.csv");
 		Resource cityRes = ctx.getResource("classpath:data/city.csv");

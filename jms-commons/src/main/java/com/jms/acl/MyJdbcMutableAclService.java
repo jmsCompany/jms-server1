@@ -141,7 +141,7 @@ public class MyJdbcMutableAclService  extends JdbcAclService implements MutableA
      * @return the primary key or null if not found
      */
     protected Long createOrRetrieveClassPrimaryKey(String type, boolean allowCreate) {
-    	System.out.println("class: " + type);
+    	//System.out.println("class: " + type);
         List<Long> classIds = jdbcTemplate.queryForList(selectClassPrimaryKey, new Object[] {type}, Long.class);
 
         if (!classIds.isEmpty()) {
