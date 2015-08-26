@@ -51,10 +51,12 @@ public class TokenUtilsImpl implements TokenUtils {
 
 	@Override
 	public boolean validate(String token) {
+		LOGGER.debug("find user by token !  "  + token);
 		Users user = usersRepository.findByToken(token);
 		boolean flag =false;
 	    if(user!=null)
 	    {
+	    	
 	    	if(user.getLastLogin().getTime()<new Date().getTime()-TWO_WEEKS_S)
 	    		flag = false;
 	    	else

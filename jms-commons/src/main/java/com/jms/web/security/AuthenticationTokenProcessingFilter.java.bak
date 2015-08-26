@@ -58,15 +58,7 @@ public class AuthenticationTokenProcessingFilter extends
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res,
 			FilterChain chain) throws IOException, ServletException {
-		if (req instanceof org.apache.catalina.connector.RequestFacade) {
-			logger.debug("WTF?:  "  +res.getClass().getCanonicalName());
-			HttpServletRequest request = (HttpServletRequest) req;
-			HttpServletResponse response = (HttpServletResponse) res;
-			chain.doFilter(request, response);
-			
-		}
-		else
-		{
+		if (res instanceof HttpServletResponse) {
 			HttpServletRequest request = (HttpServletRequest) req;
 			HttpServletResponse response = (HttpServletResponse) res;
 			if (SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -92,7 +84,10 @@ public class AuthenticationTokenProcessingFilter extends
 
 				chain.doFilter(request, response);
 			}
-		
+		}
+		else
+		{
+			logger.debug("WTF?:  "  +res.getClass().getCanonicalName());
 		}
 	}
 

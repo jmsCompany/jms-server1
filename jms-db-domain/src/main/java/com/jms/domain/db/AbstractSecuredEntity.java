@@ -49,4 +49,10 @@ public abstract class AbstractSecuredEntity implements Serializable {
 	public void setUser(Users user) {
 		this.user = user;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return "";
+	}
 }

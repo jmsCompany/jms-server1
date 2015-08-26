@@ -1,13 +1,20 @@
 package com.jms.service.system;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jms.acl.SecuredObjDAO;
 import com.jms.domain.EventTypeEnum;
 import com.jms.domain.NotificationMethodEnum;
 import com.jms.domain.db.AbstractSecuredEntity;
@@ -35,7 +42,6 @@ public class NotificationService implements INotificationService{
 
 	@Autowired
 	private NotiMethodRepository notiMethodRepository;
-	
 	@Autowired
 	private JmsEventRepository jmsEventRepository;
 	@Autowired
@@ -46,7 +52,9 @@ public class NotificationService implements INotificationService{
 	private GroupRepository groupRepository;
 	@Autowired
 	private SecurityUtils securityUtils;
-	
+	@Autowired
+	private SecuredObjDAO securedObjDAO;
+	private static final Logger logger = LogManager.getLogger(NotificationService.class.getCanonicalName());
 	@Override
 	public void createNotification(Company company,
 			AbstractSecuredEntity entity, EventTypeEnum eventTypeEnum,
@@ -75,10 +83,34 @@ public class NotificationService implements INotificationService{
 	}
 
 	@Override
-	public List<WSNotification> loadNotifactions() {
+	public List<WSNotification> loadNotifactions(Pageable pageable) throws ClassNotFoundException {
 		 JMSUserDetails jmsUserDetails = securityUtils.getCurrentUser();
-		 jmsUserDetails.getAuthorities();
-		 List<WSNotification> notiList = new ArrayList<WSNotification>();
+		 Collection<? extends GrantedAuthority> ls= jmsUserDetails.getAuthorities();
+		 List<Long> groups = new ArrayList<Long>();
+		 for(GrantedAuthority ga: ls)
+		 {
+			 String au = ga.getAuthority();
+			 try{
+				 Long idGroup =Long.parseLong(au);
+				 groups.add(idGroup);
+				 }catch(NumberFormatException e){}
+			
+		 }
+		Page<Receiver> rs = receiverRepository.findReceivers(groups,pageable);
+		List<WSNotification> notiList = new ArrayList<WSNotification>();
+		for(Receiver r: rs)
+		{
+			WSNotification wn = new WSNotification();
+			wn.setCreationTime(r.getNotification().getCreationTime());
+			wn.setEvent(r.getNotification().getJmsEvent().getDescription());
+			wn.setIdNotification(r.getNotification().getIdNoti());
+			wn.setUsername(r.getNotification().getUsers().getUsername());
+		    Class t =	Class.forName(r.getNotification().getJmsEvent().getClass_());
+		    wn.setDetails(securedObjDAO.find(t, r.getNotification().getIdSource()).toString());
+			notiList.add(wn);
+		}
+		
+		 
 		 return notiList;
 	}
 

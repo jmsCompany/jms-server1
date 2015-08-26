@@ -173,6 +173,11 @@ public class Groups extends AbstractSecuredEntity  implements java.io.Serializab
   		return this.getUsers();
   	}
 
+	@Override
+	public String toString()
+	{
+		return "群组名: " + this.getGroupName() +", 描述：" + this.getDescription();
+	}
 
 
 }

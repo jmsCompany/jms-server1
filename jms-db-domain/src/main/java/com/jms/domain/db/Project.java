@@ -253,6 +253,11 @@ public class Project extends AbstractSecuredEntity  implements java.io.Serializa
   		return this.getUsers();
   	}
 
+	@Override
+	public String toString()
+	{
+		return "项目名: " + this.getProjectName() +", 描述：" + this.getDescription();
+	}
 
 
 

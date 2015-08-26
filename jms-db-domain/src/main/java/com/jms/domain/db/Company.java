@@ -479,7 +479,11 @@ public class Company extends AbstractSecuredEntity implements java.io.Serializab
   	public Users getUser() {
   		return this.getUsersByCreator();
   	}
-
+	@Override
+	public String toString()
+	{
+		return "公司名: " + this.getCompanyName();
+	}
 
 
 }

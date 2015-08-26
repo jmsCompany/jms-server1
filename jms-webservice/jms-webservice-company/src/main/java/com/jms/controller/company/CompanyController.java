@@ -9,6 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +24,12 @@ import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSCompany;
+import com.jms.domain.ws.WSNotification;
 import com.jms.domain.ws.WSTest;
 import com.jms.domainadapter.CompanyAdapter;
 import com.jms.repositories.system.AppsRepository;
 import com.jms.service.company.CompanyService;
+import com.jms.system.INotificationService;
 import com.jms.user.IUserService;
 import com.jms.web.security.SecurityUtils;
 
@@ -44,7 +48,8 @@ public class CompanyController {
 	private SecuredObjectService securedObjectService;
 	@Autowired 
 	private AppsRepository appsRepository;
-
+	@Autowired
+	private INotificationService notificationService;
 	private static final Logger logger = LogManager.getLogger(CompanyController.class.getCanonicalName());
 	
 	@Transactional(readOnly = false)
@@ -56,6 +61,13 @@ public class CompanyController {
 	@RequestMapping(value="/company/update", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public Boolean updateCompany(@RequestBody WSCompany wsCompany) throws Exception {
 		return companyService.updateCompany(wsCompany);
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/company/infotest")
+	public List<WSNotification>  infoTest(@RequestParam Integer start,@RequestParam Integer length) throws ClassNotFoundException  {
+		Pageable pageable = new PageRequest(start,length);
+		return notificationService.loadNotifactions(pageable);
 	}
 	
 	@Transactional(readOnly = false)
@@ -119,8 +131,6 @@ public class CompanyController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/check/companyname", method=RequestMethod.GET)
 	public Valid checkCompanyName(@RequestParam("companyname") String companyname,@RequestParam(required=false,value="idCompany") Long idCompany) throws Exception {
-		
-		//System.out.print("company name: " + companyname);
 		Boolean returnVal= companyService.checkCompanyName(companyname,idCompany);
 		Valid valid = new Valid();
 		valid.setValid(returnVal);

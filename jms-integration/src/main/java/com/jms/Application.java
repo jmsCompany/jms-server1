@@ -2,6 +2,7 @@ package com.jms;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -10,6 +11,7 @@ import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.Ordered;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -21,6 +23,7 @@ import com.jms.service.user.UserService;
 import com.jms.service.workmanagement.ProjectService;
 import com.jms.web.AccessControlAllowFilter;
 import com.jms.web.JsonpCallbackFilter;
+import com.jms.web.security.AuthenticationTokenProcessingFilter;
 
 @SpringBootApplication
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
@@ -29,7 +32,7 @@ public class Application extends SpringBootServletInitializer {
 
 	// JsonpCallbackFilter jsonpFilter = new JsonpCallbackFilter();
 	AccessControlAllowFilter acaFilter = new AccessControlAllowFilter();
-
+	@Autowired AuthenticationTokenProcessingFilter authTokenFilter;
 	public static void main(String[] args) throws Exception {
 		// SpringApplication.run(Application.class, args);
 		ConfigurableApplicationContext ctx = SpringApplication.run(
@@ -71,7 +74,13 @@ public class Application extends SpringBootServletInitializer {
 		filterRegBean.setFilter(acaFilter);
 		return filterRegBean;
 	}
-
+	@Bean
+	public FilterRegistrationBean authFilter() {
+		FilterRegistrationBean filterRegBean = new FilterRegistrationBean();
+		filterRegBean.setFilter(authTokenFilter);
+		filterRegBean.setOrder(99);
+		return filterRegBean;
+	}
 	@Override
 	protected SpringApplicationBuilder configure(
 			SpringApplicationBuilder application) {
