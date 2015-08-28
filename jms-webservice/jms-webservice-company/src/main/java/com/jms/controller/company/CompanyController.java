@@ -25,6 +25,7 @@ import com.jms.domain.ws.Message;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSCompany;
 import com.jms.domain.ws.WSNotification;
+import com.jms.domain.ws.WSPageRequest;
 import com.jms.domain.ws.WSTest;
 import com.jms.domainadapter.CompanyAdapter;
 import com.jms.repositories.system.AppsRepository;
@@ -64,9 +65,10 @@ public class CompanyController {
 	}
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/company/infotest")
-	public List<WSNotification>  infoTest(@RequestParam Integer start,@RequestParam Integer length) throws ClassNotFoundException  {
-		Pageable pageable = new PageRequest(start,length);
+	@RequestMapping(value="/company/infotest",consumes=MediaType.APPLICATION_JSON_VALUE)
+	public List<WSNotification>  infoTest(@RequestBody WSPageRequest wsPageRequest) throws ClassNotFoundException  {
+		logger.debug("page: " + wsPageRequest.getPage() +", size: " + wsPageRequest.getSize());
+		Pageable pageable = new PageRequest(wsPageRequest.getPage(),wsPageRequest.getSize());
 		return notificationService.loadNotifactions(pageable);
 	}
 	
