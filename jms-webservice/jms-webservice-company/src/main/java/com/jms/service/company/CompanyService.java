@@ -102,24 +102,16 @@ public class CompanyService {
 			.getLogger(CompanyService.class.getCanonicalName());
 
 	@Transactional(readOnly = true)
-	public Company findCompanyById(Long idCompany) {
-		Company company = companyRepository.findOne(idCompany);
+	public Company findCompany() {
+	
+		//System.out.println("find company: " + );
+		Company company = securityUtils.getCurrentDBUser().getCompany();
+		System.out.println("find company: " +company.getCompanyName() );
 		if (company.getEnabled() == EnabledEnum.DISENABLED.getStatusCode())
 			return null;
 		return company;
 	}
 
-	@Transactional(readOnly = true)
-	public Company findCompanyByLogin(String login) {
-		Users u = usersRepository.findByUsernameOrEmailOrMobile(login);
-		if (u == null)
-			return null;
-		Company company = u.getCompany();
-		if (company.getEnabled() == EnabledEnum.DISENABLED.getStatusCode())
-			return null;
-		return company;
-
-	}
 
 	@Transactional(readOnly = false)
 	public Boolean registCompany(WSCompany wsCompany) throws Exception {

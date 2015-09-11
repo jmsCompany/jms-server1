@@ -96,7 +96,6 @@ public class IUserServiceImpl implements IUserService {
 		return false;
 
 	}
-
 	public Boolean checkLogin(String login, Long idUser) {
 		if (login != null && !login.isEmpty()) {
 			Users u = usersRepository.findByUsernameOrEmailOrMobile(login);
@@ -124,6 +123,16 @@ public class IUserServiceImpl implements IUserService {
 		
 		} else
 			return true;
+	}
+	
+	public Boolean checkToken(String jmstoken) {
+
+		Users u = usersRepository.findByToken(jmstoken);
+		if(u!=null)
+			return true;
+		else
+			return false;
+		
 	}
 	
 	@Transactional(readOnly=true)

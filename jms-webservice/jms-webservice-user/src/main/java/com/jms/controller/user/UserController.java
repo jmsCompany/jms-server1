@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import com.jms.acl.SecuredObjectService;
 import com.jms.domain.db.Apps;
 import com.jms.domain.db.Users;
-import com.jms.domain.ws.Message;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSMenu;
 import com.jms.domain.ws.WSUser;
@@ -50,7 +49,7 @@ public class UserController {
 	@RequestMapping(value="/login", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public WSUserProfile login(@RequestBody WSUser wsUser) throws Exception {
 		WSUserProfile userProfile = new WSUserProfile();
-		//System.out.println("user: " +wsUser.getLogin() +", pass: "  +wsUser.getPassword());
+		System.out.println("user: " +wsUser.getLogin() +", pass: "  +wsUser.getPassword());
 		String token = userService.login(wsUser.getLogin(), wsUser.getPassword());
 		
 		Users u =usersRepository.findByUsernameOrEmailOrMobile(wsUser.getLogin());
@@ -85,6 +84,17 @@ public class UserController {
 		valid.setValid(returnVal);
 		return valid;
 	}
+	
+	@RequestMapping(value="/check/jmstoken", method=RequestMethod.GET)
+	public Valid checkToken(@RequestParam("jmstoken") String jmstoken) throws Exception {
+		System.out.println("token: " + jmstoken);
+		Boolean returnVal = userService.checkToken(jmstoken);
+		Valid valid = new Valid();
+		valid.setValid(returnVal);
+		return valid;
+	}
+	
+	
 	@Transactional(readOnly=false)
 	@RequestMapping(value="/user/save", method=RequestMethod.POST)
 	public WSUser save(@RequestBody WSUser wsUser) throws Exception {

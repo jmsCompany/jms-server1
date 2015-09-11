@@ -32,7 +32,7 @@ public class Application extends SpringBootServletInitializer {
 
 	// JsonpCallbackFilter jsonpFilter = new JsonpCallbackFilter();
 	AccessControlAllowFilter acaFilter = new AccessControlAllowFilter();
-	@Autowired AuthenticationTokenProcessingFilter authTokenFilter;
+	//@Autowired AuthenticationTokenProcessingFilter authTokenFilter;
 	public static void main(String[] args) throws Exception {
 		// SpringApplication.run(Application.class, args);
 		ConfigurableApplicationContext ctx = SpringApplication.run(
@@ -74,13 +74,7 @@ public class Application extends SpringBootServletInitializer {
 		filterRegBean.setFilter(acaFilter);
 		return filterRegBean;
 	}
-	@Bean
-	public FilterRegistrationBean authFilter() {
-		FilterRegistrationBean filterRegBean = new FilterRegistrationBean();
-		filterRegBean.setFilter(authTokenFilter);
-		filterRegBean.setOrder(99);
-		return filterRegBean;
-	}
+
 	@Override
 	protected SpringApplicationBuilder configure(
 			SpringApplicationBuilder application) {

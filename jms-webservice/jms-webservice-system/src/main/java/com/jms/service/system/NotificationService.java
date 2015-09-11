@@ -98,7 +98,7 @@ public class NotificationService implements INotificationService{
 		 }
 		Page<Receiver> rs = receiverRepository.findReceivers(groups,pageable);
 		List<WSNotification> notiList = new ArrayList<WSNotification>();
-		for(Receiver r: rs)
+		/*	for(Receiver r: rs)
 		{
 			WSNotification wn = new WSNotification();
 			wn.setCreationTime(r.getNotification().getCreationTime());
@@ -109,8 +109,21 @@ public class NotificationService implements INotificationService{
 		    wn.setDetails(securedObjDAO.find(t, r.getNotification().getIdSource()).toString());
 			notiList.add(wn);
 		}
+		*/
+		int pagenum= pageable.getPageNumber();
+		int pagesize= pageable.getPageSize();
 		
-		 
+		for(int i=pagenum*pagesize; i<pagenum*pagesize +pagesize;i++)
+		{
+			WSNotification wn = new WSNotification();
+			wn.setCreationTime(new Date());
+			wn.setEvent("第 " + i +", 事件");
+			wn.setIdNotification((long)i);
+			wn.setUsername("张三");
+		   
+		    wn.setDetails("详情略");
+			notiList.add(wn);
+		}
 		 return notiList;
 	}
 

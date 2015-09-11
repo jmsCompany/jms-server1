@@ -73,7 +73,7 @@ public class AuthenticationTokenProcessingFilter extends
 				String token = request.getHeader("JMS-TOKEN");
 				if (token != null) {
 					if (tokenUtils.validate(token)) {
-						logger.debug("call fiter?:  "  +req.getClass().getCanonicalName());
+					//	logger.debug("call fiter?:  "  +req.getClass().getCanonicalName());
 						JMSUserDetails userDetails = tokenUtils
 								.getUserFromToken(token);
 						UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
@@ -90,9 +90,9 @@ public class AuthenticationTokenProcessingFilter extends
 					}
 				}
 
-				chain.doFilter(request, response);
+				
 			}
-		
+			chain.doFilter(request, response);
 		}
 	}
 

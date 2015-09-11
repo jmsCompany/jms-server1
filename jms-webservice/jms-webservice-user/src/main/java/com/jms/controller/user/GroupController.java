@@ -48,7 +48,8 @@ public class GroupController {
 	}
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/group/view/{idGroup}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/group/view/{idGroup}", method=RequestMethod.GET
+	, produces=MediaType.APPLICATION_JSON_VALUE)
 	public WSGroup getGroup(@PathVariable("idGroup") Long idGroup) throws Exception
 	{
 		return groupService.getWSGroup(idGroup);
