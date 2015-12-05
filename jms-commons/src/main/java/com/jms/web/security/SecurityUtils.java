@@ -85,7 +85,7 @@ public class SecurityUtils {
 					return getAuthority();
 				}
 			});
-			String role = gm.getRoles().getRole();
+			final String role = gm.getRoles().getRole();
 			if(!roles.containsKey(role))
 			{
 				roles.put(role, role);

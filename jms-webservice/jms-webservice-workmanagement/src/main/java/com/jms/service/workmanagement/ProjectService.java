@@ -46,7 +46,7 @@ public class ProjectService {
 			p.setDescription(messagesUitl.getMessage(
 					"workmanagement.project.generialprojectdescription", null,
 					MessageTypeEnum.INFOMATION).getMessage());
-			p.setSysDicDByStatus(sysDicDRepository.findDicsByTypeAndName(Config.projectStatus, "0").get());
+			p.setSysDicDByStatus(sysDicDRepository.findDicsByTypeAndName(Config.projectStatus, "0").get(0));
 			p.setCompany(company);
             p.setUsers(company.getUsersByCreator());
 			logger.debug("projectName: " + p.getProjectName()
