@@ -915,7 +915,7 @@ CREATE TABLE S_MATERIAL
 	CATEGORY              INTEGER NULL,
 	UNIT_INF              INTEGER NULL,
 	UNIT_PUR              INTEGER NULL,
-	MQQ                   INTEGER NULL,
+	MOQ                   INTEGER NULL,
 	BRAND                 VARCHAR(20) NULL,
 	REMARK                VARCHAR(1024) NULL,
 	STATUS                INTEGER NULL,
