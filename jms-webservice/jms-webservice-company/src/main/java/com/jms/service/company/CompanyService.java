@@ -32,7 +32,7 @@ import com.jms.domain.db.Company;
 import com.jms.domain.db.GroupMembers;
 import com.jms.domain.db.GroupMembersId;
 import com.jms.domain.db.Groups;
-import com.jms.domain.db.Project;
+import com.jms.domain.db.WProject;
 import com.jms.domain.db.Roles;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
@@ -291,15 +291,15 @@ public class CompanyService {
 		List<Long> idGroups = new ArrayList<Long>();
 		idGroups.add(group.getIdGroup());
 		// copy projects
-		for (Project p : projectRepository.findByCompany(from)) {
-			Project p1 = new Project();
+		for (WProject p : projectRepository.findByCompany(from)) {
+			WProject p1 = new WProject();
 			p1.setCompany(to);
 			p1.setProjectName(p.getProjectName());
 			p1.setDescription(p.getDescription());
 			p1.setSysDicDByStatus(p.getSysDicDByStatus());
 			p1.setUsers(securityUtils.getCurrentDBUser());
 			projectRepository.save(p1);
-			securityACLDAO.addPermission(p1, Project.class,
+			securityACLDAO.addPermission(p1, WProject.class,
 					BasePermission.ADMINISTRATION);
 			GrantedAuthoritySid sid = new GrantedAuthoritySid(""
 					+ group.getIdGroup());
@@ -341,7 +341,7 @@ public class CompanyService {
 		templateCompany.setEnabled(EnabledEnum.ROBOT.getStatusCode());
 		templateCompany.setSysDicDByTaskType(sysDicDRepository.findDicsByType(
 				Config.taskType).get(0));
-		templateCompany.setSysDicDByCompanyCatorgory(sysDicDRepository
+		templateCompany.setSysDicDByCompanyCategory(sysDicDRepository
 				.findDicsByType(Config.companyCatergory).get(0));
 		templateCompany.setUsersByCreator(usersRepository
 				.findByUsername("admin"));

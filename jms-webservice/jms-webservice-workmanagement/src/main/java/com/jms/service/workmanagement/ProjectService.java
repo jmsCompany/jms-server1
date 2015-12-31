@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jms.acl.SecuredObjectService;
 import com.jms.domain.Config;
 import com.jms.domain.db.Company;
-import com.jms.domain.db.Project;
+import com.jms.domain.db.WProject;
 import com.jms.domain.ws.MessageTypeEnum;
 import com.jms.messages.MessagesUitl;
 import com.jms.repositories.company.CompanyRepository;
@@ -39,7 +39,7 @@ public class ProjectService {
 
 	public void createGenerialProject(Company company) {
 
-			Project p = new Project();
+			WProject p = new WProject();
 			p.setProjectName(messagesUitl.getMessage(
 					"workmanagement.project.generialprojectname", null,
 					MessageTypeEnum.INFOMATION).getMessage());
@@ -59,14 +59,14 @@ public class ProjectService {
 	
 	public void SecuredObjectServiceTest()
 	{
-		 Map<String, String> map = securedObjectService.findSidPermissionMap(Project.class, 4l, "group");
+		 Map<String, String> map = securedObjectService.findSidPermissionMap(WProject.class, 4l, "group");
 	       for(String m:map.keySet())
 	       {
 	    	   
 	    	   System.out.println("group id: " + m +", permission: " + map.get(m));
 	       }
 	       
-	  	 Map<String, String> map1 = securedObjectService.findSidPermissionMap(Project.class, 4l, "user");
+	  	 Map<String, String> map1 = securedObjectService.findSidPermissionMap(WProject.class, 4l, "user");
 	       for(String m:map1.keySet())
 	       {
 	    	   

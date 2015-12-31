@@ -2,243 +2,243 @@ set foreign_key_checks =0;
 
 
 
-ALTER TABLE `A_APPLICATION` 
-MODIFY `ID_APPLICATION` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `a_application` 
+modify `id_application` int(11) not null auto_increment;
 
-ALTER TABLE `A_APPROVAL_PHASE` 
-MODIFY `ID_APPROVAL_PHASE` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `a_approval_phase` 
+modify `id_approval_phase` int(11) not null auto_increment;
 
-ALTER TABLE `A_APPROVAL_PROCESS` 
-MODIFY `ID_APPROVAL_PROCESS` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `a_approval_process` 
+modify `id_approval_process` int(11) not null auto_increment;
 
-ALTER TABLE `A_APPROVAL_TYPE` 
-MODIFY `ID_APPROVAL_TYPE` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `a_approval_type` 
+modify `id_approval_type` int(11) not null auto_increment;
 
-ALTER TABLE `APPS` 
-MODIFY `ID_APP` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `apps` 
+modify `id_app` int(11) not null auto_increment;
 
-ALTER TABLE `BUY_RECORD` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `buy_record` 
+modify `id` int(11) not null auto_increment;
 
-ALTER TABLE `COMPANY` 
-MODIFY `ID_COMPANY` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `company` 
+modify `id_company` int(11) not null auto_increment;
 
-ALTER TABLE `DOCUMENT` 
-MODIFY `ID_DOCUMENT` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `document` 
+modify `id_document` int(11) not null auto_increment;
 
-ALTER TABLE `FEEDBACK` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `feedback` 
+modify `id` int(11) not null auto_increment;
 
-ALTER TABLE `GROUP_TYPE` 
-MODIFY `ID_GROUP_TYPE` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `group_type` 
+modify `id_group_type` int(11) not null auto_increment;
 
-ALTER TABLE `GROUPS` 
-MODIFY `ID_GROUP` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `groups` 
+modify `id_group` int(11) not null auto_increment;
 
-ALTER TABLE `W_ISSUE` 
-MODIFY `ID_ISSUE` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `w_issue` 
+modify `id_issue` int(11) not null auto_increment;
 
-ALTER TABLE `W_ISSUE_COMMENT` 
-MODIFY `ID_ISSUE_COMMENT` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `w_issue_comment` 
+modify `id_issue_comment` int(11) not null auto_increment;
 
-ALTER TABLE `JMS_EVENT` 
-MODIFY `ID_EVENT` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `jms_event` 
+modify `id_event` int(11) not null auto_increment;
 
-ALTER TABLE `NOTIFICATION` 
-MODIFY `ID_NOTI` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `notification` 
+modify `id_noti` int(11) not null auto_increment;
 
-ALTER TABLE `NOTI_METHOD` 
-MODIFY `ID_NOTI_METHOD` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `noti_method` 
+modify `id_noti_method` int(11) not null auto_increment;
 
-ALTER TABLE `RECEIVER` 
-MODIFY `ID_RECEIVER` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `receiver` 
+modify `id_receiver` int(11) not null auto_increment;
 
 
-ALTER TABLE `P_POLL` 
-MODIFY `ID_POLL` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `p_poll` 
+modify `id_poll` int(11) not null auto_increment;
 
 
-ALTER TABLE `P_POLL_ITEMS` 
-MODIFY `ID_ITEM` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `p_poll_items` 
+modify `id_item` int(11) not null auto_increment;
 
-ALTER TABLE `W_PROJECT` 
-MODIFY `ID_PROJECT` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `w_project` 
+modify `id_project` int(11) not null auto_increment;
 
-ALTER TABLE `RECEIPT` 
-MODIFY `ID_RECEIPT` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `receipt` 
+modify `id_receipt` int(11) not null auto_increment;
 
-ALTER TABLE `C_REPEATS` 
-MODIFY `ID_REPEAT` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `c_repeats` 
+modify `id_repeat` int(11) not null auto_increment;
 
-ALTER TABLE `ROLES` 
-MODIFY `ID_ROLE` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `roles` 
+modify `id_role` int(11) not null auto_increment;
 
-ALTER TABLE `C_SCHEDULE` 
-MODIFY `ID_SCHEDULE` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `c_schedule` 
+modify `id_schedule` int(11) not null auto_increment;
 
 
-ALTER TABLE `SERVICE` 
-MODIFY `ID_SERVICE` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `service` 
+modify `id_service` int(11) not null auto_increment;
 
-ALTER TABLE `SERVICE_TYPE` 
-MODIFY `ID_SERVICE_TYPE` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `service_type` 
+modify `id_service_type` int(11) not null auto_increment;
 
 
-ALTER TABLE `SYS_DIC_D` 
-MODIFY `ID_DIC` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `sys_dic_d` 
+modify `id_dic` int(11) not null auto_increment;
 
-ALTER TABLE `W_TASK` 
-MODIFY `ID_TASK` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `w_task` 
+modify `id_task` int(11) not null auto_increment;
 
-ALTER TABLE `W_TASK_COMMENT` 
-MODIFY `ID_COMMENT` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `w_task_comment` 
+modify `id_comment` int(11) not null auto_increment;
 
 
-ALTER TABLE `USERS` 
-MODIFY `ID_USER` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `users` 
+modify `id_user` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_ATTACHMENT` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_attachment` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_COMPANY_CO` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_company_co` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_COMPANY_CO_ATTACHMENT` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_company_co_attachment` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_COUNTRY_DIC` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_country_dic` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_DO` 
-MODIFY `ID_DO` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_do` 
+modify `id_do` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_DO_MATERIAL` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_do_material` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_GENDER_DIC` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_gender_dic` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_INCOME` 
-MODIFY `ID_R` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_income` 
+modify `id_r` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_INCOME_MATERIAL` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_income_material` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_INVENTORY` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_inventory` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_LEVEL_DIC` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_level_dic` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_LINKMAN` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_linkman` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_MATERIAL` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_material` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_MATERIAL_ATTACHMENT` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_material_attachment` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_MATERIAL_BIN` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_material_bin` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_MATERIAL_CATEGORY` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_material_category` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_MATERIAL_CATEGORY_PIC` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_material_category_pic` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_MATERIAL_PIC` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_material_pic` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_MATERIAL_TYPE_DIC` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_material_type_dic` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_MTF` 
-MODIFY `ID_MT` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_mtf` 
+modify `id_mt` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_MTF_MATERIAL` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_mtf_material` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_PIC` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_pic` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_PIC_SETTING` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_pic_setting` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_PO` 
-MODIFY `ID_PO` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_po` 
+modify `id_po` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_PO_MATERIAL` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_po_material` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_SO` 
-MODIFY `ID_SO` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_so` 
+modify `id_so` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_SO_MATERIAL` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_so_material` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_STATUS_DIC` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_status_dic` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_STK` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_stk` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_TERM_DIC` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_term_dic` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_TYPE_DIC` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_type_dic` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_UNIT_DIC` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_unit_dic` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_MRB` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_mrb` 
+modify `id_mrb` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_MRB_MATERIAL` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_mrb_material` 
+modify `id` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_RMA` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_rma` 
+modify `id_rma` int(11) not null auto_increment;
 
 
-ALTER TABLE `S_RMA_MATERIAL` 
-MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT;
+alter table `s_rma_material` 
+modify `id` int(11) not null auto_increment;
 
 set foreign_key_checks =1;

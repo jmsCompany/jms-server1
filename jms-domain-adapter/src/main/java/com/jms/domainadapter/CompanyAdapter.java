@@ -62,7 +62,8 @@ public class CompanyAdapter {
 					.getTaskType().getIdDic()));
 		}
 		if (wsCompany.getCompanyCategory() != null) {
-			c.setSysDicDByCompanyCatorgory(sysDicDRepository.findOne(wsCompany.getCompanyCategory()
+	
+			c.setSysDicDByCompanyCategory(sysDicDRepository.findOne(wsCompany.getCompanyCategory()
 					.getIdDic()));
 		}
 		
@@ -113,9 +114,9 @@ public class CompanyAdapter {
 					.getSysDicDByTaskType());
 			wsc.setTaskType(taskType);
 		}
-		if (company.getSysDicDByCompanyCatorgory() != null) {
+		if (company.getSysDicDByCompanyCategory() != null) {
 			WSSysDicD catagory = sysDicDAdapter.toWSSysDicD(company
-					.getSysDicDByCompanyCatorgory());
+					.getSysDicDByCompanyCategory());
 			wsc.setCompanyCategory(catagory);
 		}
 		if (company.getDistrict() != null) {

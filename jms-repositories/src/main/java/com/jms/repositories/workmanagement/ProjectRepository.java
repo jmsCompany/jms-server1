@@ -10,11 +10,11 @@ import org.springframework.stereotype.Repository;
 
 
 import com.jms.domain.db.Company;
-import com.jms.domain.db.Project;
+import com.jms.domain.db.WProject;
 
 
 @Repository
-public interface ProjectRepository  extends JpaRepository<Project, Long>{
+public interface ProjectRepository  extends JpaRepository<WProject, Long>{
 		
-	public List<Project> findByCompany(Company company);
+	public List<WProject> findByCompany(Company company);
 }

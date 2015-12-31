@@ -6,4 +6,3 @@
     </type-mapping>
     <table-filter match-name=".*" package="com.jms.domain.db.k" />
 </hibernate-reverse-engineering>
-
