@@ -154,9 +154,6 @@ alter table `s_material_attachment`
 modify `id` int(11) not null auto_increment;
 
 
-alter table `s_material_bin` 
-modify `id` int(11) not null auto_increment;
-
 
 alter table `s_material_category` 
 modify `id` int(11) not null auto_increment;
