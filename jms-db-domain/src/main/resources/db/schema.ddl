@@ -1,2863 +1,2891 @@
 
-create table a_application
+CREATE TABLE A_APPLICATION
 (
-	id_application        integer not null,
-	previous_application  integer null,
-	id_approval_process   integer null,
-	applicant             integer null,
-	start_time            timestamp null,
-	end_time              timestamp null,
-	content               varchar(1024) null,
-	status                integer null
+	ID_APPLICATION        INTEGER NOT NULL,
+	PREVIOUS_APPLICATION  INTEGER NULL,
+	ID_APPROVAL_PROCESS   INTEGER NULL,
+	APPLICANT             INTEGER NULL,
+	START_TIME            TIMESTAMP NULL,
+	END_TIME              TIMESTAMP NULL,
+	CONTENT               VARCHAR(1024) NULL,
+	STATUS                INTEGER NULL
 )
 ;
 
 
 
-alter table a_application
-	add  primary key (id_application)
+ALTER TABLE A_APPLICATION
+	ADD  PRIMARY KEY (ID_APPLICATION)
 ;
 
 
 
-create table a_application_phase
+CREATE TABLE A_APPLICATION_PHASE
 (
-	id_application        integer not null,
-	id_approval_phase     integer not null,
-	action_time           timestamp null,
-	status                integer null,
-	comment               varchar(512) null
+	ID_APPLICATION        INTEGER NOT NULL,
+	ID_APPROVAL_PHASE     INTEGER NOT NULL,
+	ACTION_TIME           TIMESTAMP NULL,
+	STATUS                INTEGER NULL,
+	COMMENT               VARCHAR(512) NULL
 )
 ;
 
 
 
-alter table a_application_phase
-	add  primary key (id_application,id_approval_phase)
+ALTER TABLE A_APPLICATION_PHASE
+	ADD  PRIMARY KEY (ID_APPLICATION,ID_APPROVAL_PHASE)
 ;
 
 
 
-create table a_approval_cc
+CREATE TABLE A_APPROVAL_CC
 (
-	id_approval_phase     integer not null,
-	id_user               integer not null,
-	id_noti_method        integer null
+	ID_APPROVAL_PHASE     INTEGER NOT NULL,
+	ID_USER               INTEGER NOT NULL,
+	ID_NOTI_METHOD        INTEGER NULL
 )
 ;
 
 
 
-alter table a_approval_cc
-	add  primary key (id_approval_phase,id_user)
+ALTER TABLE A_APPROVAL_CC
+	ADD  PRIMARY KEY (ID_APPROVAL_PHASE,ID_USER)
 ;
 
 
 
-create table a_approval_phase
+CREATE TABLE A_APPROVAL_PHASE
 (
-	id_approval_phase     integer not null,
-	id_approval_process   integer null,
-	name                  varchar(64) null,
-	approver              integer null,
-	seq                   integer null
+	ID_APPROVAL_PHASE     INTEGER NOT NULL,
+	ID_APPROVAL_PROCESS   INTEGER NULL,
+	NAME                  VARCHAR(64) NULL,
+	APPROVER              INTEGER NULL,
+	SEQ                   INTEGER NULL
 )
 ;
 
 
 
-alter table a_approval_phase
-	add  primary key (id_approval_phase)
+ALTER TABLE A_APPROVAL_PHASE
+	ADD  PRIMARY KEY (ID_APPROVAL_PHASE)
 ;
 
 
 
-create table a_approval_process
+CREATE TABLE A_APPROVAL_PROCESS
 (
-	id_approval_process   integer not null,
-	id_approval_type      integer null,
-	name                  varchar(64) null,
-	description           varchar(1024) null,
-	id_document           integer null
+	ID_APPROVAL_PROCESS   INTEGER NOT NULL,
+	ID_APPROVAL_TYPE      INTEGER NULL,
+	NAME                  VARCHAR(64) NULL,
+	DESCRIPTION           VARCHAR(1024) NULL,
+	ID_DOCUMENT           INTEGER NULL
 )
 ;
 
 
 
-alter table a_approval_process
-	add  primary key (id_approval_process)
+ALTER TABLE A_APPROVAL_PROCESS
+	ADD  PRIMARY KEY (ID_APPROVAL_PROCESS)
 ;
 
 
 
-create table a_approval_type
+CREATE TABLE A_APPROVAL_TYPE
 (
-	id_approval_type      integer not null,
-	name                  varchar(20) null,
-	description           varchar(256) null,
-	creator               integer null,
-	creation_time         date null,
-	id_company            integer null
+	ID_APPROVAL_TYPE      INTEGER NOT NULL,
+	NAME                  VARCHAR(20) NULL,
+	DESCRIPTION           VARCHAR(256) NULL,
+	CREATOR               INTEGER NULL,
+	CREATION_TIME         DATE NULL,
+	ID_COMPANY            INTEGER NULL
 )
 ;
 
 
 
-alter table a_approval_type
-	add  primary key (id_approval_type)
+ALTER TABLE A_APPROVAL_TYPE
+	ADD  PRIMARY KEY (ID_APPROVAL_TYPE)
 ;
 
 
 
-create table apps
+CREATE TABLE APPS
 (
-	id_app                integer not null,
-	groups                varchar(64) null,
-	app_name              varchar(20) null,
-	description           varchar(128) null,
-	scope                 integer null,
-	app_key               varchar(64) null,
-	app_secret            varchar(64) null,
-	seq                   integer null,
-	url                   varchar(512) null
+	ID_APP                INTEGER NOT NULL,
+	GROUPS                VARCHAR(64) NULL,
+	APP_NAME              VARCHAR(20) NULL,
+	DESCRIPTION           VARCHAR(128) NULL,
+	SCOPE                 INTEGER NULL,
+	APP_KEY               VARCHAR(64) NULL,
+	APP_SECRET            VARCHAR(64) NULL,
+	SEQ                   INTEGER NULL,
+	URL                   VARCHAR(512) NULL
 )
 ;
 
 
 
-alter table apps
-	add  primary key (id_app)
+ALTER TABLE APPS
+	ADD  PRIMARY KEY (ID_APP)
 ;
 
 
 
-create table buy_record
+CREATE TABLE BUY_RECORD
 (
-	id                    integer not null,
-	id_service            integer null,
-	buy_time              timestamp null,
-	invalid_time          timestamp null,
-	require_invoice       integer null,
-	invoice_description   varchar(512) null,
-	id_receipt            integer null,
-	payment_numder        varchar(64) null,
-	order_number          varchar(64) null,
-	payment               float null,
-	pay_method            integer null,
-	id_company            integer null
+	ID                    INTEGER NOT NULL,
+	ID_SERVICE            INTEGER NULL,
+	BUY_TIME              TIMESTAMP NULL,
+	INVALID_TIME          TIMESTAMP NULL,
+	REQUIRE_INVOICE       INTEGER NULL,
+	INVOICE_DESCRIPTION   VARCHAR(512) NULL,
+	ID_RECEIPT            INTEGER NULL,
+	PAYMENT_NUMDER        VARCHAR(64) NULL,
+	ORDER_NUMBER          VARCHAR(64) NULL,
+	PAYMENT               FLOAT NULL,
+	PAY_METHOD            INTEGER NULL,
+	ID_COMPANY            INTEGER NULL
 )
 ;
 
 
 
-alter table buy_record
-	add  primary key (id)
+ALTER TABLE BUY_RECORD
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table c_repeats
+CREATE TABLE C_REPEATS
 (
-	id_repeat             integer not null,
-	repeat_type           integer null,
-	end_time              date null,
-	frequency             varchar(20) null
+	ID_REPEAT             INTEGER NOT NULL,
+	REPEAT_TYPE           INTEGER NULL,
+	END_TIME              DATE NULL,
+	FREQUENCY             VARCHAR(20) NULL
 )
 ;
 
 
 
-alter table c_repeats
-	add  primary key (id_repeat)
+ALTER TABLE C_REPEATS
+	ADD  PRIMARY KEY (ID_REPEAT)
 ;
 
 
 
-create table c_schedule
+CREATE TABLE C_SCHEDULE
 (
-	id_schedule           integer not null,
-	title                 varchar(128) null,
-	description           varchar(512) null,
-	id_repeat             integer null,
-	creator               integer null,
-	creation_time         timestamp not null,
-	start_time            timestamp null,
-	end_time              timestamp null,
-	is_wholeday           integer null,
-	remind                timestamp null,
-	lazy_set              timestamp null,
-	schedule_type         integer null
+	ID_SCHEDULE           INTEGER NOT NULL,
+	TITLE                 VARCHAR(128) NULL,
+	DESCRIPTION           VARCHAR(512) NULL,
+	ID_REPEAT             INTEGER NULL,
+	CREATOR               INTEGER NULL,
+	CREATION_TIME         TIMESTAMP NOT NULL,
+	START_TIME            TIMESTAMP NULL,
+	END_TIME              TIMESTAMP NULL,
+	IS_WHOLEDAY           INTEGER NULL,
+	REMIND                TIMESTAMP NULL,
+	LAZY_SET              TIMESTAMP NULL,
+	SCHEDULE_TYPE         INTEGER NULL
 )
 ;
 
 
 
-alter table c_schedule
-	add  primary key (id_schedule)
+ALTER TABLE C_SCHEDULE
+	ADD  PRIMARY KEY (ID_SCHEDULE)
 ;
 
 
 
-create table c_schedule_doc
+CREATE TABLE C_SCHEDULE_DOC
 (
-	id_schedule           integer not null,
-	id_document           integer not null,
-	publish               integer null
+	ID_SCHEDULE           INTEGER NOT NULL,
+	ID_DOCUMENT           INTEGER NOT NULL,
+	PUBLISH               INTEGER NULL
 )
 ;
 
 
 
-alter table c_schedule_doc
-	add  primary key (id_schedule,id_document)
+ALTER TABLE C_SCHEDULE_DOC
+	ADD  PRIMARY KEY (ID_SCHEDULE,ID_DOCUMENT)
 ;
 
 
 
-create table c_schedule_watcher
+CREATE TABLE C_SCHEDULE_WATCHER
 (
-	id_user               integer not null,
-	id_schedule           integer not null,
-	enabled               integer null
+	ID_USER               INTEGER NOT NULL,
+	ID_SCHEDULE           INTEGER NOT NULL,
+	ENABLED               INTEGER NULL
 )
 ;
 
 
 
-alter table c_schedule_watcher
-	add  primary key (id_user,id_schedule)
+ALTER TABLE C_SCHEDULE_WATCHER
+	ADD  PRIMARY KEY (ID_USER,ID_SCHEDULE)
 ;
 
 
 
-create table city
+CREATE TABLE CITY
 (
-	id_city               integer not null,
-	city                  varchar(32) null,
-	id_province           integer null,
-	postcode              varchar(20) null
+	ID_CITY               INTEGER NOT NULL,
+	CITY                  VARCHAR(32) NULL,
+	ID_PROVINCE           INTEGER NULL,
+	POSTCODE              VARCHAR(20) NULL
 )
 ;
 
 
 
-alter table city
-	add  primary key (id_city)
+ALTER TABLE CITY
+	ADD  PRIMARY KEY (ID_CITY)
 ;
 
 
 
-create table company
+CREATE TABLE COMPANY
 (
-	id_company            integer not null,
-	company_name          varchar(64) not null,
-	description           varchar(1024) null,
-	creator               integer not null,
-	creation_time         date null,
-	company_type          integer null,
-	modify_by             integer null,
-	modify_time           date null,
-	establish_person      varchar(20) null,
-	establishment_time    date null,
-	postcode              varchar(20) null,
-	id_district           integer null,
-	address               varchar(128) null,
-	company_nature        integer null,
-	email                 varchar(64) null,
-	company_size          integer null,
-	company_category      integer null,
-	licence               integer null,
-	verified              integer null,
-	telephone             varchar(20) null,
-	fax                   varchar(20) null,
-	url                   varchar(128) null,
-	locale                integer null,
-	logo                  integer null,
-	task_type             integer null,
-	enabled               integer not null,
-	scheme                integer null,
-	used_space            float null,
-	msg_used_num          integer null,
-	msg_available_num     integer null,
-	space                 float null
+	ID_COMPANY            INTEGER NOT NULL,
+	COMPANY_NAME          VARCHAR(64) NOT NULL,
+	DESCRIPTION           VARCHAR(1024) NULL,
+	CREATOR               INTEGER NOT NULL,
+	CREATION_TIME         DATE NULL,
+	COMPANY_TYPE          INTEGER NULL,
+	MODIFY_BY             INTEGER NULL,
+	MODIFY_TIME           DATE NULL,
+	ESTABLISH_PERSON      VARCHAR(20) NULL,
+	ESTABLISHMENT_TIME    DATE NULL,
+	POSTCODE              VARCHAR(20) NULL,
+	ID_DISTRICT           INTEGER NULL,
+	ADDRESS               VARCHAR(128) NULL,
+	COMPANY_NATURE        INTEGER NULL,
+	EMAIL                 VARCHAR(64) NULL,
+	COMPANY_SIZE          INTEGER NULL,
+	COMPANY_CATEGORY      INTEGER NULL,
+	LICENCE               INTEGER NULL,
+	VERIFIED              INTEGER NULL,
+	TELEPHONE             VARCHAR(20) NULL,
+	FAX                   VARCHAR(20) NULL,
+	URL                   VARCHAR(128) NULL,
+	LOCALE                INTEGER NULL,
+	LOGO                  INTEGER NULL,
+	TASK_TYPE             INTEGER NULL,
+	ENABLED               INTEGER NOT NULL,
+	SCHEME                INTEGER NULL,
+	USED_SPACE            FLOAT NULL,
+	MSG_USED_NUM          INTEGER NULL,
+	MSG_AVAILABLE_NUM     INTEGER NULL,
+	SPACE                 FLOAT NULL
 )
 ;
 
 
 
-alter table company
-	add  primary key (id_company)
+ALTER TABLE COMPANY
+	ADD  PRIMARY KEY (ID_COMPANY)
 ;
 
 
 
-create table district
+CREATE TABLE DISTRICT
 (
-	id_district           integer not null,
-	district              varchar(32) null,
-	id_city               integer null
+	ID_DISTRICT           INTEGER NOT NULL,
+	DISTRICT              VARCHAR(32) NULL,
+	ID_CITY               INTEGER NULL
 )
 ;
 
 
 
-alter table district
-	add  primary key (id_district)
+ALTER TABLE DISTRICT
+	ADD  PRIMARY KEY (ID_DISTRICT)
 ;
 
 
 
-create table document
+CREATE TABLE DOCUMENT
 (
-	id_document           integer not null,
-	parent                integer null,
-	creator               integer null,
-	creation_time         date null,
-	modify_by             integer null,
-	modify_time           date null,
-	relative_path         varchar(256) null,
-	name                  varchar(64) null,
-	file_name             varchar(256) null,
-	description           varchar(256) null,
-	size                  mediumint null
+	ID_DOCUMENT           INTEGER NOT NULL,
+	PARENT                INTEGER NULL,
+	CREATOR               INTEGER NULL,
+	CREATION_TIME         DATE NULL,
+	MODIFY_BY             INTEGER NULL,
+	MODIFY_TIME           DATE NULL,
+	RELATIVE_PATH         VARCHAR(256) NULL,
+	NAME                  VARCHAR(64) NULL,
+	FILE_NAME             VARCHAR(256) NULL,
+	DESCRIPTION           VARCHAR(256) NULL,
+	SIZE                  MEDIUMINT NULL
 )
 ;
 
 
 
-alter table document
-	add  primary key (id_document)
+ALTER TABLE DOCUMENT
+	ADD  PRIMARY KEY (ID_DOCUMENT)
 ;
 
 
 
-create table feedback
+CREATE TABLE FEEDBACK
 (
-	id                    integer not null,
-	id_user               integer null,
-	feedback_method       integer null,
-	tel                   varchar(20) null,
-	email                 varchar(128) null,
-	name                  varchar(64) null,
-	description           varchar(1024) null,
-	status                integer null
+	ID                    INTEGER NOT NULL,
+	ID_USER               INTEGER NULL,
+	FEEDBACK_METHOD       INTEGER NULL,
+	TEL                   VARCHAR(20) NULL,
+	EMAIL                 VARCHAR(128) NULL,
+	NAME                  VARCHAR(64) NULL,
+	DESCRIPTION           VARCHAR(1024) NULL,
+	STATUS                INTEGER NULL
 )
 ;
 
 
 
-alter table feedback
-	add  primary key (id)
+ALTER TABLE FEEDBACK
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table group_authorities
+CREATE TABLE GROUP_AUTHORITIES
 (
-	id_group              integer not null,
-	id_role               integer not null,
-	enabled               integer null
+	ID_GROUP              INTEGER NOT NULL,
+	ID_ROLE               INTEGER NOT NULL,
+	ENABLED               INTEGER NULL
 )
 ;
 
 
 
-alter table group_authorities
-	add  primary key (id_group,id_role)
+ALTER TABLE GROUP_AUTHORITIES
+	ADD  PRIMARY KEY (ID_GROUP,ID_ROLE)
 ;
 
 
 
-create table group_members
+CREATE TABLE GROUP_MEMBERS
 (
-	id_group              integer not null,
-	id_user               integer not null,
-	id_role               integer null
+	ID_GROUP              INTEGER NOT NULL,
+	ID_USER               INTEGER NOT NULL,
+	ID_ROLE               INTEGER NULL
 )
 ;
 
 
 
-alter table group_members
-	add  primary key (id_group,id_user)
+ALTER TABLE GROUP_MEMBERS
+	ADD  PRIMARY KEY (ID_GROUP,ID_USER)
 ;
 
 
 
-create table group_type
+CREATE TABLE GROUP_TYPE
 (
-	id_group_type         integer not null,
-	group_type            varchar(20) null
+	ID_GROUP_TYPE         INTEGER NOT NULL,
+	GROUP_TYPE            VARCHAR(20) NULL
 )
 ;
 
 
 
-alter table group_type
-	add  primary key (id_group_type)
+ALTER TABLE GROUP_TYPE
+	ADD  PRIMARY KEY (ID_GROUP_TYPE)
 ;
 
 
 
-create table groups
+CREATE TABLE GROUPS
 (
-	id_group              integer not null,
-	group_name            varchar(64) not null,
-	description           varchar(256) null,
-	creator               integer null,
-	creation_time         date null,
-	id_group_type         integer null,
-	seq                   integer null,
-	id_company            integer null
+	ID_GROUP              INTEGER NOT NULL,
+	GROUP_NAME            VARCHAR(64) NOT NULL,
+	DESCRIPTION           VARCHAR(256) NULL,
+	CREATOR               INTEGER NULL,
+	CREATION_TIME         DATE NULL,
+	ID_GROUP_TYPE         INTEGER NULL,
+	SEQ                   INTEGER NULL,
+	ID_COMPANY            INTEGER NULL
 )
 ;
 
 
 
-alter table groups
-	add  primary key (id_group)
+ALTER TABLE GROUPS
+	ADD  PRIMARY KEY (ID_GROUP)
 ;
 
 
 
-create table jms_event
+CREATE TABLE JMS_EVENT
 (
-	id_event              integer not null,
-	parent                integer null,
-	class                 varchar(100) null,
-	name                  varchar(64) null,
-	description           varchar(128) null,
-	template              varchar(64) null,
-	id_app                integer null
+	ID_EVENT              INTEGER NOT NULL,
+	PARENT                INTEGER NULL,
+	CLASS                 VARCHAR(100) NULL,
+	NAME                  VARCHAR(64) NULL,
+	DESCRIPTION           VARCHAR(128) NULL,
+	TEMPLATE              VARCHAR(64) NULL,
+	ID_APP                INTEGER NULL
 )
 ;
 
 
 
-alter table jms_event
-	add  primary key (id_event)
+ALTER TABLE JMS_EVENT
+	ADD  PRIMARY KEY (ID_EVENT)
 ;
 
 
 
-create table noti_method
+CREATE TABLE NOTI_METHOD
 (
-	id_noti_method        integer not null,
-	method                varchar(20) null
+	ID_NOTI_METHOD        INTEGER NOT NULL,
+	METHOD                VARCHAR(20) NULL
 )
 ;
 
 
 
-alter table noti_method
-	add  primary key (id_noti_method)
+ALTER TABLE NOTI_METHOD
+	ADD  PRIMARY KEY (ID_NOTI_METHOD)
 ;
 
 
 
-create table notice
+CREATE TABLE NOTICE
 (
-	id_notice             integer not null,
-	id_user               integer null,
-	title                 varchar(128) null,
-	notice                varchar(4096) null,
-	remark                varchar(1024) null,
-	publish_time          date null
+	ID_NOTICE             INTEGER NOT NULL,
+	ID_USER               INTEGER NULL,
+	TITLE                 VARCHAR(128) NULL,
+	NOTICE                VARCHAR(4096) NULL,
+	REMARK                VARCHAR(1024) NULL,
+	PUBLISH_TIME          DATE NULL
 )
 ;
 
 
 
-alter table notice
-	add  primary key (id_notice)
+ALTER TABLE NOTICE
+	ADD  PRIMARY KEY (ID_NOTICE)
 ;
 
 
 
-create table notification
+CREATE TABLE NOTIFICATION
 (
-	id_noti               integer not null,
-	id_event              integer null,
-	id_source             integer null,
-	creator               integer null,
-	creation_time         timestamp null,
-	id_noti_method        integer null,
-	id_company            integer null
+	ID_NOTI               INTEGER NOT NULL,
+	ID_EVENT              INTEGER NULL,
+	ID_SOURCE             INTEGER NULL,
+	Creator               INTEGER NULL,
+	CREATION_TIME         TIMESTAMP NULL,
+	ID_NOTI_METHOD        INTEGER NULL,
+	ID_COMPANY            INTEGER NULL
 )
 ;
 
 
 
-alter table notification
-	add  primary key (id_noti)
+ALTER TABLE NOTIFICATION
+	ADD  PRIMARY KEY (ID_NOTI)
 ;
 
 
 
-create table p_poll
+CREATE TABLE P_POLL
 (
-	id_poll               integer not null,
-	title                 varchar(64) null,
-	description           varchar(1024) null,
-	creator               integer null,
-	max_items             integer null,
-	creation_time         timestamp null,
-	end_time              timestamp null,
-	is_anonymous          integer null,
-	show_results          integer null,
-	conclusion            varchar(512) null,
-	status                integer null,
-	url                   varchar(512) null
+	ID_POLL               INTEGER NOT NULL,
+	TITLE                 VARCHAR(64) NULL,
+	DESCRIPTION           VARCHAR(1024) NULL,
+	CREATOR               INTEGER NULL,
+	MAX_ITEMS             INTEGER NULL,
+	CREATION_TIME         TIMESTAMP NULL,
+	END_TIME              TIMESTAMP NULL,
+	IS_ANONYMOUS          INTEGER NULL,
+	SHOW_RESULTS          INTEGER NULL,
+	CONCLUSION            VARCHAR(512) NULL,
+	STATUS                INTEGER NULL,
+	URL                   VARCHAR(512) NULL
 )
 ;
 
 
 
-alter table p_poll
-	add  primary key (id_poll)
+ALTER TABLE P_POLL
+	ADD  PRIMARY KEY (ID_POLL)
 ;
 
 
 
-create table p_poll_items
+CREATE TABLE P_POLL_ITEMS
 (
-	id_item               integer not null,
-	id_poll               integer null,
-	seq                   integer null,
-	item                  varchar(512) null,
-	pic                   integer null
+	ID_ITEM               INTEGER NOT NULL,
+	ID_POLL               INTEGER NULL,
+	SEQ                   INTEGER NULL,
+	ITEM                  VARCHAR(512) NULL,
+	PIC                   INTEGER NULL
 )
 ;
 
 
 
-alter table p_poll_items
-	add  primary key (id_item)
+ALTER TABLE P_POLL_ITEMS
+	ADD  PRIMARY KEY (ID_ITEM)
 ;
 
 
 
-create table p_poll_participant
+CREATE TABLE P_POLL_PARTICIPANT
 (
-	id                    integer not null,
-	id_poll               integer null,
-	participant           integer null,
-	email                 varchar(128) null,
-	tel                   varchar(128) null,
-	comment               varchar(1024) null,
-	status                integer null
+	ID                    INTEGER NOT NULL,
+	ID_POLL               INTEGER NULL,
+	PARTICIPANT           INTEGER NULL,
+	EMAIL                 VARCHAR(128) NULL,
+	TEL                   VARCHAR(128) NULL,
+	COMMENT               VARCHAR(1024) NULL,
+	STATUS                INTEGER NULL
 )
 ;
 
 
 
-alter table p_poll_participant
-	add  primary key (id)
+ALTER TABLE P_POLL_PARTICIPANT
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table p_vote
+CREATE TABLE P_VOTE
 (
-	id                    integer not null,
-	id_item               integer not null,
-	degree                integer null
+	ID                    INTEGER NOT NULL,
+	ID_ITEM               INTEGER NOT NULL,
+	DEGREE                INTEGER NULL
 )
 ;
 
 
 
-alter table p_vote
-	add  primary key (id,id_item)
+ALTER TABLE P_VOTE
+	ADD  PRIMARY KEY (ID,ID_ITEM)
 ;
 
 
 
-create table province
+CREATE TABLE PROVINCE
 (
-	id_province           integer not null,
-	province              varchar(32) null
+	ID_PROVINCE           INTEGER NOT NULL,
+	PROVINCE              VARCHAR(32) NULL
 )
 ;
 
 
 
-alter table province
-	add  primary key (id_province)
+ALTER TABLE PROVINCE
+	ADD  PRIMARY KEY (ID_PROVINCE)
 ;
 
 
 
-create table receipt
+CREATE TABLE RECEIPT
 (
-	id_receipt            integer not null,
-	title                 varchar(256) null,
-	invoice_code          varchar(20) null,
-	invoice_no            varchar(20) null,
-	issued_by             varchar(20) null,
-	issued_date           date null,
-	payer                 varchar(20) null,
-	content               varchar(512) null,
-	amount                numeric null,
-	id_company            integer not null
+	ID_RECEIPT            INTEGER NOT NULL,
+	TITLE                 VARCHAR(256) NULL,
+	INVOICE_CODE          VARCHAR(20) NULL,
+	INVOICE_NO            VARCHAR(20) NULL,
+	ISSUED_BY             VARCHAR(20) NULL,
+	ISSUED_DATE           DATE NULL,
+	PAYER                 VARCHAR(20) NULL,
+	CONTENT               VARCHAR(512) NULL,
+	AMOUNT                NUMERIC NULL,
+	ID_COMPANY            INTEGER NOT NULL
 )
 ;
 
 
 
-alter table receipt
-	add  primary key (id_receipt)
+ALTER TABLE RECEIPT
+	ADD  PRIMARY KEY (ID_RECEIPT)
 ;
 
 
 
-create table receiver
+CREATE TABLE RECEIVER
 (
-	id_receiver           integer not null,
-	id_noti               integer null,
-	receive_group         integer null,
-	unsubscribe           integer null
+	ID_RECEIVER           INTEGER NOT NULL,
+	ID_NOTI               INTEGER NULL,
+	RECEIVE_GROUP         INTEGER NULL,
+	unsubscribe           INTEGER NULL
 )
 ;
 
 
 
-alter table receiver
-	add  primary key (id_receiver)
+ALTER TABLE RECEIVER
+	ADD  PRIMARY KEY (ID_RECEIVER)
 ;
 
 
 
-create table roles
+CREATE TABLE ROLES
 (
-	id_role               integer not null,
-	parent                integer null,
-	role                  varchar(64) not null,
-	description           varchar(256) null,
-	level                 integer null,
-	enabled               integer null,
-	id_company            integer null
+	ID_ROLE               INTEGER NOT NULL,
+	PARENT                INTEGER NULL,
+	ROLE                  VARCHAR(64) NOT NULL,
+	DESCRIPTION           VARCHAR(256) NULL,
+	LEVEL                 INTEGER NULL,
+	ENABLED               INTEGER NULL,
+	ID_COMPANY            INTEGER NULL
 )
 ;
 
 
 
-alter table roles
-	add  primary key (id_role)
+ALTER TABLE ROLES
+	ADD  PRIMARY KEY (ID_ROLE)
 ;
 
 
 
-create table s_attachment
+CREATE TABLE S_ATTACHMENT
 (
-	id                    integer null,
-	name                  varchar(64) null,
-	des                   varchar(1024) null,
-	filename              varchar(128) null,
-	org_filename          varchar(128) null,
-	upload_by             integer null
+	ID                    INTEGER NULL,
+	NAME                  VARCHAR(64) NULL,
+	DES                   VARCHAR(1024) NULL,
+	FILENAME              VARCHAR(128) NULL,
+	ORG_FILENAME          VARCHAR(128) NULL,
+	UPLOAD_BY             INTEGER NULL
 )
 ;
 
 
 
-alter table s_attachment
-	add  primary key (id)
+ALTER TABLE S_ATTACHMENT
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_bin
+CREATE TABLE S_BIN
 (
-	id_stk                integer not null,
-	bin                   varchar(64) null,
-	status                integer null
+	ID_STK                INTEGER NOT NULL,
+	BIN                   VARCHAR(64) NULL,
+	STATUS                INTEGER NULL
 )
 ;
 
 
 
-alter table s_bin
-	add  primary key (id_stk,bin)
+ALTER TABLE S_BIN
+	ADD  PRIMARY KEY (ID_STK,BIN)
 ;
 
 
 
-create table s_company_co
+CREATE TABLE S_COMPANY_CO
 (
-	id                    integer null,
-	code                  varchar(20) null,
-	shart_name            varchar(20) null,
-	name                  varchar(64) null,
-	tel                   varchar(20) null,
-	fax                   varchar(20) null,
-	address_act           varchar(128) null,
-	address_reg           varchar(128) null,
-	artificial_person     varchar(20) null,
-	tax_no                integer null,
-	bank                  varchar(64) null,
-	bank_acc_no           integer null,
-	url                   varchar(512) null,
-	type                  integer null,
-	country               integer null,
-	level                 integer null,
-	freight_term          integer null,
-	payment_term          integer null,
-	audit_by              integer null,
-	reamrk                varchar(1024) null,
-	status                integer null
+	ID                    INTEGER NULL,
+	CODE                  VARCHAR(20) NULL,
+	SHART_NAME            VARCHAR(20) NULL,
+	NAME                  VARCHAR(64) NULL,
+	TEL                   VARCHAR(20) NULL,
+	FAX                   VARCHAR(20) NULL,
+	ADDRESS_ACT           VARCHAR(128) NULL,
+	ADDRESS_REG           VARCHAR(128) NULL,
+	ARTIFICIAL_PERSON     VARCHAR(20) NULL,
+	TAX_NO                INTEGER NULL,
+	BANK                  VARCHAR(64) NULL,
+	BANK_ACC_NO           INTEGER NULL,
+	URL                   VARCHAR(512) NULL,
+	TYPE                  INTEGER NULL,
+	COUNTRY               INTEGER NULL,
+	LEVEL                 INTEGER NULL,
+	FREIGHT_TERM          INTEGER NULL,
+	PAYMENT_TERM          INTEGER NULL,
+	AUDIT_BY              INTEGER NULL,
+	REAMRK                VARCHAR(1024) NULL,
+	STATUS                INTEGER NULL
 )
 ;
 
 
 
-alter table s_company_co
-	add  primary key (id)
+ALTER TABLE S_COMPANY_CO
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_company_co_attachment
+CREATE TABLE S_COMPANY_CO_ATTACHMENT
 (
-	id                    integer null,
-	attachment            integer null,
-	company_co            integer null,
-	order_by              integer null
+	ID                    INTEGER NULL,
+	ATTACHMENT            INTEGER NULL,
+	COMPANY_CO            INTEGER NULL,
+	ORDER_BY              INTEGER NULL
 )
 ;
 
 
 
-alter table s_company_co_attachment
-	add  primary key (id)
+ALTER TABLE S_COMPANY_CO_ATTACHMENT
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_country_dic
+CREATE TABLE S_COUNTRY_DIC
 (
-	id                    integer null,
-	name                  varchar(64) null
+	ID                    INTEGER NULL,
+	NAME                  VARCHAR(64) NULL
 )
 ;
 
 
 
-alter table s_country_dic
-	add  primary key (id)
+ALTER TABLE S_COUNTRY_DIC
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_do
+CREATE TABLE S_DO
 (
-	id_do                 integer null,
-	do_no                 varchar(64) null,
-	id_so                 integer null,
-	emp_delivery          integer null,
-	date_delivery         date null,
-	express_company       integer null,
-	express_no            integer null,
-	id_company            integer null
+	ID_DO                 INTEGER NULL,
+	DO_NO                 VARCHAR(64) NULL,
+	ID_SO                 INTEGER NULL,
+	EMP_DELIVERY          INTEGER NULL,
+	DATE_DELIVERY         DATE NULL,
+	EXPRESS_COMPANY       INTEGER NULL,
+	EXPRESS_NO            INTEGER NULL,
+	ID_COMPANY            INTEGER NULL
 )
 ;
 
 
 
-alter table s_do
-	add  primary key (id_do)
+ALTER TABLE S_DO
+	ADD  PRIMARY KEY (ID_DO)
 ;
 
 
 
-create table s_do_material
+CREATE TABLE S_DO_MATERIAL
 (
-	id                    integer null,
-	id_do                 integer null,
-	material              integer null,
-	qty_so                numeric null,
-	qty_delivery          numeric null,
-	qty                   numeric null,
-	stk_delivery          integer null,
-	status_inspection     integer null
+	ID                    INTEGER NULL,
+	ID_DO                 INTEGER NULL,
+	QTY                   NUMERIC NULL,
+	STK_DELIVERY          INTEGER NULL,
+	STATUS_INSPECTION     INTEGER NULL,
+	SO_MATERIAL           INTEGER NULL
 )
 ;
 
 
 
-alter table s_do_material
-	add  primary key (id)
+ALTER TABLE S_DO_MATERIAL
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_gender_dic
+CREATE TABLE S_GENDER_DIC
 (
-	id                    integer null,
-	name                  varchar(20) null
+	ID                    INTEGER NULL,
+	NAME                  VARCHAR(20) NULL
 )
 ;
 
 
 
-alter table s_gender_dic
-	add  primary key (id)
+ALTER TABLE S_GENDER_DIC
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_income
+CREATE TABLE S_INCOME
 (
-	id_r                  integer null,
-	r_no                  varchar(20) null,
-	id_po                 integer null,
-	emp_receiving         integer null,
-	data_receiving        date null,
-	express_company       integer null,
-	express_no            integer null,
-	id_company            integer null
+	ID_R                  INTEGER NULL,
+	R_NO                  VARCHAR(20) NULL,
+	ID_PO                 INTEGER NULL,
+	EMP_RECEIVING         INTEGER NULL,
+	DATA_RECEIVING        DATE NULL,
+	EXPRESS_COMPANY       INTEGER NULL,
+	EXPRESS_NO            INTEGER NULL,
+	ID_COMPANY            INTEGER NULL
 )
 ;
 
 
 
-alter table s_income
-	add  primary key (id_r)
+ALTER TABLE S_INCOME
+	ADD  PRIMARY KEY (ID_R)
 ;
 
 
 
-create table s_income_material
+CREATE TABLE S_INCOME_LOT_NO
 (
-	id                    integer null,
-	id_r                  integer null,
-	material              integer null,
-	qty_po                numeric null,
-	qty_received          numeric null,
-	qty                   numeric null,
-	stk                   integer null,
-	status_inspection     integer null
+	ID                    INTEGER NULL,
+	ID_MATERIAL           INTEGER NULL,
+	LOT_NO                VARCHAR(32) NULL,
+	QTY                   INTEGER NULL,
+	QTY_BOX               INTEGER NULL,
+	STATUS                INTEGER NULL
 )
 ;
 
 
 
-alter table s_income_material
-	add  primary key (id)
+ALTER TABLE S_INCOME_LOT_NO
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_inventory
+CREATE TABLE S_INCOME_MATERIAL
 (
-	id                    integer null,
-	id_mat                integer null,
-	id_stk                integer null,
-	bin                   varchar(64) null,
-	qty                   numeric null,
-	order_by              integer null
+	ID                    INTEGER NULL,
+	ID_R                  INTEGER NULL,
+	PO_MATERIAL           INTEGER NULL,
+	QTY                   NUMERIC NULL,
+	STK                   INTEGER NULL,
+	STATUS_INSPECTION     INTEGER NULL
 )
 ;
 
 
 
-alter table s_inventory
-	add  primary key (id)
+ALTER TABLE S_INCOME_MATERIAL
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_level_dic
+CREATE TABLE S_INVENTORY
 (
-	id                    integer null,
-	name                  varchar(20) null
+	ID                    INTEGER NULL,
+	ID_MAT                INTEGER NULL,
+	ID_STK                INTEGER NULL,
+	BIN                   VARCHAR(64) NULL,
+	QTY                   NUMERIC NULL,
+	ORDER_BY              INTEGER NULL
 )
 ;
 
 
 
-alter table s_level_dic
-	add  primary key (id)
+ALTER TABLE S_INVENTORY
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_linkman
+CREATE TABLE S_LEVEL_DIC
 (
-	id                    integer not null,
-	name                  varchar(20) null,
-	gender                integer null,
-	position              varchar(64) null,
-	phone_no              integer null,
-	e_mail                varchar(64) null,
-	qq                    integer null,
-	we_chat               varchar(32) null,
-	wangwang              varchar(32) null,
-	remark                varchar(1024) null,
-	status                integer null
+	ID                    INTEGER NULL,
+	NAME                  VARCHAR(20) NULL
 )
 ;
 
 
 
-alter table s_linkman
-	add  primary key (id,name)
+ALTER TABLE S_LEVEL_DIC
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_material
+CREATE TABLE S_LINKMAN
 (
-	id                    integer null,
-	pno                   varchar(64) null,
-	rev                   integer null,
-	des                   varchar(200) null,
-	type                  integer null,
-	category              integer null,
-	unit_inf              integer null,
-	unit_pur              integer null,
-	moq                   integer null,
-	brand                 varchar(20) null,
-	remark                varchar(1024) null,
-	status                integer null,
-	auto_remark           varchar(8000) null
+	ID                    INTEGER NOT NULL,
+	NAME                  VARCHAR(20) NULL,
+	GENDER                INTEGER NULL,
+	POSITION              VARCHAR(64) NULL,
+	PHONE_NO              INTEGER NULL,
+	E_MAIL                VARCHAR(64) NULL,
+	QQ                    INTEGER NULL,
+	WE_CHAT               VARCHAR(32) NULL,
+	WANGWANG              VARCHAR(32) NULL,
+	REMARK                VARCHAR(1024) NULL,
+	STATUS                INTEGER NULL
 )
 ;
 
 
 
-alter table s_material
-	add  primary key (id)
+ALTER TABLE S_LINKMAN
+	ADD  PRIMARY KEY (ID,NAME)
 ;
 
 
 
-create table s_material_attachment
+CREATE TABLE S_MATERIAL
 (
-	id                    integer null,
-	id_attachment         integer null,
-	id_material           integer null,
-	order_by              integer null
+	ID                    INTEGER NULL,
+	PNO                   VARCHAR(64) NULL,
+	REV                   INTEGER NULL,
+	DES                   VARCHAR(200) NULL,
+	TYPE                  INTEGER NULL,
+	CATEGORY              INTEGER NULL,
+	UNIT_INF              INTEGER NULL,
+	UNIT_PUR              INTEGER NULL,
+	MOQ                   INTEGER NULL,
+	BRAND                 VARCHAR(20) NULL,
+	REMARK                VARCHAR(1024) NULL,
+	STATUS                INTEGER NULL,
+	AUTO_REMARK           VARCHAR(8000) NULL
 )
 ;
 
 
 
-alter table s_material_attachment
-	add  primary key (id)
+ALTER TABLE S_MATERIAL
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_material_category
+CREATE TABLE S_MATERIAL_ATTACHMENT
 (
-	id                    integer null,
-	parent                integer null,
-	name                  varchar(128) null,
-	des                   varchar(1024) null,
-	order_by              integer null,
-	status                integer null,
-	id_company            integer null
+	ID                    INTEGER NULL,
+	ID_ATTACHMENT         INTEGER NULL,
+	ID_MATERIAL           INTEGER NULL,
+	ORDER_BY              INTEGER NULL
 )
 ;
 
 
 
-alter table s_material_category
-	add  primary key (id)
+ALTER TABLE S_MATERIAL_ATTACHMENT
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_material_category_pic
+CREATE TABLE S_MATERIAL_CATEGORY
 (
-	id                    integer null,
-	id_material_category  integer not null,
-	id_pic                integer not null,
-	order_by              integer null
+	ID                    INTEGER NULL,
+	PARENT                INTEGER NULL,
+	NAME                  VARCHAR(128) NULL,
+	DES                   VARCHAR(1024) NULL,
+	ORDER_BY              INTEGER NULL,
+	STATUS                INTEGER NULL,
+	ID_COMPANY            INTEGER NULL
 )
 ;
 
 
 
-alter table s_material_category_pic
-	add  primary key (id)
+ALTER TABLE S_MATERIAL_CATEGORY
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_material_pic
+CREATE TABLE S_MATERIAL_CATEGORY_PIC
 (
-	id                    integer null,
-	material              integer null,
-	id_pic                integer null,
-	order_by              integer null
+	ID                    INTEGER NULL,
+	ID_MATERIAL_CATEGORY  INTEGER NOT NULL,
+	ID_PIC                INTEGER NOT NULL,
+	ORDER_BY              INTEGER NULL
 )
 ;
 
 
 
-alter table s_material_pic
-	add  primary key (id)
+ALTER TABLE S_MATERIAL_CATEGORY_PIC
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_material_type_dic
+CREATE TABLE S_MATERIAL_PIC
 (
-	id                    integer null,
-	name                  varchar(20) null,
-	des                   varchar(128) null
+	ID                    INTEGER NULL,
+	MATERIAL              INTEGER NULL,
+	ID_PIC                INTEGER NULL,
+	ORDER_BY              INTEGER NULL
 )
 ;
 
 
 
-alter table s_material_type_dic
-	add  primary key (id)
+ALTER TABLE S_MATERIAL_PIC
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_mrb
+CREATE TABLE S_MATERIAL_TYPE_DIC
 (
-	id_mrb                integer null,
-	code_mrb              varchar(64) null,
-	code_co               integer null,
-	date_order            date null,
-	emp_order             integer null,
-	freight_term          integer null,
-	payment_term          integer null,
-	stk                   integer null,
-	total_amount          numeric null,
-	tax_rate              numeric null,
-	exchange              numeric null,
-	remark                varchar(1024) null,
-	status                integer null,
-	attachment            integer null,
-	id_company            integer null
+	ID                    INTEGER NULL,
+	NAME                  VARCHAR(20) NULL,
+	DES                   VARCHAR(128) NULL
 )
 ;
 
 
 
-alter table s_mrb
-	add  primary key (id_mrb)
+ALTER TABLE S_MATERIAL_TYPE_DIC
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_mrb_material
+CREATE TABLE S_MRB
 (
-	id                    integer null,
-	id_mrb                integer null,
-	line                  integer null,
-	pno                   integer null,
-	qty                   numeric null,
-	u_price               numeric null,
-	total_price           numeric null,
-	remark                varchar(1024) null,
-	delivery_date         date null,
-	qty_received          numeric null,
-	qty_rejected          numeric null,
-	status                integer null
+	ID_MRB                INTEGER NULL,
+	CODE_MRB              VARCHAR(64) NULL,
+	CODE_CO               INTEGER NULL,
+	DATE_ORDER            DATE NULL,
+	EMP_ORDER             INTEGER NULL,
+	FREIGHT_TERM          INTEGER NULL,
+	PAYMENT_TERM          INTEGER NULL,
+	STK                   INTEGER NULL,
+	TOTAL_AMOUNT          NUMERIC NULL,
+	TAX_RATE              NUMERIC NULL,
+	EXCHANGE              NUMERIC NULL,
+	REMARK                VARCHAR(1024) NULL,
+	STATUS                INTEGER NULL,
+	ATTACHMENT            INTEGER NULL,
+	ID_COMPANY            INTEGER NULL
 )
 ;
 
 
 
-alter table s_mrb_material
-	add  primary key (id)
+ALTER TABLE S_MRB
+	ADD  PRIMARY KEY (ID_MRB)
 ;
 
 
 
-create table s_mtf
+CREATE TABLE S_MRB_MATERIAL
 (
-	id_mt                 integer null,
-	mt_no                 varchar(20) null,
-	emp_mt                integer null,
-	date_mt               date null,
-	stk_from              integer null,
-	stk_bin_from          varchar(64) null,
-	stk_to                integer null,
-	stk_bin_to            varchar(64) null,
-	id_company            integer null
+	ID                    INTEGER NULL,
+	ID_MRB                INTEGER NULL,
+	LINE                  INTEGER NULL,
+	PNO                   INTEGER NULL,
+	QTY                   NUMERIC NULL,
+	U_PRICE               NUMERIC NULL,
+	TOTAL_PRICE           NUMERIC NULL,
+	REMARK                VARCHAR(1024) NULL,
+	DELIVERY_DATE         DATE NULL,
+	QTY_RECEIVED          NUMERIC NULL,
+	QTY_REJECTED          NUMERIC NULL,
+	STATUS                INTEGER NULL
 )
 ;
 
 
 
-alter table s_mtf
-	add  primary key (id_mt)
+ALTER TABLE S_MRB_MATERIAL
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_mtf_material
+CREATE TABLE S_MTF
 (
-	id                    integer null,
-	id_mt                 integer null,
-	material              integer null,
-	qty                   numeric null,
-	qty__3805             integer null
+	ID_MT                 INTEGER NULL,
+	MT_NO                 VARCHAR(20) NULL,
+	EMP_MT                INTEGER NULL,
+	DATE_MT               DATE NULL,
+	STK_FROM              INTEGER NULL,
+	STK_BIN_FROM          VARCHAR(64) NULL,
+	STK_TO                INTEGER NULL,
+	STK_BIN_TO            VARCHAR(64) NULL,
+	ID_COMPANY            INTEGER NULL
 )
 ;
 
 
 
-alter table s_mtf_material
-	add  primary key (id)
+ALTER TABLE S_MTF
+	ADD  PRIMARY KEY (ID_MT)
 ;
 
 
 
-create table s_pic
+CREATE TABLE S_MTF_MATERIAL
 (
-	id                    integer null,
-	org_filename          varchar(256) null,
-	filename              varchar(256) null,
-	upload_by             integer null,
-	des                   varchar(1024) null
+	ID                    INTEGER NULL,
+	ID_MT                 INTEGER NULL,
+	MATERIAL              INTEGER NULL,
+	QTY                   NUMERIC NULL,
+	QTY__3785             INTEGER NULL
 )
 ;
 
 
 
-alter table s_pic
-	add  primary key (id)
+ALTER TABLE S_MTF_MATERIAL
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_pic_setting
+CREATE TABLE S_PIC
 (
-	id                    integer null,
-	type                  varchar(20) null,
-	id_company            integer null
+	ID                    INTEGER NULL,
+	ORG_FILENAME          VARCHAR(256) NULL,
+	FILENAME              VARCHAR(256) NULL,
+	UPLOAD_BY             INTEGER NULL,
+	DES                   VARCHAR(1024) NULL
 )
 ;
 
 
 
-alter table s_pic_setting
-	add  primary key (id)
+ALTER TABLE S_PIC
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_po
+CREATE TABLE S_PIC_SETTING
 (
-	id_po                 integer null,
-	code_po               varchar(64) null,
-	code_co               integer null,
-	date_order            date null,
-	emp_order             integer null,
-	freight_term          integer null,
-	payment_term          integer null,
-	stk_receiving         integer null,
-	total_amount          numeric null,
-	tax_rate              numeric null,
-	exchange              numeric null,
-	remark                varchar(1024) null,
-	status                integer null,
-	attachment            integer null,
-	id_company            integer null
+	ID                    INTEGER NULL,
+	TYPE                  VARCHAR(20) NULL,
+	ID_COMPANY            INTEGER NULL
 )
 ;
 
 
 
-alter table s_po
-	add  primary key (id_po)
+ALTER TABLE S_PIC_SETTING
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_po_material
+CREATE TABLE S_PO
 (
-	id                    integer null,
-	id_po                 integer null,
-	line                  integer null,
-	pno                   integer null,
-	qty                   numeric null,
-	u_price               numeric null,
-	total_price           numeric null,
-	remark                varchar(1024) null,
-	delivery_date         date null,
-	status                integer null,
-	qty_peceived          numeric null
+	ID_PO                 INTEGER NULL,
+	CODE_PO               VARCHAR(64) NULL,
+	CODE_CO               INTEGER NULL,
+	DATE_ORDER            DATE NULL,
+	EMP_ORDER             INTEGER NULL,
+	FREIGHT_TERM          INTEGER NULL,
+	PAYMENT_TERM          INTEGER NULL,
+	STK_RECEIVING         INTEGER NULL,
+	TOTAL_AMOUNT          NUMERIC NULL,
+	TAX_RATE              NUMERIC NULL,
+	EXCHANGE              NUMERIC NULL,
+	REMARK                VARCHAR(1024) NULL,
+	STATUS                INTEGER NULL,
+	ATTACHMENT            INTEGER NULL,
+	ID_COMPANY            INTEGER NULL
 )
 ;
 
 
 
-alter table s_po_material
-	add  primary key (id)
+ALTER TABLE S_PO
+	ADD  PRIMARY KEY (ID_PO)
 ;
 
 
 
-create table s_rma
+CREATE TABLE S_PO_MATERIAL
 (
-	id_rma                integer null,
-	code_rma              varchar(64) null,
-	code_co               integer null,
-	date_order            date null,
-	emp_oeder             integer null,
-	freight_term          integer null,
-	payment_term          integer null,
-	stk                   integer null,
-	total_amount          numeric null,
-	tax_rate              numeric null,
-	exchange              numeric null,
-	remark                varchar(1024) null,
-	status                integer null,
-	attachment            integer null,
-	id_company            integer null
+	ID                    INTEGER NULL,
+	ID_PO                 INTEGER NULL,
+	LINE                  INTEGER NULL,
+	PNO                   INTEGER NULL,
+	QTY                   NUMERIC NULL,
+	U_PRICE               NUMERIC NULL,
+	TOTAL_PRICE           NUMERIC NULL,
+	REMARK                VARCHAR(1024) NULL,
+	DELIVERY_DATE         DATE NULL,
+	STATUS                INTEGER NULL,
+	QTY_RECEIVED          NUMERIC NULL
 )
 ;
 
 
 
-alter table s_rma
-	add  primary key (id_rma)
+ALTER TABLE S_PO_MATERIAL
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_rma_material
+CREATE TABLE S_RMA
 (
-	id                    integer null,
-	id_rma                integer null,
-	line                  integer null,
-	_default_             char(18) null,
-	pno                   integer null,
-	qty                   numeric null,
-	u_price               numeric null,
-	total_price           numeric null,
-	reamrk                varchar(1024) null,
-	delivery_date         date null,
-	qty_delivered         numeric null,
-	qty_rejected          numeric null,
-	status                integer null
+	ID_RMA                INTEGER NULL,
+	CODE_RMA              VARCHAR(64) NULL,
+	CODE_CO               INTEGER NULL,
+	DATE_ORDER            DATE NULL,
+	EMP_OEDER             INTEGER NULL,
+	FREIGHT_TERM          INTEGER NULL,
+	PAYMENT_TERM          INTEGER NULL,
+	STK                   INTEGER NULL,
+	TOTAL_AMOUNT          NUMERIC NULL,
+	TAX_RATE              NUMERIC NULL,
+	EXCHANGE              NUMERIC NULL,
+	REMARK                VARCHAR(1024) NULL,
+	STATUS                INTEGER NULL,
+	ATTACHMENT            INTEGER NULL,
+	ID_COMPANY            INTEGER NULL
 )
 ;
 
 
 
-alter table s_rma_material
-	add  primary key (id)
+ALTER TABLE S_RMA
+	ADD  PRIMARY KEY (ID_RMA)
 ;
 
 
 
-create table s_so
+CREATE TABLE S_RMA_MATERIAL
 (
-	id_so                 integer null,
-	code_so               varchar(64) null,
-	code_co               integer null,
-	date_order            date null,
-	emp_order             integer null,
-	freight_term          integer null,
-	payment_term          integer null,
-	stk                   integer null,
-	total_amount          numeric null,
-	tax_rate              numeric null,
-	exchange              numeric null,
-	remark                varchar(1024) null,
-	status                integer null,
-	attachment            integer null,
-	id_company            integer null
+	ID                    INTEGER NULL,
+	ID_RMA                INTEGER NULL,
+	LINE                  INTEGER NULL,
+	_default_             CHAR(18) NULL,
+	PNO                   INTEGER NULL,
+	QTY                   NUMERIC NULL,
+	U_PRICE               NUMERIC NULL,
+	TOTAL_PRICE           NUMERIC NULL,
+	REAMRK                VARCHAR(1024) NULL,
+	DELIVERY_DATE         DATE NULL,
+	QTY_DELIVERED         NUMERIC NULL,
+	QTY_REJECTED          NUMERIC NULL,
+	STATUS                INTEGER NULL
 )
 ;
 
 
 
-alter table s_so
-	add  primary key (id_so)
+ALTER TABLE S_RMA_MATERIAL
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_so_material
+CREATE TABLE S_SO
 (
-	id                    integer null,
-	id_so                 integer null,
-	line                  integer null,
-	material              integer null,
-	qty                   numeric null,
-	u_price               numeric null,
-	total_price           numeric null,
-	remark                varchar(1024) null,
-	date_delivery         date null,
-	status                integer null,
-	qty_delivery          numeric null
+	ID_SO                 INTEGER NULL,
+	CODE_SO               VARCHAR(64) NULL,
+	CODE_CO               INTEGER NULL,
+	DATE_ORDER            DATE NULL,
+	EMP_ORDER             INTEGER NULL,
+	FREIGHT_TERM          INTEGER NULL,
+	PAYMENT_TERM          INTEGER NULL,
+	STK                   INTEGER NULL,
+	TOTAL_AMOUNT          NUMERIC NULL,
+	TAX_RATE              NUMERIC NULL,
+	EXCHANGE              NUMERIC NULL,
+	REMARK                VARCHAR(1024) NULL,
+	STATUS                INTEGER NULL,
+	ATTACHMENT            INTEGER NULL,
+	ID_COMPANY            INTEGER NULL
 )
 ;
 
 
 
-alter table s_so_material
-	add  primary key (id)
+ALTER TABLE S_SO
+	ADD  PRIMARY KEY (ID_SO)
 ;
 
 
 
-create table s_status_dic
+CREATE TABLE S_SO_MATERIAL
 (
-	id                    integer null,
-	name                  varchar(64) null,
-	des                   varchar(1024) null,
-	source                varchar(20) null
+	ID                    INTEGER NULL,
+	ID_SO                 INTEGER NULL,
+	LINE                  INTEGER NULL,
+	MATERIAL              INTEGER NULL,
+	QTY                   NUMERIC NULL,
+	U_PRICE               NUMERIC NULL,
+	TOTAL_PRICE           NUMERIC NULL,
+	REMARK                VARCHAR(1024) NULL,
+	DATE_DELIVERY         DATE NULL,
+	STATUS                INTEGER NULL,
+	QTY_DELIVERY          NUMERIC NULL
 )
 ;
 
 
 
-alter table s_status_dic
-	add  primary key (id)
+ALTER TABLE S_SO_MATERIAL
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_stk
+CREATE TABLE S_STATUS_DIC
 (
-	id                    integer null,
-	name                  varchar(64) null,
-	des                   varchar(1024) null,
-	address               varchar(256) null,
-	status                integer null,
-	id_company            integer null,
-	operator              varchar(64) null,
-	creation_time         date null,
-	creator               integer null
+	ID                    INTEGER NULL,
+	NAME                  VARCHAR(64) NULL,
+	DES                   VARCHAR(1024) NULL,
+	SOURCE                VARCHAR(20) NULL
 )
 ;
 
 
 
-alter table s_stk
-	add  primary key (id)
+ALTER TABLE S_STATUS_DIC
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_term_dic
+CREATE TABLE S_STK
 (
-	id                    integer null,
-	name                  varchar(20) null,
-	des                   varchar(64) null,
-	source                varchar(20) null
+	ID                    INTEGER NULL,
+	NAME                  VARCHAR(64) NULL,
+	DES                   VARCHAR(1024) NULL,
+	ADDRESS               VARCHAR(256) NULL,
+	ID_USER               INTEGER NULL,
+	STATUS                INTEGER NULL,
+	ID_COMPANY            INTEGER NULL
 )
 ;
 
 
 
-alter table s_term_dic
-	add  primary key (id)
+ALTER TABLE S_STK
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_type_dic
+CREATE TABLE S_TERM_DIC
 (
-	id                    integer null,
-	name                  varchar(20) null
+	ID                    INTEGER NULL,
+	NAME                  VARCHAR(20) NULL,
+	DES                   VARCHAR(64) NULL,
+	SOURCE                VARCHAR(20) NULL
 )
 ;
 
 
 
-alter table s_type_dic
-	add  primary key (id)
+ALTER TABLE S_TERM_DIC
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table s_unit_dic
+CREATE TABLE S_TYPE_DIC
 (
-	id                    integer null,
-	name                  varchar(20) null,
-	des                   varchar(128) null
+	ID                    INTEGER NULL,
+	NAME                  VARCHAR(20) NULL
 )
 ;
 
 
 
-alter table s_unit_dic
-	add  primary key (id)
+ALTER TABLE S_TYPE_DIC
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table service
+CREATE TABLE S_UNIT_DIC
 (
-	id_service            integer not null,
-	id_service_type       integer null,
-	description           varchar(20) null,
-	payment               float null
+	ID                    INTEGER NULL,
+	NAME                  VARCHAR(20) NULL,
+	DES                   VARCHAR(128) NULL
 )
 ;
 
 
 
-alter table service
-	add  primary key (id_service)
+ALTER TABLE S_UNIT_DIC
+	ADD  PRIMARY KEY (ID)
 ;
 
 
 
-create table service_type
+CREATE TABLE SERVICE
 (
-	id_service_type       integer null,
-	type                  varchar(64) null,
-	description           varchar(20) null
+	ID_SERVICE            INTEGER NOT NULL,
+	ID_SERVICE_TYPE       INTEGER NULL,
+	DESCRIPTION           VARCHAR(20) NULL,
+	PAYMENT               FLOAT NULL
 )
 ;
 
 
 
-alter table service_type
-	add  primary key (id_service_type)
+ALTER TABLE SERVICE
+	ADD  PRIMARY KEY (ID_SERVICE)
 ;
 
 
 
-create table sys_dic
+CREATE TABLE Service_Type
 (
-	type                  varchar(64) not null,
-	description           varchar(128) not null
+	ID_SERVICE_TYPE       INTEGER NULL,
+	TYPE                  VARCHAR(64) NULL,
+	Description           VARCHAR(20) NULL
 )
 ;
 
 
 
-alter table sys_dic
-	add  primary key (type)
+ALTER TABLE Service_Type
+	ADD  PRIMARY KEY (ID_SERVICE_TYPE)
 ;
 
 
 
-create table sys_dic_d
+CREATE TABLE SYS_DIC
 (
-	id_dic                integer not null,
-	type                  varchar(64) null,
-	name                  varchar(64) not null,
-	enabled               integer not null,
-	description           varchar(128) not null,
-	is_default            integer null
+	TYPE                  VARCHAR(64) NOT NULL,
+	DESCRIPTION           VARCHAR(128) NOT NULL
 )
 ;
 
 
 
-alter table sys_dic_d
-	add  primary key (id_dic)
+ALTER TABLE SYS_DIC
+	ADD  PRIMARY KEY (TYPE)
 ;
 
 
 
-create table users
+CREATE TABLE SYS_DIC_D
 (
-	id_user               integer not null,
-	creator               integer null,
-	creation_time         date null,
-	username              varchar(64) null,
-	mobile                varchar(64) null,
-	email                 varchar(64) null,
-	password              varchar(64) not null,
-	idcard                varchar(18) null,
-	name                  varchar(64) null,
-	address               varchar(128) null,
-	ext                   varchar(20) null,
-	e_no                  varchar(20) null,
-	school                varchar(128) null,
-	grad_time             date null,
-	major                 varchar(64) null,
-	degree                varchar(64) null,
-	emergency_hp          varchar(64) null,
-	locale                integer null,
-	gender                integer null,
-	scheme                integer null,
-	enabled               integer not null,
-	status                integer null,
-	description           varchar(256) null,
-	birthday              date null,
-	id_district           integer null,
-	last_login            timestamp null,
-	token                 varchar(128) null,
-	user_type             integer null,
-	cv                    integer null,
-	pic                   integer null,
-	id_company            integer null
+	ID_DIC                INTEGER NOT NULL,
+	TYPE                  VARCHAR(64) NULL,
+	NAME                  VARCHAR(64) NOT NULL,
+	ENABLED               INTEGER NOT NULL,
+	DESCRIPTION           VARCHAR(128) NOT NULL,
+	IS_DEFAULT            INTEGER NULL
 )
 ;
 
 
 
-alter table users
-	add  primary key (id_user)
+ALTER TABLE SYS_DIC_D
+	ADD  PRIMARY KEY (ID_DIC)
 ;
 
 
 
-create table w_issue
+CREATE TABLE USERS
 (
-	id_issue              integer not null,
-	title                 varchar(64) null,
-	description           varchar(256) null,
-	creator               integer null,
-	creation_time         date null,
-	priority              integer null,
-	source_type           integer null,
-	source                integer null,
-	status                integer null
+	ID_USER               INTEGER NOT NULL,
+	CREATOR               INTEGER NULL,
+	CREATION_TIME         DATE NULL,
+	USERNAME              VARCHAR(64) NULL,
+	MOBILE                VARCHAR(64) NULL,
+	EMAIL                 VARCHAR(64) NULL,
+	PASSWORD              VARCHAR(64) NOT NULL,
+	IDCARD                VARCHAR(18) NULL,
+	NAME                  VARCHAR(64) NULL,
+	ADDRESS               VARCHAR(128) NULL,
+	EXT                   VARCHAR(20) NULL,
+	E_NO                  VARCHAR(20) NULL,
+	SCHOOL                VARCHAR(128) NULL,
+	GRAD_TIME             DATE NULL,
+	MAJOR                 VARCHAR(64) NULL,
+	DEGREE                VARCHAR(64) NULL,
+	EMERGENCY_HP          VARCHAR(64) NULL,
+	LOCALE                INTEGER NULL,
+	GENDER                INTEGER NULL,
+	SCHEME                INTEGER NULL,
+	ENABLED               INTEGER NOT NULL,
+	STATUS                INTEGER NULL,
+	DESCRIPTION           VARCHAR(256) NULL,
+	BIRTHDAY              DATE NULL,
+	ID_DISTRICT           INTEGER NULL,
+	LAST_LOGIN            TIMESTAMP NULL,
+	TOKEN                 VARCHAR(128) NULL,
+	USER_TYPE             INTEGER NULL,
+	CV                    INTEGER NULL,
+	PIC                   INTEGER NULL,
+	ID_COMPANY            INTEGER NULL
 )
 ;
 
 
 
-alter table w_issue
-	add  primary key (id_issue)
+ALTER TABLE USERS
+	ADD  PRIMARY KEY (ID_USER)
 ;
 
 
 
-create table w_issue_comment
+CREATE TABLE W_ISSUE
 (
-	id_issue_comment      integer not null,
-	parent                integer null,
-	creator               integer null,
-	creation_time         date null,
-	comment               varchar(1024) null,
-	modification_time     date null,
-	id_issue              integer null
+	ID_ISSUE              INTEGER NOT NULL,
+	TITLE                 VARCHAR(64) NULL,
+	DESCRIPTION           VARCHAR(256) NULL,
+	CREATOR               INTEGER NULL,
+	CREATION_TIME         DATE NULL,
+	PRIORITY              INTEGER NULL,
+	SOURCE_TYPE           INTEGER NULL,
+	SOURCE                INTEGER NULL,
+	STATUS                INTEGER NULL
 )
 ;
 
 
 
-alter table w_issue_comment
-	add  primary key (id_issue_comment)
+ALTER TABLE W_ISSUE
+	ADD  PRIMARY KEY (ID_ISSUE)
 ;
 
 
 
-create table w_issue_doc
+CREATE TABLE W_ISSUE_COMMENT
 (
-	id_issue              integer not null,
-	id_document           integer not null,
-	publish               integer null,
-	id_issue_comment      integer null
+	ID_ISSUE_COMMENT      INTEGER NOT NULL,
+	PARENT                INTEGER NULL,
+	CREATOR               INTEGER NULL,
+	CREATION_TIME         DATE NULL,
+	COMMENT               VARCHAR(1024) NULL,
+	MODIFICATION_TIME     DATE NULL,
+	ID_ISSUE              INTEGER NULL
 )
 ;
 
 
 
-alter table w_issue_doc
-	add  primary key (id_issue,id_document)
+ALTER TABLE W_ISSUE_COMMENT
+	ADD  PRIMARY KEY (ID_ISSUE_COMMENT)
 ;
 
 
 
-create table w_project
+CREATE TABLE W_ISSUE_DOC
 (
-	id_project            integer not null,
-	parent                integer null,
-	project_name          varchar(64) not null,
-	description           varchar(256) null,
-	project_number        varchar(64) null,
-	plan_start_time       date null,
-	plan_end_time         date null,
-	start_time            date null,
-	end_time              date null,
-	leader                integer null,
-	priority              integer null,
-	process               integer null,
-	status                integer null,
-	id_company            integer null
+	ID_ISSUE              INTEGER NOT NULL,
+	ID_DOCUMENT           INTEGER NOT NULL,
+	PUBLISH               INTEGER NULL,
+	ID_ISSUE_COMMENT      INTEGER NULL
 )
 ;
 
 
 
-alter table w_project
-	add  primary key (id_project)
+ALTER TABLE W_ISSUE_DOC
+	ADD  PRIMARY KEY (ID_ISSUE,ID_DOCUMENT)
 ;
 
 
 
-create table w_project_doc
+CREATE TABLE W_PROJECT
 (
-	id_project            integer not null,
-	id_document           integer not null,
-	publish               integer null
+	ID_PROJECT            INTEGER NOT NULL,
+	PARENT                INTEGER NULL,
+	PROJECT_NAME          VARCHAR(64) NOT NULL,
+	DESCRIPTION           VARCHAR(256) NULL,
+	PROJECT_NUMBER        VARCHAR(64) NULL,
+	PLAN_START_TIME       DATE NULL,
+	PLAN_END_TIME         DATE NULL,
+	START_TIME            DATE NULL,
+	END_TIME              DATE NULL,
+	LEADER                INTEGER NULL,
+	PRIORITY              INTEGER NULL,
+	PROCESS               INTEGER NULL,
+	STATUS                INTEGER NULL,
+	ID_COMPANY            INTEGER NULL
 )
 ;
 
 
 
-alter table w_project_doc
-	add  primary key (id_project,id_document)
+ALTER TABLE W_PROJECT
+	ADD  PRIMARY KEY (ID_PROJECT)
 ;
 
 
 
-create table w_project_participant
+CREATE TABLE W_PROJECT_DOC
 (
-	id_project            integer not null,
-	id_user               integer not null,
-	is_charge             integer null
+	ID_PROJECT            INTEGER NOT NULL,
+	ID_DOCUMENT           INTEGER NOT NULL,
+	PUBLISH               INTEGER NULL
 )
 ;
 
 
 
-alter table w_project_participant
-	add  primary key (id_project,id_user)
+ALTER TABLE W_PROJECT_DOC
+	ADD  PRIMARY KEY (ID_PROJECT,ID_DOCUMENT)
 ;
 
 
 
-create table w_task
+CREATE TABLE W_PROJECT_PARTICIPANT
 (
-	id_task               integer not null,
-	id_project            integer null,
-	name                  varchar(64) not null,
-	description           varchar(1024) null,
-	creation_time         date null,
-	modification_time     date null,
-	plan_start_time       date not null,
-	plan_end_time         date not null,
-	plan_duration         integer null,
-	start_time            date null,
-	end_time              date null,
-	duration              integer null,
-	seq                   integer null,
-	priority              integer null,
-	creator               integer null,
-	status                integer null
+	ID_PROJECT            INTEGER NOT NULL,
+	ID_USER               INTEGER NOT NULL,
+	IS_CHARGE             INTEGER NULL
 )
 ;
 
 
 
-alter table w_task
-	add  primary key (id_task)
+ALTER TABLE W_PROJECT_PARTICIPANT
+	ADD  PRIMARY KEY (ID_PROJECT,ID_USER)
 ;
 
 
 
-create table w_task_comment
+CREATE TABLE W_TASK
 (
-	id_comment            integer not null,
-	parent                integer null,
-	id_task               integer null,
-	id_user               integer null,
-	comment               varchar(1024) null,
-	creation_time         date null,
-	modification_time     date null
+	ID_TASK               INTEGER NOT NULL,
+	ID_PROJECT            INTEGER NULL,
+	NAME                  VARCHAR(64) NOT NULL,
+	DESCRIPTION           VARCHAR(1024) NULL,
+	CREATION_TIME         DATE NULL,
+	MODIFICATION_TIME     DATE NULL,
+	PLAN_START_TIME       DATE NOT NULL,
+	PLAN_END_TIME         DATE NOT NULL,
+	PLAN_DURATION         INTEGER NULL,
+	START_TIME            DATE NULL,
+	END_TIME              DATE NULL,
+	DURATION              INTEGER NULL,
+	SEQ                   INTEGER NULL,
+	PRIORITY              INTEGER NULL,
+	CREATOR               INTEGER NULL,
+	STATUS                INTEGER NULL
 )
 ;
 
 
 
-alter table w_task_comment
-	add  primary key (id_comment)
+ALTER TABLE W_TASK
+	ADD  PRIMARY KEY (ID_TASK)
 ;
 
 
 
-create table w_task_doc
+CREATE TABLE W_TASK_COMMENT
 (
-	id_task               integer not null,
-	id_document           integer not null,
-	publish               integer null
+	ID_COMMENT            INTEGER NOT NULL,
+	PARENT                INTEGER NULL,
+	ID_TASK               INTEGER NULL,
+	ID_USER               INTEGER NULL,
+	COMMENT               VARCHAR(1024) NULL,
+	CREATION_TIME         DATE NULL,
+	MODIFICATION_TIME     DATE NULL
 )
 ;
 
 
 
-alter table w_task_doc
-	add  primary key (id_task,id_document)
+ALTER TABLE W_TASK_COMMENT
+	ADD  PRIMARY KEY (ID_COMMENT)
 ;
 
 
 
-create table w_task_participant
+CREATE TABLE W_TASK_DOC
 (
-	id_task               integer not null,
-	id_user               integer not null,
-	is_charge             integer null
+	ID_TASK               INTEGER NOT NULL,
+	ID_DOCUMENT           INTEGER NOT NULL,
+	PUBLISH               INTEGER NULL
 )
 ;
 
 
 
-alter table w_task_participant
-	add  primary key (id_task,id_user)
+ALTER TABLE W_TASK_DOC
+	ADD  PRIMARY KEY (ID_TASK,ID_DOCUMENT)
 ;
 
 
 
-alter table a_application
-	add foreign key r_168 (id_approval_process) references a_approval_process(id_approval_process)
+CREATE TABLE W_TASK_PARTICIPANT
+(
+	ID_TASK               INTEGER NOT NULL,
+	ID_USER               INTEGER NOT NULL,
+	IS_CHARGE             INTEGER NULL
+)
+;
+
+
+
+ALTER TABLE W_TASK_PARTICIPANT
+	ADD  PRIMARY KEY (ID_TASK,ID_USER)
+;
+
+
+
+ALTER TABLE A_APPLICATION
+	ADD FOREIGN KEY R_168 (ID_APPROVAL_PROCESS) REFERENCES A_APPROVAL_PROCESS(ID_APPROVAL_PROCESS)
 ;
 
 
-alter table a_application
-	add foreign key r_169 (applicant) references users(id_user)
+ALTER TABLE A_APPLICATION
+	ADD FOREIGN KEY R_169 (APPLICANT) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table a_application
-	add foreign key r_170 (status) references sys_dic_d(id_dic)
+ALTER TABLE A_APPLICATION
+	ADD FOREIGN KEY R_170 (STATUS) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
-alter table a_application
-	add foreign key r_176 (previous_application) references a_application(id_application)
+ALTER TABLE A_APPLICATION
+	ADD FOREIGN KEY R_176 (PREVIOUS_APPLICATION) REFERENCES A_APPLICATION(ID_APPLICATION)
 ;
 
 
 
-alter table a_application_phase
-	add foreign key r_172 (id_application) references a_application(id_application)
+ALTER TABLE A_APPLICATION_PHASE
+	ADD FOREIGN KEY R_172 (ID_APPLICATION) REFERENCES A_APPLICATION(ID_APPLICATION)
 ;
 
 
-alter table a_application_phase
-	add foreign key r_173 (id_approval_phase) references a_approval_phase(id_approval_phase)
+ALTER TABLE A_APPLICATION_PHASE
+	ADD FOREIGN KEY R_173 (ID_APPROVAL_PHASE) REFERENCES A_APPROVAL_PHASE(ID_APPROVAL_PHASE)
 ;
 
 
-alter table a_application_phase
-	add foreign key r_174 (status) references sys_dic_d(id_dic)
+ALTER TABLE A_APPLICATION_PHASE
+	ADD FOREIGN KEY R_174 (STATUS) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
 
-alter table a_approval_cc
-	add foreign key r_166 (id_approval_phase) references a_approval_phase(id_approval_phase)
+ALTER TABLE A_APPROVAL_CC
+	ADD FOREIGN KEY R_166 (ID_APPROVAL_PHASE) REFERENCES A_APPROVAL_PHASE(ID_APPROVAL_PHASE)
 ;
 
 
-alter table a_approval_cc
-	add foreign key r_167 (id_user) references users(id_user)
+ALTER TABLE A_APPROVAL_CC
+	ADD FOREIGN KEY R_167 (ID_USER) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table a_approval_cc
-	add foreign key r_180 (id_noti_method) references noti_method(id_noti_method)
+ALTER TABLE A_APPROVAL_CC
+	ADD FOREIGN KEY R_180 (ID_NOTI_METHOD) REFERENCES NOTI_METHOD(ID_NOTI_METHOD)
 ;
 
 
 
-alter table a_approval_phase
-	add foreign key r_163 (id_approval_process) references a_approval_process(id_approval_process)
+ALTER TABLE A_APPROVAL_PHASE
+	ADD FOREIGN KEY R_163 (ID_APPROVAL_PROCESS) REFERENCES A_APPROVAL_PROCESS(ID_APPROVAL_PROCESS)
 ;
 
 
-alter table a_approval_phase
-	add foreign key r_164 (approver) references users(id_user)
+ALTER TABLE A_APPROVAL_PHASE
+	ADD FOREIGN KEY R_164 (APPROVER) REFERENCES USERS(ID_USER)
 ;
 
 
 
-alter table a_approval_process
-	add foreign key r_161 (id_approval_type) references a_approval_type(id_approval_type)
+ALTER TABLE A_APPROVAL_PROCESS
+	ADD FOREIGN KEY R_161 (ID_APPROVAL_TYPE) REFERENCES A_APPROVAL_TYPE(ID_APPROVAL_TYPE)
 ;
 
 
-alter table a_approval_process
-	add foreign key r_162 (id_document) references document(id_document)
+ALTER TABLE A_APPROVAL_PROCESS
+	ADD FOREIGN KEY R_162 (ID_DOCUMENT) REFERENCES DOCUMENT(ID_DOCUMENT)
 ;
 
 
 
-alter table a_approval_type
-	add foreign key r_158 (id_company) references company(id_company)
+ALTER TABLE A_APPROVAL_TYPE
+	ADD FOREIGN KEY R_158 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
 ;
 
 
-alter table a_approval_type
-	add foreign key r_159 (creator) references users(id_user)
+ALTER TABLE A_APPROVAL_TYPE
+	ADD FOREIGN KEY R_159 (CREATOR) REFERENCES USERS(ID_USER)
 ;
 
 
 
-alter table buy_record
-	add foreign key r_120 (id_company) references company(id_company)
+ALTER TABLE BUY_RECORD
+	ADD FOREIGN KEY R_120 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
 ;
 
 
-alter table buy_record
-	add foreign key r_124 (id_receipt) references receipt(id_receipt)
+ALTER TABLE BUY_RECORD
+	ADD FOREIGN KEY R_124 (ID_RECEIPT) REFERENCES RECEIPT(ID_RECEIPT)
 ;
 
 
-alter table buy_record
-	add foreign key r_126 (id_service) references service(id_service)
+ALTER TABLE BUY_RECORD
+	ADD FOREIGN KEY R_126 (ID_SERVICE) REFERENCES SERVICE(ID_SERVICE)
 ;
 
 
 
-alter table c_repeats
-	add foreign key r_154 (repeat_type) references sys_dic_d(id_dic)
+ALTER TABLE C_REPEATS
+	ADD FOREIGN KEY R_154 (REPEAT_TYPE) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
 
-alter table c_schedule
-	add foreign key r_149 (creator) references users(id_user)
+ALTER TABLE C_SCHEDULE
+	ADD FOREIGN KEY R_149 (CREATOR) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table c_schedule
-	add foreign key r_150 (schedule_type) references sys_dic_d(id_dic)
+ALTER TABLE C_SCHEDULE
+	ADD FOREIGN KEY R_150 (SCHEDULE_TYPE) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
-alter table c_schedule
-	add foreign key r_153 (id_repeat) references c_repeats(id_repeat)
+ALTER TABLE C_SCHEDULE
+	ADD FOREIGN KEY R_153 (ID_REPEAT) REFERENCES C_REPEATS(ID_REPEAT)
 ;
 
 
 
-alter table c_schedule_doc
-	add foreign key r_156 (id_schedule) references c_schedule(id_schedule)
+ALTER TABLE C_SCHEDULE_DOC
+	ADD FOREIGN KEY R_156 (ID_SCHEDULE) REFERENCES C_SCHEDULE(ID_SCHEDULE)
 ;
 
 
-alter table c_schedule_doc
-	add foreign key r_157 (id_document) references document(id_document)
+ALTER TABLE C_SCHEDULE_DOC
+	ADD FOREIGN KEY R_157 (ID_DOCUMENT) REFERENCES DOCUMENT(ID_DOCUMENT)
 ;
 
 
 
-alter table c_schedule_watcher
-	add foreign key r_151 (id_user) references users(id_user)
+ALTER TABLE C_SCHEDULE_WATCHER
+	ADD FOREIGN KEY R_151 (ID_USER) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table c_schedule_watcher
-	add foreign key r_152 (id_schedule) references c_schedule(id_schedule)
+ALTER TABLE C_SCHEDULE_WATCHER
+	ADD FOREIGN KEY R_152 (ID_SCHEDULE) REFERENCES C_SCHEDULE(ID_SCHEDULE)
 ;
 
 
 
-alter table city
-	add foreign key r_70 (id_province) references province(id_province)
+ALTER TABLE CITY
+	ADD FOREIGN KEY R_70 (ID_PROVINCE) REFERENCES PROVINCE(ID_PROVINCE)
 ;
 
 
 
-alter table company
-	add foreign key r_92 (scheme) references sys_dic_d(id_dic)
+ALTER TABLE COMPANY
+	ADD FOREIGN KEY R_92 (SCHEME) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
-alter table company
-	add foreign key r_99 (company_category) references sys_dic_d(id_dic)
+ALTER TABLE COMPANY
+	ADD FOREIGN KEY R_99 (COMPANY_CATEGORY) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
-alter table company
-	add foreign key r_115 (modify_by) references users(id_user)
+ALTER TABLE COMPANY
+	ADD FOREIGN KEY R_115 (MODIFY_BY) REFERENCES USERS(ID_USER)
 ;
 
 
+ALTER TABLE COMPANY
+	ADD FOREIGN KEY R_196 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
+;
 
 
-alter table company
-	add foreign key r_12 (creator) references users(id_user)
+ALTER TABLE COMPANY
+	ADD FOREIGN KEY R_12 (CREATOR) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table company
-	add foreign key r_65 (company_type) references sys_dic_d(id_dic)
+ALTER TABLE COMPANY
+	ADD FOREIGN KEY R_65 (COMPANY_TYPE) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
-alter table company
-	add foreign key r_67 (company_size) references sys_dic_d(id_dic)
+ALTER TABLE COMPANY
+	ADD FOREIGN KEY R_67 (COMPANY_SIZE) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
-alter table company
-	add foreign key r_69 (company_nature) references sys_dic_d(id_dic)
+ALTER TABLE COMPANY
+	ADD FOREIGN KEY R_69 (COMPANY_NATURE) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
-alter table company
-	add foreign key r_72 (id_district) references district(id_district)
+ALTER TABLE COMPANY
+	ADD FOREIGN KEY R_72 (ID_DISTRICT) REFERENCES DISTRICT(ID_DISTRICT)
 ;
 
 
-alter table company
-	add foreign key r_85 (logo) references document(id_document)
+ALTER TABLE COMPANY
+	ADD FOREIGN KEY R_85 (LOGO) REFERENCES DOCUMENT(ID_DOCUMENT)
 ;
 
 
-alter table company
-	add foreign key r_86 (licence) references document(id_document)
+ALTER TABLE COMPANY
+	ADD FOREIGN KEY R_86 (LICENCE) REFERENCES DOCUMENT(ID_DOCUMENT)
 ;
 
 
-alter table company
-	add foreign key r_90 (locale) references sys_dic_d(id_dic)
+ALTER TABLE COMPANY
+	ADD FOREIGN KEY R_90 (LOCALE) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
-alter table company
-	add foreign key r_91 (task_type) references sys_dic_d(id_dic)
+ALTER TABLE COMPANY
+	ADD FOREIGN KEY R_91 (TASK_TYPE) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
 
-alter table district
-	add foreign key r_71 (id_city) references city(id_city)
+ALTER TABLE DISTRICT
+	ADD FOREIGN KEY R_71 (ID_CITY) REFERENCES CITY(ID_CITY)
 ;
 
 
 
-alter table document
-	add foreign key r_58 (parent) references document(id_document)
+ALTER TABLE DOCUMENT
+	ADD FOREIGN KEY R_58 (PARENT) REFERENCES DOCUMENT(ID_DOCUMENT)
 ;
 
 
-alter table document
-	add foreign key r_116 (creator) references users(id_user)
+ALTER TABLE DOCUMENT
+	ADD FOREIGN KEY R_116 (CREATOR) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table document
-	add foreign key r_117 (modify_by) references users(id_user)
+ALTER TABLE DOCUMENT
+	ADD FOREIGN KEY R_117 (MODIFY_BY) REFERENCES USERS(ID_USER)
 ;
 
 
 
-alter table feedback
-	add foreign key r_127 (id_user) references users(id_user)
+ALTER TABLE FEEDBACK
+	ADD FOREIGN KEY R_127 (ID_USER) REFERENCES USERS(ID_USER)
 ;
 
 
 
-alter table group_authorities
-	add foreign key r_6 (id_group) references groups(id_group)
+ALTER TABLE GROUP_AUTHORITIES
+	ADD FOREIGN KEY R_6 (ID_GROUP) REFERENCES GROUPS(ID_GROUP)
 ;
 
 
-alter table group_authorities
-	add foreign key r_7 (id_role) references roles(id_role)
+ALTER TABLE GROUP_AUTHORITIES
+	ADD FOREIGN KEY R_7 (ID_ROLE) REFERENCES ROLES(ID_ROLE)
 ;
 
 
 
-alter table group_members
-	add foreign key r_1 (id_user) references users(id_user)
+ALTER TABLE GROUP_MEMBERS
+	ADD FOREIGN KEY R_1 (ID_USER) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table group_members
-	add foreign key r_2 (id_group) references groups(id_group)
+ALTER TABLE GROUP_MEMBERS
+	ADD FOREIGN KEY R_2 (ID_GROUP) REFERENCES GROUPS(ID_GROUP)
 ;
 
 
-alter table group_members
-	add foreign key r_3 (id_role) references roles(id_role)
+ALTER TABLE GROUP_MEMBERS
+	ADD FOREIGN KEY R_3 (ID_ROLE) REFERENCES ROLES(ID_ROLE)
 ;
 
 
 
-alter table groups
-	add foreign key r_33 (creator) references users(id_user)
+ALTER TABLE GROUPS
+	ADD FOREIGN KEY R_33 (CREATOR) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table groups
-	add foreign key r_110 (id_group_type) references group_type(id_group_type)
+ALTER TABLE GROUPS
+	ADD FOREIGN KEY R_110 (ID_GROUP_TYPE) REFERENCES GROUP_TYPE(ID_GROUP_TYPE)
 ;
 
 
-alter table groups
-	add foreign key r_111 (id_company) references company(id_company)
+ALTER TABLE GROUPS
+	ADD FOREIGN KEY R_111 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
 ;
 
 
 
-alter table jms_event
-	add foreign key r_179 (id_app) references apps(id_app)
+ALTER TABLE JMS_EVENT
+	ADD FOREIGN KEY R_179 (ID_APP) REFERENCES APPS(ID_APP)
 ;
 
 
-alter table jms_event
-	add foreign key r_181 (parent) references jms_event(id_event)
+ALTER TABLE JMS_EVENT
+	ADD FOREIGN KEY R_181 (PARENT) REFERENCES JMS_EVENT(ID_EVENT)
 ;
 
 
 
-alter table notice
-	add foreign key r_135 (id_user) references users(id_user)
+ALTER TABLE NOTICE
+	ADD FOREIGN KEY R_135 (ID_USER) REFERENCES USERS(ID_USER)
 ;
 
 
 
-alter table notification
-	add foreign key r_184 (creator) references users(id_user)
+ALTER TABLE NOTIFICATION
+	ADD FOREIGN KEY R_184 (Creator) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table notification
-	add foreign key r_185 (id_event) references jms_event(id_event)
+ALTER TABLE NOTIFICATION
+	ADD FOREIGN KEY R_185 (ID_EVENT) REFERENCES JMS_EVENT(ID_EVENT)
 ;
 
 
-alter table notification
-	add foreign key r_186 (id_noti_method) references noti_method(id_noti_method)
+ALTER TABLE NOTIFICATION
+	ADD FOREIGN KEY R_186 (ID_NOTI_METHOD) REFERENCES NOTI_METHOD(ID_NOTI_METHOD)
 ;
 
 
-alter table notification
-	add foreign key r_187 (id_company) references company(id_company)
+ALTER TABLE NOTIFICATION
+	ADD FOREIGN KEY R_187 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
 ;
 
 
 
-alter table p_poll
-	add foreign key r_137 (creator) references users(id_user)
+ALTER TABLE P_POLL
+	ADD FOREIGN KEY R_137 (CREATOR) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table p_poll
-	add foreign key r_140 (status) references sys_dic_d(id_dic)
+ALTER TABLE P_POLL
+	ADD FOREIGN KEY R_140 (STATUS) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
 
-alter table p_poll_items
-	add foreign key r_138 (id_poll) references p_poll(id_poll)
+ALTER TABLE P_POLL_ITEMS
+	ADD FOREIGN KEY R_138 (ID_POLL) REFERENCES P_POLL(ID_POLL)
 ;
 
 
-alter table p_poll_items
-	add foreign key r_139 (pic) references document(id_document)
+ALTER TABLE P_POLL_ITEMS
+	ADD FOREIGN KEY R_139 (PIC) REFERENCES DOCUMENT(ID_DOCUMENT)
 ;
 
 
 
-alter table p_poll_participant
-	add foreign key r_141 (id_poll) references p_poll(id_poll)
+ALTER TABLE P_POLL_PARTICIPANT
+	ADD FOREIGN KEY R_141 (ID_POLL) REFERENCES P_POLL(ID_POLL)
 ;
 
 
-alter table p_poll_participant
-	add foreign key r_144 (participant) references users(id_user)
+ALTER TABLE P_POLL_PARTICIPANT
+	ADD FOREIGN KEY R_144 (PARTICIPANT) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table p_poll_participant
-	add foreign key r_145 (status) references sys_dic_d(id_dic)
+ALTER TABLE P_POLL_PARTICIPANT
+	ADD FOREIGN KEY R_145 (STATUS) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
 
-alter table p_vote
-	add foreign key r_146 (id) references p_poll_participant(id)
+ALTER TABLE P_VOTE
+	ADD FOREIGN KEY R_146 (ID) REFERENCES P_POLL_PARTICIPANT(ID)
 ;
 
 
-alter table p_vote
-	add foreign key r_147 (id_item) references p_poll_items(id_item)
+ALTER TABLE P_VOTE
+	ADD FOREIGN KEY R_147 (ID_ITEM) REFERENCES P_POLL_ITEMS(ID_ITEM)
 ;
 
 
-alter table p_vote
-	add foreign key r_148 (degree) references sys_dic_d(id_dic)
+ALTER TABLE P_VOTE
+	ADD FOREIGN KEY R_148 (DEGREE) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
 
-alter table receipt
-	add foreign key r_123 (id_company) references company(id_company)
+ALTER TABLE RECEIPT
+	ADD FOREIGN KEY R_123 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
 ;
 
 
 
-alter table receiver
-	add foreign key r_188 (id_noti) references notification(id_noti)
+ALTER TABLE RECEIVER
+	ADD FOREIGN KEY R_188 (ID_NOTI) REFERENCES NOTIFICATION(ID_NOTI)
 ;
 
 
-alter table receiver
-	add foreign key r_190 (receive_group) references groups(id_group)
+ALTER TABLE RECEIVER
+	ADD FOREIGN KEY R_190 (RECEIVE_GROUP) REFERENCES GROUPS(ID_GROUP)
 ;
 
 
 
-alter table roles
-	add foreign key r_34 (id_company) references company(id_company)
+ALTER TABLE ROLES
+	ADD FOREIGN KEY R_34 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
 ;
 
 
-alter table roles
-	add foreign key r_84 (parent) references roles(id_role)
+ALTER TABLE ROLES
+	ADD FOREIGN KEY R_84 (PARENT) REFERENCES ROLES(ID_ROLE)
 ;
 
 
 
-alter table s_attachment
-	add foreign key r_223 (upload_by) references users(id_user)
+ALTER TABLE S_ATTACHMENT
+	ADD FOREIGN KEY R_223 (UPLOAD_BY) REFERENCES USERS(ID_USER)
 ;
 
 
 
-alter table s_bin
-	add foreign key r_208 (status) references s_status_dic(id)
+ALTER TABLE S_BIN
+	ADD FOREIGN KEY R_208 (STATUS) REFERENCES S_STATUS_DIC(ID)
 ;
 
 
-alter table s_bin
-	add foreign key r_211 (id_stk) references s_stk(id)
+ALTER TABLE S_BIN
+	ADD FOREIGN KEY R_211 (ID_STK) REFERENCES S_STK(ID)
 ;
 
 
 
-alter table s_company_co
-	add foreign key r_226 (status) references s_status_dic(id)
+ALTER TABLE S_COMPANY_CO
+	ADD FOREIGN KEY R_226 (STATUS) REFERENCES S_STATUS_DIC(ID)
 ;
 
 
-alter table s_company_co
-	add foreign key r_230 (audit_by) references users(id_user)
+ALTER TABLE S_COMPANY_CO
+	ADD FOREIGN KEY R_230 (AUDIT_BY) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table s_company_co
-	add foreign key r_285 (freight_term) references s_term_dic(id)
+ALTER TABLE S_COMPANY_CO
+	ADD FOREIGN KEY R_285 (FREIGHT_TERM) REFERENCES S_TERM_DIC(ID)
 ;
 
 
-alter table s_company_co
-	add foreign key r_286 (payment_term) references s_term_dic(id)
+ALTER TABLE S_COMPANY_CO
+	ADD FOREIGN KEY R_286 (PAYMENT_TERM) REFERENCES S_TERM_DIC(ID)
 ;
 
 
-alter table s_company_co
-	add foreign key r_287 (country) references s_country_dic(id)
+ALTER TABLE S_COMPANY_CO
+	ADD FOREIGN KEY R_287 (COUNTRY) REFERENCES S_COUNTRY_DIC(ID)
 ;
 
 
-alter table s_company_co
-	add foreign key r_288 (type) references s_type_dic(id)
+ALTER TABLE S_COMPANY_CO
+	ADD FOREIGN KEY R_288 (TYPE) REFERENCES S_TYPE_DIC(ID)
 ;
 
 
-alter table s_company_co
-	add foreign key r_289 (level) references s_level_dic(id)
+ALTER TABLE S_COMPANY_CO
+	ADD FOREIGN KEY R_289 (LEVEL) REFERENCES S_LEVEL_DIC(ID)
 ;
 
 
 
-alter table s_company_co_attachment
-	add foreign key r_290 (attachment) references s_attachment(id)
+ALTER TABLE S_COMPANY_CO_ATTACHMENT
+	ADD FOREIGN KEY R_290 (ATTACHMENT) REFERENCES S_ATTACHMENT(ID)
 ;
 
 
-alter table s_company_co_attachment
-	add foreign key r_291 (company_co) references s_company_co(id)
+ALTER TABLE S_COMPANY_CO_ATTACHMENT
+	ADD FOREIGN KEY R_291 (COMPANY_CO) REFERENCES S_COMPANY_CO(ID)
 ;
 
 
 
-alter table s_do
-	add foreign key r_256 (id_so) references s_so(id_so)
+ALTER TABLE S_DO
+	ADD FOREIGN KEY R_256 (ID_SO) REFERENCES S_SO(ID_SO)
 ;
 
 
-alter table s_do
-	add foreign key r_257 (emp_delivery) references users(id_user)
+ALTER TABLE S_DO
+	ADD FOREIGN KEY R_257 (EMP_DELIVERY) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table s_do
-	add foreign key r_258 (express_company) references s_company_co(id)
+ALTER TABLE S_DO
+	ADD FOREIGN KEY R_258 (EXPRESS_COMPANY) REFERENCES S_COMPANY_CO(ID)
 ;
 
 
-alter table s_do
-	add foreign key r_259 (id_company) references company(id_company)
+ALTER TABLE S_DO
+	ADD FOREIGN KEY R_259 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
 ;
 
+
+
+ALTER TABLE S_DO_MATERIAL
+	ADD FOREIGN KEY R_265 (ID_DO) REFERENCES S_DO(ID_DO)
+;
 
 
-alter table s_do_material
-	add foreign key r_265 (id_do) references s_do(id_do)
+ALTER TABLE S_DO_MATERIAL
+	ADD FOREIGN KEY R_267 (STK_DELIVERY) REFERENCES S_STK(ID)
 ;
 
 
-alter table s_do_material
-	add foreign key r_266 (material) references s_material(id)
+ALTER TABLE S_DO_MATERIAL
+	ADD FOREIGN KEY R_268 (STATUS_INSPECTION) REFERENCES S_STATUS_DIC(ID)
 ;
 
 
-alter table s_do_material
-	add foreign key r_267 (stk_delivery) references s_stk(id)
+ALTER TABLE S_DO_MATERIAL
+	ADD FOREIGN KEY R_326 (SO_MATERIAL) REFERENCES S_SO_MATERIAL(ID)
 ;
 
 
-alter table s_do_material
-	add foreign key r_268 (status_inspection) references s_status_dic(id)
+
+ALTER TABLE S_INCOME
+	ADD FOREIGN KEY R_241 (ID_PO) REFERENCES S_PO(ID_PO)
 ;
+
 
+ALTER TABLE S_INCOME
+	ADD FOREIGN KEY R_242 (EMP_RECEIVING) REFERENCES USERS(ID_USER)
+;
 
 
-alter table s_income
-	add foreign key r_241 (id_po) references s_po(id_po)
+ALTER TABLE S_INCOME
+	ADD FOREIGN KEY R_243 (EXPRESS_COMPANY) REFERENCES S_COMPANY_CO(ID)
 ;
 
 
-alter table s_income
-	add foreign key r_242 (emp_receiving) references users(id_user)
+ALTER TABLE S_INCOME
+	ADD FOREIGN KEY R_244 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
 ;
 
 
-alter table s_income
-	add foreign key r_243 (express_company) references s_company_co(id)
+
+ALTER TABLE S_INCOME_LOT_NO
+	ADD FOREIGN KEY R_321 (ID_MATERIAL) REFERENCES S_INCOME_MATERIAL(ID)
 ;
 
 
-alter table s_income
-	add foreign key r_244 (id_company) references company(id_company)
+ALTER TABLE S_INCOME_LOT_NO
+	ADD FOREIGN KEY R_322 (STATUS) REFERENCES S_STATUS_DIC(ID)
 ;
 
 
 
-alter table s_income_material
-	add foreign key r_248 (stk) references s_stk(id)
+ALTER TABLE S_INCOME_MATERIAL
+	ADD FOREIGN KEY R_248 (STK) REFERENCES S_STK(ID)
 ;
 
 
-alter table s_income_material
-	add foreign key r_249 (status_inspection) references s_status_dic(id)
+ALTER TABLE S_INCOME_MATERIAL
+	ADD FOREIGN KEY R_249 (STATUS_INSPECTION) REFERENCES S_STATUS_DIC(ID)
 ;
 
 
-alter table s_income_material
-	add foreign key r_297 (material) references s_material(id)
+ALTER TABLE S_INCOME_MATERIAL
+	ADD FOREIGN KEY R_298 (ID_R) REFERENCES S_INCOME(ID_R)
 ;
 
 
-alter table s_income_material
-	add foreign key r_298 (id_r) references s_income(id_r)
+ALTER TABLE S_INCOME_MATERIAL
+	ADD FOREIGN KEY R_324 (PO_MATERIAL) REFERENCES S_PO_MATERIAL(ID)
 ;
 
 
 
-alter table s_inventory
-	add foreign key r_263 (id_stk,bin) references s_bin(id_stk,bin)
+ALTER TABLE S_INVENTORY
+	ADD FOREIGN KEY R_263 (ID_STK,BIN) REFERENCES S_BIN(ID_STK,BIN)
 ;
 
 
-alter table s_inventory
-	add foreign key r_264 (id_mat) references s_material(id)
+ALTER TABLE S_INVENTORY
+	ADD FOREIGN KEY R_264 (ID_MAT) REFERENCES S_MATERIAL(ID)
 ;
 
 
 
-alter table s_linkman
-	add foreign key r_227 (id) references s_company_co(id)
+ALTER TABLE S_LINKMAN
+	ADD FOREIGN KEY R_227 (ID) REFERENCES S_COMPANY_CO(ID)
 ;
 
 
-alter table s_linkman
-	add foreign key r_233 (status) references s_status_dic(id)
+ALTER TABLE S_LINKMAN
+	ADD FOREIGN KEY R_233 (STATUS) REFERENCES S_STATUS_DIC(ID)
 ;
 
 
-alter table s_linkman
-	add foreign key r_284 (gender) references s_gender_dic(id)
+ALTER TABLE S_LINKMAN
+	ADD FOREIGN KEY R_284 (GENDER) REFERENCES S_GENDER_DIC(ID)
 ;
 
 
 
-alter table s_material
-	add foreign key r_213 (category) references s_material_category(id)
+ALTER TABLE S_MATERIAL
+	ADD FOREIGN KEY R_213 (CATEGORY) REFERENCES S_MATERIAL_CATEGORY(ID)
 ;
 
 
-alter table s_material
-	add foreign key r_214 (type) references s_material_type_dic(id)
+ALTER TABLE S_MATERIAL
+	ADD FOREIGN KEY R_214 (TYPE) REFERENCES S_MATERIAL_TYPE_DIC(ID)
 ;
 
 
-alter table s_material
-	add foreign key r_215 (unit_inf) references s_unit_dic(id)
+ALTER TABLE S_MATERIAL
+	ADD FOREIGN KEY R_215 (UNIT_INF) REFERENCES S_UNIT_DIC(ID)
 ;
 
 
-alter table s_material
-	add foreign key r_216 (unit_pur) references s_unit_dic(id)
+ALTER TABLE S_MATERIAL
+	ADD FOREIGN KEY R_216 (UNIT_PUR) REFERENCES S_UNIT_DIC(ID)
 ;
 
 
-alter table s_material
-	add foreign key r_217 (status) references s_status_dic(id)
+ALTER TABLE S_MATERIAL
+	ADD FOREIGN KEY R_217 (STATUS) REFERENCES S_STATUS_DIC(ID)
 ;
 
 
 
-alter table s_material_attachment
-	add foreign key r_224 (id_attachment) references s_attachment(id)
+ALTER TABLE S_MATERIAL_ATTACHMENT
+	ADD FOREIGN KEY R_224 (ID_ATTACHMENT) REFERENCES S_ATTACHMENT(ID)
 ;
 
 
-alter table s_material_attachment
-	add foreign key r_225 (id_material) references s_material(id)
+ALTER TABLE S_MATERIAL_ATTACHMENT
+	ADD FOREIGN KEY R_225 (ID_MATERIAL) REFERENCES S_MATERIAL(ID)
 ;
 
 
 
-alter table s_material_category
-	add foreign key r_191 (parent) references s_material_category(id)
+ALTER TABLE S_MATERIAL_CATEGORY
+	ADD FOREIGN KEY R_191 (PARENT) REFERENCES S_MATERIAL_CATEGORY(ID)
 ;
 
 
-alter table s_material_category
-	add foreign key r_192 (id_company) references company(id_company)
+ALTER TABLE S_MATERIAL_CATEGORY
+	ADD FOREIGN KEY R_192 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
 ;
 
 
-alter table s_material_category
-	add foreign key r_195 (status) references s_status_dic(id)
+ALTER TABLE S_MATERIAL_CATEGORY
+	ADD FOREIGN KEY R_195 (STATUS) REFERENCES S_STATUS_DIC(ID)
 ;
 
 
 
-alter table s_material_category_pic
-	add foreign key r_200 (id_material_category) references s_material_category(id)
+ALTER TABLE S_MATERIAL_CATEGORY_PIC
+	ADD FOREIGN KEY R_200 (ID_MATERIAL_CATEGORY) REFERENCES S_MATERIAL_CATEGORY(ID)
 ;
 
 
-alter table s_material_category_pic
-	add foreign key r_201 (id_pic) references s_pic(id)
+ALTER TABLE S_MATERIAL_CATEGORY_PIC
+	ADD FOREIGN KEY R_201 (ID_PIC) REFERENCES S_PIC(ID)
 ;
 
 
 
-alter table s_material_pic
-	add foreign key r_221 (material) references s_material(id)
+ALTER TABLE S_MATERIAL_PIC
+	ADD FOREIGN KEY R_221 (MATERIAL) REFERENCES S_MATERIAL(ID)
 ;
 
 
-alter table s_material_pic
-	add foreign key r_222 (id_pic) references s_pic(id)
+ALTER TABLE S_MATERIAL_PIC
+	ADD FOREIGN KEY R_222 (ID_PIC) REFERENCES S_PIC(ID)
 ;
 
 
 
-alter table s_mrb
-	add foreign key r_299 (code_co) references s_company_co(id)
+ALTER TABLE S_MRB
+	ADD FOREIGN KEY R_299 (CODE_CO) REFERENCES S_COMPANY_CO(ID)
 ;
 
 
-alter table s_mrb
-	add foreign key r_300 (emp_order) references users(id_user)
+ALTER TABLE S_MRB
+	ADD FOREIGN KEY R_300 (EMP_ORDER) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table s_mrb
-	add foreign key r_301 (freight_term) references s_term_dic(id)
+ALTER TABLE S_MRB
+	ADD FOREIGN KEY R_301 (FREIGHT_TERM) REFERENCES S_TERM_DIC(ID)
 ;
 
 
-alter table s_mrb
-	add foreign key r_302 (payment_term) references s_term_dic(id)
+ALTER TABLE S_MRB
+	ADD FOREIGN KEY R_302 (PAYMENT_TERM) REFERENCES S_TERM_DIC(ID)
 ;
 
 
-alter table s_mrb
-	add foreign key r_303 (stk) references s_stk(id)
+ALTER TABLE S_MRB
+	ADD FOREIGN KEY R_303 (STK) REFERENCES S_STK(ID)
 ;
 
 
-alter table s_mrb
-	add foreign key r_304 (status) references s_status_dic(id)
+ALTER TABLE S_MRB
+	ADD FOREIGN KEY R_304 (STATUS) REFERENCES S_STATUS_DIC(ID)
 ;
 
 
-alter table s_mrb
-	add foreign key r_305 (attachment) references s_attachment(id)
+ALTER TABLE S_MRB
+	ADD FOREIGN KEY R_305 (ATTACHMENT) REFERENCES S_ATTACHMENT(ID)
 ;
 
 
-alter table s_mrb
-	add foreign key r_306 (id_company) references company(id_company)
+ALTER TABLE S_MRB
+	ADD FOREIGN KEY R_306 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
 ;
 
 
 
-alter table s_mrb_material
-	add foreign key r_307 (id_mrb) references s_mrb(id_mrb)
+ALTER TABLE S_MRB_MATERIAL
+	ADD FOREIGN KEY R_307 (ID_MRB) REFERENCES S_MRB(ID_MRB)
 ;
 
 
-alter table s_mrb_material
-	add foreign key r_308 (pno) references s_material(id)
+ALTER TABLE S_MRB_MATERIAL
+	ADD FOREIGN KEY R_308 (PNO) REFERENCES S_MATERIAL(ID)
 ;
 
 
-alter table s_mrb_material
-	add foreign key r_309 (status) references s_status_dic(id)
+ALTER TABLE S_MRB_MATERIAL
+	ADD FOREIGN KEY R_309 (STATUS) REFERENCES S_STATUS_DIC(ID)
 ;
 
 
 
-alter table s_mtf
-	add foreign key r_250 (emp_mt) references users(id_user)
+ALTER TABLE S_MTF
+	ADD FOREIGN KEY R_250 (EMP_MT) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table s_mtf
-	add foreign key r_252 (stk_from,stk_bin_from) references s_bin(id_stk,bin)
+ALTER TABLE S_MTF
+	ADD FOREIGN KEY R_252 (STK_FROM,STK_BIN_FROM) REFERENCES S_BIN(ID_STK,BIN)
 ;
 
 
-alter table s_mtf
-	add foreign key r_254 (stk_to,stk_bin_to) references s_bin(id_stk,bin)
+ALTER TABLE S_MTF
+	ADD FOREIGN KEY R_254 (STK_TO,STK_BIN_TO) REFERENCES S_BIN(ID_STK,BIN)
 ;
 
 
-alter table s_mtf
-	add foreign key r_255 (id_company) references company(id_company)
+ALTER TABLE S_MTF
+	ADD FOREIGN KEY R_255 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
 ;
 
 
 
-alter table s_mtf_material
-	add foreign key r_280 (material) references s_material(id)
+ALTER TABLE S_MTF_MATERIAL
+	ADD FOREIGN KEY R_280 (MATERIAL) REFERENCES S_MATERIAL(ID)
 ;
 
 
-alter table s_mtf_material
-	add foreign key r_281 (id_mt) references s_mtf(id_mt)
+ALTER TABLE S_MTF_MATERIAL
+	ADD FOREIGN KEY R_281 (ID_MT) REFERENCES S_MTF(ID_MT)
 ;
 
 
 
-alter table s_pic
-	add foreign key r_198 (upload_by) references users(id_user)
+ALTER TABLE S_PIC
+	ADD FOREIGN KEY R_198 (UPLOAD_BY) REFERENCES USERS(ID_USER)
 ;
 
 
 
-alter table s_pic_setting
-	add foreign key r_197 (id_company) references company(id_company)
+ALTER TABLE S_PIC_SETTING
+	ADD FOREIGN KEY R_197 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
 ;
 
 
 
-alter table s_po
-	add foreign key r_229 (code_co) references s_company_co(id)
+ALTER TABLE S_PO
+	ADD FOREIGN KEY R_229 (CODE_CO) REFERENCES S_COMPANY_CO(ID)
 ;
 
 
-alter table s_po
-	add foreign key r_232 (emp_order) references users(id_user)
+ALTER TABLE S_PO
+	ADD FOREIGN KEY R_232 (EMP_ORDER) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table s_po
-	add foreign key r_234 (stk_receiving) references s_stk(id)
+ALTER TABLE S_PO
+	ADD FOREIGN KEY R_234 (STK_RECEIVING) REFERENCES S_STK(ID)
 ;
 
 
-alter table s_po
-	add foreign key r_235 (status) references s_status_dic(id)
+ALTER TABLE S_PO
+	ADD FOREIGN KEY R_235 (STATUS) REFERENCES S_STATUS_DIC(ID)
 ;
 
 
-alter table s_po
-	add foreign key r_236 (attachment) references s_attachment(id)
+ALTER TABLE S_PO
+	ADD FOREIGN KEY R_236 (ATTACHMENT) REFERENCES S_ATTACHMENT(ID)
 ;
 
 
-alter table s_po
-	add foreign key r_238 (id_company) references company(id_company)
+ALTER TABLE S_PO
+	ADD FOREIGN KEY R_238 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
 ;
 
 
-alter table s_po
-	add foreign key r_282 (freight_term) references s_term_dic(id)
+ALTER TABLE S_PO
+	ADD FOREIGN KEY R_282 (FREIGHT_TERM) REFERENCES S_TERM_DIC(ID)
 ;
 
 
-alter table s_po
-	add foreign key r_283 (payment_term) references s_term_dic(id)
+ALTER TABLE S_PO
+	ADD FOREIGN KEY R_283 (PAYMENT_TERM) REFERENCES S_TERM_DIC(ID)
 ;
 
 
 
-alter table s_po_material
-	add foreign key r_240 (status) references s_status_dic(id)
+ALTER TABLE S_PO_MATERIAL
+	ADD FOREIGN KEY R_240 (STATUS) REFERENCES S_STATUS_DIC(ID)
 ;
 
 
-alter table s_po_material
-	add foreign key r_295 (pno) references s_material(id)
+ALTER TABLE S_PO_MATERIAL
+	ADD FOREIGN KEY R_295 (PNO) REFERENCES S_MATERIAL(ID)
 ;
 
 
-alter table s_po_material
-	add foreign key r_296 (id_po) references s_po(id_po)
+ALTER TABLE S_PO_MATERIAL
+	ADD FOREIGN KEY R_296 (ID_PO) REFERENCES S_PO(ID_PO)
 ;
 
 
 
-alter table s_rma
-	add foreign key r_310 (code_co) references s_company_co(id)
+ALTER TABLE S_RMA
+	ADD FOREIGN KEY R_310 (CODE_CO) REFERENCES S_COMPANY_CO(ID)
 ;
 
 
-alter table s_rma
-	add foreign key r_311 (emp_oeder) references users(id_user)
+ALTER TABLE S_RMA
+	ADD FOREIGN KEY R_311 (EMP_OEDER) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table s_rma
-	add foreign key r_312 (freight_term) references s_term_dic(id)
+ALTER TABLE S_RMA
+	ADD FOREIGN KEY R_312 (FREIGHT_TERM) REFERENCES S_TERM_DIC(ID)
 ;
 
 
-alter table s_rma
-	add foreign key r_313 (payment_term) references s_term_dic(id)
+ALTER TABLE S_RMA
+	ADD FOREIGN KEY R_313 (PAYMENT_TERM) REFERENCES S_TERM_DIC(ID)
 ;
 
 
-alter table s_rma
-	add foreign key r_314 (stk) references s_stk(id)
+ALTER TABLE S_RMA
+	ADD FOREIGN KEY R_314 (STK) REFERENCES S_STK(ID)
 ;
 
 
-alter table s_rma
-	add foreign key r_315 (status) references s_status_dic(id)
+ALTER TABLE S_RMA
+	ADD FOREIGN KEY R_315 (STATUS) REFERENCES S_STATUS_DIC(ID)
 ;
 
 
-alter table s_rma
-	add foreign key r_316 (attachment) references s_attachment(id)
+ALTER TABLE S_RMA
+	ADD FOREIGN KEY R_316 (ATTACHMENT) REFERENCES S_ATTACHMENT(ID)
 ;
 
 
-alter table s_rma
-	add foreign key r_317 (id_company) references company(id_company)
+ALTER TABLE S_RMA
+	ADD FOREIGN KEY R_317 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
 ;
 
 
 
-alter table s_rma_material
-	add foreign key r_318 (id_rma) references s_rma(id_rma)
+ALTER TABLE S_RMA_MATERIAL
+	ADD FOREIGN KEY R_318 (ID_RMA) REFERENCES S_RMA(ID_RMA)
 ;
 
 
-alter table s_rma_material
-	add foreign key r_319 (pno) references s_material(id)
+ALTER TABLE S_RMA_MATERIAL
+	ADD FOREIGN KEY R_319 (PNO) REFERENCES S_MATERIAL(ID)
 ;
 
 
-alter table s_rma_material
-	add foreign key r_320 (status) references s_status_dic(id)
+ALTER TABLE S_RMA_MATERIAL
+	ADD FOREIGN KEY R_320 (STATUS) REFERENCES S_STATUS_DIC(ID)
 ;
 
 
 
-alter table s_so
-	add foreign key r_269 (code_co) references s_company_co(id)
+ALTER TABLE S_SO
+	ADD FOREIGN KEY R_269 (CODE_CO) REFERENCES S_COMPANY_CO(ID)
 ;
 
 
-alter table s_so
-	add foreign key r_270 (emp_order) references users(id_user)
+ALTER TABLE S_SO
+	ADD FOREIGN KEY R_270 (EMP_ORDER) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table s_so
-	add foreign key r_271 (stk) references s_stk(id)
+ALTER TABLE S_SO
+	ADD FOREIGN KEY R_271 (STK) REFERENCES S_STK(ID)
 ;
 
 
-alter table s_so
-	add foreign key r_272 (status) references s_status_dic(id)
+ALTER TABLE S_SO
+	ADD FOREIGN KEY R_272 (STATUS) REFERENCES S_STATUS_DIC(ID)
 ;
 
 
-alter table s_so
-	add foreign key r_273 (attachment) references s_attachment(id)
+ALTER TABLE S_SO
+	ADD FOREIGN KEY R_273 (ATTACHMENT) REFERENCES S_ATTACHMENT(ID)
 ;
 
 
-alter table s_so
-	add foreign key r_274 (id_company) references company(id_company)
+ALTER TABLE S_SO
+	ADD FOREIGN KEY R_274 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
 ;
 
 
-alter table s_so
-	add foreign key r_275 (freight_term) references s_term_dic(id)
+ALTER TABLE S_SO
+	ADD FOREIGN KEY R_275 (FREIGHT_TERM) REFERENCES S_TERM_DIC(ID)
 ;
 
 
-alter table s_so
-	add foreign key r_276 (payment_term) references s_term_dic(id)
+ALTER TABLE S_SO
+	ADD FOREIGN KEY R_276 (PAYMENT_TERM) REFERENCES S_TERM_DIC(ID)
 ;
 
 
 
-alter table s_so_material
-	add foreign key r_277 (id_so) references s_so(id_so)
+ALTER TABLE S_SO_MATERIAL
+	ADD FOREIGN KEY R_277 (ID_SO) REFERENCES S_SO(ID_SO)
 ;
 
 
-alter table s_so_material
-	add foreign key r_278 (material) references s_material(id)
+ALTER TABLE S_SO_MATERIAL
+	ADD FOREIGN KEY R_278 (MATERIAL) REFERENCES S_MATERIAL(ID)
 ;
 
 
-alter table s_so_material
-	add foreign key r_279 (status) references s_status_dic(id)
+ALTER TABLE S_SO_MATERIAL
+	ADD FOREIGN KEY R_279 (STATUS) REFERENCES S_STATUS_DIC(ID)
 ;
 
 
 
-alter table s_stk
-	add foreign key r_203 (status) references s_status_dic(id)
+ALTER TABLE S_STK
+	ADD FOREIGN KEY R_203 (STATUS) REFERENCES S_STATUS_DIC(ID)
 ;
 
 
-alter table s_stk
-	add foreign key r_206 (id_company) references company(id_company)
+ALTER TABLE S_STK
+	ADD FOREIGN KEY R_206 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
 ;
 
 
-alter table s_stk
-	add foreign key r_207 (creator) references users(id_user)
+ALTER TABLE S_STK
+	ADD FOREIGN KEY R_207 (ID_USER) REFERENCES USERS(ID_USER)
 ;
 
 
 
-alter table service
-	add foreign key r_125 (id_service_type) references service_type(id_service_type)
+ALTER TABLE SERVICE
+	ADD FOREIGN KEY R_125 (ID_SERVICE_TYPE) REFERENCES Service_Type(ID_SERVICE_TYPE)
 ;
 
 
 
-alter table sys_dic_d
-	add foreign key r_64 (type) references sys_dic(type)
+ALTER TABLE SYS_DIC_D
+	ADD FOREIGN KEY R_64 (TYPE) REFERENCES SYS_DIC(TYPE)
 ;
 
 
 
-alter table users
-	add foreign key r_41 (cv) references document(id_document)
+ALTER TABLE USERS
+	ADD FOREIGN KEY R_41 (CV) REFERENCES DOCUMENT(ID_DOCUMENT)
 ;
 
 
-alter table users
-	add foreign key r_61 (id_company) references company(id_company)
+ALTER TABLE USERS
+	ADD FOREIGN KEY R_61 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
 ;
 
 
-alter table users
-	add foreign key r_74 (creator) references users(id_user)
+ALTER TABLE USERS
+	ADD FOREIGN KEY R_74 (CREATOR) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table users
-	add foreign key r_87 (locale) references sys_dic_d(id_dic)
+ALTER TABLE USERS
+	ADD FOREIGN KEY R_87 (LOCALE) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
-alter table users
-	add foreign key r_88 (gender) references sys_dic_d(id_dic)
+ALTER TABLE USERS
+	ADD FOREIGN KEY R_88 (GENDER) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
-alter table users
-	add foreign key r_89 (scheme) references sys_dic_d(id_dic)
+ALTER TABLE USERS
+	ADD FOREIGN KEY R_89 (SCHEME) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
-alter table users
-	add foreign key r_93 (status) references sys_dic_d(id_dic)
+ALTER TABLE USERS
+	ADD FOREIGN KEY R_93 (STATUS) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
-alter table users
-	add foreign key r_94 (id_district) references district(id_district)
+ALTER TABLE USERS
+	ADD FOREIGN KEY R_94 (ID_DISTRICT) REFERENCES DISTRICT(ID_DISTRICT)
 ;
 
 
-alter table users
-	add foreign key r_182 (pic) references document(id_document)
+ALTER TABLE USERS
+	ADD FOREIGN KEY R_182 (PIC) REFERENCES DOCUMENT(ID_DOCUMENT)
 ;
 
 
 
-alter table w_issue
-	add foreign key r_95 (priority) references sys_dic_d(id_dic)
+ALTER TABLE W_ISSUE
+	ADD FOREIGN KEY R_95 (PRIORITY) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
-alter table w_issue
-	add foreign key r_96 (status) references sys_dic_d(id_dic)
+ALTER TABLE W_ISSUE
+	ADD FOREIGN KEY R_96 (STATUS) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
-alter table w_issue
-	add foreign key r_132 (creator) references users(id_user)
+ALTER TABLE W_ISSUE
+	ADD FOREIGN KEY R_132 (CREATOR) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table w_issue
-	add foreign key r_171 (source_type) references sys_dic_d(id_dic)
+ALTER TABLE W_ISSUE
+	ADD FOREIGN KEY R_171 (SOURCE_TYPE) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
 
-alter table w_issue_comment
-	add foreign key r_80 (parent) references w_issue_comment(id_issue_comment)
+ALTER TABLE W_ISSUE_COMMENT
+	ADD FOREIGN KEY R_80 (PARENT) REFERENCES W_ISSUE_COMMENT(ID_ISSUE_COMMENT)
 ;
 
 
-alter table w_issue_comment
-	add foreign key r_81 (id_issue) references w_issue(id_issue)
+ALTER TABLE W_ISSUE_COMMENT
+	ADD FOREIGN KEY R_81 (ID_ISSUE) REFERENCES W_ISSUE(ID_ISSUE)
 ;
 
 
-alter table w_issue_comment
-	add foreign key r_130 (creator) references users(id_user)
+ALTER TABLE W_ISSUE_COMMENT
+	ADD FOREIGN KEY R_130 (CREATOR) REFERENCES USERS(ID_USER)
 ;
 
 
 
-alter table w_issue_doc
-	add foreign key r_82 (id_issue) references w_issue(id_issue)
+ALTER TABLE W_ISSUE_DOC
+	ADD FOREIGN KEY R_82 (ID_ISSUE) REFERENCES W_ISSUE(ID_ISSUE)
 ;
 
 
-alter table w_issue_doc
-	add foreign key r_83 (id_document) references document(id_document)
+ALTER TABLE W_ISSUE_DOC
+	ADD FOREIGN KEY R_83 (ID_DOCUMENT) REFERENCES DOCUMENT(ID_DOCUMENT)
 ;
 
 
-alter table w_issue_doc
-	add foreign key r_131 (id_issue_comment) references w_issue_comment(id_issue_comment)
+ALTER TABLE W_ISSUE_DOC
+	ADD FOREIGN KEY R_131 (ID_ISSUE_COMMENT) REFERENCES W_ISSUE_COMMENT(ID_ISSUE_COMMENT)
 ;
 
 
 
-alter table w_project
-	add foreign key r_26 (id_company) references company(id_company)
+ALTER TABLE W_PROJECT
+	ADD FOREIGN KEY R_26 (ID_COMPANY) REFERENCES COMPANY(ID_COMPANY)
 ;
 
 
-alter table w_project
-	add foreign key r_77 (leader) references users(id_user)
+ALTER TABLE W_PROJECT
+	ADD FOREIGN KEY R_77 (LEADER) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table w_project
-	add foreign key r_97 (priority) references sys_dic_d(id_dic)
+ALTER TABLE W_PROJECT
+	ADD FOREIGN KEY R_97 (PRIORITY) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
-alter table w_project
-	add foreign key r_118 (parent) references w_project(id_project)
+ALTER TABLE W_PROJECT
+	ADD FOREIGN KEY R_118 (PARENT) REFERENCES W_PROJECT(ID_PROJECT)
 ;
 
 
-alter table w_project
-	add foreign key r_119 (status) references sys_dic_d(id_dic)
+ALTER TABLE W_PROJECT
+	ADD FOREIGN KEY R_119 (STATUS) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
 
-alter table w_project_doc
-	add foreign key r_56 (id_project) references w_project(id_project)
+ALTER TABLE W_PROJECT_DOC
+	ADD FOREIGN KEY R_56 (ID_PROJECT) REFERENCES W_PROJECT(ID_PROJECT)
 ;
 
 
-alter table w_project_doc
-	add foreign key r_57 (id_document) references document(id_document)
+ALTER TABLE W_PROJECT_DOC
+	ADD FOREIGN KEY R_57 (ID_DOCUMENT) REFERENCES DOCUMENT(ID_DOCUMENT)
 ;
 
 
 
-alter table w_project_participant
-	add foreign key r_21 (id_project) references w_project(id_project)
+ALTER TABLE W_PROJECT_PARTICIPANT
+	ADD FOREIGN KEY R_21 (ID_PROJECT) REFERENCES W_PROJECT(ID_PROJECT)
 ;
 
 
-alter table w_project_participant
-	add foreign key r_22 (id_user) references users(id_user)
+ALTER TABLE W_PROJECT_PARTICIPANT
+	ADD FOREIGN KEY R_22 (ID_USER) REFERENCES USERS(ID_USER)
 ;
 
 
 
-alter table w_task
-	add foreign key r_29 (id_project) references w_project(id_project)
+ALTER TABLE W_TASK
+	ADD FOREIGN KEY R_29 (ID_PROJECT) REFERENCES W_PROJECT(ID_PROJECT)
 ;
 
 
-alter table w_task
-	add foreign key r_100 (priority) references sys_dic_d(id_dic)
+ALTER TABLE W_TASK
+	ADD FOREIGN KEY R_100 (PRIORITY) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
-alter table w_task
-	add foreign key r_101 (status) references sys_dic_d(id_dic)
+ALTER TABLE W_TASK
+	ADD FOREIGN KEY R_101 (STATUS) REFERENCES SYS_DIC_D(ID_DIC)
 ;
 
 
-alter table w_task
-	add foreign key r_129 (creator) references users(id_user)
+ALTER TABLE W_TASK
+	ADD FOREIGN KEY R_129 (CREATOR) REFERENCES USERS(ID_USER)
 ;
 
 
 
-alter table w_task_comment
-	add foreign key r_46 (id_task) references w_task(id_task)
+ALTER TABLE W_TASK_COMMENT
+	ADD FOREIGN KEY R_46 (ID_TASK) REFERENCES W_TASK(ID_TASK)
 ;
 
 
-alter table w_task_comment
-	add foreign key r_47 (id_user) references users(id_user)
+ALTER TABLE W_TASK_COMMENT
+	ADD FOREIGN KEY R_47 (ID_USER) REFERENCES USERS(ID_USER)
 ;
 
 
-alter table w_task_comment
-	add foreign key r_48 (parent) references w_task_comment(id_comment)
+ALTER TABLE W_TASK_COMMENT
+	ADD FOREIGN KEY R_48 (PARENT) REFERENCES W_TASK_COMMENT(ID_COMMENT)
 ;
 
 
 
-alter table w_task_doc
-	add foreign key r_75 (id_task) references w_task(id_task)
+ALTER TABLE W_TASK_DOC
+	ADD FOREIGN KEY R_75 (ID_TASK) REFERENCES W_TASK(ID_TASK)
 ;
 
 
-alter table w_task_doc
-	add foreign key r_76 (id_document) references document(id_document)
+ALTER TABLE W_TASK_DOC
+	ADD FOREIGN KEY R_76 (ID_DOCUMENT) REFERENCES DOCUMENT(ID_DOCUMENT)
 ;
 
 
 
-alter table w_task_participant
-	add foreign key r_133 (id_task) references w_task(id_task)
+ALTER TABLE W_TASK_PARTICIPANT
+	ADD FOREIGN KEY R_133 (ID_TASK) REFERENCES W_TASK(ID_TASK)
 ;
 
 
-alter table w_task_participant
-	add foreign key r_134 (id_user) references users(id_user)
+ALTER TABLE W_TASK_PARTICIPANT
+	ADD FOREIGN KEY R_134 (ID_USER) REFERENCES USERS(ID_USER)
 ;
+
 
