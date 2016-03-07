@@ -52,7 +52,10 @@ public class UserController {
 		System.out.println("user: " +wsUser.getLogin() +", pass: "  +wsUser.getPassword());
 		String token = userService.login(wsUser.getLogin(), wsUser.getPassword());
 		if(token==null)
+		{
+			System.out.println("token is null????");
 			return userProfile;
+		}
 		Users u =usersRepository.findByUsernameOrEmailOrMobile(wsUser.getLogin());
 		userProfile.setLogin(wsUser.getLogin());
 		userProfile.setToken(token);

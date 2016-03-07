@@ -109,11 +109,15 @@ public class UserService extends IUserServiceImpl{
 	public String login(String login, String password)
 	{
 		String defaultMsg=null;
+		System.out.println("user login :" +login);
 	    Users user =  usersRepository.findByUsernameOrEmailOrMobile(login);
+	  
 	    if(user!=null&&user.getEnabled().longValue()==1l)
 	    {
+	    	System.out.println("user is not null");
 	    	if(new BCryptPasswordEncoder().matches(password, user.getPassword()))
 	    	{
+	    		System.out.println("wrong password!");
 	    		user.setLastLogin(new Date());
 	    		String token = user.getIdUser()+"__"+new BCryptPasswordEncoder().encode(new Date().toString());
 				user.setToken(token);

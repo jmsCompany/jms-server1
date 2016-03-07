@@ -35,6 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.OPTIONS,"/**").permitAll();
 		http.addFilter(authenticationTokenProcessingFilter);
 	    http.authorizeRequests().anyRequest().authenticated();
+	   
 	}
 
 	@Autowired

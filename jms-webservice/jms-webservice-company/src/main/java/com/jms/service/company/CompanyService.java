@@ -34,9 +34,11 @@ import com.jms.domain.db.GroupMembersId;
 import com.jms.domain.db.Groups;
 import com.jms.domain.db.WProject;
 import com.jms.domain.db.Roles;
+import com.jms.domain.db.SStk;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.MessageTypeEnum;
+import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSCompany;
 import com.jms.domain.ws.WSUser;
 import com.jms.domainadapter.CompanyAdapter;
@@ -51,6 +53,7 @@ import com.jms.repositories.user.GroupTypeRepository;
 import com.jms.repositories.user.RoleRepository;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.repositories.workmanagement.ProjectRepository;
+import com.jms.repositories.s.SStkRepository;
 import com.jms.system.INotificationService;
 import com.jms.user.IUserService;
 import com.jms.web.security.JMSUserDetails;
@@ -94,6 +97,8 @@ public class CompanyService {
 	private SecuredObjectService securedObjectService;
 	@Autowired
 	private AppsRepository appsRepository;
+	@Autowired
+	private SStkRepository sStkRepository;
 	
 	@Autowired
 	private INotificationService notificationService;
@@ -350,6 +355,12 @@ public class CompanyService {
 		user.setCompany(templateCompany);
 		usersRepository.save(user);
 		return templateCompany;
+	}
+	
+	@Transactional(readOnly = false)
+	public Boolean createSTK(SStk sStk) {
+		sStkRepository.save(sStk);
+		return true;
 	}
 
 }

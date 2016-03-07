@@ -14,6 +14,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
 	public Users findByEmail(String email);
 	public Users findByMobile(String mobile);
 	public Users findByUsername(String username);
+	
 	@Query("select u from Users u where u.username=?1 or u.email=?1 or u.mobile=?1")	
 	public Users findByUsernameOrEmailOrMobile(String login);
 	public Users findByToken(String token);
