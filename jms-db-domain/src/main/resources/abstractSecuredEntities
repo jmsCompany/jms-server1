@@ -1,0 +1,51 @@
+ 1) Company
+    @Override @Transient
+    public Long getId() {
+        return this.getIdCompany();
+    }
+   @Override  @Transient
+  	public Users getUser() {
+  		return this.getUsersByCreator();
+  	}
+	@Override
+	public String toString()
+	{
+		return "公司名: " + this.getCompanyName();
+	}
+
+	
+2)Groups
+
+   @Override @Transient
+    public Long getId() {
+        return this.getIdGroup();
+    }
+   @Override  @Transient
+  	public Users getUser() {
+  		return this.getUsers();
+  	}
+
+	@Override
+	public String toString()
+	{
+		return "群组名: " + this.getGroupName() +", 描述：" + this.getDescription();
+	}
+
+
+	
+
+3)WProject
+   @Override @Transient
+    public Long getId() {
+        return this.getIdProject();
+    }
+   @Override  @Transient
+  	public Users getUser() {
+  		return this.getUsers();
+  	}
+
+	@Override
+	public String toString()
+	{
+		return "项目名: " + this.getProjectName() +", 描述：" + this.getDescription();
+	}
