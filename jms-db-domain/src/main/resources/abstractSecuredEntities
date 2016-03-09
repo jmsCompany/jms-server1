@@ -49,3 +49,19 @@
 	{
 		return "项目名: " + this.getProjectName() +", 描述：" + this.getDescription();
 	}
+	
+	
+	4)app
+	
+    @Override @Transient
+    public Long getId() {
+        return this.getIdApp();
+    }
+
+	@Override
+	public String toString()
+	{
+		return "APP: " + this.getAppName();
+	}
+
+	

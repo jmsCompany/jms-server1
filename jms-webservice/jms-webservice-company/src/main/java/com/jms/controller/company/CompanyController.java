@@ -105,7 +105,6 @@ public class CompanyController {
 	public Valid createSTK(@RequestBody SStk sstk) throws Exception {
 		sstk.setUsers(securityUtils.getCurrentDBUser());
 		sstk.setCompany(securityUtils.getCurrentDBUser().getCompany());
-		sstk.setCreationTime(new Date());
 		Boolean returnVal= companyService.createSTK(sstk);
 		Valid valid = new Valid();
 		valid.setValid(returnVal);
@@ -133,7 +132,7 @@ public class CompanyController {
 			String sStatus="";
 			if(status!=null)
 				sStatus = status.getName();
-			String[] d = { stk.getName(), stk.getDes(),stk.getAddress(),stk.getOperator(),sStatus,"<a href='xxxx/?id="+stk.getId()+"'>编辑</a>"};
+			String[] d = { stk.getStkName(), stk.getDes(),stk.getAddress(),stk.getSStatusDic().getName(),sStatus,"<a href='xxxx/?id="+stk.getId()+"'>编辑</a>"};
 			lst.add(d);
 
 		}
