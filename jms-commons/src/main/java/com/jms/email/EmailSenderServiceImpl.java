@@ -20,28 +20,25 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 	private JavaMailSender mailSender;
 	@Autowired
 	private VelocityEngine velocityEngine;
-	//@Value("#{email_prop['template']}")
-	private String template="emailTemplate.vm";
-	//@Value("#{email_prop['from']}")
-	private String from="hongtao@mail.dlut.edu.cn";
-	
+	// @Value("#{email_prop['template']}")
+	private String template = "emailTemplate.vm";
+	// @Value("#{email_prop['from']}")
+	private String from = "hongtao@mail.dlut.edu.cn";
 
 	@Override
-	public void sendEmail(final String[] toEmailAddresses,
-			final String subject, final Map<String, Object> model,final String[] files
-			) {
+	public void sendEmail(final String[] toEmailAddresses, final String subject, final Map<String, Object> model,
+			final String[] files) {
 
 		MimeMessagePreparator preparator = new MimeMessagePreparator() {
 			public void prepare(MimeMessage mimeMessage) throws Exception {
-				MimeMessageHelper message = new MimeMessageHelper(mimeMessage,
-						true, "UTF-8");
+				MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 				message.setTo(toEmailAddresses);
 				message.setFrom(new InternetAddress(from));
 				message.setSubject(subject);
 				velocityEngine.addProperty("resource.loader", "class");
-				velocityEngine.addProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-				String body = VelocityEngineUtils.mergeTemplateIntoString(
-						velocityEngine, template, "UTF-8", model);
+				velocityEngine.addProperty("class.resource.loader.class",
+						"org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+				String body = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, template, "UTF-8", model);
 				message.setText(body, true);
 				if (files != null) {
 					for (String f : files) {
@@ -49,15 +46,11 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 						message.addAttachment(f, file);
 					}
 				}
-		
 
 			}
 		};
 		this.mailSender.send(preparator);
-	
+
 	}
-
-	
-
 
 }

@@ -52,7 +52,6 @@ public class Notification  implements java.io.Serializable {
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
-    
     @Column(name="id_noti", unique=true, nullable=false)
     public Long getIdNoti() {
         return this.idNoti;
