@@ -24,7 +24,7 @@ import javax.persistence.Table;
 public class PWoBom  implements java.io.Serializable {
 
 
-     private String idWoBom;
+     private Integer idWoBom;
      private PBom PBom;
      private PWo PWo;
      private Set<SMtfMaterial> SMtfMaterials = new HashSet<SMtfMaterial>(0);
@@ -33,24 +33,24 @@ public class PWoBom  implements java.io.Serializable {
     }
 
 	
-    public PWoBom(String idWoBom) {
+    public PWoBom(Integer idWoBom) {
         this.idWoBom = idWoBom;
     }
-    public PWoBom(String idWoBom, PBom PBom, PWo PWo, Set<SMtfMaterial> SMtfMaterials) {
+    public PWoBom(Integer idWoBom, PBom PBom, PWo PWo, Set<SMtfMaterial> SMtfMaterials) {
        this.idWoBom = idWoBom;
        this.PBom = PBom;
        this.PWo = PWo;
        this.SMtfMaterials = SMtfMaterials;
     }
    
-     @Id 
+    @Id 
     
-    @Column(name="id_wo_bom", unique=true, nullable=false, length=18)
-    public String getIdWoBom() {
+   @Column(name="id_wo_bom", unique=true, nullable=false)
+    public Integer getIdWoBom() {
         return this.idWoBom;
     }
     
-    public void setIdWoBom(String idWoBom) {
+    public void setIdWoBom(Integer idWoBom) {
         this.idWoBom = idWoBom;
     }
 @ManyToOne(fetch=FetchType.LAZY)
