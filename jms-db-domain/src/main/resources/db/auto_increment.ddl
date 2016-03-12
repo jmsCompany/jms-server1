@@ -146,10 +146,10 @@ alter table `s_mtf`
 modify `id_mt` int(11) not null auto_increment;
 
 alter table `s_mtf_material` 
-modify `id_mt_material` int(11) not null auto_increment;
+modify `id_mtf_material` int(11) not null auto_increment;
 
 alter table `s_mtf_residual` 
-modify `id_residual` int(11) not null auto_increment;
+modify `id_mtf_residual` int(11) not null auto_increment;
 
 alter table `s_pic` 
 modify `id` int(11) not null auto_increment;
@@ -233,7 +233,7 @@ modify `id_routine_d` int(11) not null auto_increment;
 alter table `p_routine_d_att` 
 modify `id_routine_d_att` int(11) not null auto_increment;
 
-alter table `p_spp` 
+alter table `p_s_pp` 
 modify `id_s_pp` int(11) not null auto_increment;
 
 alter table `p_shift_plan` 
