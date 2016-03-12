@@ -347,8 +347,8 @@ modify `id_att_type` int(11) not null auto_increment;
 alter table `q_check_list` 
 modify `id_check_list` int(11) not null auto_increment;
 
-alter table `q_conclusioin_dic` 
-modify `id_conclusioin` int(11) not null auto_increment;
+alter table `q_conclusion_dic` 
+modify `id_conclusion` int(11) not null auto_increment;
 
 alter table `q_dimension_report` 
 modify `id_report` int(11) not null auto_increment;
