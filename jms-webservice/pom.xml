@@ -26,6 +26,7 @@
 		<module>jms-webservice-workmanagement</module>
 	    <module>jms-webservice-user</module>
 	    <module>jms-webservice-system</module>
+	    <module>jms-webservice-store</module>
 	</modules>
 
 	<dependencies>

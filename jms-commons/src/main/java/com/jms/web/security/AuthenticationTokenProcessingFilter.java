@@ -59,7 +59,7 @@ public class AuthenticationTokenProcessingFilter extends
 	public void doFilter(ServletRequest req, ServletResponse res,
 			FilterChain chain) throws IOException, ServletException {
 		if (req instanceof org.apache.catalina.connector.RequestFacade) {
-			logger.debug("WTF?:  "  +res.getClass().getCanonicalName());
+			//logger.debug("WTF?:  "  +res.getClass().getCanonicalName());
 			HttpServletRequest request = (HttpServletRequest) req;
 			HttpServletResponse response = (HttpServletResponse) res;
 			chain.doFilter(request, response);

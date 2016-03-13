@@ -2,12 +2,15 @@ package com.jms.domain.db;
 // Generated 2016-3-9 10:11:30 by Hibernate Tools 3.2.2.GA
 
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,7 +27,7 @@ import javax.persistence.Table;
 public class QLocationDic  implements java.io.Serializable {
 
 
-     private String idLocation;
+     private Integer idLocation;
      private Company company;
      private QStatusDic QStatusDic;
      private String des;
@@ -34,10 +37,10 @@ public class QLocationDic  implements java.io.Serializable {
     }
 
 	
-    public QLocationDic(String idLocation) {
+    public QLocationDic(Integer idLocation) {
         this.idLocation = idLocation;
     }
-    public QLocationDic(String idLocation, Company company, QStatusDic QStatusDic, String des, Set<QNcp> QNcps) {
+    public QLocationDic(Integer idLocation, Company company, QStatusDic QStatusDic, String des, Set<QNcp> QNcps) {
        this.idLocation = idLocation;
        this.company = company;
        this.QStatusDic = QStatusDic;
@@ -45,14 +48,14 @@ public class QLocationDic  implements java.io.Serializable {
        this.QNcps = QNcps;
     }
    
-     @Id 
-    
-    @Column(name="id_location", unique=true, nullable=false, length=20)
-    public String getIdLocation() {
+    @Id
+    @GeneratedValue(strategy=IDENTITY)
+    @Column(name="id_location", unique=true, nullable=false)
+    public Integer getIdLocation() {
         return this.idLocation;
     }
     
-    public void setIdLocation(String idLocation) {
+    public void setIdLocation(Integer idLocation) {
         this.idLocation = idLocation;
     }
 @ManyToOne(fetch=FetchType.LAZY)

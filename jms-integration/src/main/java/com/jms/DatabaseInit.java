@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.jms.domain.db.Company;
 import com.jms.repositories.user.UsersRepository;
+import com.jms.service.MaterialTypeService;
+import com.jms.service.SStatusDicService;
 import com.jms.service.company.CompanyService;
 import com.jms.service.system.AppsService;
 import com.jms.service.system.DicService;
@@ -61,11 +63,15 @@ public class DatabaseInit {
 	private NotiMethodService notiMethodService;
 	@Autowired
 	private JmsEventService jmsEventService;
+	@Autowired
+	private MaterialTypeService materialTypeService;
+	@Autowired
+	private SStatusDicService sStatusDicService;
 
 	// 在系统初装的执行切只能执行一次，读取csv文件的数据到数据库中。
 	// todo:详细说明系统预设的所有信息这些信息的用途
 	public void init(ConfigurableApplicationContext ctx) throws IOException {
-		
+	/*	
 		if (usersRepository.findByUsername("admin") != null)
 			return;
 
@@ -99,7 +105,13 @@ public class DatabaseInit {
 		
 		Resource appsRes = ctx.getResource("classpath:data/apps.csv");
 		appsService.createInitalApps(appsRes.getInputStream(), templateCompany);
+		
+		
+		materialTypeService.loadMaterilaTypies();
 	
+		Resource appsRes = ctx.getResource("classpath:data/s_status_dic.csv");
+		sStatusDicService.loadStatus(appsRes.getInputStream());
+	*/
 
 	}
 
