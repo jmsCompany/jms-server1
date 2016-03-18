@@ -19,10 +19,12 @@ import com.jms.domain.GroupTypeEnum;
 import com.jms.domain.db.Apps;
 import com.jms.domain.db.Company;
 import com.jms.domain.db.Groups;
+import com.jms.domain.db.SCountryDic;
 import com.jms.domain.db.SMaterialTypeDic;
 import com.jms.domain.db.SStatusDic;
 import com.jms.domain.db.SysDic;
 import com.jms.domain.db.SysDicD;
+import com.jms.repositories.s.SCountryDicRepository;
 import com.jms.repositories.s.SMaterialTypeDicRepository;
 import com.jms.repositories.s.SStatusDicRepository;
 import com.jms.repositories.system.SysDicDRepository;
@@ -30,14 +32,14 @@ import com.jms.repositories.system.SysDicRepository;
 
 @Service
 @Transactional
-public class SStatusDicService {
+public class SCountryDicService {
 
-	private static final Logger logger = LogManager.getLogger(SStatusDicService.class
+	private static final Logger logger = LogManager.getLogger(SCountryDicService.class
 			.getCanonicalName());
 	@Autowired
-	private SStatusDicRepository sStatusDicRepository;
+	private SCountryDicRepository sCountryDicRepository;
 	
-	public void loadStatus(InputStream inputStream)throws IOException {
+	public void loadCountries(InputStream inputStream)throws IOException {
 		
 		CsvReader reader = new CsvReader(inputStream,',', Charset.forName("UTF-8"));
 		//reader.readHeaders();
@@ -45,11 +47,9 @@ public class SStatusDicService {
 		while(reader.readRecord())
 		{
 			
-			SStatusDic s = new SStatusDic();
+			SCountryDic s = new SCountryDic();
 			s.setName(reader.get(0).trim());
-			s.setDes(reader.get(1).trim());
-			s.setSource(reader.get(2).trim());
-			sStatusDicRepository.save(s);
+			sCountryDicRepository.save(s);
 	
 		}
 		

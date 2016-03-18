@@ -24,9 +24,13 @@
 	<modules>
 		<module>jms-webservice-company</module>
 		<module>jms-webservice-workmanagement</module>
-	    <module>jms-webservice-user</module>
-	    <module>jms-webservice-system</module>
-	    <module>jms-webservice-store</module>
+		<module>jms-webservice-user</module>
+		<module>jms-webservice-system</module>
+		<module>jms-webservice-store</module>
+		<module>jms-webservice-production</module>
+		<module>jms-webservice-ehs</module>
+		<module>jms-webservice-maintenance</module>
+                <module>jms-webservice-quality</module>
 	</modules>
 
 	<dependencies>
@@ -65,16 +69,16 @@
 			<artifactId>jms-commons</artifactId>
 			<version>1.0</version>
 		</dependency>
-	<dependency>
+		<dependency>
 			<groupId>com.jms</groupId>
 			<artifactId>jms-domain-adapter</artifactId>
 			<version>1.0</version>
 		</dependency>
-<dependency>
-	<groupId>org.json</groupId>
-	<artifactId>json</artifactId>
-	<version>20141113</version>
-</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20141113</version>
+		</dependency>
 
 	</dependencies>
 

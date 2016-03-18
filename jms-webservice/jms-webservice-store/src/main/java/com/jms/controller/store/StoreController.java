@@ -24,26 +24,41 @@ import com.jms.domain.db.SStatusDic;
 import com.jms.domain.db.SStk;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
+import com.jms.domain.ws.WSCompany;
 import com.jms.domain.ws.WSMenu;
 import com.jms.domain.ws.WSPCpp;
 import com.jms.domain.ws.WSSmr;
 import com.jms.domain.ws.WSTest;
 import com.jms.domain.ws.WSUser;
 import com.jms.domain.ws.WSUserProfile;
+import com.jms.domain.ws.store.WSMaterialCategory;
 import com.jms.domainadapter.UserAdapter;
 import com.jms.repositories.system.AppsRepository;
 import com.jms.repositories.user.UsersRepository;
+import com.jms.service.MaterialCategoryService;
 
 
 @RestController
 @Transactional(readOnly=true)
 public class StoreController {
 	
+	@Autowired private MaterialCategoryService materialCategoryService;
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/s/saveMaterialCategory", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public Long saveMaterialCategory(@RequestBody WSMaterialCategory wSMaterialCategory) throws Exception {
+		return materialCategoryService.saveMaterialCategories(wSMaterialCategory);
+	}
+	
+	
+	
+	
+	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/materialList", method=RequestMethod.GET)
 	public WSTest  getMaterialList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {
 	   
-		//System.out.println("xxxxxx: get material list!!!!!");
 		List<String[]> lst = new ArrayList<String[]>();
 	
 	

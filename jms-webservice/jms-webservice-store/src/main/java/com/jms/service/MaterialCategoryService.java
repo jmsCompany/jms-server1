@@ -16,8 +16,10 @@ import com.jms.domain.ws.store.WSMaterialCategory;
 import com.jms.repositories.s.SMaterialCategoryPicRepository;
 import com.jms.repositories.s.SMaterialCategoryRepository;
 import com.jms.repositories.s.SMaterialTypeDicRepository;
+import com.jms.repositories.s.SStatusDicRepository;
 import com.jms.repositories.system.SysDicDRepository;
 import com.jms.repositories.system.SysDicRepository;
+import com.jms.web.security.SecurityUtils;
 
 @Service
 @Transactional
@@ -29,6 +31,11 @@ public class MaterialCategoryService {
 	private SMaterialCategoryRepository sMaterialCategoryRepository;
 	@Autowired
 	private SMaterialCategoryPicRepository sMaterialCategoryPicRepository;
+	@Autowired
+	private SStatusDicRepository sStatusDicRepository;
+	
+	@Autowired 
+	private  SecurityUtils securityUtils;
 	
 	
 	@Transactional(readOnly=true)
@@ -42,10 +49,6 @@ public class MaterialCategoryService {
 			wsCat.setName(dbcat.getName());
 			wsCat.setDes(dbcat.getDes());
 			wsCat.setOrderBy(dbcat.getOrderBy());
-			if(dbcat.getSMaterialCategory()!=null)
-			{
-			   wsCat.setParent(dbcat.getSMaterialCategory().getId());
-			}
 			wsCats.add(wsCat);
 		}
 		
@@ -53,5 +56,33 @@ public class MaterialCategoryService {
 		
 	}
 
+	
+	@Transactional(readOnly=false)
+	public Long saveMaterialCategories(WSMaterialCategory mc) {
+		
+		
+		SMaterialCategory dbMaterialCategory;
+		if(mc.getId()!=null)
+		{
+			dbMaterialCategory = sMaterialCategoryRepository.findOne(mc.getId());
+		}
+		else
+		{
+			dbMaterialCategory = new SMaterialCategory();
+		}
+		dbMaterialCategory.setName(mc.getName());
+		dbMaterialCategory.setDes(mc.getDes());
+		dbMaterialCategory.setOrderBy(mc.getOrderBy());
+		dbMaterialCategory.setSStatusDic(sStatusDicRepository.findOne(mc.getStatus()));
+		dbMaterialCategory.setCompany(securityUtils.getCurrentDBUser().getCompany());
+		
+		sMaterialCategoryRepository.save(dbMaterialCategory);
+		return dbMaterialCategory.getId();
+				
+		
+	}
+	
+	
+	
 
 }
