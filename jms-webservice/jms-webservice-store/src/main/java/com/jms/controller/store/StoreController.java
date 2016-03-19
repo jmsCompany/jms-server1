@@ -32,10 +32,18 @@ import com.jms.domain.ws.WSTest;
 import com.jms.domain.ws.WSUser;
 import com.jms.domain.ws.WSUserProfile;
 import com.jms.domain.ws.store.WSMaterialCategory;
+import com.jms.domain.ws.store.WSSStatus;
+import com.jms.domain.ws.store.WSStk;
+import com.jms.domain.ws.store.WSStkType;
 import com.jms.domainadapter.UserAdapter;
+import com.jms.repositories.s.SStkRepository;
 import com.jms.repositories.system.AppsRepository;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.service.MaterialCategoryService;
+import com.jms.service.SStatusDicService;
+import com.jms.service.SStkService;
+import com.jms.service.SStkTypeDicService;
+import com.jms.web.security.SecurityUtils;
 
 
 @RestController
@@ -43,16 +51,99 @@ import com.jms.service.MaterialCategoryService;
 public class StoreController {
 	
 	@Autowired private MaterialCategoryService materialCategoryService;
+	@Autowired private SStkTypeDicService sStkTypeDicService;
+	@Autowired private SStatusDicService sStatusDicService;
+	@Autowired private SStkService sStkService;
+	@Autowired
+	private SStkRepository sStkRepository;
+	@Autowired 
+	private  SecurityUtils securityUtils;
 	
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveMaterialCategory", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public Long saveMaterialCategory(@RequestBody WSMaterialCategory wSMaterialCategory) throws Exception {
+	public WSMaterialCategory saveMaterialCategory(@RequestBody WSMaterialCategory wSMaterialCategory) throws Exception {
 		return materialCategoryService.saveMaterialCategories(wSMaterialCategory);
 	}
 	
 	
 	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/getStkTypeList", method=RequestMethod.GET)
+	public List<WSStkType> getStkTypeList() {
+		return sStkTypeDicService.getStkTypes();
+	}
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/getSStatusList", method=RequestMethod.GET)
+	public List<WSSStatus> getSStatusList(@RequestParam("source") String source) {
+		return sStatusDicService.getSStatus(source);
+	}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/s/saveStk", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public Valid saveStk(@RequestBody WSStk wsStk) {
+		return sStkService.saveStk(wsStk);
+		
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/getStks", method=RequestMethod.GET)
+	public List<WSStk> getStks(@RequestParam("statusId") Long statusId) {
+		return sStkService.findStks(statusId);
+		
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/stkList", method=RequestMethod.GET)
+	public WSTest  getStklList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {
+	   
+		List<SStk> stks = sStkRepository.findByIdCompany(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+		List<String[]> lst = new ArrayList<String[]>();
+	
+		int end=0;
+		if(stks.size()<start + length)
+			end =stks.size();
+		else
+			end =start + length;
+		for (int i = start; i < end; i++) {
+			String[] d = { stks.get(i).getStkName(), stks.get(i).getDes() ,stks.get(i).getAddress(),stks.get(i).getSStkTypeDic().getName(),stks.get(i).getSStatusDic().getName(),""+stks.get(i).getId()};
+			lst.add(d);
+
+		}
+		WSTest t = new WSTest();
+		t.setDraw(draw);
+		t.setRecordsTotal(stks.size());
+		t.setRecordsFiltered(stks.size());
+	    t.setData(lst);
+	    return t;
+	}
+	
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/s/invalidateStk", method=RequestMethod.GET)
+	public Valid invalidateStk(@RequestParam("stkId") Long stkId) {
+		return sStkService.invalidateStk(stkId);
+		
+	}
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/s/deleteStk", method=RequestMethod.GET)
+	public Valid deleteStk(@RequestParam("stkId") Long stkId) {
+		return sStkService.deleteStk(stkId);
+		
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/findStk", method=RequestMethod.GET)
+	public WSStk findStk(@RequestParam("stkId") Long stkId) {
+		System.out.println("find stk: " + stkId);
+		return sStkService.findStk(stkId);
+		
+	}
 	
 	
 	@Transactional(readOnly = true)

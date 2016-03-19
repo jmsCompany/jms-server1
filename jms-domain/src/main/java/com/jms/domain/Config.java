@@ -54,5 +54,8 @@ public class Config {
 	public static final String docsRelativePath = "C:/jms_file/docs/";
 	public static final String cvRelativePath = "C:/jms_file/cv/";
 	public static final String picRelativePath = "C:/jms_file/pic/";
+	
+	//仓库类别
+	public static final String[] stkTypes = {"原材料仓","成品仓","半成品仓"};
 
 }

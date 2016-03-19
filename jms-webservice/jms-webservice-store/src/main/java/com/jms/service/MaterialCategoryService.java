@@ -58,7 +58,7 @@ public class MaterialCategoryService {
 
 	
 	@Transactional(readOnly=false)
-	public Long saveMaterialCategories(WSMaterialCategory mc) {
+	public WSMaterialCategory saveMaterialCategories(WSMaterialCategory mc) {
 		
 		
 		SMaterialCategory dbMaterialCategory;
@@ -77,7 +77,8 @@ public class MaterialCategoryService {
 		dbMaterialCategory.setCompany(securityUtils.getCurrentDBUser().getCompany());
 		
 		sMaterialCategoryRepository.save(dbMaterialCategory);
-		return dbMaterialCategory.getId();
+		mc.setId(dbMaterialCategory.getId());
+		return mc;
 				
 		
 	}

@@ -111,36 +111,5 @@ public class CompanyController {
 		return valid;
 	}
 	
-	/*just for example, need to move another module */
-	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/stklist", method=RequestMethod.GET)
-	public WSTest  stkList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {
-	    List<SStk> stkList =	sStkRepository.findAll();	
-		List<String[]> lst = new ArrayList<String[]>();
-		//logger.warn("````````````````````````````````` srart=" + start);
-		//logger.warn("````````````````````````````````` draw=" + draw);
-		//logger.warn("````````````````````````````````` length=" + length);
-		int end=0;
-		if(stkList.size()<start + length)
-			end =stkList.size();
-		else
-			end =start + length;
-			
-		for (int i = start; i < end; i++) {
-			SStk stk =stkList.get(i);
-			SStatusDic status =stk.getSStatusDic();
-			String sStatus="";
-			if(status!=null)
-				sStatus = status.getName();
-			String[] d = { stk.getStkName(), stk.getDes(),stk.getAddress(),stk.getSStatusDic().getName(),sStatus,"<a href='xxxx/?id="+stk.getId()+"'>编辑</a>"};
-			lst.add(d);
-
-		}
-		WSTest t = new WSTest();
-		t.setDraw(draw);
-		t.setRecordsTotal(stkList.size());
-		t.setRecordsFiltered(stkList.size());
-	    t.setData(lst);
-	    return t;
-	}
+	
 }
