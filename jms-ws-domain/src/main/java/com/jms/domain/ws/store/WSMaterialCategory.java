@@ -8,6 +8,7 @@ public class WSMaterialCategory {
     private String name;
     private String des;
     private Long orderBy;
+    private String statusName;
    
 	
     public Long getId() {
@@ -39,6 +40,12 @@ public class WSMaterialCategory {
 	}
 	public void setOrderBy(Long orderBy) {
 		this.orderBy = orderBy;
+	}
+	public String getStatusName() {
+		return statusName;
+	}
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
 	}
 
 

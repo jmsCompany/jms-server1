@@ -93,6 +93,8 @@ public class SStkService {
 		SStk stk = sStkRepository.findOne(stkId);
 		
 			WSStk wsStk = new WSStk();
+			if(stk==null)
+				return wsStk;
 			wsStk.setAddress(stk.getAddress());
 			wsStk.setDes(stk.getDes());
 			wsStk.setIdStk(stk.getId());

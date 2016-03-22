@@ -8,10 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.jms.domain.Config;
+import com.jms.domain.db.SBin;
 import com.jms.domain.db.SMaterialCategory;
 import com.jms.domain.db.SMaterialTypeDic;
+import com.jms.domain.db.SStk;
 import com.jms.domain.db.SysDic;
 import com.jms.domain.db.SysDicD;
+import com.jms.domain.ws.Valid;
+import com.jms.domain.ws.store.WSBin;
 import com.jms.domain.ws.store.WSMaterialCategory;
 import com.jms.repositories.s.SMaterialCategoryPicRepository;
 import com.jms.repositories.s.SMaterialCategoryRepository;
@@ -49,6 +53,7 @@ public class MaterialCategoryService {
 			wsCat.setName(dbcat.getName());
 			wsCat.setDes(dbcat.getDes());
 			wsCat.setOrderBy(dbcat.getOrderBy());
+			wsCat.setStatusName(dbcat.getSStatusDic().getName());
 			wsCats.add(wsCat);
 		}
 		
@@ -58,11 +63,10 @@ public class MaterialCategoryService {
 
 	
 	@Transactional(readOnly=false)
-	public WSMaterialCategory saveMaterialCategories(WSMaterialCategory mc) {
-		
+	public WSMaterialCategory saveMaterialCategory(WSMaterialCategory mc) {
 		
 		SMaterialCategory dbMaterialCategory;
-		if(mc.getId()!=null)
+		if(mc.getId()!=null&&!mc.getId().equals(0l))
 		{
 			dbMaterialCategory = sMaterialCategoryRepository.findOne(mc.getId());
 		}
@@ -75,15 +79,48 @@ public class MaterialCategoryService {
 		dbMaterialCategory.setOrderBy(mc.getOrderBy());
 		dbMaterialCategory.setSStatusDic(sStatusDicRepository.findOne(mc.getStatus()));
 		dbMaterialCategory.setCompany(securityUtils.getCurrentDBUser().getCompany());
-		
 		sMaterialCategoryRepository.save(dbMaterialCategory);
 		mc.setId(dbMaterialCategory.getId());
-		return mc;
-				
+		return mc;		
 		
 	}
 	
+	@Transactional(readOnly=false)
+	public Valid deleteMaterialCategory(Long catgegoryId)
+	{
+		Valid valid = new Valid();
+		SMaterialCategory mc = sMaterialCategoryRepository.findOne(catgegoryId);
+		if(!mc.getSMaterials().isEmpty())
+		{
+			valid.setValid(false);
+		}
+		else
+		{
+			sMaterialCategoryRepository.delete(catgegoryId);
+			valid.setValid(true);
+		}
+		
+		return valid;
+	}
 	
+	
+	@Transactional(readOnly=true)
+	public WSMaterialCategory findMaterialCategory(Long materialCategoryId)
+	{	
+		SMaterialCategory mc = sMaterialCategoryRepository.findOne(materialCategoryId);
+		WSMaterialCategory wsMc = new WSMaterialCategory();
+			if(mc==null)
+				return wsMc;
+			wsMc.setDes(mc.getDes());
+			wsMc.setId(mc.getId());
+			wsMc.setName(mc.getName());
+			wsMc.setOrderBy(mc.getOrderBy());
+			wsMc.setStatus(mc.getSStatusDic().getId());
+			wsMc.setStatusName(mc.getSStatusDic().getName());
+	
+		    return wsMc;
+	}
+
 	
 
 }

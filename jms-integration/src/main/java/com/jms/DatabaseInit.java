@@ -17,8 +17,12 @@ import com.jms.domain.db.Company;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.service.MaterialTypeService;
 import com.jms.service.SCountryDicService;
+import com.jms.service.SLevelDicService;
 import com.jms.service.SStatusDicService;
 import com.jms.service.SStkTypeDicService;
+import com.jms.service.STypeDicService;
+import com.jms.service.StermDicService;
+import com.jms.service.YesOrNoService;
 import com.jms.service.company.CompanyService;
 import com.jms.service.system.AppsService;
 import com.jms.service.system.DicService;
@@ -75,6 +79,18 @@ public class DatabaseInit {
 	
 	@Autowired
 	private SStkTypeDicService sStkTypeDicService;
+	
+	@Autowired
+	private YesOrNoService yesOrNoService;
+	
+	@Autowired
+	private STypeDicService sTypeDicService;
+	
+	@Autowired
+	private StermDicService stermDicService;
+	
+	@Autowired
+	private  SLevelDicService sLevelDicService;
 	// 在系统初装的执行切只能执行一次，读取csv文件的数据到数据库中。
 	// todo:详细说明系统预设的所有信息这些信息的用途
 	public void init(ConfigurableApplicationContext ctx) throws IOException {
@@ -124,7 +140,12 @@ public class DatabaseInit {
 		Resource countriesRes = ctx.getResource("classpath:data/s_country_dic.csv");
 		sCountryDicService.loadCountries(countriesRes.getInputStream());
 		sStkTypeDicService.loadStkTypes();
+		yesOrNoService.loadSYesOrNoDics();
 			*/
+		
+		sTypeDicService.loadSTypes();
+		stermDicService.loadStermDics();
+		sLevelDicService.loadLevels();
 		
 		
 	}
