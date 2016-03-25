@@ -69,6 +69,8 @@ public class SecurityUtils {
 		//todo:
 	   for(final GroupMembers gm : user.getGroupMemberses()) {
 		   
+		   System.out.println("gm: " + gm.getGroups().getGroupName());
+		   
 		   if(groups.containsKey(gm.getId().getIdGroup()))
 			   continue;
 		   groups.put(gm.getId().getIdGroup(), ""+gm.getId().getIdGroup());

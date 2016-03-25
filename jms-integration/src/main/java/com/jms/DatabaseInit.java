@@ -141,11 +141,19 @@ public class DatabaseInit {
 		sCountryDicService.loadCountries(countriesRes.getInputStream());
 		sStkTypeDicService.loadStkTypes();
 		yesOrNoService.loadSYesOrNoDics();
-			*/
-		
+	  
+		UserDetails userDetails = userDetailService.loadUserByUsername(""+usersRepository.findByUsername("admin").getIdUser());
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+				userDetails.getUsername(), userDetails.getPassword());
+		Authentication authenticated = authenticationManager
+				.authenticate(authentication);
+		SecurityContextHolder.getContext().setAuthentication(authenticated);
 		sTypeDicService.loadSTypes();
 		stermDicService.loadStermDics();
 		sLevelDicService.loadLevels();
+		userService.createTestUsersforSandVik();
+		
+		  */
 		
 		
 	}

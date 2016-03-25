@@ -17,12 +17,19 @@ import org.springframework.transaction.annotation.Transactional;
 import com.csvreader.CsvReader;
 import com.jms.audit.AudiReaderService;
 import com.jms.domain.Config;
+import com.jms.domain.GroupTypeEnum;
+import com.jms.domain.SandVikRoleEnum;
+import com.jms.domain.SystemRoleEnum;
+import com.jms.domain.db.Company;
 import com.jms.domain.db.Groups;
+import com.jms.domain.db.Roles;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.MessageTypeEnum;
 import com.jms.domain.ws.WSUser;
+import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.system.SysDicDRepository;
+import com.jms.repositories.user.RoleRepository;
 
 @Service
 @Qualifier("userService")
@@ -32,6 +39,14 @@ public class UserService extends IUserServiceImpl{
 	@Autowired
 	private AudiReaderService audiReaderService;
 	private static final Logger logger = LogManager.getLogger(UserService.class.getCanonicalName());
+	@Autowired
+	private RoleService roleService;
+	@Autowired
+	private CompanyRepository companyRepository;
+	@Autowired
+	private  GroupService groupService;
+	@Autowired
+	private RoleRepository roleRepository;
 	
 	@Transactional(readOnly=false)
 	public WSUser save(WSUser wsUser) throws Exception
@@ -109,15 +124,15 @@ public class UserService extends IUserServiceImpl{
 	public String login(String login, String password)
 	{
 		String defaultMsg=null;
-		System.out.println("user login :" +login);
+	//	System.out.println("user login :" +login);
 	    Users user =  usersRepository.findByUsernameOrEmailOrMobile(login);
 	  
 	    if(user!=null&&user.getEnabled().longValue()==1l)
 	    {
-	    	System.out.println("user is not null");
+	    //	System.out.println("user is not null");
 	    	if(new BCryptPasswordEncoder().matches(password, user.getPassword()))
 	    	{
-	    		System.out.println("wrong password!");
+	    		//System.out.println("wrong password!");
 	    		user.setLastLogin(new Date());
 	    		String token = user.getIdUser()+"__"+new BCryptPasswordEncoder().encode(new Date().toString());
 				user.setToken(token);
@@ -136,5 +151,87 @@ public class UserService extends IUserServiceImpl{
     	return audiReaderService.getRevisions(Users.class, idUser);
 
      }
+	
+	@Transactional(readOnly=false)
+	public void createTestUsersforSandVik()
+	{
+		
+		Company  c = companyRepository.findByCompanyName("SandVik");
+		Roles r_op = roleService.save(SandVikRoleEnum.OP.name(),"操作员",c);
+		Roles r_quality = roleService.save(SandVikRoleEnum.quality.name(),"质检员",c);
+		Roles r_supervisor = roleService.save(SandVikRoleEnum.supervisor.name(),"主管",c);
+		Roles r_warehouse = roleService.save(SandVikRoleEnum.warehouse.name(),"主管",c);
+		Roles r_equipment = roleService.save(SandVikRoleEnum.equipment.name(),"仪器维护员",c);
+		Roles userRole = roleRepository.findByRoleAndCompanyName(
+				SystemRoleEnum.user.name(), c.getCompanyName());
+		
+		
+		Groups g_op = groupService.createGroup(c, GroupTypeEnum.Group, SandVikRoleEnum.OP.name(), "操作员", null);
+		Groups g_quality =  groupService.createGroup(c, GroupTypeEnum.Group, SandVikRoleEnum.quality.name(), "质检员", null);
+		Groups g_supervisor =  groupService.createGroup(c, GroupTypeEnum.Group, SandVikRoleEnum.supervisor.name(), "主管", null);
+		Groups g_warehouse =  groupService.createGroup(c, GroupTypeEnum.Group, SandVikRoleEnum.warehouse.name(), "主管", null);
+		Groups g_equipment = groupService.createGroup(c, GroupTypeEnum.Group, SandVikRoleEnum.equipment.name(), "仪器维护员", null);
+		
+		Users op = new Users();
+		op.setUsername(SandVikRoleEnum.OP.name());
+		op.setPassword(SandVikRoleEnum.OP.name());
+		op.setCompany(c);
+		register(op);
+		
+		
+		Users quality = new Users();
+		quality.setUsername(SandVikRoleEnum.quality.name());
+		quality.setPassword(SandVikRoleEnum.quality.name());
+		quality.setCompany(c);
+		register(quality);
+		
+		
+		
+		Users supervisor = new Users();
+		supervisor.setUsername(SandVikRoleEnum.supervisor.name());
+		supervisor.setPassword(SandVikRoleEnum.supervisor.name());
+		supervisor.setCompany(c);
+		register(supervisor);
+		
+		
+		Users warehouse = new Users();
+		warehouse.setUsername(SandVikRoleEnum.warehouse.name());
+		warehouse.setPassword(SandVikRoleEnum.warehouse.name());
+		warehouse.setCompany(c);
+		register(warehouse);
+		
+		
+		Users equipment = new Users();
+		equipment.setUsername(SandVikRoleEnum.equipment.name());
+		equipment.setPassword(SandVikRoleEnum.equipment.name());
+		equipment.setCompany(c);
+		register(equipment);
+		
+		
+
+		Groups opSelf = groupService.createGroup(c, GroupTypeEnum.User, ""+op.getIdUser(), ""+op.getIdUser(), null);
+		Groups qualitySelf = groupService.createGroup(c, GroupTypeEnum.User, ""+quality.getIdUser(), ""+quality.getIdUser(), null);
+		Groups supervisorSelf = groupService.createGroup(c, GroupTypeEnum.User, ""+supervisor.getIdUser(), ""+supervisor.getIdUser(), null);
+		Groups warehouseSelf = groupService.createGroup(c, GroupTypeEnum.User, ""+warehouse.getIdUser(), ""+warehouse.getIdUser(), null);
+		Groups equipmentSelf = groupService.createGroup(c, GroupTypeEnum.User, ""+equipment.getIdUser(), ""+equipment.getIdUser(), null);
+		
+		groupService.addUserToDefaultGroup(op, opSelf, userRole);
+		groupService.addUserToDefaultGroup(quality, qualitySelf, userRole);
+		groupService.addUserToDefaultGroup(supervisor, supervisorSelf, userRole);
+		groupService.addUserToDefaultGroup(warehouse, warehouseSelf, userRole);
+		groupService.addUserToDefaultGroup(equipment, equipmentSelf, userRole);
+		
+		
+		groupService.addUserToDefaultGroup(op, g_op, r_op);
+		groupService.addUserToDefaultGroup(quality, g_quality, r_quality);
+		groupService.addUserToDefaultGroup(supervisor, g_supervisor, r_supervisor);
+		groupService.addUserToDefaultGroup(warehouse, g_warehouse, r_warehouse);
+		groupService.addUserToDefaultGroup(equipment, g_equipment, r_equipment);
+
+	}
+	
+	
+	
+	
 	
 }
