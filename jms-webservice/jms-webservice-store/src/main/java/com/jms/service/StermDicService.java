@@ -36,10 +36,20 @@ public class StermDicService {
 
 	public void loadStermDics() {
 		
-		String[] terms = new String[] { "是", "否"};
-		for (String m : terms) {
+		String[] freightTerms = new String[] { "CFR", "CIF","CIP","CPT","DAF","DAP","DDP","DDU","DEQ","DES","EXW","FAS","FCA","FOB"};
+		for (String m : freightTerms) {
 			STermDic mt = new STermDic();
 			mt.setName(m);
+			mt.setSource("freight");
+			sStermDicRepository.save(mt);
+		}
+		
+		
+		String[] paymentTerms = new String[] { "T/T in advance", "T/T  30 days","T/T  60 days","T/T  90 days","T/T  120 days","T/T  50 days","T/T  150 days","T/T  45 days","T/T  37 days"};
+		for (String m : paymentTerms) {
+			STermDic mt = new STermDic();
+			mt.setName(m);
+			mt.setSource("payment");
 			sStermDicRepository.save(mt);
 		}
 

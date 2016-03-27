@@ -123,6 +123,7 @@ public class UserController {
 	@RequestMapping(value="/getAndroidMenu", method=RequestMethod.GET)
 	public List<WSAndriodMenuItem> getAndroidMenu() throws Exception {
 
+		System.out.println(" xxxca ll");
 		List<WSAndriodMenuItem>  items = new ArrayList<WSAndriodMenuItem>();
 		JMSUserDetails ud = securityUtils.getCurrentUser();
 		for(GrantedAuthority g: ud.getAuthorities())

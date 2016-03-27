@@ -17,6 +17,7 @@ import com.jms.domain.db.Company;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.service.MaterialTypeService;
 import com.jms.service.SCountryDicService;
+import com.jms.service.SGenderDicService;
 import com.jms.service.SLevelDicService;
 import com.jms.service.SStatusDicService;
 import com.jms.service.SStkTypeDicService;
@@ -91,6 +92,9 @@ public class DatabaseInit {
 	
 	@Autowired
 	private  SLevelDicService sLevelDicService;
+	
+	@Autowired
+	private SGenderDicService sGenderDicService;
 	// 在系统初装的执行切只能执行一次，读取csv文件的数据到数据库中。
 	// todo:详细说明系统预设的所有信息这些信息的用途
 	public void init(ConfigurableApplicationContext ctx) throws IOException {
@@ -152,7 +156,7 @@ public class DatabaseInit {
 		stermDicService.loadStermDics();
 		sLevelDicService.loadLevels();
 		userService.createTestUsersforSandVik();
-		
+		sGenderDicService.loadGenders();
 		  */
 		
 		
