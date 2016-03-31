@@ -109,11 +109,11 @@ modify `id` int(11) not null auto_increment;
 alter table `s_company_co_attachment` 
 modify `id` int(11) not null auto_increment;
 
-alter table `s_cost_center` 
-modify `id_cost_center` int(11) not null auto_increment;
-
 alter table `s_country_dic` 
 modify `id` int(11) not null auto_increment;
+
+alter table `s_currency_type` 
+modify `id_currency_type` int(11) not null auto_increment;
 
 alter table `s_gender_dic` 
 modify `id` int(11) not null auto_increment;
@@ -123,6 +123,9 @@ modify `id_inv` int(11) not null auto_increment;
 
 alter table `s_level_dic` 
 modify `id` int(11) not null auto_increment;
+
+alter table `s_linkman` 
+modify `id_linkman` int(11) not null auto_increment;
 
 alter table `s_material` 
 modify `id_material` int(11) not null auto_increment;
@@ -150,6 +153,9 @@ modify `id_mtf_material` int(11) not null auto_increment;
 
 alter table `s_mtf_residual` 
 modify `id_mtf_residual` int(11) not null auto_increment;
+
+alter table `s_mtf_type_dic` 
+modify `id_mtf_type` int(11) not null auto_increment;
 
 alter table `s_pic` 
 modify `id` int(11) not null auto_increment;
@@ -233,6 +239,9 @@ modify `id_routine_d` int(11) not null auto_increment;
 alter table `p_routine_d_att` 
 modify `id_routine_d_att` int(11) not null auto_increment;
 
+alter table `p_routine_d_category` 
+modify `id_routine_d_att` int(11) not null auto_increment;
+
 alter table `p_s_pp` 
 modify `id_s_pp` int(11) not null auto_increment;
 
@@ -299,6 +308,10 @@ modify `id_type` int(11) not null auto_increment;
 
 alter table `e_work_category_dic` 
 modify `id_work_category` int(11) not null auto_increment;
+
+
+alter table `f_cost_center` 
+modify `id_cost_center` int(11) not null auto_increment;
 
 
 alter table `m_dept` 
@@ -370,6 +383,9 @@ modify `id_location` int(11) not null auto_increment;
 
 alter table `q_ncp` 
 modify `id_ncp` int(11) not null auto_increment;
+
+alter table `q_ncp_disposal` 
+modify `id_ncp_disposal` int(11) not null auto_increment;
 
 alter table `q_ncr` 
 modify `id_ncr` int(11) not null auto_increment;
