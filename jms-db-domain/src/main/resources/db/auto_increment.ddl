@@ -240,7 +240,7 @@ alter table `p_routine_d_att`
 modify `id_routine_d_att` int(11) not null auto_increment;
 
 alter table `p_routine_d_category` 
-modify `id_routine_d_att` int(11) not null auto_increment;
+modify `id` int(11) not null auto_increment;
 
 alter table `p_s_pp` 
 modify `id_s_pp` int(11) not null auto_increment;
