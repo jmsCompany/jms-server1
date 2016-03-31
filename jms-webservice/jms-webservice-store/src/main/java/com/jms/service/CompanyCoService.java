@@ -108,8 +108,8 @@ public class CompanyCoService {
 	
 		SCompanyCo dbCompanyCo = (SCompanyCo)BeanUtil.shallowCopy(wsCompanyCo, SCompanyCo.class, companyCo);
 		
-		dbCompanyCo.setReamrk(wsCompanyCo.getRemark());
-		dbCompanyCo.setShartName(wsCompanyCo.getShartName());
+		dbCompanyCo.setRemark(wsCompanyCo.getRemark());
+		dbCompanyCo.setShortName(wsCompanyCo.getShortName());
 		if(wsCompanyCo.getCountryId()!=null)
 		{
 			dbCompanyCo.setSCountryDic(sCountryDicRepository.findOne(wsCompanyCo.getCountryId()));
@@ -178,8 +178,8 @@ public class CompanyCoService {
 		   wsCom.setPaymentTermId(dbc.getSTermDicByPaymentTerm().getId());
 		   wsCom.setPaymentTerm(dbc.getSTermDicByPaymentTerm().getName());
 		}
-		wsCom.setRemark(dbc.getReamrk());
-		wsCom.setShartName(dbc.getShartName());
+		wsCom.setRemark(dbc.getRemark());
+		wsCom.setShortName(dbc.getShortName());
 		if(dbc.getSStatusDic()!=null)
 		{
 		   wsCom.setStatus(dbc.getSStatusDic().getName());

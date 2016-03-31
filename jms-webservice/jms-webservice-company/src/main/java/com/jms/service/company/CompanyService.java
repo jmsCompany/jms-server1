@@ -354,6 +354,7 @@ public class CompanyService {
 		Users user = usersRepository.findByUsername("user");
 		user.setCompany(templateCompany);
 		usersRepository.save(user);
+		templateCompany.setUsersByCreator(user);
 		return templateCompany;
 	}
 	

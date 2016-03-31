@@ -8,16 +8,16 @@ public class WSCompanyCo {
 
     private Long id;
     private String code;
-    private String shartName;
+    private String shortName;
     private String name;
     private String tel;
     private String fax;
     private String addressAct;
     private String addressReg;
     private String artificialPerson;
-    private Long taxNo;
+    private String taxNo;
     private String bank;
-    private Long bankAccNo;
+    private String bankAccNo;
     private String url;
     private Long typeId;
     private String type;
@@ -59,13 +59,13 @@ public class WSCompanyCo {
 	}
 
 
-	public String getShartName() {
-		return shartName;
+	public String getShortName() {
+		return shortName;
 	}
 
 
-	public void setShartName(String shartName) {
-		this.shartName = shartName;
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
 	}
 
 
@@ -129,12 +129,12 @@ public class WSCompanyCo {
 	}
 
 
-	public Long getTaxNo() {
+	public String getTaxNo() {
 		return taxNo;
 	}
 
 
-	public void setTaxNo(Long taxNo) {
+	public void setTaxNo(String taxNo) {
 		this.taxNo = taxNo;
 	}
 
@@ -149,12 +149,12 @@ public class WSCompanyCo {
 	}
 
 
-	public Long getBankAccNo() {
+	public String getBankAccNo() {
 		return bankAccNo;
 	}
 
 
-	public void setBankAccNo(Long bankAccNo) {
+	public void setBankAccNo(String bankAccNo) {
 		this.bankAccNo = bankAccNo;
 	}
 

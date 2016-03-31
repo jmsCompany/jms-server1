@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.jms.domain.db.Company;
+import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.service.MaterialTypeService;
 import com.jms.service.SCountryDicService;
@@ -95,6 +96,9 @@ public class DatabaseInit {
 	
 	@Autowired
 	private SGenderDicService sGenderDicService;
+	
+	@Autowired
+	private  CompanyRepository companyRepository;
 	// 在系统初装的执行切只能执行一次，读取csv文件的数据到数据库中。
 	// todo:详细说明系统预设的所有信息这些信息的用途
 	public void init(ConfigurableApplicationContext ctx) throws IOException {
@@ -128,16 +132,15 @@ public class DatabaseInit {
 		
 		groupService.createDefaultGroups(templateCompany);
 		projectService.createGenerialProject(templateCompany);
-	
 		
+	
 		Resource appsRes = ctx.getResource("classpath:data/apps.csv");
 		appsService.createInitalApps(appsRes.getInputStream(), templateCompany);
 		
 		
 		materialTypeService.loadMaterilaTypies();
-	
-		Resource appsRes = ctx.getResource("classpath:data/s_status_dic.csv");
-		sStatusDicService.loadStatus(appsRes.getInputStream());
+		Resource s_statuRes = ctx.getResource("classpath:data/s_status_dic.csv");
+		sStatusDicService.loadStatus(s_statuRes.getInputStream());
 
 
 		
@@ -145,20 +148,27 @@ public class DatabaseInit {
 		sCountryDicService.loadCountries(countriesRes.getInputStream());
 		sStkTypeDicService.loadStkTypes();
 		yesOrNoService.loadSYesOrNoDics();
-	  
+		
+	
+
+		
+		sTypeDicService.loadSTypes();
+		stermDicService.loadStermDics();
+		sLevelDicService.loadLevels();
+		
+		sGenderDicService.loadGenders();
+		  
+		*/
+		
+		/*
 		UserDetails userDetails = userDetailService.loadUserByUsername(""+usersRepository.findByUsername("admin").getIdUser());
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 				userDetails.getUsername(), userDetails.getPassword());
 		Authentication authenticated = authenticationManager
 				.authenticate(authentication);
 		SecurityContextHolder.getContext().setAuthentication(authenticated);
-		sTypeDicService.loadSTypes();
-		stermDicService.loadStermDics();
-		sLevelDicService.loadLevels();
 		userService.createTestUsersforSandVik();
-		sGenderDicService.loadGenders();
-		  */
-		
+		*/
 		
 	}
 

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.jms.domain.db.SCompanyCo;
 import com.jms.domain.db.SLinkman;
-import com.jms.domain.db.SLinkmanId;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.store.WSCompanyCo;
 import com.jms.domain.ws.store.WSLinkman;
@@ -68,10 +67,7 @@ public class LinkmanService {
 		SLinkman sLinkman;
 		if(wsLinkman.getId()!=null&&!wsLinkman.getId().equals(0l))
 		{
-			SLinkmanId id = new SLinkmanId();
-			id.setId(wsLinkman.getId());
-			id.setName(wsLinkman.getName());
-			sLinkman = sLinkmanRepository.findOne(id);
+			sLinkman = sLinkmanRepository.findOne(wsLinkman.getId());
 		}
 		else
 		{
@@ -79,38 +75,31 @@ public class LinkmanService {
 		}
 		SLinkman dbSLinkman = toDBSLinkman(wsLinkman,sLinkman);
 		sLinkmanRepository.save(dbSLinkman);
-		//wsLinkman.setId(dbSLinkman.geti);
+		wsLinkman.setId(dbSLinkman.getIdLinkman());
 		return wsLinkman;		
 		
 	}
-	/*
+
 	@Transactional(readOnly=false)
-	public Valid deleteCompanyCo(Long companyCoId)
+	public Valid deleteLinkman(Long linkmanId)
 	{
 		Valid valid = new Valid();
-		SCompanyCo dbCompanyCo = sCompanyCoRepository.findOne(companyCoId);
-		if(!dbCompanyCo.getSMtfResiduals().isEmpty()||!dbCompanyCo.getSPos().isEmpty()||!dbCompanyCo.getSSos().isEmpty())
-		{
-			valid.setValid(false);
-		}
-		else
-		{
-			sCompanyCoRepository.delete(companyCoId);
-			valid.setValid(true);
-		}
+		
+		sLinkmanRepository.delete(linkmanId);
+		valid.setValid(true);
 		
 		return valid;
 	}
+
 	
-	
-	@Transactional(readOnly=true)
-	public WSCompanyCo findCompanyCo(Long companyCoId)
+	@Transactional(readOnly=true) 
+	public WSLinkman findLinkman(Long linkmanId) throws Exception
 	{	
-		SCompanyCo mc = sCompanyCoRepository.findOne(companyCoId);
-		return  toWSCompanyCo(mc);
+		SLinkman linkman = sLinkmanRepository.findOne(linkmanId);
+		return  toWSLinkman(linkman);
 		
 	}
-*/
+
 	
 	private SLinkman toDBSLinkman(WSLinkman wsLinkman,SLinkman sLinkman) throws Exception
 	{
@@ -137,6 +126,7 @@ public class LinkmanService {
 		if(sLinkman.getSStatusDic()!=null)
 		{
 			wsLinkman.setStatus(sLinkman.getSStatusDic().getName());
+			wsLinkman.setStatusId(sLinkman.getSStatusDic().getId());
 		}
 		if(sLinkman.getSCompanyCo()!=null)
 		{

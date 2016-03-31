@@ -132,7 +132,7 @@ public class CompanyCoController {
 			end =start + length;
 		for (int i = start; i < end; i++) {
 			WSCompanyCo w = wsCompanyCos.get(i);
-			String[] d = {w.getCode(),w.getShartName(),w.getType(),w.getTel(),w.getFax(),w.getAddressAct(),"",""+w.getId()};
+			String[] d = {w.getCode(),w.getShortName(),w.getType(),w.getTel(),w.getFax(),w.getAddressAct(),"",""+w.getId()};
 			lst.add(d);
 
 		}
