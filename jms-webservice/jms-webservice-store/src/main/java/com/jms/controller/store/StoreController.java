@@ -29,7 +29,7 @@ import com.jms.domain.ws.WSCompany;
 import com.jms.domain.ws.WSMenu;
 import com.jms.domain.ws.WSPCpp;
 import com.jms.domain.ws.WSSmr;
-import com.jms.domain.ws.WSTest;
+import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.WSUser;
 import com.jms.domain.ws.WSUserProfile;
 import com.jms.domain.ws.store.WSBin;
@@ -125,7 +125,7 @@ public class StoreController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/stkList", method=RequestMethod.GET)
-	public WSTest  getStklList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {
+	public WSTableData  getStklList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {
 		List<SStk> stks = sStkRepository.findByIdCompany(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 		List<String[]> lst = new ArrayList<String[]>();
 	
@@ -139,7 +139,7 @@ public class StoreController {
 			lst.add(d);
 
 		}
-		WSTest t = new WSTest();
+		WSTableData t = new WSTableData();
 		t.setDraw(draw);
 		t.setRecordsTotal(stks.size());
 		t.setRecordsFiltered(stks.size());
@@ -196,29 +196,12 @@ public class StoreController {
 	}
 	
 	
-	
-	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/materialList", method=RequestMethod.GET)
-	public WSTest  getMaterialList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {
-	   
-		List<String[]> lst = new ArrayList<String[]>();
-		for (int i = start; i < start + length; i++) {
-			String[] d = { "" + i, "名称" + i ,"大类" + i,"小类" + i,"状态" + i};
-			lst.add(d);
 
-		}
-		WSTest t = new WSTest();
-		t.setDraw(draw);
-		t.setRecordsTotal(1000000);
-		t.setRecordsFiltered(1000000);
-	    t.setData(lst);
-	    return t;
-	}
 	
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/getBinList", method=RequestMethod.GET)
-	public WSTest  getBinlList(@RequestParam Long idStk, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+	public WSTableData  getBinlList(@RequestParam Long idStk, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		List<WSBin> wsBins = sBinService.findBins(idStk);	
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
@@ -231,7 +214,7 @@ public class StoreController {
 			lst.add(d);
 
 		}
-		WSTest t = new WSTest();
+		WSTableData t = new WSTableData();
 		t.setDraw(draw);
 		t.setRecordsTotal(wsBins.size());
 		t.setRecordsFiltered(wsBins.size());
@@ -243,7 +226,7 @@ public class StoreController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/materialCategoryList", method=RequestMethod.GET)
-	public WSTest  getMaterialCategoryList( @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {
+	public WSTableData  getMaterialCategoryList( @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {
 		List<WSMaterialCategory> mcs = materialCategoryService.getMaterialCategories(securityUtils.getCurrentDBUser().getCompany().getIdCompany());	
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
@@ -256,7 +239,7 @@ public class StoreController {
 			lst.add(d);
 
 		}
-		WSTest t = new WSTest();
+		WSTableData t = new WSTableData();
 		t.setDraw(draw);
 		t.setRecordsTotal(mcs.size());
 		t.setRecordsFiltered(mcs.size());

@@ -3,7 +3,7 @@ package com.jms.domain.ws;
 import java.util.List;
 
 
-public class WSTest implements java.io.Serializable{
+public class WSTableData implements java.io.Serializable{
 	
 	private static final long serialVersionUID = 7787128799747339720L;
 	private Integer draw;

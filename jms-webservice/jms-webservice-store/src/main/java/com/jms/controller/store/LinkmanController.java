@@ -7,7 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import com.jms.domain.ws.Valid;
-import com.jms.domain.ws.WSTest;
+import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.store.WSLinkman;
 import com.jms.service.LinkmanService;
 
@@ -23,6 +23,7 @@ public class LinkmanController {
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveLinkman", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public WSLinkman saveLinkman(@RequestBody WSLinkman wsLinkman) throws Exception {
+		System.out.println("email from controller: " + wsLinkman.getEmail());
 		return linkmanService.saveWSLinkman(wsLinkman);
 	}
 	
@@ -46,7 +47,7 @@ public class LinkmanController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/LinkmanList", method=RequestMethod.GET)
-	public WSTest  getLinkmanList(@RequestParam("companyCoId") Long companyCoId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+	public WSTableData  getLinkmanList(@RequestParam("companyCoId") Long companyCoId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		List<WSLinkman> wsLinkmen = linkmanService.getLinkmans(companyCoId);
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
@@ -56,11 +57,11 @@ public class LinkmanController {
 			end =start + length;
 		for (int i = start; i < end; i++) {
 			WSLinkman w = wsLinkmen.get(i);
-			String[] d = {w.getName(),w.getPosition(),""+w.getPhoneNo(),""+w.getStatus(),"",""+w.getId()};
+			String[] d = {w.getName(),w.getPosition(),""+w.getPhoneNo(),""+w.getStatus(),""+w.getIdLinkman()};
 			lst.add(d);
 
 		}
-		WSTest t = new WSTest();
+		WSTableData t = new WSTableData();
 		t.setDraw(draw);
 		t.setRecordsTotal(wsLinkmen.size());
 		t.setRecordsFiltered(wsLinkmen.size());

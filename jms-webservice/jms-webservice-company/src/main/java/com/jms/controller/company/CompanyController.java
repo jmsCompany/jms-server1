@@ -15,7 +15,7 @@ import com.jms.domain.db.SStk;
 import com.jms.domain.ws.Message;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSCompany;
-import com.jms.domain.ws.WSTest;
+import com.jms.domain.ws.WSTableData;
 import com.jms.domainadapter.CompanyAdapter;
 import com.jms.repositories.s.SStkRepository;
 import com.jms.repositories.system.AppsRepository;
@@ -60,14 +60,14 @@ public class CompanyController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/dic/test", method=RequestMethod.GET)
-	public WSTest  test(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {
+	public WSTableData  test(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {
 		List<String[]> lst = new ArrayList<String[]>();
 		for (int i = start; i < start + length; i++) {
 			String[] d = { "co1_data" + i, "col2_data" + i ,"col3_data" + i,"col4_data" + i,"col5_data" + i};
 			lst.add(d);
 
 		}
-		WSTest t = new WSTest();
+		WSTableData t = new WSTableData();
 		t.setDraw(draw);
 		t.setRecordsTotal(1000000);
 		t.setRecordsFiltered(1000000);

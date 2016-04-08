@@ -3,11 +3,11 @@ package com.jms.domain.ws.store;
 
 public class WSLinkman {
 
-    private Long id;
+    private Long idLinkman;
     private String name;
     private String position;
     private Long phoneNo;
-    private String EMail;
+    private String email;
     private Long qq;
     private String weChat;
     private String wangwang;
@@ -19,12 +19,7 @@ public class WSLinkman {
     private String status;
     private Long coCompanyId;
     private String coCompanyName;
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+
 	public String getName() {
 		return name;
 	}
@@ -43,11 +38,11 @@ public class WSLinkman {
 	public void setPhoneNo(Long phoneNo) {
 		this.phoneNo = phoneNo;
 	}
-	public String getEMail() {
-		return EMail;
+	public String getEmail() {
+		return email;
 	}
-	public void setEMail(String eMail) {
-		EMail = eMail;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public Long getQq() {
 		return qq;
@@ -114,5 +109,11 @@ public class WSLinkman {
 	}
 	public void setCoCompanyName(String coCompanyName) {
 		this.coCompanyName = coCompanyName;
+	}
+	public Long getIdLinkman() {
+		return idLinkman;
+	}
+	public void setIdLinkman(Long idLinkman) {
+		this.idLinkman = idLinkman;
 	}
 }

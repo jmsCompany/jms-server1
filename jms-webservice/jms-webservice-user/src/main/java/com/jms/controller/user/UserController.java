@@ -123,13 +123,15 @@ public class UserController {
 	@RequestMapping(value="/getAndroidMenu", method=RequestMethod.GET)
 	public List<WSAndriodMenuItem> getAndroidMenu() throws Exception {
 
-		System.out.println(" xxxca ll");
+	
 		List<WSAndriodMenuItem>  items = new ArrayList<WSAndriodMenuItem>();
 		JMSUserDetails ud = securityUtils.getCurrentUser();
+		System.out.println(" get android menu: the token is:  " + ud.getToken());
 		for(GrantedAuthority g: ud.getAuthorities())
 		{
 			if(g.getAuthority().equals(SandVikRoleEnum.OP.name()))
 			{
+				System.out.println(" get OP: ");
 				WSAndriodMenuItem i1 = new WSAndriodMenuItem("OP","操作员","MRstopforOP","MRstopforOP","需料与停机（操作工人的主界面");
 				WSAndriodMenuItem i2 = new WSAndriodMenuItem("OP","操作员","Qtycheck","Qtycheck","到点检查已经生产的数量");
 				WSAndriodMenuItem i3 = new WSAndriodMenuItem("OP","操作员","Stopbyplan","Stopbyplan","按计划停机");
@@ -150,6 +152,7 @@ public class UserController {
 			}
 			if(g.getAuthority().equals(SandVikRoleEnum.equipment.name()))
 			{
+				System.out.println(" get equipment: ");
 				WSAndriodMenuItem i1 = new WSAndriodMenuItem("equipment","设备","Unplanned_equipment","Unplanned_equipment","计划外的设备原因导致停机");
 				WSAndriodMenuItem i2 = new WSAndriodMenuItem("equipment","设备","Eqstopforeq","Eqstopforeq","由设备部员工填写设备故障原因");
 				WSAndriodMenuItem i3 = new WSAndriodMenuItem("equipment","设备","Maintainance","Maintainance","设备保养计划");
@@ -162,6 +165,7 @@ public class UserController {
 			}
 			if(g.getAuthority().equals(SandVikRoleEnum.quality.name()))
 			{
+				System.out.println(" get quality: ");
 				WSAndriodMenuItem i1 = new WSAndriodMenuItem("quality","质量","Unplanned_quality","Unplanned_quality","计划外的质量原因导致停机");
 				WSAndriodMenuItem i2 = new WSAndriodMenuItem("quality","质量","Qtycheck","Qtycheck","计划外的质量原因导致停机");
 				items.add(i1);
@@ -170,6 +174,7 @@ public class UserController {
 			}
 			if(g.getAuthority().equals(SandVikRoleEnum.warehouse.name()))
 			{
+				System.out.println(" get warehouse: ");
 				WSAndriodMenuItem i1 = new WSAndriodMenuItem("warehouse","仓库","Mrforwh","Mrforwh","仓库发料满足工人的需料要求");
 				WSAndriodMenuItem i2 = new WSAndriodMenuItem("warehouse","仓库","Unplanned_ms","Unplanned_ms","计划外的缺料导致停机");
 				WSAndriodMenuItem i3 = new WSAndriodMenuItem("warehouse","仓库","Msstopforwh","Msstopforwh","仓库发料满足工人的需料要求");
@@ -194,6 +199,7 @@ public class UserController {
 			}
 			if(g.getAuthority().equals(SandVikRoleEnum.supervisor.name()))
 			{
+				System.out.println(" get supervisor: ");
 				WSAndriodMenuItem i1 = new WSAndriodMenuItem("supervisor","主管","MRstopforOP","MRstopforOP","需料与停机（操作工人的主界面");
 				WSAndriodMenuItem i2 = new WSAndriodMenuItem("supervisor","主管","Qtycheck","Qtycheck","到点检查已经生产的数量");
 				WSAndriodMenuItem i3 = new WSAndriodMenuItem("supervisor","主管","Stopbyplan","Stopbyplan","按计划停机");

@@ -65,9 +65,9 @@ public class LinkmanService {
 	@Transactional(readOnly=false)
 	public WSLinkman saveWSLinkman(WSLinkman wsLinkman) throws Exception {
 		SLinkman sLinkman;
-		if(wsLinkman.getId()!=null&&!wsLinkman.getId().equals(0l))
+		if(wsLinkman.getIdLinkman()!=null&&!wsLinkman.getIdLinkman().equals(0l))
 		{
-			sLinkman = sLinkmanRepository.findOne(wsLinkman.getId());
+			sLinkman = sLinkmanRepository.findOne(wsLinkman.getIdLinkman());
 		}
 		else
 		{
@@ -75,7 +75,7 @@ public class LinkmanService {
 		}
 		SLinkman dbSLinkman = toDBSLinkman(wsLinkman,sLinkman);
 		sLinkmanRepository.save(dbSLinkman);
-		wsLinkman.setId(dbSLinkman.getIdLinkman());
+		wsLinkman.setIdLinkman(dbSLinkman.getIdLinkman());
 		return wsLinkman;		
 		
 	}
@@ -117,6 +117,8 @@ public class LinkmanService {
 		{
 			dbLinkman.setSStatusDic(sStatusDicRepository.findOne(wsLinkman.getStatusId()));
 		}
+		dbLinkman.setEMail(wsLinkman.getEmail());
+		logger.warn("set email: " +wsLinkman.getEmail() );
 		return dbLinkman;
 	}
 	
@@ -138,8 +140,8 @@ public class LinkmanService {
 			wsLinkman.setGender(sLinkman.getSGenderDic().getName());
 			wsLinkman.setGenderId(sLinkman.getSGenderDic().getId());
 		}
-		
-		
+		wsLinkman.setEmail(sLinkman.getEMail());	
+		logger.warn("set email: " +sLinkman.getEMail() );
 		return wsLinkman;
 	}
 

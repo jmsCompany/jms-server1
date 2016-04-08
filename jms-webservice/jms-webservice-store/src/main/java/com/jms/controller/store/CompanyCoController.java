@@ -13,7 +13,7 @@ import com.jms.domain.db.STermDic;
 import com.jms.domain.db.STypeDic;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.WSTest;
+import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.store.WSCompanyCo;
 import com.jms.repositories.s.SCountryDicRepository;
 import com.jms.repositories.s.SLevelDicRepository;
@@ -39,6 +39,7 @@ public class CompanyCoController {
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveCompanyCo", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public WSCompanyCo saveCompanyCo(@RequestBody WSCompanyCo wSCompanyCo) throws Exception {
+	
 		return companyCoService.saveWSCompanyCo(wSCompanyCo);
 	}
 	
@@ -122,7 +123,7 @@ public class CompanyCoController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/companyCoList", method=RequestMethod.GET)
-	public WSTest  getBinlList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+	public WSTableData  getBinlList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		List<WSCompanyCo> wsCompanyCos = companyCoService.getCoCompanies(securityUtils.getCurrentDBUser().getCompany().getId());
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
@@ -136,7 +137,7 @@ public class CompanyCoController {
 			lst.add(d);
 
 		}
-		WSTest t = new WSTest();
+		WSTableData t = new WSTableData();
 		t.setDraw(draw);
 		t.setRecordsTotal(wsCompanyCos.size());
 		t.setRecordsFiltered(wsCompanyCos.size());
@@ -145,11 +146,11 @@ public class CompanyCoController {
 	}
 	
 	
+	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/getCompanyCoList", method=RequestMethod.GET)
-	public List<WSCompanyCo> getCompanyCoList() {
-		return companyCoService.getCoCompanies(securityUtils.getCurrentDBUser().getCompany().getId());
+	public List<WSSelectObj> companyCoList(@RequestParam(value="coCompanyType", required=false) Long coCompanyType) {
+		return companyCoService.getCoCompaniesByType(securityUtils.getCurrentDBUser().getCompany().getId(), coCompanyType);
 	}
-
 
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.jms.domain.db.SCompanyCo;
 import com.jms.domain.ws.Valid;
+import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.store.WSCompanyCo;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.s.SCompanyCoRepository;
@@ -45,7 +46,7 @@ public class CompanyCoService {
 	//to be modified
 	@Transactional(readOnly=true)
 	public List<WSCompanyCo> getCoCompanies(Long idCompany) {
-		List<SCompanyCo> coCompanies = sCompanyCoRepository.findAll();
+		List<SCompanyCo> coCompanies = sCompanyCoRepository.findByCompanyID(idCompany);
 		List<WSCompanyCo> wsSCompanyCos = new ArrayList<WSCompanyCo>();
 		for(SCompanyCo dbc:coCompanies)
 		{
@@ -56,6 +57,31 @@ public class CompanyCoService {
 		
 	}
 
+	
+	
+	@Transactional(readOnly=true)
+	public List<WSSelectObj> getCoCompaniesByType(Long idCompany,Long idType) {
+		List<WSSelectObj> objs = new ArrayList<WSSelectObj>();
+		List<SCompanyCo> coCompanies;
+		
+		if(idType==null)
+		{
+			coCompanies = sCompanyCoRepository.findByCompanyID(idCompany);
+		}
+		else
+		{
+			coCompanies = sCompanyCoRepository.findByComanuIdandType(idCompany, idType);
+		}
+		for(SCompanyCo s:coCompanies)
+		{
+			WSSelectObj o = new WSSelectObj(s.getId(),s.getName());
+			objs.add(o);
+		}
+		
+		return objs;
+		
+	}
+	
 	
 	@Transactional(readOnly=false)
 	public WSCompanyCo saveWSCompanyCo(WSCompanyCo wsCompanyCo) throws Exception {
@@ -69,6 +95,7 @@ public class CompanyCoService {
 			companyCo = new SCompanyCo();
 		}
 		SCompanyCo dbCompanyCo = toDBCompanyCo(wsCompanyCo,companyCo);
+		dbCompanyCo.setCompany(securityUtils.getCurrentDBUser().getCompany());
 		sCompanyCoRepository.save(dbCompanyCo);
 		wsCompanyCo.setId(dbCompanyCo.getId());
 		return wsCompanyCo;		
@@ -134,7 +161,7 @@ public class CompanyCoService {
 		{
 			dbCompanyCo.setSTypeDic(sTypeDicRepository.findOne(wsCompanyCo.getTypeId()));
 		}
-		
+
 
 		return dbCompanyCo;
 	}

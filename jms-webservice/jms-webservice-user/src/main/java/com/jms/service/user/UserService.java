@@ -163,7 +163,7 @@ public class UserService extends IUserServiceImpl{
 		Roles r_warehouse = roleService.save(SandVikRoleEnum.warehouse.name(),"主管",c);
 		Roles r_equipment = roleService.save(SandVikRoleEnum.equipment.name(),"仪器维护员",c);
 		Roles userRole = roleRepository.findByRoleAndCompanyName(
-				SystemRoleEnum.user.name(), c.getCompanyName());
+	    SystemRoleEnum.user.name(), c.getCompanyName());
 		
 		
 		Groups g_op = groupService.createGroup(c, GroupTypeEnum.Group, SandVikRoleEnum.OP.name(), "操作员", null);

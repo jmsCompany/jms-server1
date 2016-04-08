@@ -9,11 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jms.domain.db.FCostCenter;
+import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.f.WSFCostCenter;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.f.FCostCenterRepository;
+import com.jms.web.security.SecurityUtils;
 
 @Service
 @Transactional
@@ -28,10 +30,15 @@ public class CostCenterService {
 	@Autowired 
 	private CompanyRepository companyRepository;
 	
+
+	@Autowired
+	private SecurityUtils securityUtils;
+	
 	
 	@Transactional(readOnly=true)
-	public List<WSFCostCenter> getCostCenterList(Long companyId) throws Exception {
-		List<FCostCenter> costCenters = fCostCenterRepository.getByCompanyId(companyId);
+	public List<WSFCostCenter> getCostCenterList() throws Exception {
+		Users u = securityUtils.getCurrentDBUser();
+		List<FCostCenter> costCenters = fCostCenterRepository.getByCompanyId(u.getCompany().getIdCompany());
 		List<WSFCostCenter> wsCostCenters = new ArrayList<WSFCostCenter>();
 		for(FCostCenter s:costCenters)
 		{
@@ -86,10 +93,9 @@ public class CostCenterService {
 	{
 	
 		FCostCenter dbFCostCenter = (FCostCenter)BeanUtil.shallowCopy(wsFCostCenter, FCostCenter.class, fCostCenter);
-		if(wsFCostCenter.getCompanyId()!=null)
-		{
-			dbFCostCenter.setCompany(companyRepository.findOne(wsFCostCenter.getCompanyId()));
-		}
+
+		dbFCostCenter.setCompany(securityUtils.getCurrentDBUser().getCompany());
+		
 		
 		return dbFCostCenter;
 	}

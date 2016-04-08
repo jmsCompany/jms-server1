@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jms.domain.db.Company;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.user.UsersRepository;
+import com.jms.service.CurrencyTypeService;
 import com.jms.service.MaterialTypeService;
 import com.jms.service.SCountryDicService;
 import com.jms.service.SGenderDicService;
@@ -23,6 +24,7 @@ import com.jms.service.SLevelDicService;
 import com.jms.service.SStatusDicService;
 import com.jms.service.SStkTypeDicService;
 import com.jms.service.STypeDicService;
+import com.jms.service.SUnitDicService;
 import com.jms.service.StermDicService;
 import com.jms.service.YesOrNoService;
 import com.jms.service.company.CompanyService;
@@ -99,6 +101,10 @@ public class DatabaseInit {
 	
 	@Autowired
 	private  CompanyRepository companyRepository;
+	@Autowired
+	private SUnitDicService sUnitDicService;
+	@Autowired
+	private CurrencyTypeService currencyTypeService;
 	// 在系统初装的执行切只能执行一次，读取csv文件的数据到数据库中。
 	// todo:详细说明系统预设的所有信息这些信息的用途
 	public void init(ConfigurableApplicationContext ctx) throws IOException {
@@ -150,14 +156,13 @@ public class DatabaseInit {
 		yesOrNoService.loadSYesOrNoDics();
 		
 	
-
-		
 		sTypeDicService.loadSTypes();
 		stermDicService.loadStermDics();
 		sLevelDicService.loadLevels();
 		
 		sGenderDicService.loadGenders();
-		  
+		sUnitDicService.loadUnits();
+		  currencyTypeService.loadCurrencyTypies();
 		*/
 		
 		/*
@@ -168,8 +173,10 @@ public class DatabaseInit {
 				.authenticate(authentication);
 		SecurityContextHolder.getContext().setAuthentication(authenticated);
 		userService.createTestUsersforSandVik();
+	
 		*/
 		
+	
 	}
 
 }

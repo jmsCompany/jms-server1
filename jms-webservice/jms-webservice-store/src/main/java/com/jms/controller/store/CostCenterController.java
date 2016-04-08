@@ -7,7 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import com.jms.domain.ws.Valid;
-import com.jms.domain.ws.WSTest;
+import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.f.WSFCostCenter;
 import com.jms.service.CostCenterService;
 
@@ -46,8 +46,8 @@ public class CostCenterController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/costCenterList", method=RequestMethod.GET)
-	public WSTest  getLinkmanList(@RequestParam("companyId") Long companyId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
-		List<WSFCostCenter> wsFCostCenters = costCenterService.getCostCenterList(companyId);
+	public WSTableData  getCostCenterList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		List<WSFCostCenter> wsFCostCenters = costCenterService.getCostCenterList();
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
 		if(wsFCostCenters.size()<start + length)
@@ -56,11 +56,11 @@ public class CostCenterController {
 			end =start + length;
 		for (int i = start; i < end; i++) {
 			WSFCostCenter w = wsFCostCenters.get(i);
-			String[] d = {""+w.getCostCenterNo(),w.getDes(),w.getCompanyName(),""+w.getIdCostCenter()};
+			String[] d = {""+w.getCostCenterNo(),w.getDes(),""+w.getIdCostCenter()};
 			lst.add(d);
 
 		}
-		WSTest t = new WSTest();
+		WSTableData t = new WSTableData();
 		t.setDraw(draw);
 		t.setRecordsTotal(wsFCostCenters.size());
 		t.setRecordsFiltered(wsFCostCenters.size());
