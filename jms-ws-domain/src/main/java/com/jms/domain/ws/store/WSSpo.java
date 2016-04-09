@@ -30,7 +30,7 @@ public class WSSpo {
     private String sPoType;
     private Long sPoTypeId;
     
-    private Map<String,WSMaterial> materials = new HashMap<String,WSMaterial>();
+    private Map<String,WSSpoMaterial> poItems = new HashMap<String,WSSpoMaterial>();
 	
     public Long getIdPo() {
 		return idPo;
@@ -158,11 +158,11 @@ public class WSSpo {
 	public void setsPoTypeId(Long sPoTypeId) {
 		this.sPoTypeId = sPoTypeId;
 	}
-	public Map<String,WSMaterial> getMaterials() {
-		return materials;
+	public Map<String,WSSpoMaterial> getPoItems() {
+		return poItems;
 	}
-	public void setMaterials(Map<String,WSMaterial> materials) {
-		this.materials = materials;
+	public void setPoItems(Map<String,WSSpoMaterial> poItems) {
+		this.poItems = poItems;
 	}
 
 

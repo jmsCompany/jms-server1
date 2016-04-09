@@ -74,7 +74,7 @@ public class CompanyCoService {
 		}
 		for(SCompanyCo s:coCompanies)
 		{
-			WSSelectObj o = new WSSelectObj(s.getId(),s.getName());
+			WSSelectObj o = new WSSelectObj(s.getId(),s.getShortName());
 			objs.add(o);
 		}
 		

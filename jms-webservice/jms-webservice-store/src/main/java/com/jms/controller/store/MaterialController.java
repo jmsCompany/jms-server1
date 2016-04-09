@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.jms.domain.db.FCostCenter;
 import com.jms.domain.db.SCountryDic;
+import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMaterialCategory;
 import com.jms.domain.db.SMaterialTypeDic;
 import com.jms.domain.db.SUnitDic;
@@ -21,6 +22,7 @@ import com.jms.domain.ws.f.WSFCostCenter;
 import com.jms.domain.ws.store.WSMaterial;
 import com.jms.domain.ws.store.WSSStatus;
 import com.jms.repositories.s.SMaterialCategoryRepository;
+import com.jms.repositories.s.SMaterialRepository;
 import com.jms.repositories.s.SMaterialTypeDicRepository;
 import com.jms.repositories.s.SUnitDicRepository;
 import com.jms.service.CostCenterService;
@@ -40,6 +42,8 @@ public class MaterialController {
 	@Autowired private SUnitDicRepository sUnitDicRepository;
 	@Autowired private SecurityUtils securityUtils;
 	@Autowired private  CostCenterService costCenterService;
+	@Autowired
+	private SMaterialRepository sMaterialRepository;
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveMaterial", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -118,7 +122,7 @@ public class MaterialController {
 		}
 		
 		
-	    //物料小类
+	    //物料Unit
 		@Transactional(readOnly = true)
 		@RequestMapping(value="/s/units", method=RequestMethod.GET)
 		public List<WSSelectObj> findUnits() {
@@ -142,5 +146,15 @@ public class MaterialController {
 			return wso;
 		}
 		
+		@Transactional(readOnly = true)
+		@RequestMapping(value="/s/materials", method=RequestMethod.GET)
+		public List<WSSelectObj> findMaterials() {
+			List<WSSelectObj> wso = new ArrayList<WSSelectObj>();
+			for(SMaterial s : sMaterialRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
+			{
+				wso.add(new WSSelectObj(s.getIdMaterial(),s.getPno()+"-"+s.getDes()+"-"+s.getRev()));
+			}
+			return wso;
+		}
 	
 }

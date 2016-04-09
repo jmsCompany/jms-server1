@@ -133,7 +133,7 @@ public class MaterialService {
 	
 	
 	
-	private SMaterial toDBSmaterial(WSMaterial wsMaterial,SMaterial sMaterial) throws Exception
+	protected SMaterial toDBSmaterial(WSMaterial wsMaterial,SMaterial sMaterial) throws Exception
 	{
 	
 		SMaterial dbMaterial= (SMaterial)BeanUtil.shallowCopy(wsMaterial, SMaterial.class, sMaterial);
@@ -168,7 +168,7 @@ public class MaterialService {
 	}
 	
 	
-	private WSMaterial toWSMaterial(SMaterial sMaterial) throws Exception
+	protected WSMaterial toWSMaterial(SMaterial sMaterial) throws Exception
 	{
 		WSMaterial wsMaterial = (WSMaterial)BeanUtil.shallowCopy(sMaterial, WSMaterial.class, null);
 		if(sMaterial.getCompany()!=null)
