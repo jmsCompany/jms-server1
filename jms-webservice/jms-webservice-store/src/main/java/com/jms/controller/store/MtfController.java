@@ -9,26 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import com.jms.domain.db.FCostCenter;
-import com.jms.domain.db.SCountryDic;
-import com.jms.domain.db.SMaterialCategory;
-import com.jms.domain.db.SMaterialTypeDic;
-import com.jms.domain.db.SUnitDic;
-import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
-import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.f.WSFCostCenter;
-import com.jms.domain.ws.store.WSMaterial;
-import com.jms.domain.ws.store.WSSStatus;
+import com.jms.domain.ws.store.WSSMtf;
+import com.jms.domain.ws.store.WSSMtfMaterial;
 import com.jms.domain.ws.store.WSSType;
 import com.jms.domain.ws.store.WSTst;
 import com.jms.repositories.s.SMaterialCategoryRepository;
 import com.jms.repositories.s.SMaterialTypeDicRepository;
 import com.jms.repositories.s.SUnitDicRepository;
-import com.jms.service.CostCenterService;
 import com.jms.service.MaterialService;
+import com.jms.service.MtfMaterialService;
+import com.jms.service.MtfService;
 import com.jms.web.security.SecurityUtils;
 
 
@@ -36,14 +28,9 @@ import com.jms.web.security.SecurityUtils;
 @Transactional(readOnly=true)
 public class MtfController {
 	
-
-	
-	@Autowired private MaterialService materialService;
-	@Autowired private SMaterialTypeDicRepository sMaterialTypeDicRepository;
-	@Autowired private SMaterialCategoryRepository sMaterialCategoryRepository;
-	@Autowired private SUnitDicRepository sUnitDicRepository;
 	@Autowired private SecurityUtils securityUtils;
-	@Autowired private  CostCenterService costCenterService;
+	@Autowired private MtfService mtfService;
+	@Autowired private MtfMaterialService mtfMaterialService;
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/testing", method=RequestMethod.GET)
@@ -88,10 +75,67 @@ public class MtfController {
 		for(String k : wsTst.getTests().keySet())
 		{
 			WSSType w =wsTst.getTests().get(k);
-			System.out.println("id: " + w.getId() +", name: " + w.getName());
+		//	System.out.println("id: " + w.getId() +", name: " + w.getName());
 		}
 		return wsTst;
 		
+	}
+	
+	
+	
+	
+
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/s/saveSmtf", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public Valid saveSMtf(@RequestBody WSSMtf wsSMtf) throws Exception {
+		return mtfService.saveMtf(wsSMtf);
+	}
+	
+	
+
+
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/findSmtf", method=RequestMethod.GET)
+	public WSSMtf findWSSMtf(@RequestParam("smtfId") Long smtfId) throws Exception {
+		return mtfService.findSMtf(smtfId);
+	}
+	
+
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/smtfMaterialList", method=RequestMethod.GET)
+	public WSTableData  getSmtfMaterialList( @RequestParam Long typeId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		List<WSSMtfMaterial> wsSMtfMaterials = mtfMaterialService.findWSSMtfMaterial(companyId, typeId);
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(wsSMtfMaterials.size()<start + length)
+			end =wsSMtfMaterials.size();
+		else
+			end =start + length;
+		switch(typeId.intValue())
+		{
+		    case 1: //来料入库
+		    {
+		    	for (int i = start; i < end; i++) {
+					WSSMtfMaterial w = wsSMtfMaterials.get(i);
+					String[] d = {w.getMtNo(),""+w.getCodePo(),w.getCodeCo(),w.getDeliveryDate().toString(),w.getCreationTime().toString(),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),""+w.getStatus(),""+w.getIdMt()};
+					lst.add(d);
+
+				}
+		    	break;
+		    }
+		
+		}
+	
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(wsSMtfMaterials.size());
+		t.setRecordsFiltered(wsSMtfMaterials.size());
+	    t.setData(lst);
+	    return t;
 	}
 	
 	

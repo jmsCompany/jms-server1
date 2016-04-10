@@ -86,7 +86,7 @@ public class SpoService {
 		spo.setDateOrder(new Date());
 		spo=toDBSpo(wsSpo,spo);
 		SPo sp =sSpoRepository.save(spo);
-		System.out.println("spoid: " +sp.getIdPo() );
+		//System.out.println("spoid: " +sp.getIdPo() );
 		//remove all spo materials
 		if(wsSpo.getIdPo()!=null&&!wsSpo.getIdPo().equals(0l))
 		{

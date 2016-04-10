@@ -1,7 +1,7 @@
 package com.jms.domain.ws.store;
 
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 
@@ -30,7 +30,7 @@ public class WSSpo {
     private String sPoType;
     private Long sPoTypeId;
     
-    private Map<String,WSSpoMaterial> poItems = new HashMap<String,WSSpoMaterial>();
+    private Map<String,WSSpoMaterial> poItems = new LinkedHashMap<String,WSSpoMaterial>();
 	
     public Long getIdPo() {
 		return idPo;

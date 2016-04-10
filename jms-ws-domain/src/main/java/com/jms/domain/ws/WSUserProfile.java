@@ -12,6 +12,7 @@ public class WSUserProfile implements java.io.Serializable{
 	private Long idCompany;
 	private String name;
 	private List<WSMenu> WSMenuList;
+	private Boolean isOP;
 	public String getToken() {
 		return token;
 	}
@@ -54,6 +55,12 @@ public class WSUserProfile implements java.io.Serializable{
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public Boolean getIsOP() {
+		return isOP;
+	}
+	public void setIsOP(Boolean isOP) {
+		this.isOP = isOP;
 	}
 
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import com.jms.acl.SecuredObjectService;
 import com.jms.domain.SandVikRoleEnum;
 import com.jms.domain.db.Apps;
+import com.jms.domain.db.GroupMembers;
 import com.jms.domain.db.Groups;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
@@ -65,16 +66,27 @@ public class UserController {
 		String token = userService.login(wsUser.getLogin(), wsUser.getPassword());
 		if(token==null)
 		{
-			System.out.println("token is null????");
+			//System.out.println("token is null????");
 			return userProfile;
 		}
 		Users u =usersRepository.findByUsernameOrEmailOrMobile(wsUser.getLogin());
 		userProfile.setLogin(wsUser.getLogin());
 		userProfile.setToken(token);
 		userProfile.setIdUser(u.getIdUser());
-		userProfile.setLogoURL("www.logo.com");
+		userProfile.setLogoURL("www.xxxxxx.com");
 		userProfile.setIdCompany(u.getCompany().getIdCompany());
 		userProfile.setName(u.getName());
+		Boolean isOP= false;
+		for(GroupMembers g:u.getGroupMemberses())
+		{
+			if(g.getRoles().getRole().equals("OP"))
+			{
+				isOP=true;
+				break;
+			}
+		}
+		
+		userProfile.setIsOP(isOP);
 		List<Apps> appList =appsRepository.findAll();
 		Map<Apps, String> smap= securedObjectService.getSecuredObjectsWithPermissions(u, appList);
 		List<WSMenu> WSMenuList = new ArrayList<WSMenu>();
@@ -103,7 +115,7 @@ public class UserController {
 	
 	@RequestMapping(value="/check/jmstoken", method=RequestMethod.GET)
 	public Valid checkToken(@RequestParam("jmstoken") String jmstoken) throws Exception {
-		System.out.println("token: " + jmstoken);
+		System.out.println("check token: " + jmstoken);
 		Boolean returnVal = userService.checkToken(jmstoken);
 		Valid valid = new Valid();
 		valid.setValid(returnVal);

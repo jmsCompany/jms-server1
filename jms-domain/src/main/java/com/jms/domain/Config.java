@@ -63,5 +63,7 @@ public class Config {
 	
 	//合作公司级别
      public static final String[] sLevels = {"A","B","C"};
+ 	//物流流转类型
+     public static final String[] sMtfTypes = {"来料入库","采购退货","手动流转","工单流转","出货","销售退货"};
 
 }
