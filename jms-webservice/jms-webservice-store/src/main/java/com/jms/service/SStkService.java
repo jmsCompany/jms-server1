@@ -14,6 +14,7 @@ import com.jms.domain.Config;
 import com.jms.domain.db.SStk;
 import com.jms.domain.db.SStkTypeDic;
 import com.jms.domain.ws.Valid;
+import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.store.WSStk;
 import com.jms.domain.ws.store.WSStkType;
 import com.jms.repositories.s.SStatusDicRepository;
@@ -85,6 +86,21 @@ public class SStkService {
 		return wsStkList;
 	}
 
+	
+	
+	@Transactional(readOnly=true)
+	public List<WSSelectObj> findStksSelectObj(Long statusId)
+	{
+		List<WSSelectObj> wsStkList = new ArrayList<WSSelectObj>();
+		for(SStk stk: sStkRepository.findByIdCompanyAndStatus(securityUtils.getCurrentDBUser().getCompany().getIdCompany(),statusId))
+		{
+			WSSelectObj o = new WSSelectObj(stk.getId(),stk.getStkName());
+			wsStkList.add(o);
+		}
+		
+		return wsStkList;
+	}
+	
 	
 	@Transactional(readOnly=true)
 	public WSStk findStk(Long stkId)

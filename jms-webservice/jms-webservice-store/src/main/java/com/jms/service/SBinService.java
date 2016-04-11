@@ -15,6 +15,7 @@ import com.jms.domain.db.SBin;
 import com.jms.domain.db.SStk;
 import com.jms.domain.db.SStkTypeDic;
 import com.jms.domain.ws.Valid;
+import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.store.WSBin;
 import com.jms.domain.ws.store.WSStk;
 import com.jms.domain.ws.store.WSStkType;
@@ -92,6 +93,20 @@ public class SBinService {
 		return wsBinList;
 	}
 
+	
+	@Transactional(readOnly=true)
+	public List<WSSelectObj> findBinsObjs(Long idStk)
+	{
+		List<WSSelectObj> wsBinList = new ArrayList<WSSelectObj>();
+		for(SBin bin: sBinRepository.getByIdStk(idStk))
+		{
+			WSSelectObj o = new WSSelectObj(bin.getIdBin(),bin.getBin());
+			wsBinList.add(o);
+		}
+		
+		return wsBinList;
+	}
+	
 	
 	@Transactional(readOnly=true)
 	public WSBin findBin(Long binId)

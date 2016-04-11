@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import com.jms.domain.ws.Valid;
+import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.store.WSSpo;
 import com.jms.domain.ws.store.WSSpoMaterial;
@@ -80,5 +81,9 @@ public class SpoController {
 	    return t;
 	}
 
-	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/spoList", method=RequestMethod.GET)
+	public List<WSSelectObj> findSpoList(@RequestParam("codeCo") Long codeCo) throws Exception {
+		return spoService.findSpoListByCodeCo(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), codeCo);
+	}
 }

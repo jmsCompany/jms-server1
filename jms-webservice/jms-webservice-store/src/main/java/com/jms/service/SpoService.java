@@ -19,6 +19,7 @@ import com.jms.domain.db.SPoMaterial;
 import com.jms.domain.db.SStk;
 import com.jms.domain.db.SStkTypeDic;
 import com.jms.domain.ws.Valid;
+import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.store.WSBin;
 import com.jms.domain.ws.store.WSCompanyCo;
 import com.jms.domain.ws.store.WSSpo;
@@ -148,6 +149,20 @@ public class SpoService {
 		
 		return ws;
 	}
+	public List<WSSelectObj> findSpoListByCodeCo(Long companyId,Long codeCo) throws Exception 
+	{
+		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
+		for(SPo s : sSpoRepository.findByCompanyIdAndCodeCo(companyId,codeCo))
+		{
+			WSSelectObj w = new WSSelectObj(s.getIdPo(),s.getCodePo());
+			ws.add(w);
+		}
+		
+		return ws;
+	}
+	
+	
+	
 	private SPo toDBSpo(WSSpo wsSpo,SPo spo) throws Exception
 	{
 	

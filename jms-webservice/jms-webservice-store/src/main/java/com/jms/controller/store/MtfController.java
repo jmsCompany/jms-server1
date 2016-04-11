@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import com.jms.domain.ws.Valid;
+import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.store.WSSMtf;
 import com.jms.domain.ws.store.WSSMtfMaterial;
@@ -17,10 +18,12 @@ import com.jms.domain.ws.store.WSSType;
 import com.jms.domain.ws.store.WSTst;
 import com.jms.repositories.s.SMaterialCategoryRepository;
 import com.jms.repositories.s.SMaterialTypeDicRepository;
+import com.jms.repositories.s.SMtfTypeDicRepository;
 import com.jms.repositories.s.SUnitDicRepository;
 import com.jms.service.MaterialService;
 import com.jms.service.MtfMaterialService;
 import com.jms.service.MtfService;
+import com.jms.service.SMtfTypeDicService;
 import com.jms.web.security.SecurityUtils;
 
 
@@ -31,6 +34,7 @@ public class MtfController {
 	@Autowired private SecurityUtils securityUtils;
 	@Autowired private MtfService mtfService;
 	@Autowired private MtfMaterialService mtfMaterialService;
+	@Autowired private SMtfTypeDicService sMtfTypeDicService;
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/testing", method=RequestMethod.GET)
@@ -105,7 +109,7 @@ public class MtfController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/smtfMaterialList", method=RequestMethod.GET)
-	public WSTableData  getSmtfMaterialList( @RequestParam Long typeId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+	public WSTableData  getSmtfMaterialList(@RequestParam Long typeId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		List<WSSMtfMaterial> wsSMtfMaterials = mtfMaterialService.findWSSMtfMaterial(companyId, typeId);
@@ -127,6 +131,17 @@ public class MtfController {
 				}
 		    	break;
 		    }
+		 /*   case 2: //采购退货
+		    {
+		    	for (int i = start; i < end; i++) {
+					WSSMtfMaterial w = wsSMtfMaterials.get(i);
+					String[] d = {w.getEmpMtUser(),w.getCreationTime().toString(),w.getCodeCo(),w.getDeliveryDate().toString(),w.getCreationTime().toString(),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),""+w.getStatus(),""+w.getIdMt()};
+					lst.add(d);
+
+				}
+		    	break;
+		    }
+		    */
 		
 		}
 	
@@ -138,5 +153,11 @@ public class MtfController {
 	    return t;
 	}
 	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/getMtfTypes", method=RequestMethod.GET)
+	public List<WSSelectObj> getMtfTypes() {
+		return  sMtfTypeDicService.getMtfTypes();
+	}
 	
 }

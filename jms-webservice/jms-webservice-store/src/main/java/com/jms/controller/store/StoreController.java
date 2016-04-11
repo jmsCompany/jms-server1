@@ -28,6 +28,7 @@ import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSCompany;
 import com.jms.domain.ws.WSMenu;
 import com.jms.domain.ws.WSPCpp;
+import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSSmr;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.WSUser;
@@ -119,9 +120,16 @@ public class StoreController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/getStks", method=RequestMethod.GET)
-	public List<WSStk> getStks(@RequestParam("statusId") Long statusId) {
-		return sStkService.findStks(statusId);	
+	public List<WSSelectObj> getStks(@RequestParam("statusId") Long statusId) {
+		return sStkService.findStksSelectObj(statusId);
 	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/getBins", method=RequestMethod.GET)
+	public List<WSSelectObj> geBins(@RequestParam Long idStk) {
+		return sBinService.findBinsObjs(idStk);
+	}
+	
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/stkList", method=RequestMethod.GET)
