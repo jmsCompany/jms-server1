@@ -102,8 +102,8 @@ public class MtfService {
 		}
 		for(String k: wsSMtf.getSmtfItems().keySet())
 		{
+			System.out.println(k +", ... ");
 			WSSMtfMaterial wm =wsSMtf.getSmtfItems().get(k);
-			
 			wm.setIdMt(sMtf1.getIdMt());
 			mtfMaterialService.saveMtfMaterial(wm);
 		}
@@ -126,7 +126,7 @@ public class MtfService {
 	private SMtf toDBMtf(WSSMtf wsSMtf,SMtf sMtf) throws Exception
 	{
 	
-		SMtf dbSMtf = (SMtf)BeanUtil.shallowCopy(wsSMtf, SMtf.class, wsSMtf);
+		SMtf dbSMtf = (SMtf)BeanUtil.shallowCopy(wsSMtf, SMtf.class, sMtf);
 		dbSMtf.setCompany(securityUtils.getCurrentDBUser().getCompany());
 		if(wsSMtf.getEmpMtUserId()!=null)
 		{

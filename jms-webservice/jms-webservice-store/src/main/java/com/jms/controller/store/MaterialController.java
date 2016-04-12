@@ -8,22 +8,22 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import com.jms.domain.db.FCostCenter;
-import com.jms.domain.db.SCountryDic;
+import com.jms.domain.db.SBin;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMaterialCategory;
 import com.jms.domain.db.SMaterialTypeDic;
 import com.jms.domain.db.SUnitDic;
-import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.f.WSFCostCenter;
+import com.jms.domain.ws.store.WSLotNo;
 import com.jms.domain.ws.store.WSMaterial;
-import com.jms.domain.ws.store.WSSStatus;
 import com.jms.repositories.s.SMaterialCategoryRepository;
 import com.jms.repositories.s.SMaterialRepository;
 import com.jms.repositories.s.SMaterialTypeDicRepository;
+import com.jms.repositories.s.SMtfMaterialRepository;
+import com.jms.repositories.s.SSpoMaterialRepository;
 import com.jms.repositories.s.SUnitDicRepository;
 import com.jms.service.CostCenterService;
 import com.jms.service.MaterialService;
@@ -44,6 +44,11 @@ public class MaterialController {
 	@Autowired private  CostCenterService costCenterService;
 	@Autowired
 	private SMaterialRepository sMaterialRepository;
+	@Autowired
+	private SSpoMaterialRepository sSpoMaterialRepository;
+	
+	@Autowired
+	private SMtfMaterialRepository sMtfMaterialRepository;
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveMaterial", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -156,5 +161,46 @@ public class MaterialController {
 			}
 			return wso;
 		}
+		
+		@Transactional(readOnly = true)
+		@RequestMapping(value="/s/findMaterialsBySpoId", method=RequestMethod.GET)
+		public List<WSSelectObj> findMaterialsBySpoId(@RequestParam("spoId") Long spoId) {
+			System.out.println("find material by spo id: " + spoId);
+			List<WSSelectObj> wso = new ArrayList<WSSelectObj>();
+			for(SMaterial s : sSpoMaterialRepository.getBySpoId(spoId))
+			{
+				System.out.println("add s");
+				wso.add(new WSSelectObj(s.getIdMaterial(),s.getPno()+"-"+s.getDes()+"-"+s.getRev()));
+			}
+			return wso;
+		}
+		
+		@Transactional(readOnly = true)
+		@RequestMapping(value="/s/findLotNos", method=RequestMethod.GET)
+		public List<WSLotNo> findLotNos(@RequestParam("spoId") Long spoId,@RequestParam("materialId") Long  materialId) {
+			System.out.println("find lot nos by spoid: " + spoId);
+			List<WSLotNo> wso = new ArrayList<WSLotNo>();
+			for(String s : sMtfMaterialRepository.getLotNosBySpoIdAndMaterialId(spoId, materialId))
+			{
+				System.out.println("add s: " + s);
+				wso.add(new WSLotNo(s,s));
+			}
+			return wso;
+		}
+		
+		@Transactional(readOnly = true)
+		@RequestMapping(value="/s/findToBinsBySpoIdAndMaterialID", method=RequestMethod.GET)
+		public List<WSSelectObj> findToBinsBySpoIdAndMaterialID(@RequestParam("spoId") Long spoId,@RequestParam("materialId") Long  materialId) {
+			//System.out.println("find lot nos by spoid: " + spoId);
+			List<WSSelectObj> wso = new ArrayList<WSSelectObj>();
+			for(SBin s : sMtfMaterialRepository.getToBinsBySpoIdAndMaterialId(spoId, materialId))
+			{
+				//System.out.println("add s: " + s);
+				wso.add(new WSSelectObj(s.getIdBin(),s.getBin()));
+			}
+			return wso;
+		}
+		
+		
 	
 }

@@ -111,10 +111,14 @@ public class MtfController {
 	@RequestMapping(value="/s/smtfMaterialList", method=RequestMethod.GET)
 	public WSTableData  getSmtfMaterialList(@RequestParam Long typeId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
+		System.out.println("get smtf materials:  type = " + typeId);
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		List<WSSMtfMaterial> wsSMtfMaterials = mtfMaterialService.findWSSMtfMaterial(companyId, typeId);
+		System.out.println("get smtf materials:  size = " + wsSMtfMaterials.size());
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
+		System.out.println("start = " +start);
+		System.out.println( ", length = " + length);
 		if(wsSMtfMaterials.size()<start + length)
 			end =wsSMtfMaterials.size();
 		else
@@ -123,6 +127,7 @@ public class MtfController {
 		{
 		    case 1: //来料入库
 		    {
+		    	System.out.println("case 1 来料入库 " + typeId);
 		    	for (int i = start; i < end; i++) {
 					WSSMtfMaterial w = wsSMtfMaterials.get(i);
 					String[] d = {w.getMtNo(),""+w.getCodePo(),w.getCodeCo(),w.getDeliveryDate().toString(),w.getCreationTime().toString(),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),""+w.getStatus(),""+w.getIdMt()};
@@ -131,17 +136,17 @@ public class MtfController {
 				}
 		    	break;
 		    }
-		 /*   case 2: //采购退货
+		   case 2: //采购退货
 		    {
 		    	for (int i = start; i < end; i++) {
 					WSSMtfMaterial w = wsSMtfMaterials.get(i);
-					String[] d = {w.getEmpMtUser(),w.getCreationTime().toString(),w.getCodeCo(),w.getDeliveryDate().toString(),w.getCreationTime().toString(),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),""+w.getStatus(),""+w.getIdMt()};
+					String[] d = {w.getEmpMtUser(),w.getCreationTime().toString(),w.getMtNo(),w.getCodeCo(),w.getCodePo(),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),w.getLotNo(),""+w.getQty(),""+w.getIdMt()};
 					lst.add(d);
 
 				}
 		    	break;
 		    }
-		    */
+		    
 		
 		}
 	

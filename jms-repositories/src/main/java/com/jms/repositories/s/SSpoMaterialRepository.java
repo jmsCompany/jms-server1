@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SPoMaterial;
 
 
@@ -18,6 +20,9 @@ public interface SSpoMaterialRepository  extends JpaRepository<SPoMaterial, Long
 	
 	@Query("select s from SPoMaterial s where s.SPo.company.idCompany=?1")
 	public List<SPoMaterial> getByCompanyId(Long companyId);
+	
+	@Query("select s.SMaterial from SPoMaterial s where s.SPo.idPo=?1")
+	public List<SMaterial> getBySpoId(Long spoId);
 	
 
 }

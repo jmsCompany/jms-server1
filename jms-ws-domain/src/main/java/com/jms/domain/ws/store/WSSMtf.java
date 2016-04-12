@@ -12,7 +12,7 @@ public class WSSMtf {
 	     private Long typeId;
 	     private String company;
 	     private Long companyId;
-	     private Long ToStkId;
+	     private Long toStkId;
 	     private String ToStk;
 	     private Long fromStkId;
 	     private String fromStk;
@@ -56,12 +56,7 @@ public class WSSMtf {
 		public void setCompanyId(Long companyId) {
 			this.companyId = companyId;
 		}
-		public Long getToStkId() {
-			return ToStkId;
-		}
-		public void setToStkId(Long toStkId) {
-			ToStkId = toStkId;
-		}
+
 		public String getToStk() {
 			return ToStk;
 		}
@@ -140,6 +135,12 @@ public class WSSMtf {
 		}
 		public void setSmtfItems(Map<String,WSSMtfMaterial> smtfItems) {
 			this.smtfItems = smtfItems;
+		}
+		public Long getToStkId() {
+			return toStkId;
+		}
+		public void setToStkId(Long toStkId) {
+			this.toStkId = toStkId;
 		}
    
 }

@@ -10,34 +10,21 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.jms.domain.Config;
-import com.jms.domain.db.SBin;
-import com.jms.domain.db.SCompanyCo;
 import com.jms.domain.db.SPo;
 import com.jms.domain.db.SPoMaterial;
-import com.jms.domain.db.SStk;
-import com.jms.domain.db.SStkTypeDic;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.store.WSBin;
-import com.jms.domain.ws.store.WSCompanyCo;
 import com.jms.domain.ws.store.WSSpo;
 import com.jms.domain.ws.store.WSSpoMaterial;
 import com.jms.domain.ws.store.WSSpoRemark;
-import com.jms.domain.ws.store.WSStk;
-import com.jms.domain.ws.store.WSStkType;
 import com.jms.domainadapter.BeanUtil;
-import com.jms.repositories.s.SBinRepository;
 import com.jms.repositories.s.SCompanyCoRepository;
 import com.jms.repositories.s.SCurrencyTypeRepository;
 import com.jms.repositories.s.SSpoMaterialRepository;
 import com.jms.repositories.s.SSpoRepository;
 import com.jms.repositories.s.SStatusDicRepository;
 import com.jms.repositories.s.SStermDicRepository;
-import com.jms.repositories.s.SStkRepository;
 import com.jms.repositories.s.SStkTypeDicRepository;
-import com.jms.repositories.s.SYesOrNoDicRepository;
 import com.jms.web.security.SecurityUtils;
 
 

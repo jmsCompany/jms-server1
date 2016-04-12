@@ -138,7 +138,7 @@ public class UserController {
 	
 		List<WSAndriodMenuItem>  items = new ArrayList<WSAndriodMenuItem>();
 		JMSUserDetails ud = securityUtils.getCurrentUser();
-		System.out.println(" get android menu: the token is:  " + ud.getToken());
+		//System.out.println(" get android menu: the token is:  " + ud.getToken());
 		for(GrantedAuthority g: ud.getAuthorities())
 		{
 			if(g.getAuthority().equals(SandVikRoleEnum.OP.name()))
@@ -150,7 +150,7 @@ public class UserController {
 				WSAndriodMenuItem i4 = new WSAndriodMenuItem("OP","操作员","Actualsetup","Actualsetup","实际装载时间记录");
 				WSAndriodMenuItem i5 = new WSAndriodMenuItem("OP","操作员","Checklist","Checklist","检查清单");
 				WSAndriodMenuItem i6 = new WSAndriodMenuItem("OP","操作员","Eqstopforop","Eqstopforop","由操作工人填写设备故障原因");
-				WSAndriodMenuItem i7 = new WSAndriodMenuItem("OP","操作员","Ehslogin","Ehslogin","EHS登录");
+				//WSAndriodMenuItem i7 = new WSAndriodMenuItem("OP","操作员","Ehslogin","Ehslogin","EHS登录");
 				WSAndriodMenuItem i8 = new WSAndriodMenuItem("OP","操作员","Thinkthroughthetask","Thinkthroughthetask","进行安全检查");
 				items.add(i1);
 				items.add(i2);
@@ -158,7 +158,7 @@ public class UserController {
 				items.add(i4);
 				items.add(i5);
 				items.add(i6);
-				items.add(i7);
+				//items.add(i7);
 				items.add(i8);
 				break;
 			}
@@ -179,7 +179,7 @@ public class UserController {
 			{
 				System.out.println(" get quality: ");
 				WSAndriodMenuItem i1 = new WSAndriodMenuItem("quality","质量","Unplanned_quality","Unplanned_quality","计划外的质量原因导致停机");
-				WSAndriodMenuItem i2 = new WSAndriodMenuItem("quality","质量","Qtycheck","Qtycheck","计划外的质量原因导致停机");
+				WSAndriodMenuItem i2 = new WSAndriodMenuItem("quality","质量","Problem_des","Problem_des","质量问题描述");
 				items.add(i1);
 				items.add(i2);
 				break;

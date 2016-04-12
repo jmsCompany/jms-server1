@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMtf;
 import com.jms.domain.db.SMtfMaterial;
 import com.jms.domain.ws.Valid;
@@ -63,7 +64,7 @@ public class MtfMaterialService {
 		
 		SMtfMaterial sMtfMaterial;
 		//create
-		if(wsSMtfMaterial==null||wsSMtfMaterial.getIdMtfMaterial().equals(0l))
+		if(wsSMtfMaterial.getIdMtfMaterial()==null||wsSMtfMaterial.getIdMtfMaterial().equals(0l))
 		{
 			sMtfMaterial=new SMtfMaterial();
 		}
@@ -129,6 +130,7 @@ public class MtfMaterialService {
 			dbSMtfMaterial.setSStatusDic(sStatusDicRepository.findOne(wsSMtfMaterial.getStatusId()));
 		}
 		dbSMtfMaterial.setUQty(wsSMtfMaterial.getUqty());
+		
 
 		return dbSMtfMaterial;
 	}
@@ -156,12 +158,26 @@ public class MtfMaterialService {
 			wsSMtfMaterial.setMaterialId(sMtfMaterial.getSMaterial().getIdMaterial());
 			wsSMtfMaterial.setMaterialPno(sMtfMaterial.getSMaterial().getPno());
 			wsSMtfMaterial.setMaterialRev(sMtfMaterial.getSMaterial().getRev());
+			wsSMtfMaterial.setMaterialDes(sMtfMaterial.getSMaterial().getDes());
+			if(sMtfMaterial.getSMaterial().getSUnitDicByUnitInf()!=null)
 			wsSMtfMaterial.setMarterialUnit(sMtfMaterial.getSMaterial().getSUnitDicByUnitInf().getName());
+			
+		}
+		if(sMtfMaterial.getSPoMaterial().getSMaterial()!=null)
+		{
+			SMaterial s = sMtfMaterial.getSPoMaterial().getSMaterial();
+			wsSMtfMaterial.setMaterialId(s.getIdMaterial());
+			wsSMtfMaterial.setMaterialPno(s.getPno());
+			wsSMtfMaterial.setMaterialRev(s.getRev());
+			wsSMtfMaterial.setMaterialDes(s.getDes());
+			if(s.getSUnitDicByUnitInf()!=null)
+			wsSMtfMaterial.setMarterialUnit(s.getSUnitDicByUnitInf().getName());
 			
 		}
 		if(sMtfMaterial.getSMtf()!=null)
 		{
 			SMtf sMtf = sMtfMaterial.getSMtf();
+			wsSMtfMaterial.setCreationTime(sMtf.getCreationTime());
 			if(sMtf.getSMtfTypeDic()!=null)
 			{
 				wsSMtfMaterial.setType(sMtf.getSMtfTypeDic().getName());
@@ -201,6 +217,7 @@ public class MtfMaterialService {
 			wsSMtfMaterial.setPoMaterialId(sMtfMaterial.getSPoMaterial().getIdPoMaterial());
 			wsSMtfMaterial.setCodeCo(sMtfMaterial.getSPoMaterial().getSPo().getSCompanyCo().getCode());
 			wsSMtfMaterial.setCodePo(sMtfMaterial.getSPoMaterial().getSPo().getCodePo());
+			wsSMtfMaterial.setDeliveryDate(sMtfMaterial.getSPoMaterial().getDeliveryDate());
 		}
 		if(sMtfMaterial.getSSo()!=null)
 		{
@@ -215,6 +232,7 @@ public class MtfMaterialService {
 			wsSMtfMaterial.setStatusId(sMtfMaterial.getSStatusDic().getId());
 		}
 		wsSMtfMaterial.setUqty(sMtfMaterial.getUQty());
+	
 
 		return wsSMtfMaterial;
 	}

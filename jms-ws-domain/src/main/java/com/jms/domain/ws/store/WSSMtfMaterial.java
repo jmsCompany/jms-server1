@@ -49,7 +49,7 @@ public class WSSMtfMaterial {
     private Long typeId;
     private String company;
     private Long companyId;
-    private Long ToStkId;
+    private Long toStkId;
     private String ToStk;
     private Long fromStkId;
     private String fromStk;
@@ -249,12 +249,7 @@ public class WSSMtfMaterial {
 	public void setCompanyId(Long companyId) {
 		this.companyId = companyId;
 	}
-	public Long getToStkId() {
-		return ToStkId;
-	}
-	public void setToStkId(Long toStkId) {
-		ToStkId = toStkId;
-	}
+
 	public String getToStk() {
 		return ToStk;
 	}
@@ -344,6 +339,12 @@ public class WSSMtfMaterial {
 	}
 	public void setCodePo(String codePo) {
 		this.codePo = codePo;
+	}
+	public Long getToStkId() {
+		return toStkId;
+	}
+	public void setToStkId(Long toStkId) {
+		this.toStkId = toStkId;
 	}
     
   
