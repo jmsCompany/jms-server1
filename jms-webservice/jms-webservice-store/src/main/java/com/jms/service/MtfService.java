@@ -1,34 +1,21 @@
 package com.jms.service;
 
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.jms.domain.db.SMtf;
 import com.jms.domain.db.SMtfMaterial;
-import com.jms.domain.db.SPo;
-import com.jms.domain.db.SPoMaterial;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.store.WSSMtf;
 import com.jms.domain.ws.store.WSSMtfMaterial;
-import com.jms.domain.ws.store.WSSpo;
-import com.jms.domain.ws.store.WSSpoMaterial;
 import com.jms.domainadapter.BeanUtil;
-import com.jms.repositories.p.PWoBomRepository;
-import com.jms.repositories.s.SBinRepository;
-import com.jms.repositories.s.SMaterialRepository;
 import com.jms.repositories.s.SMtfMaterialRepository;
 import com.jms.repositories.s.SMtfRepository;
 import com.jms.repositories.s.SMtfTypeDicRepository;
-import com.jms.repositories.s.SSoRepository;
-import com.jms.repositories.s.SSpoMaterialRepository;
 import com.jms.repositories.s.SStatusDicRepository;
 import com.jms.repositories.s.SStkRepository;
 import com.jms.repositories.user.UsersRepository;
@@ -50,25 +37,11 @@ public class MtfService {
 	@Autowired
 	private MtfMaterialService mtfMaterialService;
 	
-
-
-	@Autowired
-	private SSpoMaterialRepository sSpoMaterialRepository;
-	@Autowired
-	private SMaterialRepository sMaterialRepository;
-	@Autowired
-	private SBinRepository sBinRepository;
-	
-	@Autowired
-	private SSoRepository sSoRepository;
-	
 	@Autowired
 	private SMtfRepository sMtfRepository;
 	@Autowired 
 	private  SecurityUtils securityUtils;
-	
-	@Autowired
-	private PWoBomRepository pWoBomRepository;
+
 	@Autowired
 	private UsersRepository usersRepository;
 	@Autowired
@@ -121,8 +94,6 @@ public class MtfService {
 		return toWSSMtf(sMtf);
 	}
 	
-	
-	
 	private SMtf toDBMtf(WSSMtf wsSMtf,SMtf sMtf) throws Exception
 	{
 	
@@ -153,6 +124,7 @@ public class MtfService {
 			dbSMtf.setSMtfTypeDic(sMtfTypeDicRepository.findOne(wsSMtf.getTypeId()));
 		}
 		dbSMtf.setCreationTime(new Date());
+	
 		return dbSMtf;
 	}
 	
