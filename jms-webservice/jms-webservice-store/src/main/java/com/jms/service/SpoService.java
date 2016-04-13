@@ -62,16 +62,17 @@ public class SpoService {
 		
 		SPo spo;
 		//create
-		if(wsSpo==null||wsSpo.getIdPo().equals(0l))
+		if(wsSpo.getIdPo()==null||wsSpo.getIdPo().equals(0l))
 		{
 			spo=new SPo();
+			spo.setDateOrder(new Date());
 		}
 		//update
 		else
 		{
 			spo = sSpoRepository.findOne(wsSpo.getIdPo());	
 		}
-		spo.setDateOrder(new Date());
+	
 		spo=toDBSpo(wsSpo,spo);
 		SPo sp =sSpoRepository.save(spo);
 		//System.out.println("spoid: " +sp.getIdPo() );
