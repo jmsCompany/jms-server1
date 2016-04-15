@@ -11,13 +11,8 @@ import com.jms.domain.db.SSo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.store.WSSpo;
-import com.jms.domain.ws.store.WSSpoMaterial;
-import com.jms.domain.ws.store.WSSpoRemark;
 import com.jms.domain.ws.store.WSSso;
 import com.jms.repositories.s.SSoRepository;
-import com.jms.service.SpoMaterialService;
-import com.jms.service.SpoService;
 import com.jms.service.SsoService;
 import com.jms.web.security.SecurityUtils;
 
@@ -34,6 +29,7 @@ public class SsoController {
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveSo", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public Valid saveSo(@RequestBody WSSso wsSso) throws Exception {
+	//	System.out.println("save So");
 		return ssoService.saveSSo(wsSso);
 	}
 	
@@ -62,7 +58,8 @@ public class SsoController {
 			SSo w = ssos.get(i);
 			String status=(w.getSStatusDic()==null)?"":w.getSStatusDic().getName();
 			String unit =(w.getSMaterial().getSUnitDicByUnitInf()==null)?"":w.getSMaterial().getSUnitDicByUnitInf().getName();
-			String[] d = {w.getCodeSo(),""+w.getDateOrder(),w.getUsers().getName(),w.getSCompanyCo().getCode(),status,w.getSMaterial().getPno(),w.getSMaterial().getRev(),w.getSMaterial().getDes(),unit,""+w.getQtySo(),""+w.getTotalAmount(),w.getDeliveryDate().toString(),""+w.getQtyDelivered(),""+w.getIdSo()};
+			String companyCoCode =(w.getSCompanyCo()==null)?"":w.getSCompanyCo().getCode();
+			String[] d = {w.getCodeSo(),""+w.getDateOrder(),w.getUsers().getName(),companyCoCode,status,w.getSMaterial().getPno(),w.getSMaterial().getRev(),w.getSMaterial().getDes(),unit,""+w.getQtySo(),""+w.getTotalAmount(),w.getDeliveryDate().toString(),""+w.getQtyDelivered(),""+w.getIdSo()};
 			lst.add(d);
 
 		}
@@ -72,6 +69,30 @@ public class SsoController {
 		t.setRecordsFiltered(ssos.size());
 	    t.setData(lst);
 	    return t;
+	}
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/getSoListObjsByCompanyCoId", method=RequestMethod.GET)
+	public List<WSSelectObj> getSoListByCompanyCoId(@RequestParam("companyCoId") Long companyCoId) throws Exception {
+		List<WSSelectObj>  ws = new ArrayList<WSSelectObj>();
+		for(SSo s :sSoRepository.findByCompanyCoId(companyCoId))
+		{
+			WSSelectObj w = new WSSelectObj(s.getIdSo(),s.getCodeSo());
+			ws.add(w);
+		}
+		return ws;
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/getSoListObjs", method=RequestMethod.GET)
+	public List<WSSelectObj> getSoList() throws Exception {
+		List<WSSelectObj>  ws = new ArrayList<WSSelectObj>();
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		for(SSo s :sSoRepository.findByCompanyId(companyId))
+		{
+			WSSelectObj w = new WSSelectObj(s.getIdSo(),s.getCodeSo());
+			ws.add(w);
+		}
+		return ws;
 	}
 
 

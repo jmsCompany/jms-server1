@@ -3,8 +3,6 @@ package com.jms.domain.ws.production;
 import java.util.Date;
 
 
-
-
 public class WSPWo {
 	
     private Long idWo;

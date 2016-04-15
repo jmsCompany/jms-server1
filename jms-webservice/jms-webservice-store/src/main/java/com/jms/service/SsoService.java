@@ -22,6 +22,7 @@ import com.jms.domain.ws.store.WSSso;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.s.SCompanyCoRepository;
 import com.jms.repositories.s.SCurrencyTypeRepository;
+import com.jms.repositories.s.SMaterialRepository;
 import com.jms.repositories.s.SSoRepository;
 import com.jms.repositories.s.SSpoMaterialRepository;
 import com.jms.repositories.s.SSpoRepository;
@@ -59,7 +60,8 @@ public class SsoService {
 	@Autowired
 	private  SSpoMaterialRepository sSpoMaterialRepository;
 
-	
+	@Autowired
+	private  SMaterialRepository sMaterialRepository;
 
 	public Valid saveSSo(WSSso wsSso) throws Exception {
 		
@@ -119,9 +121,14 @@ public class SsoService {
 		{
 			dbSso.setSStatusDic(sStatusDicRepository.findOne(wsSso.getsStatusId()));
 		}
+		if(wsSso.getMaterialId()!=null)
+		{
+			dbSso.setSMaterial(sMaterialRepository.findOne(wsSso.getMaterialId()));
+		}
 		dbSso.setUsers(securityUtils.getCurrentDBUser());
 		dbSso.setCompany(securityUtils.getCurrentDBUser().getCompany());
 		dbSso.setUPrice(wsSso.getUprice());
+		
 
 		return dbSso;
 	}
@@ -149,6 +156,11 @@ public class SsoService {
 		{
 			wsSso.setsStatus(sso.getSStatusDic().getName());
 			wsSso.setsStatusId(sso.getSStatusDic().getId());
+		}
+		if(sso.getSMaterial()!=null)
+		{
+			wsSso.setMaterialId(sso.getSMaterial().getIdMaterial());
+		
 		}
 	
 		wsSso.setUserName(sso.getUsers().getName());

@@ -1,4 +1,4 @@
-package com.jms.service;
+package com.jms.service.production;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,11 +20,13 @@ import com.jms.domain.GroupTypeEnum;
 import com.jms.domain.db.Apps;
 import com.jms.domain.db.Company;
 import com.jms.domain.db.Groups;
+import com.jms.domain.db.PStatusDic;
 import com.jms.domain.db.SMaterialTypeDic;
 import com.jms.domain.db.SStatusDic;
 import com.jms.domain.db.SysDic;
 import com.jms.domain.db.SysDicD;
 import com.jms.domain.ws.store.WSSStatus;
+import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.s.SMaterialTypeDicRepository;
 import com.jms.repositories.s.SStatusDicRepository;
 import com.jms.repositories.system.SysDicDRepository;
@@ -32,22 +34,22 @@ import com.jms.repositories.system.SysDicRepository;
 
 @Service
 @Transactional
-public class SStatusDicService {
+public class PStatusDicService {
 
-	private static final Logger logger = LogManager.getLogger(SStatusDicService.class
+	private static final Logger logger = LogManager.getLogger(PStatusDicService.class
 			.getCanonicalName());
 	@Autowired
-	private SStatusDicRepository sStatusDicRepository;
+	private PStatusDicRepository pStatusDicRepository;
 	
 	
 	@Transactional(readOnly=true)
 	public List<WSSStatus> getSStatus(String source)
 	{
 		List<WSSStatus> wss = new ArrayList<WSSStatus>();
-		for(SStatusDic s :sStatusDicRepository.getBySource(source))
+		for(PStatusDic s :pStatusDicRepository.getBySource(source))
 		{
 			WSSStatus ws = new WSSStatus();
-			ws.setId(s.getId());
+			ws.setId(s.getIdPstatus());
 			ws.setName(s.getName());
 			wss.add(ws);
 		}
@@ -63,11 +65,11 @@ public class SStatusDicService {
 		while(reader.readRecord())
 		{
 			
-			SStatusDic s = new SStatusDic();
+			PStatusDic s = new PStatusDic();
 			s.setName(reader.get(0).trim());
 			s.setDes(reader.get(1).trim());
 			s.setSource(reader.get(2).trim());
-			sStatusDicRepository.save(s);
+			pStatusDicRepository.save(s);
 	
 		}
 		

@@ -15,5 +15,9 @@ public interface SSoRepository  extends JpaRepository<SSo, Long>{
 	
 	@Query("select s from SSo s where s.company.idCompany=?1")
 	public List<SSo> findByCompanyId(Long companyId);
+	
+	
+	@Query("select s from SSo s where s.SCompanyCo.id=?1")
+	public List<SSo> findByCompanyCoId(Long companyCoId);
 		
 }

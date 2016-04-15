@@ -209,7 +209,7 @@ public class MtfMaterialService {
 				wsSMtfMaterial.setRecMtUser(sMtf.getUsersByRecMt().getName());
 				wsSMtfMaterial.setRecMtUserId(sMtf.getUsersByRecMt().getIdUser());
 			}
-			wsSMtfMaterial.setIdMt(sMtfMaterial.getSMtf().getIdMt());
+			wsSMtfMaterial.setIdMt(sMtf.getIdMt());
 			
 		}
 		if(sMtfMaterial.getSPoMaterial()!=null)
@@ -232,6 +232,8 @@ public class MtfMaterialService {
 			wsSMtfMaterial.setStatusId(sMtfMaterial.getSStatusDic().getId());
 		}
 		wsSMtfMaterial.setUqty(sMtfMaterial.getUQty());
+		
+		
 	
 
 		return wsSMtfMaterial;

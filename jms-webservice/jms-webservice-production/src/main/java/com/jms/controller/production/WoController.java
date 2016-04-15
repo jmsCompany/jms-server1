@@ -16,8 +16,6 @@ import com.jms.service.production.WoService;
 import com.jms.web.security.SecurityUtils;
 
 
-
-
 @RestController
 @Transactional(readOnly=true)
 public class WoController {
@@ -54,8 +52,8 @@ public class WoController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/getWoList", method=RequestMethod.GET)
 	public WSTableData  getWorkCenterList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
-		//todo: how to get Wos????
-		List<PWo> pWos =pWoRepository.findAll();
+		//todo: how to get Wos???? current by So.......
+		List<PWo> pWos =pWoRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 		
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
@@ -80,7 +78,5 @@ public class WoController {
 	    return t;
 	}
 	
-	
-
 
 }

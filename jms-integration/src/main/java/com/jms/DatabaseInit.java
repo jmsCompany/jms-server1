@@ -29,6 +29,7 @@ import com.jms.service.SUnitDicService;
 import com.jms.service.StermDicService;
 import com.jms.service.YesOrNoService;
 import com.jms.service.company.CompanyService;
+import com.jms.service.production.PStatusDicService;
 import com.jms.service.system.AppsService;
 import com.jms.service.system.DicService;
 import com.jms.service.system.DistrictService;
@@ -78,6 +79,8 @@ public class DatabaseInit {
 	private MaterialTypeService materialTypeService;
 	@Autowired
 	private SStatusDicService sStatusDicService;
+	@Autowired
+	private  PStatusDicService pStatusDicService;
 
 	@Autowired
 	private SCountryDicService sCountryDicService;
@@ -152,7 +155,8 @@ public class DatabaseInit {
 		Resource s_statuRes = ctx.getResource("classpath:data/s_status_dic.csv");
 		sStatusDicService.loadStatus(s_statuRes.getInputStream());
 
-
+	    Resource p_statuRes = ctx.getResource("classpath:data/p_status_dic.csv");
+		pStatusDicService.loadStatus(p_statuRes.getInputStream());
 		
 		Resource countriesRes = ctx.getResource("classpath:data/s_country_dic.csv");
 		sCountryDicService.loadCountries(countriesRes.getInputStream());
@@ -179,6 +183,7 @@ public class DatabaseInit {
 		userService.createTestUsersforSandVik();
 	    sMtfTypeDicService.loadMtfTypes();
 		*/
+		
 		
 	
 	}

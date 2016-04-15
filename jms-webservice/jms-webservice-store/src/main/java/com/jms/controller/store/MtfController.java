@@ -1,10 +1,7 @@
 package com.jms.controller.store;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,13 +11,6 @@ import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.store.WSSMtf;
 import com.jms.domain.ws.store.WSSMtfMaterial;
-import com.jms.domain.ws.store.WSSType;
-import com.jms.domain.ws.store.WSTst;
-import com.jms.repositories.s.SMaterialCategoryRepository;
-import com.jms.repositories.s.SMaterialTypeDicRepository;
-import com.jms.repositories.s.SMtfTypeDicRepository;
-import com.jms.repositories.s.SUnitDicRepository;
-import com.jms.service.MaterialService;
 import com.jms.service.MtfMaterialService;
 import com.jms.service.MtfService;
 import com.jms.service.SMtfTypeDicService;
@@ -37,76 +27,17 @@ public class MtfController {
 	@Autowired private SMtfTypeDicService sMtfTypeDicService;
 	
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/s/testing", method=RequestMethod.GET)
-	public List<WSSType> justForTesting()  {
-		List<WSSType> ls = new ArrayList<WSSType>();
-		
-		for(long i=0;i<5;i++)
-		{
-			WSSType w = new WSSType();
-			w.setId(i);
-			w.setName("name"+i);
-			ls.add(w);
-		}
-		
-		return ls;
-	}
-	
-	@Transactional(readOnly = false)
-	@RequestMapping(value="/s/testing1", method=RequestMethod.GET)
-	public WSTst justForTesting1()  {
-		WSTst t = new WSTst();
-		Map<String,WSSType> lm = new HashMap<String,WSSType>();
-		for(long i=0;i<5;i++)
-		{
-			WSSType w = new WSSType();
-			w.setId(i);
-			w.setName("name"+i);
-			lm.put(""+i, w);
-		}
-		t.setId(1001l);
-		t.setName("大智慧");
-		t.setTests(lm);
-		return t;
-	}
-	
-	
-	
-	@Transactional(readOnly = false)
-	@RequestMapping(value="/s/testing1", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public WSTst justForTesting2(@RequestBody WSTst wsTst)  {
-		
-		for(String k : wsTst.getTests().keySet())
-		{
-			WSSType w =wsTst.getTests().get(k);
-		//	System.out.println("id: " + w.getId() +", name: " + w.getName());
-		}
-		return wsTst;
-		
-	}
-	
-	
-	
-	
-
-	
-	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveSmtf", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public Valid saveSMtf(@RequestBody WSSMtf wsSMtf) throws Exception {
 		return mtfService.saveMtf(wsSMtf);
 	}
-	
-	
-
 
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/findSmtf", method=RequestMethod.GET)
 	public WSSMtf findWSSMtf(@RequestParam("smtfId") Long smtfId) throws Exception {
 		return mtfService.findSMtf(smtfId);
 	}
-	
 
-	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/smtfMaterialList", method=RequestMethod.GET)
 	public WSTableData  getSmtfMaterialList(@RequestParam Long typeId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
@@ -132,6 +63,7 @@ public class MtfController {
 					WSSMtfMaterial w = wsSMtfMaterials.get(i);
 					String[] d = {w.getMtNo(),""+w.getCodePo(),w.getCodeCo(),w.getDeliveryDate().toString(),w.getCreationTime().toString(),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),""+w.getStatus(),""+w.getIdMt()};
 					lst.add(d);
+					//System.out.println(d[10]);
 
 				}
 		    	break;
