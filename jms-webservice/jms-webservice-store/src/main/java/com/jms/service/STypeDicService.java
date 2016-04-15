@@ -29,7 +29,6 @@ public class STypeDicService {
 	private STypeDicRepository sTypeDicRepository;
 	
 
-	//导入仓库类型
 	public void loadSTypes() {
 		
 		for(String sType: Config.sTypes)

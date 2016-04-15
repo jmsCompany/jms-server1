@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SSo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
@@ -95,5 +96,17 @@ public class SsoController {
 		return ws;
 	}
 
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/getMaterialBySoId", method=RequestMethod.GET)
+	public WSSelectObj getMaterialBySoId(@RequestParam("soId") Long soId) throws Exception {
+		
+		SMaterial s = sSoRepository.findBySoId(soId);
+
+	   WSSelectObj w = new WSSelectObj(s.getIdMaterial(),s.getPno()+"-"+ s.getRev()+"-"+s.getDes());
+	
+		return w;
+	}
+	
 
 }

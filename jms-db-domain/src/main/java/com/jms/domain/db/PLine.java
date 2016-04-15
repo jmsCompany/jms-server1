@@ -29,14 +29,14 @@ public class PLine  implements java.io.Serializable {
      private Long idPline;
      private Company company;
      private PStatusDic PStatusDic;
-     private Long pline;
+     private String pline;
      private Set<MMachine> MMachines = new HashSet<MMachine>(0);
      private Set<PRoutine> PRoutines = new HashSet<PRoutine>(0);
 
     public PLine() {
     }
 
-    public PLine(Company company, PStatusDic PStatusDic, Long pline, Set<MMachine> MMachines, Set<PRoutine> PRoutines) {
+    public PLine(Company company, PStatusDic PStatusDic, String pline, Set<MMachine> MMachines, Set<PRoutine> PRoutines) {
        this.company = company;
        this.PStatusDic = PStatusDic;
        this.pline = pline;
@@ -73,12 +73,12 @@ public class PLine  implements java.io.Serializable {
         this.PStatusDic = PStatusDic;
     }
     
-    @Column(name="pline")
-    public Long getPline() {
+    @Column(name="pline", length=20)
+    public String getPline() {
         return this.pline;
     }
     
-    public void setPline(Long pline) {
+    public void setPline(String pline) {
         this.pline = pline;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="PLine")

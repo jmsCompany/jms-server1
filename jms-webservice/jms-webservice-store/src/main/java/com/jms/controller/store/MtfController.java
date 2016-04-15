@@ -78,6 +78,15 @@ public class MtfController {
 				}
 		    	break;
 		    }
+		   case 5: //出货
+		    {
+		    	for (int i = start; i < end; i++) {
+					WSSMtfMaterial w = wsSMtfMaterials.get(i);
+					String[] d = {w.getMtNo(),w.getSoCode(),w.getCodeCo(),w.getDeliveryDate().toString(),w.getCreationTime().toString(),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),""+w.getIdMt()};
+					lst.add(d);
+				}
+		    	break;
+		    }
 		    
 		
 		}

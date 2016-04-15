@@ -163,17 +163,7 @@ public class MtfMaterialService {
 			wsSMtfMaterial.setMarterialUnit(sMtfMaterial.getSMaterial().getSUnitDicByUnitInf().getName());
 			
 		}
-		if(sMtfMaterial.getSPoMaterial().getSMaterial()!=null)
-		{
-			SMaterial s = sMtfMaterial.getSPoMaterial().getSMaterial();
-			wsSMtfMaterial.setMaterialId(s.getIdMaterial());
-			wsSMtfMaterial.setMaterialPno(s.getPno());
-			wsSMtfMaterial.setMaterialRev(s.getRev());
-			wsSMtfMaterial.setMaterialDes(s.getDes());
-			if(s.getSUnitDicByUnitInf()!=null)
-			wsSMtfMaterial.setMarterialUnit(s.getSUnitDicByUnitInf().getName());
-			
-		}
+
 		if(sMtfMaterial.getSMtf()!=null)
 		{
 			SMtf sMtf = sMtfMaterial.getSMtf();
@@ -218,12 +208,34 @@ public class MtfMaterialService {
 			wsSMtfMaterial.setCodeCo(sMtfMaterial.getSPoMaterial().getSPo().getSCompanyCo().getCode());
 			wsSMtfMaterial.setCodePo(sMtfMaterial.getSPoMaterial().getSPo().getCodePo());
 			wsSMtfMaterial.setDeliveryDate(sMtfMaterial.getSPoMaterial().getDeliveryDate());
+			if(sMtfMaterial.getSPoMaterial().getSMaterial()!=null)
+			{
+				SMaterial s = sMtfMaterial.getSPoMaterial().getSMaterial();
+				wsSMtfMaterial.setMaterialId(s.getIdMaterial());
+				wsSMtfMaterial.setMaterialPno(s.getPno());
+				wsSMtfMaterial.setMaterialRev(s.getRev());
+				wsSMtfMaterial.setMaterialDes(s.getDes());
+				if(s.getSUnitDicByUnitInf()!=null)
+				wsSMtfMaterial.setMarterialUnit(s.getSUnitDicByUnitInf().getName());
+				
+			}
 		}
 		if(sMtfMaterial.getSSo()!=null)
 		{
 			wsSMtfMaterial.setSoCode(sMtfMaterial.getSSo().getCodeSo());
 			wsSMtfMaterial.setSoId(sMtfMaterial.getSSo().getIdSo());
 			wsSMtfMaterial.setCodeCo(sMtfMaterial.getSSo().getSCompanyCo().getCode());
+			if(sMtfMaterial.getSSo().getSMaterial()!=null)
+			{
+				SMaterial s = sMtfMaterial.getSSo().getSMaterial();
+				wsSMtfMaterial.setMaterialId(s.getIdMaterial());
+				wsSMtfMaterial.setMaterialPno(s.getPno());
+				wsSMtfMaterial.setMaterialRev(s.getRev());
+				wsSMtfMaterial.setMaterialDes(s.getDes());
+				if(s.getSUnitDicByUnitInf()!=null)
+				wsSMtfMaterial.setMarterialUnit(s.getSUnitDicByUnitInf().getName());
+				
+			}
 		}
 
 		if(sMtfMaterial.getSStatusDic()!=null)
