@@ -21,8 +21,15 @@ public interface SSpoMaterialRepository  extends JpaRepository<SPoMaterial, Long
 	@Query("select s from SPoMaterial s where s.SPo.company.idCompany=?1")
 	public List<SPoMaterial> getByCompanyId(Long companyId);
 	
-	@Query("select s.SMaterial from SPoMaterial s where s.SPo.idPo=?1")
-	public List<SMaterial> getBySpoId(Long spoId);
+	@Query("select s from SPoMaterial s where s.SPo.idPo=?1")
+	public List<SPoMaterial> getBySpoId(Long spoId);
+	
+	
+	@Query("select s.SMaterial from SPoMaterial s where s.idPoMaterial=?1")
+	public SMaterial getBySpoMaterialId(Long spoMaterialId);
+	
+	@Query("select s from SPoMaterial s where s.SPo.idPo=?1 and s.SMaterial.idMaterial=?2")
+	public SPoMaterial getByMaterialIdAndPoId(Long spoId,Long materialId);
 	
 
 }

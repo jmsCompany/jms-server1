@@ -30,6 +30,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers("/error").permitAll()
 		.antMatchers("/check/**").permitAll()
 		.antMatchers("/dic/**").permitAll()
+		.antMatchers("/s/getMaterialImage/**").permitAll()
 		//.antMatchers("/download/**").permitAll()
 		.antMatchers("/login").permitAll()
 		.antMatchers(HttpMethod.OPTIONS,"/**").permitAll();

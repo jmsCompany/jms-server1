@@ -92,6 +92,20 @@ public class MtfMaterialService {
 		return ws;
 	}
 	
+	
+	public List<WSSMtfMaterial> findWSSMtfMaterialBySpoId(Long spoId) throws Exception
+	{
+		List<WSSMtfMaterial> ws = new ArrayList<WSSMtfMaterial>();
+		for(SMtfMaterial sm: sMtfMaterialRepository.getBySpoId(spoId))
+		{
+			ws.add(toWSSMtfMaterial(sm));
+		}
+		
+		return ws;
+	}
+	
+	
+	
 	protected SMtfMaterial toDBMtfMaterial(WSSMtfMaterial wsSMtfMaterial,SMtfMaterial sMtfMaterial) throws Exception
 	{
 	
@@ -200,6 +214,7 @@ public class MtfMaterialService {
 				wsSMtfMaterial.setRecMtUserId(sMtf.getUsersByRecMt().getIdUser());
 			}
 			wsSMtfMaterial.setIdMt(sMtf.getIdMt());
+			wsSMtfMaterial.setMtNo(sMtf.getMtNo());
 			
 		}
 		if(sMtfMaterial.getSPoMaterial()!=null)
@@ -234,6 +249,7 @@ public class MtfMaterialService {
 				wsSMtfMaterial.setMaterialDes(s.getDes());
 				if(s.getSUnitDicByUnitInf()!=null)
 				wsSMtfMaterial.setMarterialUnit(s.getSUnitDicByUnitInf().getName());
+				wsSMtfMaterial.setDeliveryDate(sMtfMaterial.getSSo().getDeliveryDate());
 				
 			}
 		}
@@ -246,7 +262,7 @@ public class MtfMaterialService {
 		wsSMtfMaterial.setUqty(sMtfMaterial.getUQty());
 		
 		
-	
+
 
 		return wsSMtfMaterial;
 	}

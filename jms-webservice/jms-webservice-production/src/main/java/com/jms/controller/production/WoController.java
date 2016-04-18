@@ -66,7 +66,7 @@ public class WoController {
 			String idSo=(w.getSSo()==null)?"":""+w.getSSo().getIdSo();
 			String codeSo=(w.getSSo()==null)?"":w.getSSo().getCodeSo();
 			String status=(w.getPStatusDic()==null)?"":w.getPStatusDic().getName();
-			String[] d = {w.getWoNo(),idSo,codeSo,""+w.getQty(),w.getCreationTime().toString(),""+w.getUsers().getName(),status,""+w.getIdWo()};
+			String[] d = {w.getWoNo(),codeSo,""+w.getQty(),w.getCreationTime().toString(),""+w.getUsers().getName(),status,""+w.getIdWo()};
 			lst.add(d);
 
 		}

@@ -1,17 +1,27 @@
 package com.jms.controller.store;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.google.common.io.ByteStreams;
 import com.jms.domain.db.SBin;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMaterialCategory;
+import com.jms.domain.db.SMaterialPic;
 import com.jms.domain.db.SMaterialTypeDic;
+import com.jms.domain.db.SPic;
+import com.jms.domain.db.SPoMaterial;
 import com.jms.domain.db.SUnitDic;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
@@ -19,10 +29,14 @@ import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.f.WSFCostCenter;
 import com.jms.domain.ws.store.WSLotNo;
 import com.jms.domain.ws.store.WSMaterial;
+import com.jms.file.FileMeta;
+import com.jms.file.FileUploadService;
 import com.jms.repositories.s.SMaterialCategoryRepository;
+import com.jms.repositories.s.SMaterialPicRepository;
 import com.jms.repositories.s.SMaterialRepository;
 import com.jms.repositories.s.SMaterialTypeDicRepository;
 import com.jms.repositories.s.SMtfMaterialRepository;
+import com.jms.repositories.s.SPicRepository;
 import com.jms.repositories.s.SSpoMaterialRepository;
 import com.jms.repositories.s.SUnitDicRepository;
 import com.jms.service.CostCenterService;
@@ -30,10 +44,12 @@ import com.jms.service.MaterialService;
 import com.jms.web.security.SecurityUtils;
 
 
+
 @RestController
 @Transactional(readOnly=true)
 public class MaterialController {
 	
+
 
 	
 	@Autowired private MaterialService materialService;
@@ -50,9 +66,19 @@ public class MaterialController {
 	@Autowired
 	private SMtfMaterialRepository sMtfMaterialRepository;
 	
+	private String filePath = "/Users/renhongtao/jms_files/";
+	@Autowired
+	private FileUploadService fileUploadService;
+	@Autowired
+	private SPicRepository sPicRepository;
+	
+	@Autowired
+	private SMaterialPicRepository sMaterialPicRepository;
+
+	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveMaterial", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public WSMaterial saveLinkman(@RequestBody WSMaterial wsMaterial) throws Exception {
+	public WSMaterial saveWSMaterial(@RequestBody WSMaterial wsMaterial) throws Exception {
 		return materialService.saveMaterial(wsMaterial);
 	}
 	
@@ -163,22 +189,34 @@ public class MaterialController {
 		}
 		
 		@Transactional(readOnly = true)
-		@RequestMapping(value="/s/findMaterialsBySpoId", method=RequestMethod.GET)
-		public List<WSSelectObj> findMaterialsBySpoId(@RequestParam("spoId") Long spoId) {
-			System.out.println("find material by spo id: " + spoId);
+		@RequestMapping(value="/s/findPoMaterialsBySpoId", method=RequestMethod.GET)
+		public List<WSSelectObj> findPoMaterialsBySpoId(@RequestParam("spoId") Long spoId) {
+			//System.out.println("find material by spo id: " + spoId);
 			List<WSSelectObj> wso = new ArrayList<WSSelectObj>();
-			for(SMaterial s : sSpoMaterialRepository.getBySpoId(spoId))
+			for(SPoMaterial s : sSpoMaterialRepository.getBySpoId(spoId))
 			{
-				System.out.println("add s");
-				wso.add(new WSSelectObj(s.getIdMaterial(),s.getPno()+"-"+s.getDes()+"-"+s.getRev()));
+			//	System.out.println("add s");
+				wso.add(new WSSelectObj(s.getIdPoMaterial(),s.getSMaterial().getPno()+"-"+s.getSMaterial().getDes()+"-"+s.getSMaterial().getRev()));
 			}
 			return wso;
 		}
 		
+		
+		
+		@Transactional(readOnly = true)
+		@RequestMapping(value="/s/findMaterialsBySpoMaterialId", method=RequestMethod.GET)
+		public WSMaterial findMaterialsBySpoMaterialId(@RequestParam("spoMaterialId") Long spoMaterialId) throws Exception {
+			SMaterial sMaterial =sSpoMaterialRepository.getBySpoMaterialId(spoMaterialId);
+			return materialService.toWSMaterial(sMaterial);
+
+		}
+		
+		
+		
 		@Transactional(readOnly = true)
 		@RequestMapping(value="/s/findLotNos", method=RequestMethod.GET)
 		public List<WSLotNo> findLotNos(@RequestParam("spoId") Long spoId,@RequestParam("materialId") Long  materialId) {
-			System.out.println("find lot nos by spoid: " + spoId);
+			//System.out.println("find lot nos by spoid: " + spoId);
 			List<WSLotNo> wso = new ArrayList<WSLotNo>();
 			for(String s : sMtfMaterialRepository.getLotNosBySpoIdAndMaterialId(spoId, materialId))
 			{
@@ -202,5 +240,48 @@ public class MaterialController {
 		}
 		
 		
+		@Transactional(readOnly = false)
+		@RequestMapping(value = "/s/uploadMaterialImage", method = RequestMethod.POST)
+		public FileMeta uploadFile(@RequestParam("materialId") Long  materialId, MultipartHttpServletRequest request, HttpServletResponse response) {
+			FileMeta fileMeta = new FileMeta();
+			if (request.getFileNames().hasNext()) {
+				fileMeta = fileUploadService.upload(request, response);
+				
+				
+				SPic spic = new SPic();
+				spic.setOrgFilename(fileMeta.getOrgName());
+				spic.setFilename(fileMeta.getFileName());
+				spic.setUsers(securityUtils.getCurrentDBUser());
+				spic = sPicRepository.save(spic);
+				fileMeta.setFileId(spic.getId());
+				fileMeta.setBytes(null);
+				if(materialId!=null&&!materialId.equals(0l))
+				{
+					SMaterial sMaterial = sMaterialRepository.findOne(materialId);
+					SMaterialPic sp;
+					List<SMaterialPic> mps =sMaterialPicRepository.findBySMaterialId(sMaterial.getIdMaterial());
+					if(mps!=null&&!mps.isEmpty())
+					{
+						sp=mps.get(0);
+					}
+					else
+					{
+					 sp = new SMaterialPic();
+						sp.setSMaterial(sMaterial);
+					}
+				
+					sp.setSPic(spic);
+					sMaterialPicRepository.save(sp);
+				}
+	
+				
+			}
+			return fileMeta;
+		}
+	   @RequestMapping(value = "/s/getMaterialImage/{img}/", method = RequestMethod.GET)
+		public void getImage(@PathVariable("img") String img, HttpServletResponse response) throws IOException {
+			FileInputStream fs = new FileInputStream(new File(filePath + img));
+			ByteStreams.copy(fs, response.getOutputStream());
+		}
 	
 }

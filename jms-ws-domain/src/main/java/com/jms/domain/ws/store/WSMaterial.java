@@ -32,6 +32,10 @@ public class WSMaterial {
     private BigDecimal cost;
     private Long mpq;
     private Long safetyInv;
+    
+    private Long fileId;
+    private String fileName;
+    
 	public Long getIdMaterial() {
 		return idMaterial;
 	}
@@ -187,6 +191,19 @@ public class WSMaterial {
 	}
 	public void setCompanyId(Long companyId) {
 		this.companyId = companyId;
+	}
+
+	public Long getFileId() {
+		return fileId;
+	}
+	public void setFileId(Long fileId) {
+		this.fileId = fileId;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 }

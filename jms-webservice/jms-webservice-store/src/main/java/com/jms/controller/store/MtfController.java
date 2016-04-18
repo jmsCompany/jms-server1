@@ -82,7 +82,9 @@ public class MtfController {
 		    {
 		    	for (int i = start; i < end; i++) {
 					WSSMtfMaterial w = wsSMtfMaterials.get(i);
+					
 					String[] d = {w.getMtNo(),w.getSoCode(),w.getCodeCo(),w.getDeliveryDate().toString(),w.getCreationTime().toString(),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),""+w.getIdMt()};
+			    	System.out.println("mtNo ...... "+ w.getMtNo());
 					lst.add(d);
 				}
 		    	break;
@@ -105,5 +107,15 @@ public class MtfController {
 	public List<WSSelectObj> getMtfTypes() {
 		return  sMtfTypeDicService.getMtfTypes();
 	}
+	
+
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/findWSSMtfMaterialBySpoId", method=RequestMethod.GET)
+	public List<WSSMtfMaterial> findWSSMtfMaterialBySpoId(@RequestParam("spoId") Long spoId) throws Exception {
+		return mtfMaterialService.findWSSMtfMaterialBySpoId(spoId);
+	}
+	
+	
+	
 	
 }

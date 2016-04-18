@@ -7,20 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
 import com.jms.domain.db.PLine;
-import com.jms.domain.db.PWorkCenter;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.production.WSPLine;
-import com.jms.domain.ws.production.WSPWorkCenter;
 import com.jms.repositories.p.PLineRepository;
-import com.jms.repositories.p.PWorkCenterRepository;
 import com.jms.service.production.PlineService;
-import com.jms.service.production.WorkCenterService;
 import com.jms.web.security.SecurityUtils;
-
-
 
 
 @RestController
@@ -68,7 +61,7 @@ public class PlineController {
 			end =start + length;
 		for (int i = start; i < end; i++) {
 			PLine w = pLines.get(i);
-			String[] d = {""+w.getIdPline(),w.getPline(),""+w.getIdPline()};
+			String[] d = {w.getPline(),w.getPStatusDic().getName(),""+w.getIdPline()};
 			lst.add(d);
 
 		}

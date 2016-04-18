@@ -7,15 +7,22 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.jms.domain.db.SInventory;
 import com.jms.domain.db.SMtf;
 import com.jms.domain.db.SMtfMaterial;
+import com.jms.domain.db.SPoMaterial;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.store.WSSMtf;
 import com.jms.domain.ws.store.WSSMtfMaterial;
 import com.jms.domainadapter.BeanUtil;
+import com.jms.repositories.s.SBinRepository;
+import com.jms.repositories.s.SInventoryRepository;
+import com.jms.repositories.s.SMaterialRepository;
 import com.jms.repositories.s.SMtfMaterialRepository;
 import com.jms.repositories.s.SMtfRepository;
 import com.jms.repositories.s.SMtfTypeDicRepository;
+import com.jms.repositories.s.SSpoMaterialRepository;
 import com.jms.repositories.s.SStatusDicRepository;
 import com.jms.repositories.s.SStkRepository;
 import com.jms.repositories.user.UsersRepository;
@@ -48,12 +55,20 @@ public class MtfService {
 	private SStkRepository sStkRepository;
 	@Autowired
 	private SMtfTypeDicRepository sMtfTypeDicRepository;
-
+	@Autowired
+	private SInventoryRepository sInventoryRepository;
+	@Autowired
+	private SBinRepository sBinRepository;
+	@Autowired
+	private  SMaterialRepository sMaterialRepository;
+	@Autowired
+	private  SSpoMaterialRepository sSpoMaterialRepository;
 
 	
 
 	public Valid saveMtf(WSSMtf wsSMtf) throws Exception {
 		
+		Long smtfType = wsSMtf.getTypeId();
 		SMtf sMtf;
 		//create
 		if(wsSMtf.getIdMt()==null||wsSMtf.getIdMt().equals(0l))
@@ -65,6 +80,7 @@ public class MtfService {
 		{
 			sMtf = sMtfRepository.findOne(wsSMtf.getIdMt());	
 		}
+		
 		sMtf=toDBMtf(wsSMtf,sMtf);
 		SMtf sMtf1= sMtfRepository.save(sMtf);
 		
@@ -75,10 +91,59 @@ public class MtfService {
 		}
 		for(String k: wsSMtf.getSmtfItems().keySet())
 		{
-			System.out.println(k +", ... ");
+		//	System.out.println(k +", ... ");
 			WSSMtfMaterial wm =wsSMtf.getSmtfItems().get(k);
 			wm.setIdMt(sMtf1.getIdMt());
 			mtfMaterialService.saveMtfMaterial(wm);
+	      	SPoMaterial spoMaterial=	sSpoMaterialRepository.getOne(wm.getPoMaterialId());
+			switch(smtfType.intValue())
+			{
+			    case 1: //来料入库
+			    {
+			    	SInventory sInventory;
+			    	if(wm.getLotNo()!=null)
+			    	{
+			    		 sInventory= sInventoryRepository.findByMaterialIdAndBinIdAndLotNo(wm.getMaterialId(), wm.getToBinId(), wm.getLotNo());
+			    	}
+			    	else
+			    	{
+			    		 sInventory=sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
+			    	}
+			    	if(sInventory==null)
+			    	{
+			    		sInventory = new SInventory();
+			    		sInventory.setCreationTime(new Date());
+			    		sInventory.setBox(wm.getBox());
+			    		sInventory.setLotNo(wm.getLotNo());
+			    		sInventory.setQty(wm.getQty());
+			    		sInventory.setUQty(wm.getUqty());
+			    		sInventory.setSBin(sBinRepository.findOne(wm.getToBinId()));
+			    		sInventory.setSMaterial(spoMaterial.getSMaterial());
+			    		
+			    	}
+			    	else
+			    	{
+			    		if(sInventory.getBox()!=null)
+			    		sInventory.setBox(sInventory.getBox()+wm.getBox());
+			    		sInventory.setQty(sInventory.getQty()+wm.getQty());
+			    	}
+			    	sInventoryRepository.save(sInventory);
+			    	
+			    	SPoMaterial sPoMaterial = sSpoMaterialRepository.getOne(wm.getPoMaterialId());
+			    	if(sPoMaterial.getQtyReceived()!=null)
+			    	{
+			    		sPoMaterial.setQtyReceived(sPoMaterial.getQtyReceived()+wm.getQty());
+			    		
+			    	}
+			    	else
+			    	{
+			    		sPoMaterial.setQtyReceived(wm.getQty());
+			    	}
+			    	sSpoMaterialRepository.save(sPoMaterial);
+			    	//update SPo
+			    	break;
+			    }
+			}
 		}
 		
 		
@@ -98,6 +163,8 @@ public class MtfService {
 	{
 	
 		SMtf dbSMtf = (SMtf)BeanUtil.shallowCopy(wsSMtf, SMtf.class, sMtf);
+		dbSMtf.setMtNo(wsSMtf.getMtNo());
+		System.out.println("mtNo: " + wsSMtf.getMtNo());
 		dbSMtf.setCompany(securityUtils.getCurrentDBUser().getCompany());
 		if(wsSMtf.getEmpMtUserId()!=null)
 		{
@@ -168,6 +235,7 @@ public class MtfService {
 			wsSMtf.getSmtfItems().put("item"+s.getIdMtfMaterial(), mtfMaterialService.toWSSMtfMaterial(s));
 		}
 	
+		System.out.println("mtNo: " + wsSMtf.getMtNo());
 		return wsSMtf;
 	}
 

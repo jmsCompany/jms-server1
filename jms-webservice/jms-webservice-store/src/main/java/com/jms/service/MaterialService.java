@@ -8,14 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.jms.domain.db.SMaterial;
+import com.jms.domain.db.SMaterialPic;
+import com.jms.domain.db.SPic;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.store.WSMaterial;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.f.FCostCenterRepository;
 import com.jms.repositories.s.SMaterialCategoryRepository;
+import com.jms.repositories.s.SMaterialPicRepository;
 import com.jms.repositories.s.SMaterialRepository;
 import com.jms.repositories.s.SMaterialTypeDicRepository;
+import com.jms.repositories.s.SPicRepository;
 import com.jms.repositories.s.SStatusDicRepository;
 import com.jms.repositories.s.SUnitDicRepository;
 import com.jms.web.security.SecurityUtils;
@@ -43,7 +47,10 @@ public class MaterialService {
 	private SUnitDicRepository sUnitDicRepository;
 	@Autowired 
 	private CompanyRepository companyRepository;
-	
+	@Autowired 
+	private SMaterialPicRepository sMaterialPicRepository;
+	@Autowired
+	private SPicRepository sPicRepository;
 	
 	
 	@Transactional(readOnly=true)
@@ -100,8 +107,26 @@ public class MaterialService {
 			dbMaterial = new SMaterial();
 		}
 		dbMaterial = toDBSmaterial(m,dbMaterial);
-		sMaterialRepository.save(dbMaterial);
+		dbMaterial =sMaterialRepository.save(dbMaterial);
 		m.setIdMaterial(dbMaterial.getIdMaterial());
+		
+		if(m.getFileId()!=null)
+		{
+			SMaterialPic sp;
+			List<SMaterialPic> mps =sMaterialPicRepository.findBySMaterialId(dbMaterial.getIdMaterial());
+			if(mps!=null&&!mps.isEmpty())
+			{
+				sp=mps.get(0);
+			}
+			else
+			{
+			    sp = new SMaterialPic();
+				sp.setSMaterial(dbMaterial);
+			}
+		
+			sp.setSPic(sPicRepository.findOne(m.getFileId()));
+			sMaterialPicRepository.save(sp);
+		}
 		return m;				
 		
 	}
@@ -126,14 +151,21 @@ public class MaterialService {
 		SMaterial m = sMaterialRepository.findOne(materialId);
 			if(m==null)
 				return wsMc;
-			return toWSMaterial(m); 
+			wsMc = toWSMaterial(m); 
+			if(!m.getSMaterialPics().isEmpty())
+			{
+				SPic spic = m.getSMaterialPics().iterator().next().getSPic();
+				wsMc.setFileName(spic.getFilename());
+				wsMc.setFileId(spic.getId());
+			}
+			return wsMc;
 
 	}
 
 	
 	
 	
-	protected SMaterial toDBSmaterial(WSMaterial wsMaterial,SMaterial sMaterial) throws Exception
+	public SMaterial toDBSmaterial(WSMaterial wsMaterial,SMaterial sMaterial) throws Exception
 	{
 	
 		SMaterial dbMaterial= (SMaterial)BeanUtil.shallowCopy(wsMaterial, SMaterial.class, sMaterial);
@@ -168,7 +200,7 @@ public class MaterialService {
 	}
 	
 	
-	protected WSMaterial toWSMaterial(SMaterial sMaterial) throws Exception
+	public WSMaterial toWSMaterial(SMaterial sMaterial) throws Exception
 	{
 		WSMaterial wsMaterial = (WSMaterial)BeanUtil.shallowCopy(sMaterial, WSMaterial.class, null);
 		if(sMaterial.getCompany()!=null)
@@ -208,6 +240,8 @@ public class MaterialService {
 		}
 		
 		wsMaterial.setCost(sMaterial.getCost());
+
+		
 		return wsMaterial;
 	}
 

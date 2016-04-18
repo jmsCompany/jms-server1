@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.jms.domain.db.PWorkCenter;
 import com.jms.domain.ws.Valid;
+import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.production.WSPWorkCenter;
 import com.jms.repositories.p.PWorkCenterRepository;
@@ -77,6 +78,18 @@ public class WorkCenterController {
 	}
 	
 	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/getWorkCenterList", method=RequestMethod.GET)
+	public List<WSSelectObj>  getWorkCenterList() throws Exception {	   
+		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
+		for(PWorkCenter p: pWorkCenterRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
+		 {
+			WSSelectObj w = new WSSelectObj(p.getIdWc(),p.getWorkCenter());
+			ws.add(w);
+		 }
+		
+	    return ws;
+	}
 
 
 }
