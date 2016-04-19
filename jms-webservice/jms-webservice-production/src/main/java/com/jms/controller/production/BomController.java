@@ -71,7 +71,7 @@ public class BomController {
 			end =start + length;
 		for (int i = start; i < end; i++) {
 			WSPBom w = wsPBoms.get(i);
-			String[] d = {""+w.getMaterialId(),w.getPno(),w.getRev(),w.getCreationTime().toString(),""+w.getCreator(),w.getCreationTime().toString(),""+w.getStatus(),""+w.getIdBomLabel()};
+			String[] d = {w.getPno(),w.getRev(),w.getMaterial(),w.getCreationTime().toString(),""+w.getCreator(),""+w.getStatus(),""+w.getIdBomLabel()};
 			lst.add(d);
 
 		}

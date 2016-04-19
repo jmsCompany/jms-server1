@@ -17,7 +17,7 @@ public class WSShiftPlan {
 	private Date st;
 	private Date ft;
 
-   private Map<String,WSShiftPlan> shifPlanItems = new LinkedHashMap<String,WSShiftPlan>(0);
+   private Map<String,WSShiftPlanD> shifPlanItems = new LinkedHashMap<String,WSShiftPlanD>(0);
 
 	public Long getIdShiftPlan() {
 		return idShiftPlan;
@@ -99,11 +99,11 @@ public class WSShiftPlan {
 		this.ft = ft;
 	}
 
-	public Map<String,WSShiftPlan> getShifPlanItems() {
+	public Map<String,WSShiftPlanD> getShifPlanItems() {
 		return shifPlanItems;
 	}
 
-	public void setShifPlanItems(Map<String,WSShiftPlan> shifPlanItems) {
+	public void setShifPlanItems(Map<String,WSShiftPlanD> shifPlanItems) {
 		this.shifPlanItems = shifPlanItems;
 	}
 

@@ -66,48 +66,46 @@ public class ShiftPlanDService {
 	@Autowired
 	private SecurityUtils securityUtils;
 	
-  /*
+
 	
 	@Transactional(readOnly=false)
 	public WSShiftPlanD saveWSPShiftPlanD(WSShiftPlanD wsShiftPlanD) throws Exception {
 		PShiftPlanD pShiftPlanD;
-		if(wsShiftPlanD.get!=null&&!wsPBomItem.getIdBom().equals(0l))
+		if(wsShiftPlanD.getIdShiftD()!=null&&!wsShiftPlanD.getIdShiftD().equals(0l))
 		{
-			pBom = pBomRepository.findOne(wsPBomItem.getIdBom());
+			pShiftPlanD = pShiftPlanDRepository.findOne(wsShiftPlanD.getIdShiftD());
 		}
 		else
 		{
-			pBom = new PBom();
+			pShiftPlanD = new PShiftPlanD();
 	
 		}
-		PBom dbPBom= toDBPBom(wsPBomItem,pBom);
-		dbPBom = pBomRepository.save(dbPBom);
-		wsPBomItem.setIdBom(dbPBom.getIdBom());
-		return wsPBomItem;		
+		PShiftPlanD dbPShiftPlanD= toDBPShiftPlanD(wsShiftPlanD,pShiftPlanD);
+		dbPShiftPlanD = pShiftPlanDRepository.save(dbPShiftPlanD);
+		wsShiftPlanD.setIdShiftD(dbPShiftPlanD.getIdShiftD());
+		return wsShiftPlanD;		
 		
 	}
 
 	@Transactional(readOnly=false)
-	public Valid deletePBom(Long bomId)
+	public Valid deletePShiftPlanD(Long idShiftD)
 	{
 		Valid valid = new Valid();
-		
-		pBomRepository.delete(bomId);
+		pShiftPlanDRepository.delete(idShiftD);
 		valid.setValid(true);
 		
 		return valid;
 	}
-
+	
 	
 	@Transactional(readOnly=true) 
-	public WSPBomItem findWSPBomItem(Long bomId) throws Exception
+	public WSShiftPlanD findWSShiftPlanD(Long idShiftD) throws Exception
 	{	
-		PBom pBom= pBomRepository.findOne(bomId);
-		return  toWSPBomItem(pBom);
+		PShiftPlanD pShiftPlanD= pShiftPlanDRepository.findOne(idShiftD);
+		return  toWSShiftPlanD(pShiftPlanD);
 		
 	}
-
-	*/
+	
 	protected PShiftPlanD toDBPShiftPlanD(WSShiftPlanD wsShiftPlanD,PShiftPlanD pShiftPlanD) throws Exception
 	{
 	
@@ -122,7 +120,7 @@ public class ShiftPlanDService {
 		return dbPShiftPlanD;
 	}
 	
-	private WSShiftPlanD toWSShiftPlanD(PShiftPlanD pShiftPlanD) throws Exception
+	protected WSShiftPlanD toWSShiftPlanD(PShiftPlanD pShiftPlanD) throws Exception
 	{
 		WSShiftPlanD pc = (WSShiftPlanD)BeanUtil.shallowCopy(pShiftPlanD, WSShiftPlanD.class, null);
 	    if(pShiftPlanD.getPShiftPlan()!=null)

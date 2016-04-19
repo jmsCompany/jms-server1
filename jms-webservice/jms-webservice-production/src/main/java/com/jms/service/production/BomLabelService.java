@@ -70,15 +70,18 @@ public class BomLabelService {
 			pBomLabel = new PBomLabel();
 			pBomLabel.setCreationTime(new Date());
 			pBomLabel.setUsers(securityUtils.getCurrentDBUser());
+		
 		}
 		PBomLabel dbPBomLabel= toDBPBomLabel(wsPBom,pBomLabel);
 		dbPBomLabel = pBomLabelRepository.save(dbPBomLabel);
-		wsPBom.setIdBomLabel(dbPBomLabel.getIdBomLabel());
+	
 	
 		if(wsPBom.getIdBomLabel()!=null&&!wsPBom.getIdBomLabel().equals(0l))
 		{
+			System.out.println("bom label id: " + wsPBom.getIdBomLabel());
 			pBomRepository.deleteByBomLabelId(wsPBom.getIdBomLabel());
 		}
+		wsPBom.setIdBomLabel(dbPBomLabel.getIdBomLabel());
 		WSPBomItem wsPBomItem = new WSPBomItem();
 		wsPBomItem.setIdBomLabel(dbPBomLabel.getIdBomLabel());
 		wsPBomItem.setLvl(1l);
@@ -142,6 +145,10 @@ public class BomLabelService {
 
         if(wsPBom.getCompanyId()!=null)
         	pBomLabel.setCompany(companyRepository.findOne(wsPBom.getCompanyId()));
+        else
+        {
+        	pBomLabel.setCompany(securityUtils.getCurrentDBUser().getCompany());
+        }
         pBomLabel.setUsers(securityUtils.getCurrentDBUser());
 		if(wsPBom.getStatusId()!=null)
 			pBomLabel.setPStatusDic(pStatusDicRepository.findOne(wsPBom.getStatusId()));
