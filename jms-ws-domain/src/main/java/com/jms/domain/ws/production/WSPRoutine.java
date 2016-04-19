@@ -9,11 +9,12 @@ public class WSPRoutine {
 	private Long idRoutine;
 	private String companyName;
 	private Long companyId;
+	private Long materialId;
 	private String pNo;
 	private String materialDes;
 	private String materialRev;
 	private Long drawId;
-	private String drawNo;
+	private Long drawNo;
 	private String drawVer;
 	private Long lineId;
 	private String line;
@@ -77,11 +78,11 @@ public class WSPRoutine {
 		this.drawId = drawId;
 	}
 
-	public String getDrawNo() {
+	public Long getDrawNo() {
 		return drawNo;
 	}
 
-	public void setDrawNo(String drawNo) {
+	public void setDrawNo(Long drawNo) {
 		this.drawNo = drawNo;
 	}
 
@@ -131,6 +132,14 @@ public class WSPRoutine {
 
 	public void setWsRoutineDs(Map<String, WSPRoutineD> wsRoutineDs) {
 		this.wsRoutineDs = wsRoutineDs;
+	}
+
+	public Long getMaterialId() {
+		return materialId;
+	}
+
+	public void setMaterialId(Long materialId) {
+		this.materialId = materialId;
 	}
 
 }
