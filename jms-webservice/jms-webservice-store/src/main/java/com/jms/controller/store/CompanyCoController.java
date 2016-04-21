@@ -20,7 +20,7 @@ import com.jms.repositories.s.SLevelDicRepository;
 import com.jms.repositories.s.SStatusDicRepository;
 import com.jms.repositories.s.SStermDicRepository;
 import com.jms.repositories.s.STypeDicRepository;
-import com.jms.service.CompanyCoService;
+import com.jms.service.store.CompanyCoService;
 import com.jms.web.security.SecurityUtils;
 
 

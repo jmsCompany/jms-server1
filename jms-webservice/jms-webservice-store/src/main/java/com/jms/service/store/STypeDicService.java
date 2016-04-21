@@ -1,4 +1,4 @@
-package com.jms.service;
+package com.jms.service.store;
 
 
 import java.util.ArrayList;
@@ -12,39 +12,41 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jms.domain.Config;
 import com.jms.domain.db.SStkTypeDic;
+import com.jms.domain.db.STypeDic;
+import com.jms.domain.ws.store.WSSType;
 import com.jms.domain.ws.store.WSStkType;
 import com.jms.repositories.s.SStkTypeDicRepository;
+import com.jms.repositories.s.STypeDicRepository;
 
 
 @Service
 @Transactional
-public class SStkTypeDicService {
+public class STypeDicService {
 
-	private static final Logger logger = LogManager.getLogger(SStkTypeDicService.class
+	private static final Logger logger = LogManager.getLogger(STypeDicService.class
 			.getCanonicalName());
 	@Autowired
-	private SStkTypeDicRepository sStkTypeDicRepository;
+	private STypeDicRepository sTypeDicRepository;
 	
 
-	//导入仓库类型
-	public void loadStkTypes() {
+	public void loadSTypes() {
 		
-		for(String stkType: Config.stkTypes)
+		for(String sType: Config.sTypes)
 		{
-			SStkTypeDic s = new SStkTypeDic();
-			s.setName(stkType);
-			sStkTypeDicRepository.save(s);
+			STypeDic s = new STypeDic();
+			s.setName(sType);
+			sTypeDicRepository.save(s);
 		}
 	}
 	
 	@Transactional(readOnly=true)
-	public List<WSStkType> getStkTypes()
+	public List<WSSType> getSTypes()
 	{
-		List<WSStkType> ls = new ArrayList<WSStkType>();
-		for(SStkTypeDic s :sStkTypeDicRepository.findAll())
+		List<WSSType> ls = new ArrayList<WSSType>();
+		for(STypeDic s :sTypeDicRepository.findAll())
 		{
-			WSStkType ws = new WSStkType();
-			ws.setId(s.getIdStkType());
+			WSSType ws = new WSSType();
+			ws.setId(s.getId());
 			ws.setName(s.getName());
 			ls.add(ws);
 		}

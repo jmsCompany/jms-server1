@@ -1,4 +1,4 @@
-package com.jms.service;
+package com.jms.service.store;
 
 
 import java.util.ArrayList;

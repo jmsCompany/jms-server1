@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.store.WSLinkman;
-import com.jms.service.LinkmanService;
+import com.jms.service.store.LinkmanService;
 
 
 @RestController

@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.service.CurrencyTypeService;
+import com.jms.service.store.CurrencyTypeService;
 
 
 @RestController

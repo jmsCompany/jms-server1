@@ -39,8 +39,8 @@ import com.jms.repositories.s.SMtfMaterialRepository;
 import com.jms.repositories.s.SPicRepository;
 import com.jms.repositories.s.SSpoMaterialRepository;
 import com.jms.repositories.s.SUnitDicRepository;
-import com.jms.service.CostCenterService;
-import com.jms.service.MaterialService;
+import com.jms.service.store.CostCenterService;
+import com.jms.service.store.MaterialService;
 import com.jms.web.security.SecurityUtils;
 
 

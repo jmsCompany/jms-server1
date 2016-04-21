@@ -1,4 +1,4 @@
-package com.jms.service;
+package com.jms.service.store;
 
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
@@ -8,34 +8,37 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.jms.domain.Config;
 import com.jms.domain.db.SMaterialTypeDic;
-import com.jms.domain.db.SUnitDic;
+import com.jms.domain.db.SYesOrNoDic;
 import com.jms.domain.db.SysDic;
 import com.jms.domain.db.SysDicD;
 import com.jms.repositories.s.SMaterialTypeDicRepository;
-import com.jms.repositories.s.SUnitDicRepository;
+import com.jms.repositories.s.SYesOrNoDicRepository;
 import com.jms.repositories.system.SysDicDRepository;
 import com.jms.repositories.system.SysDicRepository;
 
 @Service
 @Transactional
-public class SUnitDicService {
+public class YesOrNoService {
 
-	private static final Logger logger = LogManager.getLogger(SUnitDicService.class
+	private static final Logger logger = LogManager.getLogger(YesOrNoService.class
 			.getCanonicalName());
 	@Autowired
-	private SUnitDicRepository sUnitDicRepository;
+	private SYesOrNoDicRepository sYesOrNoDicRepository;
 	
-
-
-	public void loadUnits() {
+	@Transactional(readOnly=true)
+	public List<SYesOrNoDic> getSYesOrNoDics() {
 		
-		String[] units = new String[] { "个", "千只",
-				"只" , "箱"};
-		for (String m : units) {
-			SUnitDic mt = new SUnitDic();
+		return sYesOrNoDicRepository.findAll();
+		
+	}
+
+	public void loadSYesOrNoDics() {
+		
+		String[] yesAndNo = new String[] { "是", "否"};
+		for (String m : yesAndNo) {
+			SYesOrNoDic mt = new SYesOrNoDic();
 			mt.setName(m);
-			mt.setDes(m);
-			sUnitDicRepository.save(mt);
+			sYesOrNoDicRepository.save(mt);
 		}
 
 	}

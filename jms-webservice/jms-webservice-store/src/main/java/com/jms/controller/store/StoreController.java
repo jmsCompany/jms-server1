@@ -44,11 +44,11 @@ import com.jms.repositories.s.SStkRepository;
 import com.jms.repositories.s.SYesOrNoDicRepository;
 import com.jms.repositories.system.AppsRepository;
 import com.jms.repositories.user.UsersRepository;
-import com.jms.service.MaterialCategoryService;
-import com.jms.service.SBinService;
-import com.jms.service.SStatusDicService;
-import com.jms.service.SStkService;
-import com.jms.service.SStkTypeDicService;
+import com.jms.service.store.MaterialCategoryService;
+import com.jms.service.store.SBinService;
+import com.jms.service.store.SStatusDicService;
+import com.jms.service.store.SStkService;
+import com.jms.service.store.SStkTypeDicService;
 import com.jms.web.security.SecurityUtils;
 
 

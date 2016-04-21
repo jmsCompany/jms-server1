@@ -11,9 +11,9 @@ import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.store.WSSMtf;
 import com.jms.domain.ws.store.WSSMtfMaterial;
-import com.jms.service.MtfMaterialService;
-import com.jms.service.MtfService;
-import com.jms.service.SMtfTypeDicService;
+import com.jms.service.store.MtfMaterialService;
+import com.jms.service.store.MtfService;
+import com.jms.service.store.SMtfTypeDicService;
 import com.jms.web.security.SecurityUtils;
 
 

@@ -1,137 +1,228 @@
 
-public class WSSso {
+public class WSPStopsCode {
 
-    private Long idSo;
-    private String codeCo;
-    private String codeSo;
-    private String coOrderNo;
-    private Long sCompanyCoId;
-    private Date dateOrder;
-    private Long totalAmount;
-    private Long taxRate;
-    private Long exchange;
-    private Long materialId;
-    private String remark;
-    private String freightTerm;
-    private String paymentTerm;
-    private Long freightTermId;
-    private Long paymentTermId;
-    private String sStatus;
-    private Long sStatusId;
-    private String userName;
-    private Long userId;
-    private Long qtySo;
-    private Long uprice;
-    private Date deliveryDate;
-    private Long qtyDelivered;
+	private Long idStopsCode;
+    private String code;
+    private String des;
 }
-
-@Transactional(readOnly = false)
-@RequestMapping(value="/s/saveSo", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-public Valid saveSo(@RequestBody WSSso wsSso) throws Exception {
-	return ssoService.saveSSo(wsSso);
-}
-
-
-@Transactional(readOnly = true)
-@RequestMapping(value="/s/findSo", method=RequestMethod.GET)
-public WSSso findWSSso(@RequestParam("soId") Long soId) throws Exception {
-	return ssoService.findSso(soId);
-}
-
-
-
-@Transactional(readOnly = true)
-@RequestMapping(value="/s/getSoList", method=RequestMethod.GET)
-public WSTableData  getSoList( @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
-	
-	Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
-	List<SSo> ssos = sSoRepository.findByCompanyId(companyId);
-	List<String[]> lst = new ArrayList<String[]>();
-	int end=0;
-	if(ssos.size()<start + length)
-		end =ssos.size();
-	else
-		end =start + length;
-	for (int i = start; i < end; i++) {
-		SSo w = ssos.get(i);
-		String status=(w.getSStatusDic()==null)?"":w.getSStatusDic().getName();
-		String unit =(w.getSMaterial().getSUnitDicByUnitInf()==null)?"":w.getSMaterial().getSUnitDicByUnitInf().getName();
-		String[] d = {w.getCodeSo(),""+w.getDateOrder(),w.getUsers().getName(),w.getSCompanyCo().getCode(),status,w.getSMaterial().getPno(),w.getSMaterial().getRev(),w.getSMaterial().getDes(),unit,""+w.getQtySo(),""+w.getTotalAmount(),w.getDeliveryDate().toString(),""+w.getQtyDelivered(),""+w.getIdSo()};
-		lst.add(d);
-
+    
+    
+    	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/p/savePStopsCode", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSPStopsCode savePStopsCode(@RequestBody WSPStopsCode wsPStopsCode) throws Exception {
+		return pStopsCodeService.saveWSPStopsCode(wsPStopsCode);
 	}
-	WSTableData t = new WSTableData();
-	t.setDraw(draw);
-	t.setRecordsTotal(ssos.size());
-	t.setRecordsFiltered(ssos.size());
-    t.setData(lst);
-    return t;
-}
-
-
-public class WSPWorkCenter {
 	
-    private Long idWc;
-    private Long companyId;
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/p/deletePStopsCode", method=RequestMethod.GET)
+	public Valid deletePStopsCode(@RequestParam("idStopsCode") Long idStopsCode) {
+		return pStopsCodeService.deletePStopsCode(idStopsCode);
+		
+	}
+	
+
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findPStopsCode", method=RequestMethod.GET)
+	public WSPStopsCode findPStopsCode(@RequestParam("idStopsCode") Long idStopsCode) throws Exception {
+		return pStopsCodeService.findWSPStopsCode(idStopsCode);
+		
+	}
+	
+
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findPStopsCodeList", method=RequestMethod.GET)
+	public WSTableData  findPStopsCodeList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		List<PStopsCode> pStopscodes =pStopsCodeRepository.findAll();
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(pStopscodes.size()<start + length)
+			end =pStopscodes.size();
+		else
+			end =start + length;
+		for (int i = start; i < end; i++) {
+			PStopsCode w = pStopscodes.get(i);
+			String[] d = {w.getCode(),w.getDes(),""+w.getIdStopsCode()};
+			lst.add(d);
+
+		}
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(pStopscodes.size());
+		t.setRecordsFiltered(pStopscodes.size());
+	    t.setData(lst);
+	    return t;
+	}
+	
+	
+	public class WSPRoutine {
+
+	private Long idRoutine;
+	private String companyName;
+	private Long companyId;
+	private Long materialId;
+	private String pNo;
+	private String materialDes;
+	private String materialRev;
+	private Long drawId;
+	private Long drawNo;
+	private String drawVer;
+	private Long lineId;
+	private String line;
+	private String status;
+	private Long statusId;
+	private Map<String, WSPRoutineD> wsRoutineDs = new LinkedHashMap<String, WSPRoutineD>(0);
+	}
+	
+	public class WSPRoutineD {
+	
+
+    private Long idRoutineD;
     private String workCenter;
-    private Date creationTime;
-    private String creator;
-}
-
-
-
-@Transactional(readOnly = false)
-@RequestMapping(value="/p/saveWorkCenter", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-public WSPWorkCenter saveWSFCostCenter(@RequestBody WSPWorkCenter wsPWorkCenter) throws Exception {
-	return workCenterService.saveWSPWorkCenter(wsPWorkCenter);
-}
-
-
-@Transactional(readOnly = false)
-@RequestMapping(value="/p/deleteWorkCenter", method=RequestMethod.GET)
-public Valid deleteWorkCenter(@RequestParam("workCenterId") Long workCenterId) {
-	return workCenterService.deletePWorkCenter(workCenterId);
-	
-}
-
-
-@Transactional(readOnly = true)
-@RequestMapping(value="/p/findWorkCenter", method=RequestMethod.GET)
-public WSPWorkCenter findCostCenter(@RequestParam("workCenterId") Long workCenterId) throws Exception {
-	return workCenterService.findWSPworkCenter(workCenterId);
-	
-}
-
-
-
-@Transactional(readOnly = true)
-@RequestMapping(value="/p/workCenterList", method=RequestMethod.GET)
-public WSTableData  getWorkCenterList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
-	List<PWorkCenter> pWorkCenters =pWorkCenterRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
-	List<String[]> lst = new ArrayList<String[]>();
-	int end=0;
-	if(pWorkCenters.size()<start + length)
-		end =pWorkCenters.size();
-	else
-		end =start + length;
-	for (int i = start; i < end; i++) {
-		PWorkCenter w = pWorkCenters.get(i);
-		String[] d = {w.getWorkCenter(),w.getCreationTime().toString(),""+w.getUsers().getName(),""+w.getIdWc()};
-		lst.add(d);
-
+    private Long workCenterId;
+    private String orderBy;
+    private Long userId;
+    private Long pAttDrawId;
+    private String pAttDraw;
+    private Long routineId;
+    private String routeNo;
+    private String des;
+    private Long stdWtLabor;
+    private Long stdWtMachine;
+    private Long stdWtSetup;
+    }
+    
+    	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/p/saveRoutine", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSPRoutine saveWSShiftPlan(@RequestBody WSPRoutine wsPRoutine) throws Exception {
+		return routineService.saveWSPRoutine(wsPRoutine);
 	}
-	WSTableData t = new WSTableData();
-	t.setDraw(draw);
-	t.setRecordsTotal(pWorkCenters.size());
-	t.setRecordsFiltered(pWorkCenters.size());
-    t.setData(lst);
-    return t;
-}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/p/deletePRoutine", method=RequestMethod.GET)
+	public Valid deleteWSPRoutine(@RequestParam("idPRoutine") Long idPRoutine) {
+		return routineService.deletePRoutine(idPRoutine);
+		
+	}
+	
 
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findPRoutine", method=RequestMethod.GET)
+	public WSPRoutine findPRoutine(@RequestParam("idPRoutine") Long idPRoutine) throws Exception {
+		return routineService.findWSPRoutine(idPRoutine);
+		
+	}
+	
 
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/getRoutineList", method=RequestMethod.GET)
+	public WSTableData  getShiftPlanList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		
+		List<PRoutine> pRoutines =pRoutineRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+		
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(pRoutines.size()<start + length)
+			end =pRoutines.size();
+		else
+			end =start + length;
+		for (int i = start; i < end; i++) {
+			PRoutine w = pRoutines.get(i);
+			String[] d = {w.getPDraw().getDrawVer(),""+w.getIdRoutine()};
+			lst.add(d);
 
-public class WSPWo {
+		}
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(pRoutines.size());
+		t.setRecordsFiltered(pRoutines.size());
+	    t.setData(lst);
+	    return t;
+	}
+	
+	
+	public class WSShiftPlan {
+
+	private Long idShiftPlan;
+	private Long companyId;
+	private String companyName;
+	private Long statusId;
+	private String status;
+	private Long shiftPlanNo;
+	private String name;
+	private Date validityTime;
+	private Date st;
+	private Date ft;
+	}
+	
+	public class WSShiftPlanD {
+
+    private Long idShiftD;
+    private Long shiftPlanId;
+    private String shift;
+    private String des;
+    private Date st;
+    private Date ft;
+    }
+    
+    
+    @Transactional(readOnly = false)
+	@RequestMapping(value="/p/saveShiftPlan", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSShiftPlan saveWSShiftPlan(@RequestBody WSShiftPlan wsShiftPlan) throws Exception {
+		return shiftPlanService.saveWSPShiftPlan(wsShiftPlan);
+	}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/p/deleteShiftPlan", method=RequestMethod.GET)
+	public Valid deleteShiftPlan(@RequestParam("idShiftPlan") Long idShiftPlan) {
+		return shiftPlanService.deletePShiftPlan(idShiftPlan);
+		
+	}
+	
+
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findShiftPlan", method=RequestMethod.GET)
+	public WSShiftPlan findShiftPlan(@RequestParam("idShiftPlan") Long idShiftPlan) throws Exception {
+		return shiftPlanService.findWSShiftPlan(idShiftPlan);
+		
+	}
+	
+
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/getShiftPlanList", method=RequestMethod.GET)
+	public WSTableData  getShiftPlanList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		
+		List<PShiftPlan> shifPlans =pShiftPlanRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+		
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(shifPlans.size()<start + length)
+			end =shifPlans.size();
+		else
+			end =start + length;
+		for (int i = start; i < end; i++) {
+			PShiftPlan w = shifPlans.get(i);
+			String[] d = {w.getName(),""+w.getIdShiftPlan()};
+			lst.add(d);
+
+		}
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(shifPlans.size());
+		t.setRecordsFiltered(shifPlans.size());
+	    t.setData(lst);
+	    return t;
+	}
+	
+    
+    public class WSPWo {
 	
     private Long idWo;
     private Long soId;
@@ -142,59 +233,58 @@ public class WSPWo {
     private Date creationTime;
     private String creator;
     private Long qty;
-}
-
-
-
-@Transactional(readOnly = false)
-@RequestMapping(value="/p/saveWo", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-public WSPWo saveWSWo(@RequestBody WSPWo wsPWo) throws Exception {
-	return woService.saveWSPWo(wsPWo);
-}
-
-
-@Transactional(readOnly = false)
-@RequestMapping(value="/p/deleteWo", method=RequestMethod.GET)
-public Valid deleteWorkCenter(@RequestParam("woId") Long woId) {
-	return woService.deletePWo(woId);
-	
-}
-
-
-@Transactional(readOnly = true)
-@RequestMapping(value="/p/findWo", method=RequestMethod.GET)
-public WSPWo findWo(@RequestParam("woId") Long woId) throws Exception {
-	return woService.findWSPwo(woId);
-	
-}
-
-
-
-@Transactional(readOnly = true)
-@RequestMapping(value="/p/getWoList", method=RequestMethod.GET)
-public WSTableData  getWorkCenterList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
-	//todo: how to get Wos????
-	List<PWo> pWos =pWoRepository.findAll();
-	
-	List<String[]> lst = new ArrayList<String[]>();
-	int end=0;
-	if(pWos.size()<start + length)
-		end =pWos.size();
-	else
-		end =start + length;
-	for (int i = start; i < end; i++) {
-		PWo w = pWos.get(i);
-		String idSo=(w.getSSo()==null)?"":""+w.getSSo().getIdSo();
-		String codeSo=(w.getSSo()==null)?"":w.getSSo().getCodeSo();
-		String status=(w.getPStatusDic()==null)?"":w.getPStatusDic().getName();
-		String[] d = {w.getWoNo(),idSo,codeSo,""+w.getQty(),w.getCreationTime().toString(),""+w.getUsers().getName(),status,""+w.getIdWo()};
-		lst.add(d);
-
+    }
+    
+    	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/p/saveWo", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSPWo saveWSWo(@RequestBody WSPWo wsPWo) throws Exception {
+		return woService.saveWSPWo(wsPWo);
 	}
-	WSTableData t = new WSTableData();
-	t.setDraw(draw);
-	t.setRecordsTotal(pWos.size());
-	t.setRecordsFiltered(pWos.size());
-    t.setData(lst);
-    return t;
-}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/p/deleteWo", method=RequestMethod.GET)
+	public Valid deleteWorkCenter(@RequestParam("woId") Long woId) {
+		return woService.deletePWo(woId);
+		
+	}
+	
+
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findWo", method=RequestMethod.GET)
+	public WSPWo findWo(@RequestParam("woId") Long woId) throws Exception {
+		return woService.findWSPwo(woId);
+		
+	}
+	
+
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/getWoList", method=RequestMethod.GET)
+	public WSTableData  getWorkCenterList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		//todo: how to get Wos???? current by So.......
+		List<PWo> pWos =pWoRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+		
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(pWos.size()<start + length)
+			end =pWos.size();
+		else
+			end =start + length;
+		for (int i = start; i < end; i++) {
+			PWo w = pWos.get(i);
+			String idSo=(w.getSSo()==null)?"":""+w.getSSo().getIdSo();
+			String codeSo=(w.getSSo()==null)?"":w.getSSo().getCodeSo();
+			String status=(w.getPStatusDic()==null)?"":w.getPStatusDic().getName();
+			String[] d = {w.getWoNo(),codeSo,""+w.getQty(),w.getCreationTime().toString(),""+w.getUsers().getName(),status,""+w.getIdWo()};
+			lst.add(d);
+
+		}
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(pWos.size());
+		t.setRecordsFiltered(pWos.size());
+	    t.setData(lst);
+	    return t;
+	}

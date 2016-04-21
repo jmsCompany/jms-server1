@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import com.jms.domain.db.PWo;
 import com.jms.domain.ws.Valid;
+import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.production.WSPWo;
 import com.jms.repositories.p.PWoRepository;
@@ -78,5 +79,18 @@ public class WoController {
 	    return t;
 	}
 	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/getWoObjsList", method=RequestMethod.GET)
+	public List<WSSelectObj>  getWoObjsList() throws Exception {	   
+		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
+		for(PWo p:pWoRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
+		 {
+			WSSelectObj w = new WSSelectObj(p.getIdWo(),p.getWoNo());
+			ws.add(w);
+		 }
+		
+	    return ws;
+	}
 
 }

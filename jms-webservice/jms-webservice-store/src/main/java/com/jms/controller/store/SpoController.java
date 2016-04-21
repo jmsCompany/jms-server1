@@ -14,8 +14,8 @@ import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.store.WSSpo;
 import com.jms.domain.ws.store.WSSpoMaterial;
 import com.jms.domain.ws.store.WSSpoRemark;
-import com.jms.service.SpoMaterialService;
-import com.jms.service.SpoService;
+import com.jms.service.store.SpoMaterialService;
+import com.jms.service.store.SpoService;
 import com.jms.web.security.SecurityUtils;
 
 

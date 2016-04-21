@@ -14,7 +14,7 @@ import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.store.WSSso;
 import com.jms.repositories.s.SSoRepository;
-import com.jms.service.SsoService;
+import com.jms.service.store.SsoService;
 import com.jms.web.security.SecurityUtils;
 
 

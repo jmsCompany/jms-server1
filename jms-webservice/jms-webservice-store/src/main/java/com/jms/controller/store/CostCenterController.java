@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.f.WSFCostCenter;
-import com.jms.service.CostCenterService;
+import com.jms.service.store.CostCenterService;
 
 
 

@@ -16,20 +16,21 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jms.domain.db.Company;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.user.UsersRepository;
-import com.jms.service.CurrencyTypeService;
-import com.jms.service.MaterialTypeService;
-import com.jms.service.SCountryDicService;
-import com.jms.service.SGenderDicService;
-import com.jms.service.SLevelDicService;
-import com.jms.service.SMtfTypeDicService;
-import com.jms.service.SStatusDicService;
-import com.jms.service.SStkTypeDicService;
-import com.jms.service.STypeDicService;
-import com.jms.service.SUnitDicService;
-import com.jms.service.StermDicService;
-import com.jms.service.YesOrNoService;
 import com.jms.service.company.CompanyService;
+import com.jms.service.maintenance.MMachineGroupService;
 import com.jms.service.production.PStatusDicService;
+import com.jms.service.store.CurrencyTypeService;
+import com.jms.service.store.MaterialTypeService;
+import com.jms.service.store.SCountryDicService;
+import com.jms.service.store.SGenderDicService;
+import com.jms.service.store.SLevelDicService;
+import com.jms.service.store.SMtfTypeDicService;
+import com.jms.service.store.SStatusDicService;
+import com.jms.service.store.SStkTypeDicService;
+import com.jms.service.store.STypeDicService;
+import com.jms.service.store.SUnitDicService;
+import com.jms.service.store.StermDicService;
+import com.jms.service.store.YesOrNoService;
 import com.jms.service.system.AppsService;
 import com.jms.service.system.DicService;
 import com.jms.service.system.DistrictService;
@@ -112,6 +113,8 @@ public class DatabaseInit {
 	
 	@Autowired
 	private  SMtfTypeDicService sMtfTypeDicService;
+	@Autowired
+	private MMachineGroupService mMachineGroupService;
 	// 在系统初装的执行切只能执行一次，读取csv文件的数据到数据库中。
 	// todo:详细说明系统预设的所有信息这些信息的用途
 	public void init(ConfigurableApplicationContext ctx) throws IOException {
@@ -183,9 +186,9 @@ public class DatabaseInit {
 		userService.createTestUsersforSandVik();
 	    sMtfTypeDicService.loadMtfTypes();
 		*/
-		
-		
-	
+		/*
+		mMachineGroupService.loadMMachineGroupForSandVik();
+	     */
 	}
 
 }
