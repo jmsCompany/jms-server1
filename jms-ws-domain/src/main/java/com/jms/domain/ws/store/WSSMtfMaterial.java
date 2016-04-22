@@ -68,6 +68,10 @@ public class WSSMtfMaterial {
     
     
     
+    private String currentBin;
+    private Long currentBinId;
+    private Long qtyStored;
+    
     
 	public Long getIdMtfMaterial() {
 		return idMtfMaterial;
@@ -345,6 +349,24 @@ public class WSSMtfMaterial {
 	}
 	public void setToStkId(Long toStkId) {
 		this.toStkId = toStkId;
+	}
+	public Long getQtyStored() {
+		return qtyStored;
+	}
+	public void setQtyStored(Long qtyStored) {
+		this.qtyStored = qtyStored;
+	}
+	public Long getCurrentBinId() {
+		return currentBinId;
+	}
+	public void setCurrentBinId(Long currentBinId) {
+		this.currentBinId = currentBinId;
+	}
+	public String getCurrentBin() {
+		return currentBin;
+	}
+	public void setCurrentBin(String currentBin) {
+		this.currentBin = currentBin;
 	}
     
   

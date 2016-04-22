@@ -1,6 +1,5 @@
 package com.jms.controller.production;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,6 @@ import com.jms.domain.ws.production.WSPWip;
 import com.jms.repositories.p.PWipRepository;
 import com.jms.service.production.PWipService;
 import com.jms.web.security.SecurityUtils;
-
-
 
 
 @RestController
@@ -49,8 +46,6 @@ public class PWipController {
 		return pWipService.findWSPWip(wipId);
 		
 	}
-	
-
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/wipList", method=RequestMethod.GET)

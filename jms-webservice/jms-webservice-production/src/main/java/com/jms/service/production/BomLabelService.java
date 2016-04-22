@@ -61,6 +61,13 @@ public class BomLabelService {
 	@Transactional(readOnly=false)
 	public WSPBom savePBomLabel(WSPBom wsPBom) throws Exception {
 		PBomLabel pBomLabel;
+		List<PBom> pBoms=	pBomRepository.findProductsByMaterialId(wsPBom.getMaterialId());
+		if(pBoms!=null&&!pBoms.isEmpty())
+		{
+			wsPBom.setIdBomLabel(0l);
+			return wsPBom;
+		}
+			
 		if(wsPBom.getIdBomLabel()!=null&&!wsPBom.getIdBomLabel().equals(0l))
 		{
 			pBomLabel = pBomLabelRepository.findOne(wsPBom.getIdBomLabel());
@@ -78,7 +85,7 @@ public class BomLabelService {
 	
 		if(wsPBom.getIdBomLabel()!=null&&!wsPBom.getIdBomLabel().equals(0l))
 		{
-			System.out.println("bom label id: " + wsPBom.getIdBomLabel());
+			//System.out.println("bom label id: " + wsPBom.getIdBomLabel());
 			pBomRepository.deleteByBomLabelId(wsPBom.getIdBomLabel());
 		}
 		wsPBom.setIdBomLabel(dbPBomLabel.getIdBomLabel());
@@ -88,6 +95,9 @@ public class BomLabelService {
 		wsPBomItem.setMaterial(wsPBom.getMaterial());
 		wsPBomItem.setMaterialId(wsPBom.getMaterialId());
 	//	wsPBomItem.setWorkCenterId(workCenterId);
+
+	
+	
 		wsPBomItem =bomService.saveWSPBomItem(wsPBomItem);
 	
 		for(String k:wsPBom.getBomItems().keySet())
@@ -174,15 +184,39 @@ public class BomLabelService {
 			pc.setCompanyName(pBomLabel.getCompany().getCompanyName());
 			pc.setCompanyId(pBomLabel.getCompany().getIdCompany());
 		}
+		int i=0;
 		for(PBom p:pBomLabel.getPBoms())
 		{
-			if(p.getPBom()==null)
+			if(p.getPBom()!=null)
+			{
+
+				WSPBomItem item = new WSPBomItem();
+				item.setIdBom(p.getIdBom());
+				item.setIdBomLabel(pBomLabel.getIdBomLabel());
+				item.setLvl(p.getLvl());
+				item.setMaterialId(p.getSMaterial().getIdMaterial());
+				item.setMaterial(p.getSMaterial().getDes());
+				item.setRev(p.getSMaterial().getRev());
+				item.setPno(p.getSMaterial().getPno());
+				item.setQpu(p.getQpu());
+				item.setWorkCenter(p.getPWorkCenter().getWorkCenter());
+				item.setWorkCenterId(p.getPWorkCenter().getIdWc());
+				item.setOrderBy(p.getOrderBy());
+				item.setWastage(p.getWastage());
+				item.setIdParentBom(p.getPBom().getIdBom());
+				item.setCost(p.getSMaterial().getCost());
+				item.setsUnitDicByUnitInf(p.getSMaterial().getSUnitDicByUnitInf().getName());
+				item.setsUnitDicByUnitInfId(p.getSMaterial().getSUnitDicByUnitInf().getId());
+				item.setWeight(p.getSMaterial().getWeight());
+				pc.getBomItems().put("item"+i, item);
+				i++;
+			}
+			else
 			{
 				pc.setMaterialId(p.getSMaterial().getIdMaterial());
 				pc.setMaterial(p.getSMaterial().getDes());
 				pc.setRev(p.getSMaterial().getRev());
-		    	pc.setPno(p.getSMaterial().getPno());
-				break;
+				pc.setPno(p.getSMaterial().getPno());
 			}
 		}
 		return pc;

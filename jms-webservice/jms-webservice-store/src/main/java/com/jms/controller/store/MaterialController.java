@@ -220,7 +220,7 @@ public class MaterialController {
 			List<WSLotNo> wso = new ArrayList<WSLotNo>();
 			for(String s : sMtfMaterialRepository.getLotNosBySpoIdAndMaterialId(spoId, materialId))
 			{
-				System.out.println("add s: " + s);
+				//System.out.println("add s: " + s);
 				wso.add(new WSLotNo(s,s));
 			}
 			return wso;

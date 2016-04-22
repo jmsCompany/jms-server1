@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import com.jms.domain.db.PWo;
+import com.jms.domain.db.SMaterial;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
@@ -93,4 +94,25 @@ public class WoController {
 	    return ws;
 	}
 
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/getMaterialByWoId", method=RequestMethod.GET)
+	public WSSelectObj getMaterialByWoId(@RequestParam("woId") Long woId) throws Exception {
+		
+		SMaterial s = pWoRepository.findByWoId(woId);
+
+	    WSSelectObj w = new WSSelectObj(s.getIdMaterial(),s.getPno()+"-"+ s.getRev()+"-"+s.getDes());
+	
+		return w;
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/getMaterialByWoBom", method=RequestMethod.GET)
+	public List<WSSelectObj> getMaterialByWoBom(@RequestParam("woId") Long woId) throws Exception {	
+	   return woService.getMaterialsByWoId(woId);
+	}
+	
+	
+	
 }

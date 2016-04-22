@@ -1,15 +1,23 @@
 package com.jms.domain.ws.production;
 
+import java.math.BigDecimal;
+
 
 public class WSPBomItem {
 	
     private Long idBom;
     private String workCenter;
     private Long workCenterId;
+    
     private String material;
     private Long materialId;
     private String pno;
     private String rev;
+    private String sUnitDicByUnitInf;
+    private Long sUnitDicByUnitInfId;
+    private Long weight;
+    private BigDecimal cost;
+   
     private Long idBomLabel;
     private Long qpu;
     private Long orderBy;
@@ -17,6 +25,7 @@ public class WSPBomItem {
     private Long wastage;
     
     private Long idParentBom;
+    
 	public Long getIdBom() {
 		return idBom;
 	}
@@ -94,6 +103,30 @@ public class WSPBomItem {
 	}
 	public void setRev(String rev) {
 		this.rev = rev;
+	}
+	public BigDecimal getCost() {
+		return cost;
+	}
+	public void setCost(BigDecimal cost) {
+		this.cost = cost;
+	}
+	public Long getWeight() {
+		return weight;
+	}
+	public void setWeight(Long weight) {
+		this.weight = weight;
+	}
+	public Long getsUnitDicByUnitInfId() {
+		return sUnitDicByUnitInfId;
+	}
+	public void setsUnitDicByUnitInfId(Long sUnitDicByUnitInfId) {
+		this.sUnitDicByUnitInfId = sUnitDicByUnitInfId;
+	}
+	public String getsUnitDicByUnitInf() {
+		return sUnitDicByUnitInf;
+	}
+	public void setsUnitDicByUnitInf(String sUnitDicByUnitInf) {
+		this.sUnitDicByUnitInf = sUnitDicByUnitInf;
 	}
 
 }

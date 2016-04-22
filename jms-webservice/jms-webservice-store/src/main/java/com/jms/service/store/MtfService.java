@@ -143,6 +143,52 @@ public class MtfService {
 			    	//update SPo
 			    	break;
 			    }
+			    
+			    case 2: //采购退货
+			    {
+			    	SInventory sInventory;
+			    	if(wm.getLotNo()!=null)
+			    	{
+			    		 sInventory= sInventoryRepository.findByMaterialIdAndBinIdAndLotNo(wm.getMaterialId(), wm.getToBinId(), wm.getLotNo());
+			    	}
+			    	else
+			    	{
+			    		 sInventory=sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
+			    	}
+			    	if(sInventory==null)
+			    	{
+			    		sInventory = new SInventory();
+			    		sInventory.setCreationTime(new Date());
+			    		sInventory.setBox(wm.getBox());
+			    		sInventory.setLotNo(wm.getLotNo());
+			    		sInventory.setQty(wm.getQty());
+			    		sInventory.setUQty(wm.getUqty());
+			    		sInventory.setSBin(sBinRepository.findOne(wm.getToBinId()));
+			    		sInventory.setSMaterial(spoMaterial.getSMaterial());
+			    		
+			    	}
+			    	else
+			    	{
+			    		if(sInventory.getBox()!=null)
+			    		sInventory.setBox(sInventory.getBox()+wm.getBox());
+			    		sInventory.setQty(sInventory.getQty()+wm.getQty());
+			    	}
+			    	sInventoryRepository.save(sInventory);
+			    	
+			    	SPoMaterial sPoMaterial = sSpoMaterialRepository.getOne(wm.getPoMaterialId());
+			    	if(sPoMaterial.getQtyReceived()!=null)
+			    	{
+			    		sPoMaterial.setQtyReceived(sPoMaterial.getQtyReceived()+wm.getQty());
+			    		
+			    	}
+			    	else
+			    	{
+			    		sPoMaterial.setQtyReceived(wm.getQty());
+			    	}
+			    	sSpoMaterialRepository.save(sPoMaterial);
+			    	//update SPo
+			    	break;
+			    }
 			}
 		}
 		
@@ -153,7 +199,7 @@ public class MtfService {
 	}
 	
 
-	public WSSMtf findSMtf (Long smtfId) throws Exception 
+	public WSSMtf findSMtf(Long smtfId) throws Exception 
 	{
 		SMtf sMtf = sMtfRepository.findOne(smtfId);
 		return toWSSMtf(sMtf);
@@ -164,7 +210,7 @@ public class MtfService {
 	
 		SMtf dbSMtf = (SMtf)BeanUtil.shallowCopy(wsSMtf, SMtf.class, sMtf);
 		dbSMtf.setMtNo(wsSMtf.getMtNo());
-		System.out.println("mtNo: " + wsSMtf.getMtNo());
+		//System.out.println("mtNo: " + wsSMtf.getMtNo());
 		dbSMtf.setCompany(securityUtils.getCurrentDBUser().getCompany());
 		if(wsSMtf.getEmpMtUserId()!=null)
 		{

@@ -9,10 +9,15 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jms.domain.db.FCostCenter;
+import com.jms.domain.db.PBom;
 import com.jms.domain.db.PWo;
 import com.jms.domain.db.PWorkCenter;
+import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SStk;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
@@ -22,6 +27,7 @@ import com.jms.domain.ws.production.WSPWorkCenter;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.f.FCostCenterRepository;
+import com.jms.repositories.p.PBomRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PWoRepository;
 import com.jms.repositories.p.PWorkCenterRepository;
@@ -38,6 +44,9 @@ public class WoService {
 	private PWoRepository pWoRepository;
 	@Autowired
 	private SSoRepository sSoRepository;
+	
+	@Autowired
+	private PBomRepository pBomRepository;
 	
 	
 	@Autowired 
@@ -124,5 +133,24 @@ public class WoService {
 		}
 		return pc;
 	}
+	
+	
+	public List<WSSelectObj> getMaterialsByWoId(@RequestParam("woId") Long woId) throws Exception {
+		
+		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
+		SMaterial s = pWoRepository.findByWoId(woId); //
+		PBom pBom = pBomRepository.findProductByMaterialId(s.getIdMaterial());
+		for(PBom p: pBom.getPBoms())
+		{
+			SMaterial material =p.getSMaterial();
+			WSSelectObj w = new WSSelectObj(material.getIdMaterial(),material.getPno()+"-"+ material.getRev()+"-"+material.getDes());
+		    ws.add(w);
+		   
+		}
+	  
+	
+		return ws;
+	}
+	
 
 }

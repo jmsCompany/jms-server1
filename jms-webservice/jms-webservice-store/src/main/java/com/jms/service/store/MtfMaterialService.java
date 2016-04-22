@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jms.domain.db.SBin;
+import com.jms.domain.db.SInventory;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMtf;
 import com.jms.domain.db.SMtfMaterial;
@@ -19,6 +21,7 @@ import com.jms.domain.ws.store.WSSMtfMaterial;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.p.PWoBomRepository;
 import com.jms.repositories.s.SBinRepository;
+import com.jms.repositories.s.SInventoryRepository;
 import com.jms.repositories.s.SMaterialRepository;
 import com.jms.repositories.s.SMtfMaterialRepository;
 import com.jms.repositories.s.SMtfRepository;
@@ -56,6 +59,8 @@ public class MtfMaterialService {
 	
 	@Autowired
 	private PWoBomRepository pWoBomRepository;
+	@Autowired
+	private SInventoryRepository sInventoryRepository;
 
 
 	
@@ -93,12 +98,28 @@ public class MtfMaterialService {
 	}
 	
 	
-	public List<WSSMtfMaterial> findWSSMtfMaterialBySpoId(Long spoId) throws Exception
+	public List<WSSMtfMaterial> findWSSMtfMaterialBySpoId(Long spoId,Long stkId) throws Exception
 	{
 		List<WSSMtfMaterial> ws = new ArrayList<WSSMtfMaterial>();
 		for(SMtfMaterial sm: sMtfMaterialRepository.getBySpoId(spoId))
 		{
-			ws.add(toWSSMtfMaterial(sm));
+			Long materialId = sm.getIdMtfMaterial();
+			String lotNo = sm.getLotNo();
+			WSSMtfMaterial w = toWSSMtfMaterial(sm);
+			List<SInventory> sInventorys = sInventoryRepository.findBinsByMaterialIdAndLotNoAndStkId(materialId, lotNo, stkId);
+			if(sInventorys!=null&&!sInventorys.isEmpty())
+			{
+				for(SInventory s: sInventorys)
+				{
+					WSSMtfMaterial w1 =w;
+					w1.setCurrentBin(s.getSBin().getBin());
+					w1.setCurrentBinId(s.getSBin().getIdBin());
+					w1.setQtyStored(s.getQty());
+					ws.add(w1);
+				}
+			
+			}
+			
 		}
 		
 		return ws;

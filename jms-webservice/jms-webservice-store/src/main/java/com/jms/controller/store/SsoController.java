@@ -103,7 +103,7 @@ public class SsoController {
 		
 		SMaterial s = sSoRepository.findBySoId(soId);
 
-	   WSSelectObj w = new WSSelectObj(s.getIdMaterial(),s.getPno()+"-"+ s.getRev()+"-"+s.getDes());
+	    WSSelectObj w = new WSSelectObj(s.getIdMaterial(),s.getPno()+"-"+ s.getRev()+"-"+s.getDes());
 	
 		return w;
 	}
