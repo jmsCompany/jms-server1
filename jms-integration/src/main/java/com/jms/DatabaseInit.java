@@ -18,6 +18,9 @@ import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.service.company.CompanyService;
 import com.jms.service.maintenance.MMachineGroupService;
+import com.jms.service.maintenance.MMachineService;
+import com.jms.service.maintenance.MStatusDicService;
+import com.jms.service.production.PPUTimeService;
 import com.jms.service.production.PStatusDicService;
 import com.jms.service.store.CurrencyTypeService;
 import com.jms.service.store.MaterialTypeService;
@@ -115,6 +118,13 @@ public class DatabaseInit {
 	private  SMtfTypeDicService sMtfTypeDicService;
 	@Autowired
 	private MMachineGroupService mMachineGroupService;
+	@Autowired
+	private MStatusDicService mStatusDicService;
+	@Autowired
+	private  MMachineService mMachineService;
+	
+	@Autowired
+	private  PPUTimeService pPUTimeService;
 	// 在系统初装的执行切只能执行一次，读取csv文件的数据到数据库中。
 	// todo:详细说明系统预设的所有信息这些信息的用途
 	public void init(ConfigurableApplicationContext ctx) throws IOException {
@@ -188,6 +198,18 @@ public class DatabaseInit {
 		*/
 		/*
 		mMachineGroupService.loadMMachineGroupForSandVik();
+	     */
+		
+        /*
+	    Resource m_statuRes = ctx.getResource("classpath:data/m_status_dic.csv");
+		mStatusDicService.loadStatus(m_statuRes.getInputStream());
+
+		Resource machines = ctx.getResource("classpath:data/machine.csv");
+		mMachineService.loadMachinesForSandVik(machines.getInputStream());
+		
+			*/
+		/*
+		pPUTimeService.loadPuTimes();
 	     */
 	}
 

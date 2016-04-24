@@ -2,18 +2,33 @@ package com.jms.controller.store;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.jms.domain.db.SAttachment;
 import com.jms.domain.db.SMaterial;
+import com.jms.domain.db.SMaterialPic;
+import com.jms.domain.db.SPic;
+import com.jms.domain.db.SPo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.store.WSSpo;
 import com.jms.domain.ws.store.WSSpoMaterial;
 import com.jms.domain.ws.store.WSSpoRemark;
+import com.jms.file.FileMeta;
+import com.jms.file.FileUploadService;
+import com.jms.repositories.s.SAttachmentRepository;
+import com.jms.repositories.s.SSpoRepository;
+import com.jms.service.store.MaterialService;
 import com.jms.service.store.SpoMaterialService;
 import com.jms.service.store.SpoService;
 import com.jms.web.security.SecurityUtils;
@@ -26,14 +41,53 @@ public class SpoController {
 
 	@Autowired private SecurityUtils securityUtils;
 	@Autowired private SpoService spoService;
+	@Autowired private SSpoRepository sSpoRepository;
 	@Autowired private SpoMaterialService spoMaterialService;
+	@Autowired private FileUploadService fileUploadService;
+	@Autowired private SAttachmentRepository sAttachmentRepository;
+	private static final Logger logger = LogManager.getLogger(SpoController.class
+			.getCanonicalName());
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveSpo", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public Valid saveSpo(@RequestBody WSSpo wsSpo) throws Exception {
+	public WSSpo saveSpo(@RequestBody WSSpo wsSpo) throws Exception {
 		//System.out.println("save Spo!");
 		return spoService.saveSpo(wsSpo);
 	}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value = "/s/uploadSpoAttachment", method = RequestMethod.POST)
+	public FileMeta uploadSpoAttachment(@RequestParam(required=false, value="spoId") Long  spoId, MultipartHttpServletRequest request, HttpServletResponse response) {
+	
+		logger.debug("upload spo attachment: spo id: " +  spoId);
+		FileMeta fileMeta = new FileMeta();
+		if (request.getFileNames().hasNext()) {
+			fileMeta = fileUploadService.upload(request, response);
+			SAttachment spic = new SAttachment();
+			spic.setOrgFilename(fileMeta.getOrgName());
+			spic.setFilename(fileMeta.getFileName());
+			logger.debug("orgin file name: " +  fileMeta.getOrgName() +", file name in server: " + fileMeta.getFileName());
+			spic.setUsers(securityUtils.getCurrentDBUser());
+			spic = sAttachmentRepository.save(spic);
+			fileMeta.setFileId(spic.getId());
+			fileMeta.setBytes(null);
+			if(spoId!=null&&!spoId.equals(0l))
+			{
+				SPo spo = sSpoRepository.findOne(spoId);
+			    spo.setSAttachment(spic);
+			    sSpoRepository.save(spo);
+			}
+
+			
+		}
+		else
+		{
+			logger.debug("no file was uploaded");
+		}
+		return fileMeta;
+	}
+	
 	
 	
 	@Transactional(readOnly = false)

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jms.domain.db.FCostCenter;
 import com.jms.domain.db.PStopsCode;
+import com.jms.domain.db.PSubCode;
 import com.jms.domain.db.PWorkCenter;
 import com.jms.domain.db.SStk;
 import com.jms.domain.db.Users;
@@ -23,6 +24,7 @@ import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.f.FCostCenterRepository;
 import com.jms.repositories.p.PStopsCodeRepository;
+import com.jms.repositories.p.PSubCodeRepository;
 import com.jms.repositories.p.PWorkCenterRepository;
 import com.jms.web.security.SecurityUtils;
 
@@ -34,7 +36,8 @@ public class PStopsCodeService {
 			.getCanonicalName());
 	@Autowired
 	private PStopsCodeRepository pStopsCodeRepository;
-	
+	@Autowired
+	private  PSubCodeRepository pSubCodeRepository;
 	
 	@Autowired 
 	private CompanyRepository companyRepository;
@@ -48,18 +51,18 @@ public class PStopsCodeService {
 	
 	@Transactional(readOnly=false)
 	public WSPStopsCode saveWSPStopsCode(WSPStopsCode wsPStopsCode) throws Exception {
-		PStopsCode pStopsCode ;
+		PSubCode pSubCode ;
 		if(wsPStopsCode.getIdStopsCode()!=null&&!wsPStopsCode.getIdStopsCode().equals(0l))
 		{
-			pStopsCode = pStopsCodeRepository.findOne(wsPStopsCode.getIdStopsCode());
+			pSubCode = pSubCodeRepository.findOne(wsPStopsCode.getIdStopsCode());
 		}
 		else
 		{
-			pStopsCode = new PStopsCode();
+			pSubCode = new PSubCode();
 		}
-		PStopsCode dbpPStopsCode= toDBPStopsCode(wsPStopsCode,pStopsCode);
-		dbpPStopsCode = pStopsCodeRepository.save(dbpPStopsCode);
-		wsPStopsCode.setIdStopsCode(dbpPStopsCode.getIdStopsCode());
+		PSubCode dbPSubCode= toDBPSubCode(wsPStopsCode,pSubCode);
+		dbPSubCode = pSubCodeRepository.save(dbPSubCode);
+		wsPStopsCode.setIdStopsCode(dbPSubCode.getIdSubCode());
 		return wsPStopsCode;		
 		
 	}
@@ -69,7 +72,7 @@ public class PStopsCodeService {
 	{
 		Valid valid = new Valid();
 		
-		pStopsCodeRepository.delete(idStopsCode);
+		pSubCodeRepository.delete(idStopsCode);
 		valid.setValid(true);
 		
 		return valid;
@@ -79,23 +82,27 @@ public class PStopsCodeService {
 	@Transactional(readOnly=true) 
 	public WSPStopsCode findWSPStopsCode(Long idStopsCode) throws Exception
 	{	
-		PStopsCode pStopsCode = pStopsCodeRepository.findOne(idStopsCode);
-		return  toWSPStopsCode(pStopsCode);
+		PSubCode pSubCode = pSubCodeRepository.findOne(idStopsCode);
+		return  toWSPStopsCode(pSubCode);
 		
 	}
 
 	
-	private PStopsCode toDBPStopsCode(WSPStopsCode wsPStopsCode,PStopsCode pStopsCode) throws Exception
+	private PSubCode toDBPSubCode(WSPStopsCode wsPStopsCode,PSubCode pSubCode) throws Exception
 	{
 	
-		PStopsCode dbPWorkCenter = (PStopsCode)BeanUtil.shallowCopy(wsPStopsCode, PStopsCode.class, pStopsCode);
+		pSubCode.setSubDes(wsPStopsCode.getDes());
+		pSubCode.setSubCode(wsPStopsCode.getCode());
 		
-		return dbPWorkCenter;
+		return pSubCode;
 	}
 	
-	private WSPStopsCode toWSPStopsCode(PStopsCode pStopsCode) throws Exception
+	private WSPStopsCode toWSPStopsCode(PSubCode pSubCode) throws Exception
 	{
-		WSPStopsCode pc = (WSPStopsCode)BeanUtil.shallowCopy(pStopsCode, WSPStopsCode.class, null);
+		WSPStopsCode pc = new WSPStopsCode();
+		pc.setCode(pSubCode.getSubCode());
+		pc.setDes(pSubCode.getSubDes());
+		pc.setIdStopsCode(pSubCode.getIdSubCode());
 		return pc;
 	}
 

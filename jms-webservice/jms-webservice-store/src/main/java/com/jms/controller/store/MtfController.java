@@ -89,6 +89,17 @@ public class MtfController {
 				}
 		    	break;
 		    }
+		   case 6: //销售退货
+		    {
+		    	for (int i = start; i < end; i++) {
+					WSSMtfMaterial w = wsSMtfMaterials.get(i);
+					
+					String[] d = {w.getMtNo(),w.getSoCode(),w.getCodeCo(),w.getDeliveryDate().toString(),w.getCreationTime().toString(),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),w.getRecMtUser(),w.getStatus(),""+w.getIdMt()};
+			    	//System.out.println("mtNo ...... "+ w.getMtNo());
+					lst.add(d);
+				}
+		    	break;
+		    }
 		    
 		
 		}

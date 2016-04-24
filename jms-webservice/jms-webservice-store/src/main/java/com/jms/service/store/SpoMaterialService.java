@@ -135,22 +135,27 @@ public class SpoMaterialService {
 		{
 			wsSpoMaterial.setsMaterial(spoMaterial.getSMaterial().getDes());
 			wsSpoMaterial.setsMaterialId(spoMaterial.getSMaterial().getIdMaterial());
+			wsSpoMaterial.setRev(spoMaterial.getSMaterial().getRev());
+			wsSpoMaterial.setDes(spoMaterial.getSMaterial().getDes());
+			wsSpoMaterial.setUnit(spoMaterial.getSMaterial().getSUnitDicByUnitPur().getName());
 		}
 		if(spoMaterial.getSStatusDic()!=null)
 		{
 			wsSpoMaterial.setsStatusId(spoMaterial.getSStatusDic().getId());
 		}
+		
 		wsSpoMaterial.setCodePo(spoMaterial.getSPo().getCodePo());
-		wsSpoMaterial.setCodeCo(spoMaterial.getSPo().getSCompanyCo().getCode());
+		if(spoMaterial.getSPo().getSCompanyCo()!=null)
+		{
+			wsSpoMaterial.setCodeCo(spoMaterial.getSPo().getSCompanyCo().getCode());
+		}
+	
 		wsSpoMaterial.setDateOrder(spoMaterial.getSPo().getDateOrder());
 		wsSpoMaterial.setUsername(spoMaterial.getSPo().getUsers().getName());
-		wsSpoMaterial.setsStatus(spoMaterial.getSPo().getSStatusDic().getName());
-		
-		
-		wsSpoMaterial.setRev(spoMaterial.getSMaterial().getRev());
-		wsSpoMaterial.setDes(spoMaterial.getSMaterial().getDes());
-		wsSpoMaterial.setUnit(spoMaterial.getSMaterial().getSUnitDicByUnitPur().getName());
-		
+		if(spoMaterial.getSPo().getSStatusDic()!=null)
+		{
+			wsSpoMaterial.setsStatus(spoMaterial.getSPo().getSStatusDic().getName());
+		}
 		wsSpoMaterial.setsPoId(spoMaterial.getSPo().getIdPo());
 		wsSpoMaterial.setUprice(spoMaterial.getUPrice());
 		return wsSpoMaterial;

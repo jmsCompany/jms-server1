@@ -1,4 +1,4 @@
-package com.jms.domain.ws;
+package com.jms.domain.ws.production;
 
 
 //排班计划

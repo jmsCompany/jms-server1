@@ -10,4 +10,5 @@ import com.jms.domain.db.MMachineGroup;
 public interface MMachineGroupRepository extends JpaRepository<MMachineGroup, Long>{
 
 
+	public MMachineGroup findByGroupName(String groupName);
 }

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,7 +41,7 @@ public class FileUploadService{
 	            	   extension = mpf.getOriginalFilename().substring(mpf.getOriginalFilename().lastIndexOf("."));
 	             }
 	             fileMeta.setOrgName(mpf.getOriginalFilename());
-	             fileMeta.setFileName(""+new Date().getTime() +extension);
+	             fileMeta.setFileName(new BCryptPasswordEncoder().encode(mpf.getOriginalFilename())+"_"+new Date().getTime() +extension);
 	             fileMeta.setFileSize(mpf.getSize()/1024+" Kb");
 	             fileMeta.setFileType(mpf.getContentType());
 	             

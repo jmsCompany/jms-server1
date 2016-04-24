@@ -1,0 +1,9 @@
+有效,有效,m_dept
+无效,无效,m_dept
+有效,有效,m_spare_part
+无效,无效,m_spare_part
+有效,有效,m_machine
+无效,无效,m_machine
+发起,发起,m_repair_history
+响应,响应,m_repair_history
+完成,完成,m_repair_history

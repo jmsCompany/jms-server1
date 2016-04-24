@@ -12,6 +12,7 @@ import com.jms.domain.db.SInventory;
 import com.jms.domain.db.SMtf;
 import com.jms.domain.db.SMtfMaterial;
 import com.jms.domain.db.SPoMaterial;
+import com.jms.domain.db.SSo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.store.WSSMtf;
 import com.jms.domain.ws.store.WSSMtfMaterial;
@@ -22,6 +23,7 @@ import com.jms.repositories.s.SMaterialRepository;
 import com.jms.repositories.s.SMtfMaterialRepository;
 import com.jms.repositories.s.SMtfRepository;
 import com.jms.repositories.s.SMtfTypeDicRepository;
+import com.jms.repositories.s.SSoRepository;
 import com.jms.repositories.s.SSpoMaterialRepository;
 import com.jms.repositories.s.SStatusDicRepository;
 import com.jms.repositories.s.SStkRepository;
@@ -63,6 +65,9 @@ public class MtfService {
 	private  SMaterialRepository sMaterialRepository;
 	@Autowired
 	private  SSpoMaterialRepository sSpoMaterialRepository;
+	
+	@Autowired
+	private  SSoRepository sSoRepository;
 
 	
 
@@ -95,7 +100,7 @@ public class MtfService {
 			WSSMtfMaterial wm =wsSMtf.getSmtfItems().get(k);
 			wm.setIdMt(sMtf1.getIdMt());
 			mtfMaterialService.saveMtfMaterial(wm);
-	      	SPoMaterial spoMaterial=	sSpoMaterialRepository.getOne(wm.getPoMaterialId());
+	     	SPoMaterial spoMaterial=	sSpoMaterialRepository.getOne(wm.getPoMaterialId());
 			switch(smtfType.intValue())
 			{
 			    case 1: //来料入库
@@ -143,52 +148,108 @@ public class MtfService {
 			    	//update SPo
 			    	break;
 			    }
+			    case 3: // 手动流转
+			    {
+			    	break;
+			    }
 			    
+			    case 4: // 工单流转
+			    {
+			    	break;
+			    }
 			    case 2: //采购退货
 			    {
-			    	SInventory sInventory;
-			    	if(wm.getLotNo()!=null)
-			    	{
-			    		 sInventory= sInventoryRepository.findByMaterialIdAndBinIdAndLotNo(wm.getMaterialId(), wm.getToBinId(), wm.getLotNo());
-			    	}
-			    	else
-			    	{
-			    		 sInventory=sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
-			    	}
-			    	if(sInventory==null)
-			    	{
-			    		sInventory = new SInventory();
-			    		sInventory.setCreationTime(new Date());
-			    		sInventory.setBox(wm.getBox());
-			    		sInventory.setLotNo(wm.getLotNo());
-			    		sInventory.setQty(wm.getQty());
-			    		sInventory.setUQty(wm.getUqty());
-			    		sInventory.setSBin(sBinRepository.findOne(wm.getToBinId()));
-			    		sInventory.setSMaterial(spoMaterial.getSMaterial());
-			    		
-			    	}
-			    	else
-			    	{
+			    	SInventory sInventory=sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
+			    
+			    	
 			    		if(sInventory.getBox()!=null)
-			    		sInventory.setBox(sInventory.getBox()+wm.getBox());
-			    		sInventory.setQty(sInventory.getQty()+wm.getQty());
-			    	}
+			         	sInventory.setBox(sInventory.getBox()-wm.getBox());
+			    	sInventory.setQty(sInventory.getQty()-wm.getQty());
+			    
+			    	
 			    	sInventoryRepository.save(sInventory);
 			    	
 			    	SPoMaterial sPoMaterial = sSpoMaterialRepository.getOne(wm.getPoMaterialId());
 			    	if(sPoMaterial.getQtyReceived()!=null)
 			    	{
-			    		sPoMaterial.setQtyReceived(sPoMaterial.getQtyReceived()+wm.getQty());
+			    		sPoMaterial.setQtyReceived(sPoMaterial.getQtyReceived()-wm.getQty());
 			    		
 			    	}
-			    	else
-			    	{
-			    		sPoMaterial.setQtyReceived(wm.getQty());
-			    	}
+			    	
 			    	sSpoMaterialRepository.save(sPoMaterial);
 			    	//update SPo
 			    	break;
 			    }
+			    
+			    
+			    
+			    case 5: // 出货
+			    {
+			    	SInventory sInventory=sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getFromBinId());
+			    
+			    	
+			    	if(sInventory.getBox()!=null)
+			         	sInventory.setBox(sInventory.getBox()-wm.getBox());
+			    	sInventory.setQty(sInventory.getQty()-wm.getQty());
+			    
+			    	
+			    	sInventoryRepository.save(sInventory);
+			    	
+			    	SSo sSo = sSoRepository.getOne(wm.getSoId());
+			    	if(sSo.getQtyDelivered()!=null)
+			    	{
+			    		sSo.setQtyDelivered(sSo.getQtyDelivered()+wm.getQty());
+
+			    	}
+			    	else
+			    	{
+			    		sSo.setQtyDelivered(wm.getQty());
+			    	}
+			    	
+			    	
+			    	sSoRepository.save(sSo);
+			    	//update SSo
+			    	break;
+			    }
+			    
+			    
+			    case 6: //销售退货
+			    {
+			    	SInventory sInventory=sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
+		
+			    	if(sInventory==null)
+			    	{
+			    		sInventory = new SInventory();
+			    		sInventory.setCreationTime(new Date());
+			    		sInventory.setBox(wm.getBox());
+
+			    		sInventory.setQty(wm.getQty());
+			    		sInventory.setUQty(wm.getUqty());
+			    		sInventory.setSBin(sBinRepository.findOne(wm.getToBinId()));
+			    		sInventory.setSMaterial(sMaterialRepository.findOne(wm.getMaterialId()));
+			    		
+			    	}
+			    	else
+			    	{
+			    	if(sInventory.getBox()!=null)
+			    	sInventory.setBox(sInventory.getBox()+wm.getBox());
+			    	sInventory.setQty(sInventory.getQty()+wm.getQty());
+			    	}
+			    	
+			    	sInventoryRepository.save(sInventory);
+			    	
+			    	SSo sSo = sSoRepository.getOne(wm.getSoId());
+			    	if(sSo.getQtyDelivered()!=null)
+			    	{
+			    		sSo.setQtyDelivered(sSo.getQtyDelivered()-wm.getQty());
+
+			    	}
+			    	
+			    	sSoRepository.save(sSo);
+			    	//update SSo
+			    	break;
+			    }
+			    
 			}
 		}
 		

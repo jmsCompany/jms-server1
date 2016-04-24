@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.jms.domain.db.PStopsCode;
+import com.jms.domain.db.PSubCode;
 import com.jms.domain.db.PWorkCenter;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
@@ -16,6 +17,7 @@ import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.production.WSPStopsCode;
 import com.jms.domain.ws.production.WSPWorkCenter;
 import com.jms.repositories.p.PStopsCodeRepository;
+import com.jms.repositories.p.PSubCodeRepository;
 import com.jms.repositories.p.PWorkCenterRepository;
 import com.jms.service.production.PStopsCodeService;
 import com.jms.service.production.WorkCenterService;
@@ -29,7 +31,10 @@ import com.jms.web.security.SecurityUtils;
 public class StopsCodeController {
 	
 	@Autowired private PStopsCodeService pStopsCodeService;
-	@Autowired private PStopsCodeRepository pStopsCodeRepository;
+	//@Autowired private PStopsCodeRepository pStopsCodeRepository;
+	@Autowired
+	private  PSubCodeRepository pSubCodeRepository;
+	
 	@Autowired private SecurityUtils securityUtils;
 
 	
@@ -60,7 +65,7 @@ public class StopsCodeController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/findPStopsCodeList", method=RequestMethod.GET)
 	public WSTableData  findPStopsCodeList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
-		List<PStopsCode> pStopscodes =pStopsCodeRepository.findAll();
+		List<PSubCode> pStopscodes =pSubCodeRepository.findAll();
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
 		if(pStopscodes.size()<start + length)
@@ -68,8 +73,8 @@ public class StopsCodeController {
 		else
 			end =start + length;
 		for (int i = start; i < end; i++) {
-			PStopsCode w = pStopscodes.get(i);
-			String[] d = {w.getCode(),w.getDes(),""+w.getIdStopsCode()};
+			PSubCode w = pStopscodes.get(i);
+			String[] d = {w.getSubCode(),w.getSubDes(),""+w.getIdSubCode()};
 			lst.add(d);
 
 		}
@@ -79,6 +84,21 @@ public class StopsCodeController {
 		t.setRecordsFiltered(pStopscodes.size());
 	    t.setData(lst);
 	    return t;
+	}
+	
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/getPStopsCodeObjsList", method=RequestMethod.GET)
+	public List<WSSelectObj>  getPStopsCodeObjsList() throws Exception {	   
+		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
+		for(PSubCode pSubCode: pSubCodeRepository.findAll())
+		{
+			WSSelectObj w = new WSSelectObj(pSubCode.getIdSubCode(), pSubCode.getSubCode()+"_"+pSubCode.getSubDes());
+			ws.add(w);		
+		}
+		
+	    return ws;
 	}
 	
 

@@ -139,16 +139,23 @@ public class WoService {
 		
 		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
 		SMaterial s = pWoRepository.findByWoId(woId); //
+		logger.debug("woId: " + woId + " , materialId: " + s.getIdMaterial());
 		PBom pBom = pBomRepository.findProductByMaterialId(s.getIdMaterial());
-		for(PBom p: pBom.getPBoms())
+		
+		
+		if(pBom!=null)
 		{
-			SMaterial material =p.getSMaterial();
-			WSSelectObj w = new WSSelectObj(material.getIdMaterial(),material.getPno()+"-"+ material.getRev()+"-"+material.getDes());
-		    ws.add(w);
-		   
+			for(PBom p: pBom.getPBoms())
+			{
+				SMaterial material =p.getSMaterial();
+				WSSelectObj w = new WSSelectObj(material.getIdMaterial(),material.getPno()+"-"+ material.getRev()+"-"+material.getDes());
+			    ws.add(w);
+			   
+			}
+			
 		}
-	  
-	
+
+
 		return ws;
 	}
 	

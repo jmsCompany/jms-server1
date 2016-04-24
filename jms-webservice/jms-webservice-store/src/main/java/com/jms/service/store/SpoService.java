@@ -18,6 +18,7 @@ import com.jms.domain.ws.store.WSSpo;
 import com.jms.domain.ws.store.WSSpoMaterial;
 import com.jms.domain.ws.store.WSSpoRemark;
 import com.jms.domainadapter.BeanUtil;
+import com.jms.repositories.s.SAttachmentRepository;
 import com.jms.repositories.s.SCompanyCoRepository;
 import com.jms.repositories.s.SCurrencyTypeRepository;
 import com.jms.repositories.s.SSpoMaterialRepository;
@@ -55,10 +56,10 @@ public class SpoService {
 	private SpoMaterialService spoMaterialService;
 	@Autowired
 	private  SSpoMaterialRepository sSpoMaterialRepository;
-
+	@Autowired private SAttachmentRepository sAttachmentRepository;
 	
 
-	public Valid saveSpo(WSSpo wsSpo) throws Exception {
+	public WSSpo saveSpo(WSSpo wsSpo) throws Exception {
 		
 		SPo spo;
 		//create
@@ -71,16 +72,12 @@ public class SpoService {
 		else
 		{
 			spo = sSpoRepository.findOne(wsSpo.getIdPo());	
+			sSpoMaterialRepository.delete(spo.getSPoMaterials());
 		}
 	
 		spo=toDBSpo(wsSpo,spo);
 		SPo sp =sSpoRepository.save(spo);
-		//System.out.println("spoid: " +sp.getIdPo() );
-		//remove all spo materials
-		if(wsSpo.getIdPo()!=null&&!wsSpo.getIdPo().equals(0l))
-		{
-			sSpoMaterialRepository.deleteBySpoId(wsSpo.getIdPo());
-		}
+		wsSpo.setIdPo(sp.getIdPo());
 		for(String k: wsSpo.getPoItems().keySet())
 		{
 			WSSpoMaterial wm =wsSpo.getPoItems().get(k);
@@ -89,9 +86,8 @@ public class SpoService {
 			wm.setsPoId(sp.getIdPo());
 			spoMaterialService.saveSpoMaterial(wm);
 		}
-		Valid valid = new Valid();
-		valid.setValid(true);
-		return valid;
+		
+		return wsSpo;
 	}
 	
 
@@ -176,6 +172,10 @@ public class SpoService {
 		{
 			dbSpo.setSStatusDic(sStatusDicRepository.findOne(wsSpo.getsStatusId()));
 		}
+		if(wsSpo.getFileId()!=null)
+		{
+			dbSpo.setSAttachment(sAttachmentRepository.findOne(wsSpo.getFileId()));
+		}
 		dbSpo.setUsers(securityUtils.getCurrentDBUser());
 		dbSpo.setCompany(securityUtils.getCurrentDBUser().getCompany());
 
@@ -209,6 +209,11 @@ public class SpoService {
 		{
 			wsSpo.setsStatus(spo.getSStatusDic().getName());
 			wsSpo.setsStatusId(spo.getSStatusDic().getId());
+		}
+		if(spo.getSAttachment()!=null)
+		{
+			wsSpo.setFileId(spo.getSAttachment().getId());
+			wsSpo.setFileName(spo.getSAttachment().getFilename());
 		}
 		for(SPoMaterial s: spo.getSPoMaterials())
 		{

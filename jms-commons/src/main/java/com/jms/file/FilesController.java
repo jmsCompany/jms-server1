@@ -26,8 +26,8 @@ import com.google.common.io.ByteStreams;
 public class FilesController {
 
 	private static final Log logger = LogFactory.getLog(FilesController.class);
-	// private String filePath ="/Users/renhongtao/eme_files/";
-	private String filePath = "D:/eme_files/";
+	 private String filePath ="/Users/renhongtao/eme_files/";
+	//private String filePath = "D:/eme_files/";
 	@Autowired
 	private FileUploadService fileUploadService;
 /*
@@ -39,11 +39,11 @@ public class FilesController {
 		}
 		return fileMeta;
 	}
-
-	@RequestMapping(value = "/getimage/{img}/", method = RequestMethod.GET)
-	public void getImage(@PathVariable("img") String img, HttpServletResponse response) throws IOException {
-		FileInputStream fs = new FileInputStream(new File(filePath + img));
+*/
+	@RequestMapping(value = "/getFile/{fileName}/", method = RequestMethod.GET)
+	public void getImage(@PathVariable("fileName") String fileName, HttpServletResponse response) throws IOException {
+		FileInputStream fs = new FileInputStream(new File(filePath + fileName));
 		ByteStreams.copy(fs, response.getOutputStream());
 	}
-*/
+
 }

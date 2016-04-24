@@ -29,6 +29,8 @@ public class WSSpo {
     private Long sCurrencyTypeId;
     private String sPoType;
     private Long sPoTypeId;
+    private Long fileId;
+    private String fileName;
     
     private Map<String,WSSpoMaterial> poItems = new LinkedHashMap<String,WSSpoMaterial>();
 	
@@ -163,6 +165,18 @@ public class WSSpo {
 	}
 	public void setPoItems(Map<String,WSSpoMaterial> poItems) {
 		this.poItems = poItems;
+	}
+	public Long getFileId() {
+		return fileId;
+	}
+	public void setFileId(Long fileId) {
+		this.fileId = fileId;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 
