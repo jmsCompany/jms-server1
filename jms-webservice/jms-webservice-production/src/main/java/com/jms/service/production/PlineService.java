@@ -100,6 +100,20 @@ public class PlineService {
 	}
 
 	
+	@Transactional(readOnly=true) 
+	public List<WSSelectObj> findWSPLines() 
+	{	
+		List<WSSelectObj> objs = new ArrayList<WSSelectObj>();
+		System.out.println("current company Id: " + securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+		for(PLine pLine: pLineRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
+		{
+			WSSelectObj o = new WSSelectObj(pLine.getIdPline(),pLine.getPline());
+			objs.add(o);
+		}
+		return objs;
+		
+	}
+	
 	private PLine toDBPLine(WSPLine wsPLine,PLine pLine) throws Exception
 	{
 	

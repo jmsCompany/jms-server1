@@ -14,4 +14,8 @@ public interface MMachineRepository extends JpaRepository<MMachine, Long>{
 
 	 @Query("select m from MMachine m where m.company.idCompany=?1")
 	  public List<MMachine> getByCompanyId(Long companyId);
+	 
+	 
+	 @Query("select m from MMachine m where m.PLine.idPline=?1")
+	  public List<MMachine> getByLineId(Long lineId);
 }

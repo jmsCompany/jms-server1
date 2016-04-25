@@ -3,12 +3,17 @@ package com.jms.controller.production;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
 import com.jms.domain.db.PLine;
 import com.jms.domain.ws.Valid;
+import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.production.WSPLine;
 import com.jms.repositories.p.PLineRepository;
@@ -24,7 +29,8 @@ public class PlineController {
 	@Autowired private PLineRepository pLineRepository;
 	@Autowired private SecurityUtils securityUtils;
 
-	
+	private static final Logger logger = LogManager.getLogger(PlineController.class
+			.getCanonicalName());
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/p/saveWSPLine", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public WSPLine savePLine(@RequestBody WSPLine wsPLine) throws Exception {
@@ -74,6 +80,14 @@ public class PlineController {
 	}
 	
 	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/m/findWSPLines", method=RequestMethod.GET)
+	public List<WSSelectObj> findWSPLines() {
+		logger.debug("findWSPLines.....");
+		return plineService.findWSPLines();
+		
+	}
 
 
 }

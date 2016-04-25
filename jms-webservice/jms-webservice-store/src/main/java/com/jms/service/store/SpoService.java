@@ -72,9 +72,19 @@ public class SpoService {
 		else
 		{
 			spo = sSpoRepository.findOne(wsSpo.getIdPo());	
-			sSpoMaterialRepository.delete(spo.getSPoMaterials());
+			if(!spo.getSPoMaterials().isEmpty())
+			{
+				
+				logger.debug("delete po material: " + spo.getSPoMaterials().size());
+				for(SPoMaterial spoMaterial: spo.getSPoMaterials())
+				{
+					sSpoMaterialRepository.delete(spoMaterial);
+				}
+				
+			}
+			
 		}
-	
+		spo.getSPoMaterials().clear();
 		spo=toDBSpo(wsSpo,spo);
 		SPo sp =sSpoRepository.save(spo);
 		wsSpo.setIdPo(sp.getIdPo());

@@ -281,7 +281,7 @@ public class MtfMaterialService {
 			wsSMtfMaterial.setStatusId(sMtfMaterial.getSStatusDic().getId());
 		}
 		wsSMtfMaterial.setUqty(sMtfMaterial.getUQty());
-		
+		//wsSMtfMaterial.setPoMaterialId(poMaterialId);
 		
 
 

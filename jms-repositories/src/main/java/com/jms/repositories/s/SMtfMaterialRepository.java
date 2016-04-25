@@ -4,6 +4,7 @@ package com.jms.repositories.s;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -23,8 +24,9 @@ public interface SMtfMaterialRepository  extends JpaRepository<SMtfMaterial, Lon
 	@Query("select s from SMtfMaterial s where s.SPoMaterial.SPo.idPo=?1")
 	public List<SMtfMaterial> getBySpoId(Long spoId);
 	
-	
+	//@Modifying
 	@Query("delete from SMtfMaterial s where s.SMtf.idMt=?1")
+	//@Query(value="delete from qa_concern_user where user_id=?1 and concern_user_id=?2)",nativeQuery=true)
 	public void deleteByMtId(Long idMt);
 	
 	

@@ -63,7 +63,8 @@ public class MMachineService {
 	public List<WSSelectObj> getMachinesObj()
 	{
 		List<WSSelectObj> wss = new ArrayList<WSSelectObj>();
-		for(MMachine m :mMachineRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
+		//for(MMachine m :mMachineRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
+		for(MMachine m :mMachineRepository.findAll())
 		{
 			WSSelectObj ws = new WSSelectObj();
 			ws.setId(m.getIdMachine());
@@ -73,6 +74,21 @@ public class MMachineService {
 		return wss;
 	}
 	
+	
+	@Transactional(readOnly=true)
+	public List<WSSelectObj> getMachinesObjByLineId(Long lineId)
+	{
+		List<WSSelectObj> wss = new ArrayList<WSSelectObj>();
+		//for(MMachine m :mMachineRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
+		for(MMachine m :mMachineRepository.getByLineId(lineId))
+		{
+			WSSelectObj ws = new WSSelectObj();
+			ws.setId(m.getIdMachine());
+			ws.setName(m.getCode()+"_" +m.getSpec());
+			wss.add(ws);
+		}
+		return wss;
+	}
 	
 	
 	public void loadMachinesForSandVik(InputStream inputStream)throws IOException {

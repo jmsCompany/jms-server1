@@ -41,7 +41,9 @@ public class FileUploadService{
 	            	   extension = mpf.getOriginalFilename().substring(mpf.getOriginalFilename().lastIndexOf("."));
 	             }
 	             fileMeta.setOrgName(mpf.getOriginalFilename());
-	             fileMeta.setFileName(new BCryptPasswordEncoder().encode(mpf.getOriginalFilename())+"_"+new Date().getTime() +extension);
+	             String hashCode=new BCryptPasswordEncoder().encode(mpf.getOriginalFilename());
+	             hashCode = hashCode.replaceAll("/", "");
+	             fileMeta.setFileName(hashCode+"_"+new Date().getTime() +extension);
 	             fileMeta.setFileSize(mpf.getSize()/1024+" Kb");
 	             fileMeta.setFileType(mpf.getContentType());
 	             

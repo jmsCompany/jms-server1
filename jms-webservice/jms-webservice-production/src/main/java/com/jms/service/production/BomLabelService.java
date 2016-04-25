@@ -194,20 +194,39 @@ public class BomLabelService {
 				item.setIdBom(p.getIdBom());
 				item.setIdBomLabel(pBomLabel.getIdBomLabel());
 				item.setLvl(p.getLvl());
-				item.setMaterialId(p.getSMaterial().getIdMaterial());
-				item.setMaterial(p.getSMaterial().getDes());
-				item.setRev(p.getSMaterial().getRev());
-				item.setPno(p.getSMaterial().getPno());
+		
 				item.setQpu(p.getQpu());
-				item.setWorkCenter(p.getPWorkCenter().getWorkCenter());
-				item.setWorkCenterId(p.getPWorkCenter().getIdWc());
+				if(p.getPWorkCenter()!=null)
+				{
+					item.setWorkCenter(p.getPWorkCenter().getWorkCenter());
+					item.setWorkCenterId(p.getPWorkCenter().getIdWc());
+				}
+	
 				item.setOrderBy(p.getOrderBy());
 				item.setWastage(p.getWastage());
 				item.setIdParentBom(p.getPBom().getIdBom());
-				item.setCost(p.getSMaterial().getCost());
-				item.setsUnitDicByUnitInf(p.getSMaterial().getSUnitDicByUnitInf().getName());
-				item.setsUnitDicByUnitInfId(p.getSMaterial().getSUnitDicByUnitInf().getId());
-				item.setWeight(p.getSMaterial().getWeight());
+				if(p.getSMaterial()!=null)
+				{
+					item.setMaterialId(p.getSMaterial().getIdMaterial());
+					item.setMaterial(p.getSMaterial().getDes());
+					item.setRev(p.getSMaterial().getRev());
+					item.setPno(p.getSMaterial().getPno());
+					item.setCost(p.getSMaterial().getCost());
+					if(p.getSMaterial().getSUnitDicByUnitInf()!=null)
+					{
+						item.setsUnitDicByUnitInf(p.getSMaterial().getSUnitDicByUnitInf().getName());
+					}
+					if(p.getSMaterial().getSUnitDicByUnitInf()!=null)
+					{
+						item.setsUnitDicByUnitInfId(p.getSMaterial().getSUnitDicByUnitInf().getId());
+					}
+					item.setWeight(p.getSMaterial().getWeight());
+				}
+			
+				
+				
+				
+				
 				pc.getBomItems().put("item"+i, item);
 				i++;
 			}

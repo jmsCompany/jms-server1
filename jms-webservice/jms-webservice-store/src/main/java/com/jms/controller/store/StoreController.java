@@ -1,48 +1,25 @@
 package com.jms.controller.store;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import com.google.common.io.ByteStreams;
-import com.jms.acl.SecuredObjectService;
-import com.jms.domain.db.Apps;
-import com.jms.domain.db.SStatusDic;
 import com.jms.domain.db.SStk;
 import com.jms.domain.db.SYesOrNoDic;
-import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
-import com.jms.domain.ws.WSCompany;
-import com.jms.domain.ws.WSMenu;
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.WSSmr;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.WSUser;
-import com.jms.domain.ws.WSUserProfile;
 import com.jms.domain.ws.store.WSBin;
 import com.jms.domain.ws.store.WSMaterialCategory;
 import com.jms.domain.ws.store.WSSStatus;
 import com.jms.domain.ws.store.WSStk;
 import com.jms.domain.ws.store.WSStkType;
 import com.jms.domain.ws.store.WSYesAndNoType;
-import com.jms.domainadapter.UserAdapter;
 import com.jms.repositories.s.SStkRepository;
 import com.jms.repositories.s.SYesOrNoDicRepository;
-import com.jms.repositories.system.AppsRepository;
-import com.jms.repositories.user.UsersRepository;
 import com.jms.service.store.MaterialCategoryService;
 import com.jms.service.store.SBinService;
 import com.jms.service.store.SStatusDicService;

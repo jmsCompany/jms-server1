@@ -26,7 +26,7 @@ import com.google.common.io.ByteStreams;
 public class FilesController {
 
 	private static final Log logger = LogFactory.getLog(FilesController.class);
-	 private String filePath ="/Users/renhongtao/eme_files/";
+	 private String filePath ="/Users/renhongtao/jms_files/";
 	//private String filePath = "D:/eme_files/";
 	@Autowired
 	private FileUploadService fileUploadService;
