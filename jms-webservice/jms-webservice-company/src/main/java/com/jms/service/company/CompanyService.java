@@ -149,7 +149,6 @@ public class CompanyService {
 
 			@Override
 			public String getAuthority() {
-				// TODO Auto-generated method stub
 				return "admin";
 			}
 		});

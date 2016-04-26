@@ -56,7 +56,7 @@ public class Config {
 	public static final String picRelativePath = "C:/jms_file/pic/";
 	
 	//仓库类别
-	public static final String[] stkTypes = {"原材料仓","成品仓","半成品仓"};
+	public static final String[] stkTypes = {"原材料仓","成品仓","半成品仓","账号"};
 	
 	//合作公司类型
 	public static final String[] sTypes = {"供应商","客户","二者都是","其它"};

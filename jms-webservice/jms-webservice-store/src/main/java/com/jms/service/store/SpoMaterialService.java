@@ -128,7 +128,7 @@ public class SpoMaterialService {
 		return dbSpoMaterial;
 	}
 	
-	protected WSSpoMaterial toWSSpoMaterial(SPoMaterial spoMaterial) throws Exception
+	public WSSpoMaterial toWSSpoMaterial(SPoMaterial spoMaterial) throws Exception
 	{
 		WSSpoMaterial wsSpoMaterial = (WSSpoMaterial)BeanUtil.shallowCopy(spoMaterial, WSSpoMaterial.class, null);
 		if(spoMaterial.getSMaterial()!=null)

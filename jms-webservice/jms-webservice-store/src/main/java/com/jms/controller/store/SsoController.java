@@ -12,6 +12,7 @@ import com.jms.domain.db.SSo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
+import com.jms.domain.ws.store.WSMaterialDelivered;
 import com.jms.domain.ws.store.WSSso;
 import com.jms.repositories.s.SSoRepository;
 import com.jms.service.store.SsoService;
@@ -98,14 +99,32 @@ public class SsoController {
 
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/getMaterialBySoId", method=RequestMethod.GET)
-	public WSSelectObj getMaterialBySoId(@RequestParam("soId") Long soId) throws Exception {
+	@RequestMapping(value="/s/getMaterialDeliveredBySoId", method=RequestMethod.GET)
+	public WSMaterialDelivered getMaterialDeliveredBySoId(@RequestParam("soId") Long soId) throws Exception {
 		
-		SMaterial s = sSoRepository.findBySoId(soId);
-
-	    WSSelectObj w = new WSSelectObj(s.getIdMaterial(),s.getPno()+"-"+ s.getRev()+"-"+s.getDes());
+		SSo sSo = sSoRepository.findOne(soId);
+		WSMaterialDelivered wd = new WSMaterialDelivered();
+		SMaterial s = sSo.getSMaterial();
+	    wd.setIdMaterial(s.getIdMaterial());
+	    wd.setPno(s.getPno());
+	    wd.setRev(s.getRev());
+	    wd.setDes(s.getDes());
+	    if(s.getSUnitDicByUnitInf()!=null)
+	    {
+	    	 wd.setUnitInv(s.getSUnitDicByUnitInf().getName());
+	    }
+	   wd.setQtySo(sSo.getQtySo());
+	   if(sSo.getQtyDelivered()==null)
+	   {
+		   wd.setQtyDelivered(0l);
+	   }
+	   else
+	   {
+		   wd.setQtyDelivered(sSo.getQtyDelivered());
+	   }
 	
-		return w;
+	   wd.setDeliveredDate(sSo.getDeliveryDate());
+		return wd;
 	}
 	
 

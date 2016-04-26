@@ -181,7 +181,7 @@ public class MtfService {
 							wm.getFromBinId());
 					if(from == null)
 					{
-						 logger.debug("can not find inventory by  from bin, so create new one");
+						logger.debug("can not find inventory by  from bin, so create new one");
 						from = new SInventory();
 						from.setCreationTime(new Date());
 						//from.setBox(0-wm.getBox());
@@ -191,7 +191,7 @@ public class MtfService {
 						from.setLotNo(wm.getLotNo());
 						from.setQty(0-wm.getQty());
 						from.setUQty(wm.getUqty());
-						from.setSBin(sBinRepository.findOne(wm.getToBinId()));
+						from.setSBin(sBinRepository.findOne(wm.getFromBinId()));
 						// to.setSMaterial(spoMaterial.getSMaterial());
 						from.setSMaterial(sMaterialRepository.findOne(wm.getMaterialId()));
 					}
@@ -210,6 +210,7 @@ public class MtfService {
 
 				case 5: // 出货
 				{
+			
 					SInventory sInventory = sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(),
 							wm.getFromBinId());
 					if (sInventory == null) {
@@ -301,9 +302,9 @@ public class MtfService {
 		if (wsSMtf.getToStkId() != null) {
 			dbSMtf.setSStkByToStk(sStkRepository.findOne(wsSMtf.getToStkId()));
 		}
-		if (wsSMtf.getRecMtUserId() != null) {
-			dbSMtf.setUsersByRecMt(usersRepository.findOne(wsSMtf.getRecMtUserId()));
-		}
+	
+		dbSMtf.setUsersByRecMt(securityUtils.getCurrentDBUser());
+		
 		if (wsSMtf.getStatusId() != null) {
 			dbSMtf.setSStatusDic(sStatusDicRepository.findOne(wsSMtf.getStatusId()));
 		}

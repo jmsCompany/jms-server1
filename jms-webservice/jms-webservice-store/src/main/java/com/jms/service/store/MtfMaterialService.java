@@ -166,7 +166,6 @@ public class MtfMaterialService {
 		}
 		dbSMtfMaterial.setUQty(wsSMtfMaterial.getUqty());
 		
-
 		return dbSMtfMaterial;
 	}
 	
