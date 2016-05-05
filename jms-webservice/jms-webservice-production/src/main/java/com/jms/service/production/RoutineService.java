@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jms.domain.db.FCostCenter;
 import com.jms.domain.db.PBom;
+import com.jms.domain.db.PDraw;
 import com.jms.domain.db.PRoutine;
 import com.jms.domain.db.PRoutineD;
 import com.jms.domain.db.PShiftPlan;
@@ -92,28 +93,51 @@ public class RoutineService {
 	@Transactional(readOnly=false)
 	public WSPRoutine saveWSPRoutine(WSPRoutine wsPRoutine) throws Exception {
 		PRoutine pRoutine;
+		if(wsPRoutine.getLineId()==null||wsPRoutine.getLineId().equals(0l))
+			return wsPRoutine;
+	
 		if(wsPRoutine.getIdRoutine()!=null&&!wsPRoutine.getIdRoutine().equals(0l))
 		{
 			pRoutine = pRoutineRepository.findOne(wsPRoutine.getIdRoutine());
 			pRoutineDRepository.delete(pRoutine.getPRoutineDs());
+			pRoutine.getPRoutineDs().clear();
 		}
 		else
 		{
 			pRoutine = new PRoutine();
 	
 		}
+		
 		PRoutine dbPRoutine= toDBPRoutine(wsPRoutine,pRoutine);
 		dbPRoutine = pRoutineRepository.save(dbPRoutine);
 	
-
 		
+		PDraw draw;
+		if(wsPRoutine.getDrawId()==null||wsPRoutine.getDrawId().equals(0l))
+		{
+			draw= new PDraw();
+			draw.setDrawNo(wsPRoutine.getDrawNo());
+			draw.setDrawVer(wsPRoutine.getDrawVer());
+			draw = pDrawRepository.save(draw);
+		}
+		else
+		{
+		    draw =pDrawRepository.findOne(wsPRoutine.getDrawId());
+			draw.setDrawNo(wsPRoutine.getDrawNo());
+			draw.setDrawVer(wsPRoutine.getDrawVer());
+			draw = pDrawRepository.save(draw);
+		}
+		dbPRoutine.setPDraw(draw);
+		dbPRoutine = pRoutineRepository.save(dbPRoutine);
+		
+	
 		for(String k:wsPRoutine.getWsRoutineDs().keySet())
 		{
 			WSPRoutineD wm =wsPRoutine.getWsRoutineDs().get(k);
 			wm.setRoutineId(dbPRoutine.getIdRoutine());
 			routineDService.saveWSPRoutineD(wm);
 		}
-	
+
 		wsPRoutine.setIdRoutine(dbPRoutine.getIdRoutine());
 		return wsPRoutine;		
 		
@@ -146,6 +170,10 @@ public class RoutineService {
         if(wsPRoutine.getCompanyId()!=null)
         {
         	dbPRoutine.setCompany(companyRepository.findOne(wsPRoutine.getCompanyId()));
+        }
+        else
+        {
+        	dbPRoutine.setCompany(securityUtils.getCurrentDBUser().getCompany());
         }
         if(wsPRoutine.getDrawId()!=null)
         {

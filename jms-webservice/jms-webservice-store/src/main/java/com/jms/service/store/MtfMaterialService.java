@@ -103,9 +103,10 @@ public class MtfMaterialService {
 		List<WSSMtfMaterial> ws = new ArrayList<WSSMtfMaterial>();
 		for(SMtfMaterial sm: sMtfMaterialRepository.getBySpoId(spoId))
 		{
-			Long materialId = sm.getIdMtfMaterial();
+			Long materialId = sm.getSPoMaterial().getSMaterial().getIdMaterial();
 			String lotNo = sm.getLotNo();
 			WSSMtfMaterial w = toWSSMtfMaterial(sm);
+			logger.debug("material id: " + materialId +" lot no: " + lotNo +", stk id: " + stkId);
 			List<SInventory> sInventorys = sInventoryRepository.findBinsByMaterialIdAndLotNoAndStkId(materialId, lotNo, stkId);
 			if(sInventorys!=null&&!sInventorys.isEmpty())
 			{
@@ -150,7 +151,7 @@ public class MtfMaterialService {
 		}
 		if(wsSMtfMaterial.getPoMaterialId()!=null)
 		{
-			dbSMtfMaterial.setSPoMaterial(sSpoMaterialRepository.findOne(wsSMtfMaterial.getPoMaterialId()));
+			 dbSMtfMaterial.setSPoMaterial(sSpoMaterialRepository.findOne(wsSMtfMaterial.getPoMaterialId()));
 		}
 		if(wsSMtfMaterial.getPwoBomId()!=null)
 		{
@@ -172,6 +173,8 @@ public class MtfMaterialService {
 	protected WSSMtfMaterial toWSSMtfMaterial(SMtfMaterial sMtfMaterial) throws Exception
 	{
 		WSSMtfMaterial wsSMtfMaterial = (WSSMtfMaterial)BeanUtil.shallowCopy(sMtfMaterial, WSSMtfMaterial.class, null);
+		if(sMtfMaterial.getSMtf().getUsersByEmpMt()!=null)
+		wsSMtfMaterial.setEmpMtUser(sMtfMaterial.getSMtf().getUsersByEmpMt().getName());
 		if(sMtfMaterial.getPWoBom()!=null)
 		{
 			wsSMtfMaterial.setPwoBom(sMtfMaterial.getPWoBom().getPWo().getWoNo());
@@ -241,8 +244,13 @@ public class MtfMaterialService {
 		{
 			wsSMtfMaterial.setPoMaterialId(sMtfMaterial.getSPoMaterial().getIdPoMaterial());
 			wsSMtfMaterial.setCodeCo(sMtfMaterial.getSPoMaterial().getSPo().getSCompanyCo().getCode());
+			logger.debug("set codeCo: " +sMtfMaterial.getSPoMaterial().getSPo().getSCompanyCo().getCode());
 			wsSMtfMaterial.setCodePo(sMtfMaterial.getSPoMaterial().getSPo().getCodePo());
+			logger.debug("set codePo: " +sMtfMaterial.getSPoMaterial().getSPo().getCodePo());
 			wsSMtfMaterial.setDeliveryDate(sMtfMaterial.getSPoMaterial().getDeliveryDate());
+			wsSMtfMaterial.setQtyPo(sMtfMaterial.getSPoMaterial().getQtyPo());
+			wsSMtfMaterial.setQtyReceived(sMtfMaterial.getSPoMaterial().getQtyReceived());
+			wsSMtfMaterial.setRemark(sMtfMaterial.getSPoMaterial().getRemark());
 			if(sMtfMaterial.getSPoMaterial().getSMaterial()!=null)
 			{
 				SMaterial s = sMtfMaterial.getSPoMaterial().getSMaterial();

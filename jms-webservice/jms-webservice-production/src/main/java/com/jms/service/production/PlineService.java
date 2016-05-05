@@ -45,18 +45,7 @@ public class PlineService {
 	@Autowired
 	private SecurityUtils securityUtils;
 	
-	@Transactional(readOnly=true)
-	public List<WSSelectObj> findWorkCenterSelectObjs()
-	{
-		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
-		for(PLine w: pLineRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
-		{
-			WSSelectObj o = new WSSelectObj(w.getIdPline(),w.getPline());
-			ws.add(o);
-		}
-		
-		return ws;
-	}
+	
 	
 
 

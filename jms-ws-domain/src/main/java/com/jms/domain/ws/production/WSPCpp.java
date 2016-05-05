@@ -24,6 +24,8 @@ public class WSPCpp implements java.io.Serializable{
 	private String routeId;//工艺图纸
 	private Long st;//计划开始时间
 	private Long ft;//计划结束时间
+	
+	
 	public String getWoNo() {
 		return woNo;
 	}

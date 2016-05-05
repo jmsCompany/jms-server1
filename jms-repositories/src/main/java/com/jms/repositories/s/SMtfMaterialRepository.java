@@ -21,7 +21,7 @@ public interface SMtfMaterialRepository  extends JpaRepository<SMtfMaterial, Lon
 	
 	
 	
-	@Query("select s from SMtfMaterial s where s.SPoMaterial.SPo.idPo=?1")
+	@Query("select s from SMtfMaterial s where s.SPoMaterial.SPo.idPo=?1 and s.SBinByToBin is not null")
 	public List<SMtfMaterial> getBySpoId(Long spoId);
 	
 	//@Modifying

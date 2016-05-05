@@ -33,14 +33,14 @@ public class PShiftPlanD  implements java.io.Serializable {
      private PShiftPlan PShiftPlan;
      private String shift;
      private String des;
-     private Date st;
-     private Date ft;
+     private String st;
+     private String ft;
      private Set<PCPp> PCPps = new HashSet<PCPp>(0);
 
     public PShiftPlanD() {
     }
 
-    public PShiftPlanD(PShiftPlan PShiftPlan, String shift, String des, Date st, Date ft, Set<PCPp> PCPps) {
+    public PShiftPlanD(PShiftPlan PShiftPlan, String shift, String des, String st, String ft, Set<PCPp> PCPps) {
        this.PShiftPlan = PShiftPlan;
        this.shift = shift;
        this.des = des;
@@ -86,22 +86,21 @@ public class PShiftPlanD  implements java.io.Serializable {
     public void setDes(String des) {
         this.des = des;
     }
-    @Temporal(TemporalType.DATE)
-    @Column(name="st", length=10)
-    public Date getSt() {
+
+    @Column(name="st", length=64)
+    public String getSt() {
         return this.st;
     }
     
-    public void setSt(Date st) {
+    public void setSt(String st) {
         this.st = st;
     }
-    @Temporal(TemporalType.DATE)
-    @Column(name="ft", length=10)
-    public Date getFt() {
+    @Column(name="ft", length=64)
+    public String getFt() {
         return this.ft;
     }
     
-    public void setFt(Date ft) {
+    public void setFt(String ft) {
         this.ft = ft;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="PShiftPlanD")

@@ -122,7 +122,7 @@ public class MtfController {
 
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/findWSSMtfMaterialBySpoIdAndStkId", method=RequestMethod.GET)
-	public List<WSSMtfMaterial> findWSSMtfMaterialBySpoId(@RequestParam("spoId") Long spoId,@RequestParam("sktId") Long stkId) throws Exception {
+	public List<WSSMtfMaterial> findWSSMtfMaterialBySpoId(@RequestParam("spoId") Long spoId,@RequestParam("stkId") Long stkId) throws Exception {
 		return mtfMaterialService.findWSSMtfMaterialBySpoId(spoId,stkId);
 	}
 	

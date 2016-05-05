@@ -85,11 +85,13 @@ public class MtfService {
 			SMtf sMtf1 = sMtfRepository.save(sMtf);
 
 			for (String k : wsSMtf.getSmtfItems().keySet()) {
-				// System.out.println(k +", ... ");
+
+				logger.debug("smtf ");
+				
 				WSSMtfMaterial wm = wsSMtf.getSmtfItems().get(k);
 				wm.setIdMt(sMtf1.getIdMt());
 				mtfMaterialService.saveMtfMaterial(wm);
-
+	
 				switch (smtfType.intValue()) {
 				case 1: // 来料入库
 				{
@@ -132,10 +134,22 @@ public class MtfService {
 
 				case 2: // 采购退货
 				{
-					SInventory sInventory = sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(),
-							wm.getToBinId());
-
-					if (sInventory.getBox() != null)
+					logger.debug("采购退货。。。");
+					SInventory sInventory;
+					logger.debug("material Id: " + wm.getMaterialId() +", binId: " + wm.getFromBinId() +", " +wm.getLotNo());
+					
+					if(wm.getLotNo()!=null&&!wm.getLotNo().isEmpty())
+					{
+						sInventory = sInventoryRepository.findByMaterialIdAndBinIdAndLotNo(wm.getMaterialId(),
+								wm.getFromBinId(),wm.getLotNo());
+					}
+					else
+					{
+						sInventory = sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(),
+								wm.getFromBinId());
+					}
+					logger.debug("找到库存 id：" + sInventory.getIdInv() );
+					if (sInventory.getBox() != null && wm.getBox()!=null)
 						sInventory.setBox(sInventory.getBox() - wm.getBox());
 					sInventory.setQty(sInventory.getQty() - wm.getQty());
 
@@ -296,6 +310,11 @@ public class MtfService {
 		if (wsSMtf.getEmpMtUserId() != null) {
 			dbSMtf.setUsersByEmpMt(usersRepository.findOne(wsSMtf.getEmpMtUserId()));
 		}
+		else
+		{
+			dbSMtf.setUsersByEmpMt(securityUtils.getCurrentDBUser());
+		}
+		
 		if (wsSMtf.getFromStkId() != null) {
 			dbSMtf.setSStkByFromStk(sStkRepository.findOne(wsSMtf.getFromStkId()));
 		}

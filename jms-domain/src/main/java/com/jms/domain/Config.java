@@ -69,5 +69,8 @@ public class Config {
      
  	//时间单位
      public static final String[] puTimes = {"分钟","小时","天"};
+     
+   //时间单位
+     public static final String[] workCategories = {"车","铣","钳"};
 
 }

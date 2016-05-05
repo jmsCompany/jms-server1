@@ -20,6 +20,7 @@ import com.jms.service.company.CompanyService;
 import com.jms.service.maintenance.MMachineGroupService;
 import com.jms.service.maintenance.MMachineService;
 import com.jms.service.maintenance.MStatusDicService;
+import com.jms.service.production.EWorkCategoryDicService;
 import com.jms.service.production.PPUTimeService;
 import com.jms.service.production.PStatusDicService;
 import com.jms.service.store.CurrencyTypeService;
@@ -122,6 +123,7 @@ public class DatabaseInit {
 	private MStatusDicService mStatusDicService;
 	@Autowired
 	private  MMachineService mMachineService;
+	@Autowired private EWorkCategoryDicService eWorkCategoryDicService;
 	
 	@Autowired
 	private  PPUTimeService pPUTimeService;
@@ -211,6 +213,7 @@ public class DatabaseInit {
 		/*
 		pPUTimeService.loadPuTimes();
 	     */
+		/*eWorkCategoryDicService.loadEWorkCategoryDicForSandVik();*/
 	}
 
 }

@@ -12,6 +12,7 @@ import com.jms.domain.db.PBomLabel;
 import com.jms.domain.db.PShiftPlan;
 import com.jms.domain.db.PWo;
 import com.jms.domain.ws.Valid;
+import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.production.WSPBom;
 import com.jms.domain.ws.production.WSPWo;
@@ -65,6 +66,14 @@ public class ShifPlanController {
 	}
 	
 
+
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findWSShiftPlanDObjs", method=RequestMethod.GET)
+	public List<WSSelectObj> findWSShiftPlanDObjs(){
+		return shiftPlanDService.findWSShiftPlanDObjs();
+		
+	}
+	
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/getShiftPlanList", method=RequestMethod.GET)
@@ -80,7 +89,7 @@ public class ShifPlanController {
 			end =start + length;
 		for (int i = start; i < end; i++) {
 			PShiftPlan w = shifPlans.get(i);
-			String[] d = {w.getName(),""+w.getIdShiftPlan()};
+			String[] d = {w.getName(),w.getSt().toString(),w.getFt().toString(),w.getPStatusDic().getName(),""+w.getIdShiftPlan()};
 			lst.add(d);
 
 		}

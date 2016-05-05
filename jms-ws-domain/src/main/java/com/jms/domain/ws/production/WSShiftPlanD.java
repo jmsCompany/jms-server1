@@ -10,8 +10,8 @@ public class WSShiftPlanD {
     private Long shiftPlanId;
     private String shift;
     private String des;
-    private Date st;
-    private Date ft;
+    private String st;
+    private String ft;
 	
     public Long getIdShiftD() {
 		return idShiftD;
@@ -37,16 +37,16 @@ public class WSShiftPlanD {
 	public void setDes(String des) {
 		this.des = des;
 	}
-	public Date getSt() {
+	public String getSt() {
 		return st;
 	}
-	public void setSt(Date st) {
+	public void setSt(String st) {
 		this.st = st;
 	}
-	public Date getFt() {
+	public String getFt() {
 		return ft;
 	}
-	public void setFt(Date ft) {
+	public void setFt(String ft) {
 		this.ft = ft;
 	}
 }

@@ -77,6 +77,7 @@ public class ShiftPlanService {
 			pShiftPlan = pShiftPlanRepository.findOne(wsShiftPlan.getIdShiftPlan());
 			//delete pshiftPlanD
 			pShiftPlanDRepository.delete(pShiftPlan.getPShiftPlanDs());
+			pShiftPlan.getPShiftPlanDs().clear();
 		}
 		else
 		{
@@ -124,6 +125,10 @@ public class ShiftPlanService {
 		if(wsShiftPlan.getCompanyId()!=null)
 		{
 			dbPShiftPlan.setCompany(companyRepository.findOne(wsShiftPlan.getCompanyId()));
+		}
+		else
+		{
+			dbPShiftPlan.setCompany(securityUtils.getCurrentDBUser().getCompany());
 		}
 		if(wsShiftPlan.getStatusId()!=null)
 		{

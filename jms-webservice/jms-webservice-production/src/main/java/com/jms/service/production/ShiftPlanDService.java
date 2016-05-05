@@ -131,4 +131,20 @@ public class ShiftPlanDService {
 		return pc;
 	}
 
+	
+	
+	
+	@Transactional(readOnly=true) 
+	public List<WSSelectObj> findWSShiftPlanDObjs()
+	{	
+		List<WSSelectObj>  ws = new ArrayList<WSSelectObj>();
+		List<PShiftPlanD> ps= pShiftPlanDRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+		for(PShiftPlanD p : ps)
+		{
+			WSSelectObj w = new WSSelectObj(p.getIdShiftD(),p.getShift());
+			ws.add(w);
+		}
+		return  ws;
+		
+	}
 }

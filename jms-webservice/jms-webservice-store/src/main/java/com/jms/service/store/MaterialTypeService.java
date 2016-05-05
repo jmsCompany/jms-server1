@@ -33,7 +33,7 @@ public class MaterialTypeService {
 	public void loadMaterilaTypies() {
 		
 		String[] materialTypies = new String[] { "原材料", "成品",
-				"半成品" };
+				"半成品","消耗品" };
 		for (String m : materialTypies) {
 			SMaterialTypeDic mt = new SMaterialTypeDic();
 			mt.setName(m);

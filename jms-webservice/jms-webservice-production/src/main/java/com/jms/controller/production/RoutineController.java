@@ -104,7 +104,8 @@ public class RoutineController {
 			end =start + length;
 		for (int i = start; i < end; i++) {
 			PRoutine w = pRoutines.get(i);
-			String[] d = {w.getPDraw().getDrawVer(),""+w.getIdRoutine()};
+			String drawNo=(w.getPDraw()==null)?"":""+w.getPDraw().getDrawNo();
+			String[] d = {w.getSMaterial().getPno(),w.getSMaterial().getRev(),w.getSMaterial().getDes(),w.getPLine().getPline(),drawNo,""+w.getIdRoutine()};
 			lst.add(d);
 
 		}

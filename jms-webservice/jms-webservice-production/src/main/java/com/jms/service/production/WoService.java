@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.jms.domain.db.FCostCenter;
 import com.jms.domain.db.PBom;
 import com.jms.domain.db.PWo;
+import com.jms.domain.db.PWoRoute;
 import com.jms.domain.db.PWorkCenter;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SStk;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
+import com.jms.domain.ws.production.WSPRoutineD;
 import com.jms.domain.ws.production.WSPWo;
 import com.jms.domain.ws.production.WSPWorkCenter;
 import com.jms.domainadapter.BeanUtil;
@@ -130,7 +132,24 @@ public class WoService {
 		{
 			pc.setSo(pWo.getSSo().getCodeSo());
 			pc.setSoId(pWo.getSSo().getIdSo());
+			SMaterial s = pWo.getSSo().getSMaterial();
+			if(s!=null)
+			{
+				pc.setMaterialId(s.getIdMaterial());
+				pc.setPno(s.getPno());
+				pc.setRev(s.getRev());
+				pc.setDes(s.getDes());
+
+			}
 		}
+		for(PWoRoute routine:pWo.getPWoRoutes())
+		{
+			WSPRoutineD wd = new WSPRoutineD();
+			wd.setIdRoutineD(routine.getPRoutineD().getIdRoutineD());
+			wd.setRouteNo(routine.getPRoutineD().getRouteNo());
+			pc.getRoutines().add(wd);
+		}
+	//	pc.setQty(pWo.getQty());
 		return pc;
 	}
 	

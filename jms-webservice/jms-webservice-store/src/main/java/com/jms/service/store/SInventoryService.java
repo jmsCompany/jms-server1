@@ -9,16 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jms.domain.Config;
-import com.jms.domain.db.SBin;
-import com.jms.domain.db.SStk;
-import com.jms.domain.db.SStkTypeDic;
-import com.jms.domain.ws.Valid;
-import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.store.WSBin;
-import com.jms.domain.ws.store.WSStk;
-import com.jms.domain.ws.store.WSStkType;
+import com.jms.domain.db.SInventory;
+import com.jms.domain.ws.store.WSInventoryInfo;
 import com.jms.repositories.s.SBinRepository;
+import com.jms.repositories.s.SInventoryRepository;
 import com.jms.repositories.s.SStatusDicRepository;
 import com.jms.repositories.s.SStkRepository;
 import com.jms.repositories.s.SStkTypeDicRepository;
@@ -30,6 +24,10 @@ import com.jms.web.security.SecurityUtils;
 public class SInventoryService {
 
 	private static final Logger logger = LogManager.getLogger(SInventoryService.class.getCanonicalName());
+	
+	@Autowired
+	private SInventoryRepository sInventoryRepository;
+	
 	@Autowired
 	private SStkRepository sStkRepository;
 	@Autowired
@@ -46,91 +44,67 @@ public class SInventoryService {
 	@Autowired
 	private SBinRepository sBinRepository;
 
-	public Valid saveBin(WSBin wsBin) {
-
-		SBin bin;
-		// create
-		if (wsBin.getIdBin() == null || wsBin.getIdBin().equals(0l)) {
-			bin = new SBin();
+	@Transactional(readOnly=true)
+	public List<WSInventoryInfo> findInventorySummaryByMaterialAndStk(Long idMaterial,Long stkId)
+	{
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		List<SInventory> ls;
+		if(idMaterial==null)
+		{
+			if(stkId==null)
+			{
+				ls = new ArrayList<SInventory>();
+			}
+			else
+			{
+				ls = sInventoryRepository.findInventorySummaryByStk(companyId, stkId);
+			}
+			
 		}
-		// update
-		else {
-			bin = sBinRepository.findOne(wsBin.getIdBin());
+		else
+		{
+			if(stkId==null)
+			{
+				ls = sInventoryRepository.findInventorySummaryByMaterial(idMaterial, companyId);
+			}
+			else
+			{
+				ls = sInventoryRepository.findInventorySummaryByMaterialAndStk(idMaterial, companyId, stkId);
+			}
 		}
-		bin.setBin(wsBin.getBin());
-		bin.setSStk(sStkRepository.findOne(wsBin.getIdStk()));
-		bin.setSYesOrNoDic(sYesOrNoDicRepository.findOne(wsBin.getIsReturnShelf()));
-		bin.setSStatusDic(sStatusDicRepository.findOne(wsBin.getStatus()));
-
-		sBinRepository.save(bin);
-		Valid valid = new Valid();
-		valid.setValid(true);
-		return valid;
+		List<WSInventoryInfo> infos = new ArrayList<WSInventoryInfo>();
+		Long currentStkId=0l,currentMaterialId=0l,currentQty=0l;
+		SInventory before=null;
+	    for(SInventory s: ls)
+	    {
+	    	Long sId = s.getSBin().getSStk().getId();
+	    	Long mId = s.getSMaterial().getIdMaterial();
+	    	if(sId.equals(currentStkId)&&mId.equals(currentMaterialId))
+	    	{
+	    		currentQty =currentQty + s.getQty();
+	    	}
+	    	else
+	    	{
+	    		currentStkId = sId;
+	    		currentMaterialId = mId;
+	    		if(!currentQty.equals(0l))
+	    		{
+	    			WSInventoryInfo i = new WSInventoryInfo();
+	    			i.setDes(before.getSMaterial().getDes());
+	    			i.setPno(before.getSMaterial().getPno());
+	    			i.setRev(before.getSMaterial().getRev());
+	    			i.setIdMaterial(before.getSMaterial().getIdMaterial());
+	    			i.setStkId(before.getSBin().getSStk().getId());
+	    			i.setStkName(before.getSBin().getSStk().getStkName());
+	    			i.setQty(currentQty);
+	    			infos.add(i);
+	    		}
+	    		currentQty = s.getQty();
+	    	}
+	    	
+	    	before = s;
+	    }
+	    return infos;
 	}
-
-	@Transactional(readOnly = true)
-	public List<WSBin> findBins(Long idStk) {
-		List<WSBin> wsBinList = new ArrayList<WSBin>();
-		for (SBin bin : sBinRepository.getByIdStk(idStk)) {
-			WSBin wsBin = new WSBin();
-			wsBin.setBin(bin.getBin());
-			wsBin.setIdBin(bin.getIdBin());
-			wsBin.setIsReturnShelf(bin.getSYesOrNoDic().getId());
-			wsBin.setIsReturnShelfName(bin.getSYesOrNoDic().getName());
-			wsBin.setStatusName(bin.getSStatusDic().getName());
-			wsBin.setStatus(bin.getSStatusDic().getId());
-			wsBinList.add(wsBin);
-		}
-
-		return wsBinList;
-	}
-
-	@Transactional(readOnly = true)
-	public List<WSSelectObj> findBinsObjs(Long idStk) {
-		List<WSSelectObj> wsBinList = new ArrayList<WSSelectObj>();
-		for (SBin bin : sBinRepository.getByIdStk(idStk)) {
-			WSSelectObj o = new WSSelectObj(bin.getIdBin(), bin.getBin());
-			wsBinList.add(o);
-		}
-
-		return wsBinList;
-	}
-
-	@Transactional(readOnly = true)
-	public WSBin findBin(Long binId) {
-		SBin bin = sBinRepository.findOne(binId);
-		WSBin wsBin = new WSBin();
-		if (bin == null)
-			return wsBin;
-		wsBin.setBin(bin.getBin());
-		wsBin.setIdBin(bin.getIdBin());
-		wsBin.setIsReturnShelf(bin.getSYesOrNoDic().getId());
-		wsBin.setIsReturnShelfName(bin.getSYesOrNoDic().getName());
-		wsBin.setStatusName(bin.getSYesOrNoDic().getName());
-		wsBin.setStatus(bin.getSStatusDic().getId());
-		return wsBin;
-	}
-
-	/*
-	 * @Transactional(readOnly=false) public Valid invalidateBin(Long stkId) {
-	 * 
-	 * SStk stk = sStkRepository.findOne(stkId);
-	 * stk.setSStatusDic(sStatusDicRepository.getBySourceAndName("s_stk","无效"));
-	 * sStkRepository.save(stk); Valid valid = new Valid();
-	 * valid.setValid(true); return valid; }
-	 */
-	@Transactional(readOnly = false)
-	public Valid deleteBin(Long binId) {
-		Valid valid = new Valid();
-		SBin bin = sBinRepository.findOne(binId);
-		if (!bin.getSInventories().isEmpty()) {
-			valid.setValid(false);
-		} else {
-			sBinRepository.delete(binId);
-			valid.setValid(true);
-		}
-
-		return valid;
-	}
-
+  
 }

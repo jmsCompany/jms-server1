@@ -1,6 +1,8 @@
 package com.jms.domain.ws.production;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class WSPWo {
@@ -14,6 +16,13 @@ public class WSPWo {
     private Date creationTime;
     private String creator;
     private Long qty;
+    
+    private String pno;
+    private String rev;
+    private String des;
+    private Long materialId;
+    
+    List<WSPRoutineD> routines = new ArrayList<WSPRoutineD>();
 
 	public Long getIdWo() {
 		return idWo;
@@ -68,6 +77,36 @@ public class WSPWo {
 	}
 	public void setQty(Long qty) {
 		this.qty = qty;
+	}
+	public String getPno() {
+		return pno;
+	}
+	public void setPno(String pno) {
+		this.pno = pno;
+	}
+	public String getRev() {
+		return rev;
+	}
+	public void setRev(String rev) {
+		this.rev = rev;
+	}
+	public Long getMaterialId() {
+		return materialId;
+	}
+	public void setMaterialId(Long materialId) {
+		this.materialId = materialId;
+	}
+	public String getDes() {
+		return des;
+	}
+	public void setDes(String des) {
+		this.des = des;
+	}
+	public List<WSPRoutineD> getRoutines() {
+		return routines;
+	}
+	public void setRoutines(List<WSPRoutineD> routines) {
+		this.routines = routines;
 	}
 
 
