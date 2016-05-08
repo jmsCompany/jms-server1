@@ -214,6 +214,18 @@ public class DatabaseInit {
 		pPUTimeService.loadPuTimes();
 	     */
 		/*eWorkCategoryDicService.loadEWorkCategoryDicForSandVik();*/
+		
+		/*
+		UserDetails userDetails = userDetailService.loadUserByUsername(""+usersRepository.findByUsername("admin").getIdUser());
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+				userDetails.getUsername(), userDetails.getPassword());
+		Authentication authenticated = authenticationManager
+				.authenticate(authentication);
+		SecurityContextHolder.getContext().setAuthentication(authenticated);
+		userService.createTestUsersforWWW();
+		*/
+		
+		
 	}
 
 }

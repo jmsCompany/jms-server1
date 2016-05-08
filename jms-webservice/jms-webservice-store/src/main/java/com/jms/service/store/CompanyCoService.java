@@ -45,8 +45,16 @@ public class CompanyCoService {
 	
 	//to be modified
 	@Transactional(readOnly=true)
-	public List<WSCompanyCo> getCoCompanies(Long idCompany) {
-		List<SCompanyCo> coCompanies = sCompanyCoRepository.findByCompanyID(idCompany);
+	public List<WSCompanyCo> getCoCompanies(Long companyCoTypeId,Long idCompany) {
+		List<SCompanyCo> coCompanies;
+		if(companyCoTypeId==null)
+		{
+			coCompanies= sCompanyCoRepository.findByCompanyID(idCompany);
+		}
+		else
+		{
+			coCompanies= sCompanyCoRepository.findByCompanyIdandType(idCompany,companyCoTypeId);
+		}
 		List<WSCompanyCo> wsSCompanyCos = new ArrayList<WSCompanyCo>();
 		for(SCompanyCo dbc:coCompanies)
 		{
@@ -70,7 +78,7 @@ public class CompanyCoService {
 		}
 		else
 		{
-			coCompanies = sCompanyCoRepository.findByComanuIdandType(idCompany, idType);
+			coCompanies = sCompanyCoRepository.findByCompanyIdandType(idCompany, idType);
 		}
 		for(SCompanyCo s:coCompanies)
 		{

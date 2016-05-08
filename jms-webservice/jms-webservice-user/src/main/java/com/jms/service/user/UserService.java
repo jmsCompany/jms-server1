@@ -233,5 +233,84 @@ public class UserService extends IUserServiceImpl{
 	
 	
 	
+	@Transactional(readOnly=false)
+	public void createTestUsersforWWW()
+	{
+		
+		Company  c = companyRepository.findOne(3l);
+		Roles r_op = roleService.save(SandVikRoleEnum.OP.name(),"操作员",c);
+		Roles r_quality = roleService.save(SandVikRoleEnum.quality.name(),"质检员",c);
+		Roles r_supervisor = roleService.save(SandVikRoleEnum.supervisor.name(),"主管",c);
+		Roles r_warehouse = roleService.save(SandVikRoleEnum.warehouse.name(),"主管",c);
+		Roles r_equipment = roleService.save(SandVikRoleEnum.equipment.name(),"仪器维护员",c);
+		Roles userRole = roleRepository.findByRoleAndCompanyName(
+	    SystemRoleEnum.user.name(), c.getCompanyName());
+		
+		
+		Groups g_op = groupService.createGroup(c, GroupTypeEnum.Group, SandVikRoleEnum.OP.name(), "操作员", null);
+		Groups g_quality =  groupService.createGroup(c, GroupTypeEnum.Group, SandVikRoleEnum.quality.name(), "质检员", null);
+		Groups g_supervisor =  groupService.createGroup(c, GroupTypeEnum.Group, SandVikRoleEnum.supervisor.name(), "主管", null);
+		Groups g_warehouse =  groupService.createGroup(c, GroupTypeEnum.Group, SandVikRoleEnum.warehouse.name(), "主管", null);
+		Groups g_equipment = groupService.createGroup(c, GroupTypeEnum.Group, SandVikRoleEnum.equipment.name(), "仪器维护员", null);
+		
+		Users op = new Users();
+		op.setUsername(SandVikRoleEnum.OP.name()+c.getIdCompany());
+		op.setPassword(SandVikRoleEnum.OP.name());
+		op.setCompany(c);
+		register(op);
+		
+		
+		Users quality = new Users();
+		quality.setUsername(SandVikRoleEnum.quality.name()+c.getIdCompany());
+		quality.setPassword(SandVikRoleEnum.quality.name());
+		quality.setCompany(c);
+		register(quality);
+		
+		
+		
+		Users supervisor = new Users();
+		supervisor.setUsername(SandVikRoleEnum.supervisor.name()+c.getIdCompany());
+		supervisor.setPassword(SandVikRoleEnum.supervisor.name());
+		supervisor.setCompany(c);
+		register(supervisor);
+		
+		
+		Users warehouse = new Users();
+		warehouse.setUsername(SandVikRoleEnum.warehouse.name()+c.getIdCompany());
+		warehouse.setPassword(SandVikRoleEnum.warehouse.name());
+		warehouse.setCompany(c);
+		register(warehouse);
+		
+		
+		Users equipment = new Users();
+		equipment.setUsername(SandVikRoleEnum.equipment.name()+c.getIdCompany());
+		equipment.setPassword(SandVikRoleEnum.equipment.name());
+		equipment.setCompany(c);
+		register(equipment);
+		
+		
+
+		Groups opSelf = groupService.createGroup(c, GroupTypeEnum.User, ""+op.getIdUser(), ""+op.getIdUser(), null);
+		Groups qualitySelf = groupService.createGroup(c, GroupTypeEnum.User, ""+quality.getIdUser(), ""+quality.getIdUser(), null);
+		Groups supervisorSelf = groupService.createGroup(c, GroupTypeEnum.User, ""+supervisor.getIdUser(), ""+supervisor.getIdUser(), null);
+		Groups warehouseSelf = groupService.createGroup(c, GroupTypeEnum.User, ""+warehouse.getIdUser(), ""+warehouse.getIdUser(), null);
+		Groups equipmentSelf = groupService.createGroup(c, GroupTypeEnum.User, ""+equipment.getIdUser(), ""+equipment.getIdUser(), null);
+		
+		groupService.addUserToDefaultGroup(op, opSelf, userRole);
+		groupService.addUserToDefaultGroup(quality, qualitySelf, userRole);
+		groupService.addUserToDefaultGroup(supervisor, supervisorSelf, userRole);
+		groupService.addUserToDefaultGroup(warehouse, warehouseSelf, userRole);
+		groupService.addUserToDefaultGroup(equipment, equipmentSelf, userRole);
+		
+		
+		groupService.addUserToDefaultGroup(op, g_op, r_op);
+		groupService.addUserToDefaultGroup(quality, g_quality, r_quality);
+		groupService.addUserToDefaultGroup(supervisor, g_supervisor, r_supervisor);
+		groupService.addUserToDefaultGroup(warehouse, g_warehouse, r_warehouse);
+		groupService.addUserToDefaultGroup(equipment, g_equipment, r_equipment);
+
+	}
+	
+	
 	
 }

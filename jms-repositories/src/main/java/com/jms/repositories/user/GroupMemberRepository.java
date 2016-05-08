@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.jms.domain.db.GroupMembers;
 import com.jms.domain.db.GroupMembersId;
+import com.jms.domain.db.Users;
 
 
 @Repository
@@ -17,5 +18,10 @@ public interface GroupMemberRepository extends JpaRepository<GroupMembers, Group
 	public List<GroupMembers> findGroupMembersByGroupId(Long idGroup);
 	@Query("select gm from GroupMembers gm where gm.id.idUser=?1")
 	public List<GroupMembers> findGroupMembersByUserId(Long idUser);
+	
+	
+	@Query("select distinct g.users from GroupMembers g where g.groups.company.idCompany=?1 and g.groups.groupName='OP'")	
+	public List<Users> findOPByCompanyId(Long companyId);
+	
 
 }

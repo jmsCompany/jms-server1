@@ -116,7 +116,8 @@ public class SpoController {
 			end =start + length;
 		for (int i = start; i < end; i++) {
 			WSSpoMaterial w = wsSpoMaterials.get(i);
-			String[] d = {w.getCodePo(),""+w.getDateOrder(),w.getUsername(),w.getCodeCo(),w.getsStatus(),w.getsMaterial(),w.getRev(),w.getDes(),w.getUnit(),""+w.getQtyPo(),""+w.getTotalPrice(),w.getDeliveryDate().toString(),""+w.getQtyReceived(),""+w.getsPoId()};
+			String del = (w.getDeliveryDate()==null)?"":w.getDeliveryDate().toString();
+			String[] d = {w.getCodePo(),""+w.getDateOrder(),w.getUsername(),w.getCodeCo(),w.getsStatus(),w.getsMaterial(),w.getRev(),w.getDes(),w.getUnit(),""+w.getQtyPo(),""+w.getTotalPrice(),del,""+w.getQtyReceived(),""+w.getsPoId()};
 			lst.add(d);
 
 		}

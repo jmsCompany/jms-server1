@@ -13,6 +13,7 @@ import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.production.WSPWo;
+import com.jms.domain.ws.store.WSMaterialQty;
 import com.jms.repositories.p.PWoRepository;
 import com.jms.service.production.WoService;
 import com.jms.web.security.SecurityUtils;
@@ -48,8 +49,13 @@ public class WoController {
 		return woService.findWSPwo(woId);
 		
 	}
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findWSMaterialQtyByWoId", method=RequestMethod.GET)
+	public WSMaterialQty findWSMaterialQtyByWoId(@RequestParam("woId") Long woId) throws Exception {
+		return woService.findWSMaterialQtyByWoId(woId);
+		
+	}
 	
-
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/getWoList", method=RequestMethod.GET)

@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 import com.jms.domain.db.PBomLabel;
 import com.jms.domain.db.PRoutine;
+import com.jms.domain.db.PRoutineD;
 import com.jms.domain.db.PShiftPlan;
 import com.jms.domain.db.PWo;
+import com.jms.domain.db.SMaterial;
 import com.jms.domain.ws.Valid;
+import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.production.WSPBom;
 import com.jms.domain.ws.production.WSPRoutine;
@@ -64,18 +67,21 @@ public class RoutineController {
 	private PDrawRepository pDrawRepository;
 	
 	@Autowired private SecurityUtils securityUtils;
+	
+	@Autowired
+	private PWoRepository pWoRepository;
 
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/p/saveRoutine", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public WSPRoutine saveWSShiftPlan(@RequestBody WSPRoutine wsPRoutine) throws Exception {
+	public WSPRoutine saveRoutine(@RequestBody WSPRoutine wsPRoutine) throws Exception {
 		return routineService.saveWSPRoutine(wsPRoutine);
 	}
 	
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/p/deletePRoutine", method=RequestMethod.GET)
-	public Valid deleteWSPRoutine(@RequestParam("idPRoutine") Long idPRoutine) {
+	public Valid deletePRoutine(@RequestParam("idPRoutine") Long idPRoutine) {
 		return routineService.deletePRoutine(idPRoutine);
 		
 	}
@@ -89,6 +95,27 @@ public class RoutineController {
 	}
 	
 
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findRoutineDObjsByWoId", method=RequestMethod.GET)
+	public List<WSSelectObj> findRoutineDObjsByWoId(@RequestParam("woId") Long woId) throws Exception {
+		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
+		SMaterial s = pWoRepository.findByWoId(woId);
+		if(s!=null)
+		{
+			for(PRoutineD r: pRoutineDRepository.findByMaterialId(s.getIdMaterial()))
+			{
+				WSSelectObj w = new WSSelectObj(r.getIdRoutineD(),r.getRouteNo());
+				ws.add(w);
+			}
+			
+		}
+		return ws;
+		
+	}
+	
+	
+	
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/getRoutineList", method=RequestMethod.GET)
@@ -116,6 +143,9 @@ public class RoutineController {
 	    t.setData(lst);
 	    return t;
 	}
+	
+	
+	
 	
 
 }

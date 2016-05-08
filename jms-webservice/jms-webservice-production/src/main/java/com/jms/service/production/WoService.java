@@ -26,6 +26,7 @@ import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.production.WSPRoutineD;
 import com.jms.domain.ws.production.WSPWo;
 import com.jms.domain.ws.production.WSPWorkCenter;
+import com.jms.domain.ws.store.WSMaterialQty;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.f.FCostCenterRepository;
@@ -101,6 +102,24 @@ public class WoService {
 		
 	}
 
+	
+	@Transactional(readOnly=true) 
+	public WSMaterialQty findWSMaterialQtyByWoId(Long woId) 
+	{	
+		WSMaterialQty mq = new WSMaterialQty();
+		
+		PWo pWo = pWoRepository.findOne(woId);
+		SMaterial material =pWo.getSSo().getSMaterial();
+		mq.setIdMaterial(material.getIdMaterial());
+		mq.setPno(material.getPno());
+		mq.setRev(material.getRev());
+		mq.setDes(material.getDes());
+		mq.setQty(pWo.getQty());
+		return mq;
+		
+	}
+	
+	
 	
 	private PWo toDBPWo(WSPWo wsPWo,PWo pWo) throws Exception
 	{

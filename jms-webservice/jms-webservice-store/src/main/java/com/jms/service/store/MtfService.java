@@ -370,9 +370,17 @@ public class MtfService {
 		}
 		for (SMtfMaterial s : sMtf.getSMtfMaterials()) {
 			wsSMtf.getSmtfItems().put("item" + s.getIdMtfMaterial(), mtfMaterialService.toWSSMtfMaterial(s));
+			if(s.getSPoMaterial()!=null)
+			{
+				
+				wsSMtf.setCoCompanyId(s.getSPoMaterial().getSPo().getSCompanyCo().getId());
+				wsSMtf.setPoId(s.getSPoMaterial().getSPo().getIdPo());
+				break;
+			}
 		}
 		// wsSMtf.setma
-		System.out.println("mtNo: " + wsSMtf.getMtNo());
+		//System.out.println("mtNo: " + wsSMtf.getMtNo());
+
 		return wsSMtf;
 	}
 

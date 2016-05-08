@@ -22,10 +22,12 @@ import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSAndriodMenuItem;
 import com.jms.domain.ws.WSMenu;
 import com.jms.domain.ws.WSRoles;
+import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSUser;
 import com.jms.domain.ws.WSUserProfile;
 import com.jms.domainadapter.UserAdapter;
 import com.jms.repositories.system.AppsRepository;
+import com.jms.repositories.user.GroupMemberRepository;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.service.user.UserService;
 import com.jms.service.user.WSUsersValidator;
@@ -49,20 +51,22 @@ public class UserController {
 	private AppsRepository appsRepository;
 	@Autowired
 	private SecuredObjectService securedObjectService;
-
+	@Autowired
+	private GroupMemberRepository groupMemberRepository;
 	@Autowired
 	private SecurityUtils securityUtils;
 	
-	
+	/*
 	@InitBinder
 	public void initBinder(final WebDataBinder binder) {
 		binder.addValidators(wsUsersValidator);
 	}
+	*/
 	@Transactional(readOnly=false)
 	@RequestMapping(value="/login", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public WSUserProfile login(@RequestBody WSUser wsUser) throws Exception {
 		WSUserProfile userProfile = new WSUserProfile();
-		System.out.println("user: " +wsUser.getLogin() +", pass: "  +wsUser.getPassword());
+		//System.out.println("user: " +wsUser.getLogin() +", pass: "  +wsUser.getPassword());
 		String token = userService.login(wsUser.getLogin(), wsUser.getPassword());
 		if(token==null)
 		{
@@ -115,7 +119,7 @@ public class UserController {
 	
 	@RequestMapping(value="/check/jmstoken", method=RequestMethod.GET)
 	public Valid checkToken(@RequestParam("jmstoken") String jmstoken) throws Exception {
-		System.out.println("check token: " + jmstoken);
+	//	System.out.println("check token: " + jmstoken);
 		Boolean returnVal = userService.checkToken(jmstoken);
 		Valid valid = new Valid();
 		valid.setValid(returnVal);
@@ -237,7 +241,19 @@ public class UserController {
 
 	
 	
-	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/group/op/members", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<WSSelectObj> findOPByCompanyId()
+	{
+		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
+		List<Users> users = groupMemberRepository.findOPByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+		for(Users u : users)
+		{
+			WSSelectObj w = new WSSelectObj(u.getIdUser(),u.getName());
+			ws.add(w);
+		}
+		return ws;
+	}
 	
 
 }

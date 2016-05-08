@@ -11,11 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jms.domain.db.PWoBom;
 import com.jms.domain.db.SBin;
 import com.jms.domain.db.SInventory;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMtf;
 import com.jms.domain.db.SMtfMaterial;
+import com.jms.domain.db.SPoMaterial;
+import com.jms.domain.db.SSo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.store.WSSMtfMaterial;
 import com.jms.domainadapter.BeanUtil;
@@ -89,7 +92,37 @@ public class MtfMaterialService {
 	public List<WSSMtfMaterial> findWSSMtfMaterial(Long companyId,Long typeId) throws Exception
 	{
 		List<WSSMtfMaterial> ws = new ArrayList<WSSMtfMaterial>();
-		for(SMtfMaterial sm: sMtfMaterialRepository.getByCompanyIdAndTypeId(companyId, typeId))
+		List<SMtfMaterial> sms;
+		if(typeId!=null)
+		{
+			sms=sMtfMaterialRepository.getByCompanyIdAndTypeId(companyId, typeId);
+		}
+		else
+		{
+			sms=sMtfMaterialRepository.getByCompanyId(companyId);
+		}
+		for(SMtfMaterial sm: sms)
+		{
+			ws.add(toWSSMtfMaterial(sm));
+		}
+		
+		return ws;
+	}
+	
+	/**to be modified**/
+	public List<WSSMtfMaterial> findWSSMtfMaterial(Long companyId,Long typeId,String q) throws Exception
+	{
+		List<WSSMtfMaterial> ws = new ArrayList<WSSMtfMaterial>();
+		List<SMtfMaterial> sms;
+		if(typeId!=null)
+		{
+			sms=sMtfMaterialRepository.getByCompanyIdAndTypeId(companyId, typeId);
+		}
+		else
+		{
+			sms=sMtfMaterialRepository.getByCompanyId(companyId);
+		}
+		for(SMtfMaterial sm: sms)
 		{
 			ws.add(toWSSMtfMaterial(sm));
 		}
@@ -151,15 +184,20 @@ public class MtfMaterialService {
 		}
 		if(wsSMtfMaterial.getPoMaterialId()!=null)
 		{
-			 dbSMtfMaterial.setSPoMaterial(sSpoMaterialRepository.findOne(wsSMtfMaterial.getPoMaterialId()));
+			 SPoMaterial sm=sSpoMaterialRepository.findOne(wsSMtfMaterial.getPoMaterialId());
+			 dbSMtfMaterial.setSPoMaterial(sm);
+			 dbSMtfMaterial.setSMaterial(sm.getSMaterial());
 		}
 		if(wsSMtfMaterial.getPwoBomId()!=null)
 		{
-			dbSMtfMaterial.setPWoBom(pWoBomRepository.findOne(wsSMtfMaterial.getPwoBomId()));
+			PWoBom pWoBom = pWoBomRepository.findOne(wsSMtfMaterial.getPwoBomId());
+			dbSMtfMaterial.setPWoBom(pWoBom);
 		}
 		if(wsSMtfMaterial.getSoId()!=null)
 		{
-			dbSMtfMaterial.setSSo(sSoRepository.findOne(wsSMtfMaterial.getSoId()));
+			SSo so =sSoRepository.findOne(wsSMtfMaterial.getSoId());
+			dbSMtfMaterial.setSSo(so);
+			dbSMtfMaterial.setSMaterial(so.getSMaterial());
 		}
 		if(wsSMtfMaterial.getStatusId()!=null)
 		{

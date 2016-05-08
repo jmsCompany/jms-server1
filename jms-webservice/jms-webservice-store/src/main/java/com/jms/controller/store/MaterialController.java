@@ -102,7 +102,7 @@ public class MaterialController {
 
 	@Transactional(readOnly = true)
 	@RequestMapping(value = "/s/materialList", method = RequestMethod.GET)
-	public WSTableData getLinkmanList(@RequestParam(value = "materialTypeId", required = false) Long materialTypeId,
+	public WSTableData getMaterialList(@RequestParam(value = "materialTypeId", required = false) Long materialTypeId,
 			@RequestParam(value = "q", required = false) String q, @RequestParam Integer draw,
 			@RequestParam Integer start, @RequestParam Integer length) throws Exception {
 
@@ -128,6 +128,32 @@ public class MaterialController {
 		t.setData(lst);
 		return t;
 	}
+	
+	
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value = "/s/getMaterialListObjs", method = RequestMethod.GET)
+	public List<WSSelectObj> getMaterialListObjs(
+			@RequestParam(value = "q", required = false) String q) throws Exception {
+
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		List<WSSelectObj> ws =new ArrayList<WSSelectObj>();
+		List<WSMaterial> wsMaterials = materialService.getMaterials(companyId, null, q);
+		
+		for (WSMaterial m:wsMaterials) {
+		
+			WSSelectObj w = new WSSelectObj(m.getIdMaterial(),m.getPno()+"_"+m.getRev()+"_"+m.getDes());
+			ws.add(w);
+		}
+
+		return ws;
+	}
+
+	
+	
+	
+	
 
 	// 物料大类
 	@Transactional(readOnly = true)

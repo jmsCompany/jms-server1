@@ -2,6 +2,7 @@ package com.jms.controller.store;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
@@ -123,8 +124,9 @@ public class CompanyCoController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/companyCoList", method=RequestMethod.GET)
-	public WSTableData  getBinlList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
-		List<WSCompanyCo> wsCompanyCos = companyCoService.getCoCompanies(securityUtils.getCurrentDBUser().getCompany().getId());
+	public WSTableData  getCompanyCoList(@RequestParam(required=false, value="companyCoTypeId") Long companyCoTypeId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		System.out.println("co Type: " + companyCoTypeId);
+		List<WSCompanyCo> wsCompanyCos = companyCoService.getCoCompanies(companyCoTypeId,securityUtils.getCurrentDBUser().getCompany().getId());
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
 		if(wsCompanyCos.size()<start + length)

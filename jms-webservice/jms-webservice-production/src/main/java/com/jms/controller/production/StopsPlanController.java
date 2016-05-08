@@ -76,7 +76,7 @@ public class StopsPlanController {
 			end =start + length;
 		for (int i = start; i < end; i++) {
 			PStopsPlan w = pStopsPlans.get(i);
-			String[] d = {""+w.getStopsPlanNo(),w.getMMachine().getName(),""+w.getIdStopsPlan()};
+			String[] d = {""+w.getMMachine().getCode(),w.getPSubCode().getSubCode()+"_"+w.getPSubCode().getSubDes(),w.getPlanFt().toString(),w.getPlanSt().toString(),w.getPStatusDic().getName(),""+w.getIdStopsPlan()};
 			lst.add(d);
 
 		}

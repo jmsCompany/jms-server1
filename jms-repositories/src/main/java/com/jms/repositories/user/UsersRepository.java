@@ -21,5 +21,9 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
 	
 	@Query("select u from Users u inner join fetch u.groupMemberses g where g.id.idGroup=?1")	
 	public List<Users> findUsersByIdGroup(Long idGroup);
+	
+	
+	
+	
 }
 

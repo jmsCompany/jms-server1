@@ -42,14 +42,14 @@ public class MtfController {
 	@RequestMapping(value="/s/smtfMaterialList", method=RequestMethod.GET)
 	public WSTableData  getSmtfMaterialList(@RequestParam Long typeId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
-		System.out.println("get smtf materials:  type = " + typeId);
+		//System.out.println("get smtf materials:  type = " + typeId);
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		List<WSSMtfMaterial> wsSMtfMaterials = mtfMaterialService.findWSSMtfMaterial(companyId, typeId);
-		System.out.println("get smtf materials:  size = " + wsSMtfMaterials.size());
+		//System.out.println("get smtf materials:  size = " + wsSMtfMaterials.size());
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
-		System.out.println("start = " +start);
-		System.out.println( ", length = " + length);
+	//	System.out.println("start = " +start);
+	//	System.out.println( ", length = " + length);
 		if(wsSMtfMaterials.size()<start + length)
 			end =wsSMtfMaterials.size();
 		else
@@ -111,6 +111,82 @@ public class MtfController {
 	    t.setData(lst);
 	    return t;
 	}
+	
+	
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/getSmtfMaterialListByTypeAndQ", method=RequestMethod.GET)
+	public WSTableData  getSmtfMaterialListByTypeAndQ(@RequestParam(required=false,value="typeId") Long typeId,
+			@RequestParam(required=false,value="q") String q,
+			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+	
+		List<WSSMtfMaterial> wsSMtfMaterials = mtfMaterialService.findWSSMtfMaterial(companyId, typeId,q);
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(wsSMtfMaterials.size()<start + length)
+			end =wsSMtfMaterials.size();
+		else
+			end =start + length;
+		for(int i=0;i<end;i++)
+		{
+			WSSMtfMaterial w = wsSMtfMaterials.get(i);
+			String mtNo = (w.getMtNo()==null)?"":w.getMtNo();
+			String material;
+			if(w.getMaterialPno()!=null)
+			{
+				 material = (w.getMaterialPno()+"_"+w.getMaterialRev()+"_"+w.getMaterialDes());
+			}
+			else
+			{
+				material="";
+			}
+			String lotNo = w.getLotNo();
+			
+			String fromBin;
+			if(w.getFromBin()!=null)
+			{
+				fromBin=w.getFromStk() +"_"+w.getFromBin();
+			}
+			else
+			{
+				fromBin="";
+			}
+			
+			String toBin;
+			if(w.getToBin()!=null)
+			{
+				toBin=w.getToStk() +"_"+w.getToBin();
+			}
+			else
+			{
+				toBin="";
+			}
+
+			
+			String[] d = {mtNo,w.getType(),w.getMtNo(),material,lotNo,fromBin,toBin,""+w.getQty(),w.getEmpMtUser(),w.getRecMtUser(),w.getCreationTime().toString()};
+			lst.add(d);
+		}
+
+	
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(wsSMtfMaterials.size());
+		t.setRecordsFiltered(wsSMtfMaterials.size());
+	    t.setData(lst);
+	    return t;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	@Transactional(readOnly = true)

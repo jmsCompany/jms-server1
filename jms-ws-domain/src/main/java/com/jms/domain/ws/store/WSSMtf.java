@@ -25,6 +25,10 @@ public class WSSMtf {
 	     private String mtNo;
 	     private Date dateMt;
 	     private Date creationTime;
+	     
+	     private Long coCompanyId;
+	     private Long poId;
+	     
 	     private Map<String,WSSMtfMaterial> smtfItems = new LinkedHashMap<String,WSSMtfMaterial>(0);
 		public Long getIdMt() {
 			return idMt;
@@ -141,6 +145,18 @@ public class WSSMtf {
 		}
 		public void setToStkId(Long toStkId) {
 			this.toStkId = toStkId;
+		}
+		public Long getPoId() {
+			return poId;
+		}
+		public void setPoId(Long poId) {
+			this.poId = poId;
+		}
+		public Long getCoCompanyId() {
+			return coCompanyId;
+		}
+		public void setCoCompanyId(Long coCompanyId) {
+			this.coCompanyId = coCompanyId;
 		}
    
 }

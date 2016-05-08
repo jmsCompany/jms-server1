@@ -10,11 +10,15 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.jms.domain.db.SMaterial;
+import com.jms.domain.db.SPic;
 import com.jms.domain.db.SPo;
 import com.jms.domain.db.SPoMaterial;
 import com.jms.domain.db.SSo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
+import com.jms.domain.ws.store.WSMaterial;
 import com.jms.domain.ws.store.WSSpo;
 import com.jms.domain.ws.store.WSSpoMaterial;
 import com.jms.domain.ws.store.WSSpoRemark;
@@ -167,5 +171,27 @@ public class SsoService {
 		return wsSso;
 	}
 
+	
+	
+	@Transactional(readOnly=true)
+	public WSMaterial getMaterialBySoId(Long soId) throws Exception
+	{	
+		WSMaterial wsMc = new WSMaterial();
+		SMaterial m = sSoRepository.findOne(soId).getSMaterial();
+			if(m==null)
+				return wsMc;
+			wsMc = materialService.toWSMaterial(m); 
+			if(!m.getSMaterialPics().isEmpty())
+			{
+				SPic spic = m.getSMaterialPics().iterator().next().getSPic();
+				wsMc.setFileName(spic.getFilename());
+				wsMc.setFileId(spic.getId());
+			}
+			return wsMc;
+
+	}
+
+	
+	
 
 }

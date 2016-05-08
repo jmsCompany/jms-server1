@@ -12,10 +12,9 @@ import com.jms.domain.db.SMaterial;
 @Repository
 public interface PWoRepository extends JpaRepository<PWo, Long>{
 
- @Query("select p from PWo p where p.SSo.company.idCompany=?1")
-  public List<PWo> getByCompanyId(Long companyId);
- 
- 
- @Query("select s.SSo.SMaterial from PWo s where s.idWo=?1")
+   @Query("select p from PWo p where p.SSo.company.idCompany=?1")
+    public List<PWo> getByCompanyId(Long companyId);
+
+    @Query("select s.SSo.SMaterial from PWo s where s.idWo=?1")
 	public SMaterial findByWoId(Long woId);
 }

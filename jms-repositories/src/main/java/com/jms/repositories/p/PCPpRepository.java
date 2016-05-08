@@ -14,6 +14,6 @@ import com.jms.domain.db.PCheckTime;
 @Repository
 public interface PCPpRepository extends JpaRepository<PCPp, Long>{
 
-    @Query("select p from PCPp p where p.company.idCompany=?1")
+    @Query("select p from PCPp p where p.company.idCompany=?1 order by planSt desc")
 	public List<PCPp> getByCompanyId(Long companyId);
 }

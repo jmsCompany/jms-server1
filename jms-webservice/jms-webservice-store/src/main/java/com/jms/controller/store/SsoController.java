@@ -12,6 +12,7 @@ import com.jms.domain.db.SSo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
+import com.jms.domain.ws.store.WSMaterial;
 import com.jms.domain.ws.store.WSMaterialDelivered;
 import com.jms.domain.ws.store.WSSso;
 import com.jms.repositories.s.SSoRepository;
@@ -126,6 +127,12 @@ public class SsoController {
 	   wd.setDeliveredDate(sSo.getDeliveryDate());
 		return wd;
 	}
-	
 
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value = "/s/getMaterialBySoId", method = RequestMethod.GET)
+	public WSMaterial findWSMaterial(@RequestParam("soId") Long soId) throws Exception {
+		return ssoService.getMaterialBySoId(soId);
+
+	}
 }
