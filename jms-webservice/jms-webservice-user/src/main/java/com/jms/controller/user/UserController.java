@@ -17,15 +17,24 @@ import com.jms.domain.SandVikRoleEnum;
 import com.jms.domain.db.Apps;
 import com.jms.domain.db.GroupMembers;
 import com.jms.domain.db.Groups;
+import com.jms.domain.db.PCPp;
+import com.jms.domain.db.PCheckTime;
+import com.jms.domain.db.PRoutineDAtt;
+import com.jms.domain.db.PRoutineDCategory;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSAndriodMenuItem;
+import com.jms.domain.ws.WSFileMeta;
 import com.jms.domain.ws.WSMenu;
 import com.jms.domain.ws.WSRoles;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSUser;
 import com.jms.domain.ws.WSUserProfile;
+import com.jms.domain.ws.m.WSMachine;
+import com.jms.domain.ws.production.WSPCppAndriod;
+import com.jms.domain.ws.production.WSPWo;
 import com.jms.domainadapter.UserAdapter;
+import com.jms.repositories.p.PCPpRepository;
 import com.jms.repositories.system.AppsRepository;
 import com.jms.repositories.user.GroupMemberRepository;
 import com.jms.repositories.user.UsersRepository;
@@ -55,6 +64,8 @@ public class UserController {
 	private GroupMemberRepository groupMemberRepository;
 	@Autowired
 	private SecurityUtils securityUtils;
+	@Autowired
+	private PCPpRepository pCPpRepository;
 	
 	/*
 	@InitBinder
@@ -77,15 +88,103 @@ public class UserController {
 		userProfile.setLogin(wsUser.getLogin());
 		userProfile.setToken(token);
 		userProfile.setIdUser(u.getIdUser());
-		userProfile.setLogoURL("www.xxxxxx.com");
+		userProfile.setLogoURL("www.sandvik.com");
 		userProfile.setIdCompany(u.getCompany().getIdCompany());
 		userProfile.setName(u.getName());
+		userProfile.setDepartment("生产部");
 		Boolean isOP= false;
 		for(GroupMembers g:u.getGroupMemberses())
 		{
 			if(g.getRoles().getRole().equals("OP"))
 			{
 				isOP=true;
+				Long companyId= u.getCompany().getIdCompany();
+				Long userId = u.getIdUser();
+			
+				List<WSPCppAndriod> cpps = new ArrayList<WSPCppAndriod>();
+			//	System.out.println("取得日计划。。。。");
+				for( PCPp cpp:pCPpRepository.getByCompanyIdAndUserId(companyId, userId))
+				{
+					WSPCppAndriod m = new WSPCppAndriod();
+					m.setChecklistId("001"); //需要修改
+					m.setCppId(cpp.getIdCPp());
+					
+					//产品图纸
+					if(cpp.getPRoutineD().getPRoutine()!=null)
+					{
+						if(cpp.getPRoutineD().getPRoutine().getPDraw()!=null)
+						{
+							if(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawAtt()!=null)
+							{
+								WSFileMeta f = new WSFileMeta();
+								f.setName(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawAtt());
+								f.setDescription("产品图纸");
+								m.getFiles().add(f);
+								m.setDrawNo(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawNo());
+								m.setDrawVer(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawVer());
+							}
+						}
+						
+					}
+					
+					//工种
+					for(PRoutineDCategory pr:cpp.getPRoutineD().getPRoutineDCategories())
+					{
+						m.getCategories().add(pr.getClass().getSimpleName());
+					}
+				 
+					m.setFt(cpp.getPlanFt().getTime());
+					if(cpp.getMMachine().getPLine()!=null)
+					{
+						m.setLine(cpp.getMMachine().getPLine().getPline());
+					}
+				
+					m.setmNo(cpp.getMMachine().getCode());
+					m.setOp(cpp.getUsers().getName());
+					m.setpNo(cpp.getPWo().getSSo().getSMaterial().getPno());
+					m.setQty(cpp.getQty());
+					m.setRoute(cpp.getPRoutineD().getRouteNo());
+					//m.setRouteId(cpp.getPRoutineD().get);//图纸
+					
+					//附件
+					for(PRoutineDAtt pa:cpp.getPRoutineD().getPRoutineDAtts())
+					{
+						WSFileMeta f = new WSFileMeta();
+						f.setDescription(pa.getPAttDraw().getName());
+						f.setName(pa.getPAttDraw().getFilename());
+						m.getFiles().add(f);
+					}
+					m.setWoNo(cpp.getPWo().getWoNo());
+					m.setShift(cpp.getPShiftPlanD().getShift());
+					m.setSt(cpp.getPlanSt().getTime());
+					m.setStdWtLabor(cpp.getPRoutineD().getStdWtLabor());
+					m.setStdWtMachine(cpp.getPRoutineD().getStdWtMachine());
+					m.setStdWtSetup(cpp.getPRoutineD().getStdWtSetup());
+					
+					int i=0;
+					for(PCheckTime pc :cpp.getMMachine().getPCheckTimes())
+					{
+						if(i>0)
+							break;
+						Long checkInterval = pc.getInterval1();
+						Long  intervalType = pc.getPUTime().getIdUTime(); //1分钟，2小时， 3天
+						if(intervalType.equals(2l))
+						{
+							checkInterval=checkInterval*60;
+						}
+						else if(intervalType.equals(3l))
+						{
+							checkInterval=checkInterval*((cpp.getPlanFt().getTime()-cpp.getPlanSt().getTime())/1000*60);
+						}
+						m.setCheckInterval(checkInterval);
+						m.setCheckIntervalType(intervalType);
+						i++;
+					}
+			
+					cpps.add(m);
+				}
+				userProfile.setPcppList(cpps);
+
 				break;
 			}
 		}

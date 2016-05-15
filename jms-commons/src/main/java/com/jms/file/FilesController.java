@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,7 +27,8 @@ import com.google.common.io.ByteStreams;
 public class FilesController {
 
 	private static final Log logger = LogFactory.getLog(FilesController.class);
-	 private String filePath ="/Users/renhongtao/jms_files/";
+    @Value("${filePath}")
+	private String filePath;
 	//private String filePath = "D:/eme_files/";
 	@Autowired
 	private FileUploadService fileUploadService;
@@ -41,7 +43,7 @@ public class FilesController {
 	}
 */
 	@RequestMapping(value = "/getFile/{fileName}/", method = RequestMethod.GET)
-	public void getImage(@PathVariable("fileName") String fileName, HttpServletResponse response) throws IOException {
+	public void getFile(@PathVariable("fileName") String fileName, HttpServletResponse response) throws IOException {
 		FileInputStream fs = new FileInputStream(new File(filePath + fileName));
 		ByteStreams.copy(fs, response.getOutputStream());
 	}

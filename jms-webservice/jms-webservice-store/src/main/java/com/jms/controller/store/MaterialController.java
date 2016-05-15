@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -71,7 +72,8 @@ public class MaterialController {
 	@Autowired
 	private SMtfMaterialRepository sMtfMaterialRepository;
 
-	private String filePath = "/Users/renhongtao/jms_files/";
+    @Value("${filePath}")
+	private String filePath;
 	@Autowired
 	private FileUploadService fileUploadService;
 	@Autowired
@@ -136,6 +138,7 @@ public class MaterialController {
 	@RequestMapping(value = "/s/getMaterialListObjs", method = RequestMethod.GET)
 	public List<WSSelectObj> getMaterialListObjs(
 			@RequestParam(value = "q", required = false) String q) throws Exception {
+		System.out.println("find material by q: " + q);
 
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		List<WSSelectObj> ws =new ArrayList<WSSelectObj>();
@@ -230,7 +233,6 @@ public class MaterialController {
 			throws Exception {
 
 		SPoMaterial spoMaterial = sSpoMaterialRepository.findOne(spoMaterialId);
-
 		return spoMaterialService.toWSSpoMaterial(spoMaterial);
 
 	}
@@ -266,8 +268,7 @@ public class MaterialController {
 			HttpServletResponse response) {
 		FileMeta fileMeta = new FileMeta();
 		if (request.getFileNames().hasNext()) {
-			fileMeta = fileUploadService.upload(request, response);
-
+			fileMeta = fileUploadService.upload(request, response,false);
 			SPic spic = new SPic();
 			spic.setOrgFilename(fileMeta.getOrgName());
 			spic.setFilename(fileMeta.getFileName());
@@ -285,7 +286,6 @@ public class MaterialController {
 					sp = new SMaterialPic();
 					sp.setSMaterial(sMaterial);
 				}
-
 				sp.setSPic(spic);
 				sMaterialPicRepository.save(sp);
 			}

@@ -1,6 +1,11 @@
 package com.jms.domain.ws;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.jms.domain.ws.m.WSMachine;
+import com.jms.domain.ws.production.WSPCppAndriod;
+import com.jms.domain.ws.production.WSPWo;
 
 public class WSUserProfile implements java.io.Serializable{
 	
@@ -13,6 +18,13 @@ public class WSUserProfile implements java.io.Serializable{
 	private String name;
 	private List<WSMenu> WSMenuList;
 	private Boolean isOP;
+	
+	private String department;
+	private List<WSPCppAndriod> pcppList =new ArrayList<WSPCppAndriod>();
+	
+	
+	
+	
 	public String getToken() {
 		return token;
 	}
@@ -62,5 +74,19 @@ public class WSUserProfile implements java.io.Serializable{
 	public void setIsOP(Boolean isOP) {
 		this.isOP = isOP;
 	}
+	
+	public String getDepartment() {
+		return department;
+	}
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+	public List<WSPCppAndriod> getPcppList() {
+		return pcppList;
+	}
+	public void setPcppList(List<WSPCppAndriod> pcppList) {
+		this.pcppList = pcppList;
+	}
+
 
 }

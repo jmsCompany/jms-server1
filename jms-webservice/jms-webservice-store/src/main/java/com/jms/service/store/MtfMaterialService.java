@@ -2,17 +2,13 @@ package com.jms.service.store;
 
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.jms.domain.db.PWoBom;
-import com.jms.domain.db.SBin;
 import com.jms.domain.db.SInventory;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMtf;
@@ -109,18 +105,34 @@ public class MtfMaterialService {
 		return ws;
 	}
 	
-	/**to be modified**/
-	public List<WSSMtfMaterial> findWSSMtfMaterial(Long companyId,Long typeId,String q) throws Exception
+
+	public List<WSSMtfMaterial> findWSSMtfMaterial(Long companyId,Long typeId,Long materialId) throws Exception
 	{
 		List<WSSMtfMaterial> ws = new ArrayList<WSSMtfMaterial>();
 		List<SMtfMaterial> sms;
 		if(typeId!=null)
 		{
-			sms=sMtfMaterialRepository.getByCompanyIdAndTypeId(companyId, typeId);
+			if(materialId!=null)
+			{
+				sms=sMtfMaterialRepository.getByCompanyIdAndTypeIdAndMaterialId(companyId, typeId,materialId);
+			}
+			else
+			{
+				sms=sMtfMaterialRepository.getByCompanyIdAndTypeId(companyId, typeId);
+			}
+			
 		}
 		else
 		{
-			sms=sMtfMaterialRepository.getByCompanyId(companyId);
+			if(materialId!=null)
+			{
+				sms=sMtfMaterialRepository.getByCompanyIdAndMaterialId(companyId,materialId);
+			}
+			else
+			{
+				sms=sMtfMaterialRepository.getByCompanyId(companyId);
+			}
+			
 		}
 		for(SMtfMaterial sm: sms)
 		{
@@ -228,17 +240,7 @@ public class MtfMaterialService {
 			wsSMtfMaterial.setToBin(sMtfMaterial.getSBinByToBin().getBin());
 			wsSMtfMaterial.setToBinId(sMtfMaterial.getSBinByToBin().getIdBin());
 		}
-		if(sMtfMaterial.getSMaterial()!=null)
-		{
-			wsSMtfMaterial.setMaterialId(sMtfMaterial.getSMaterial().getIdMaterial());
-			wsSMtfMaterial.setMaterialPno(sMtfMaterial.getSMaterial().getPno());
-			wsSMtfMaterial.setMaterialRev(sMtfMaterial.getSMaterial().getRev());
-			wsSMtfMaterial.setMaterialDes(sMtfMaterial.getSMaterial().getDes());
-			if(sMtfMaterial.getSMaterial().getSUnitDicByUnitInf()!=null)
-			wsSMtfMaterial.setMarterialUnit(sMtfMaterial.getSMaterial().getSUnitDicByUnitInf().getName());
-			
-		}
-
+	
 		if(sMtfMaterial.getSMtf()!=null)
 		{
 			SMtf sMtf = sMtfMaterial.getSMtf();
@@ -329,6 +331,16 @@ public class MtfMaterialService {
 		//wsSMtfMaterial.setPoMaterialId(poMaterialId);
 		
 
+		if(sMtfMaterial.getSMaterial()!=null)
+		{
+			wsSMtfMaterial.setMaterialId(sMtfMaterial.getSMaterial().getIdMaterial());
+			wsSMtfMaterial.setMaterialPno(sMtfMaterial.getSMaterial().getPno());
+			wsSMtfMaterial.setMaterialRev(sMtfMaterial.getSMaterial().getRev());
+			wsSMtfMaterial.setMaterialDes(sMtfMaterial.getSMaterial().getDes());
+			if(sMtfMaterial.getSMaterial().getSUnitDicByUnitInf()!=null)
+			wsSMtfMaterial.setMarterialUnit(sMtfMaterial.getSMaterial().getSUnitDicByUnitInf().getName());
+			
+		}
 
 		return wsSMtfMaterial;
 	}

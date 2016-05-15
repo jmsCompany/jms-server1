@@ -145,8 +145,8 @@ public class PCPp  implements java.io.Serializable {
     public void setQty(Long qty) {
         this.qty = qty;
     }
-    @Temporal(TemporalType.DATE)
-    @Column(name="plan_st", length=10)
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="plan_st", length=19)
     public Date getPlanSt() {
         return this.planSt;
     }
@@ -154,8 +154,8 @@ public class PCPp  implements java.io.Serializable {
     public void setPlanSt(Date planSt) {
         this.planSt = planSt;
     }
-    @Temporal(TemporalType.DATE)
-    @Column(name="plan_ft", length=10)
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="plan_ft", length=19)
     public Date getPlanFt() {
         return this.planFt;
     }

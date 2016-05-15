@@ -80,6 +80,7 @@ public class SpoService {
 				{
 					sSpoMaterialRepository.delete(spoMaterial);
 				}
+				//spo.getSPoMaterials().clear();
 				
 			}
 			
@@ -90,6 +91,7 @@ public class SpoService {
 		wsSpo.setIdPo(sp.getIdPo());
 		for(String k: wsSpo.getPoItems().keySet())
 		{
+			logger.debug("save po material: " + k);
 			WSSpoMaterial wm =wsSpo.getPoItems().get(k);
 			wm.setLine(Long.parseLong(k.substring(4)));
 		

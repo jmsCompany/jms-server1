@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jms.domain.db.SInventory;
+import com.jms.domain.ws.store.WSInventory;
 import com.jms.domain.ws.store.WSInventoryInfo;
 import com.jms.repositories.s.SBinRepository;
 import com.jms.repositories.s.SInventoryRepository;
@@ -103,6 +104,64 @@ public class SInventoryService {
 	    	}
 	    	
 	    	before = s;
+	    }
+	    return infos;
+	}
+	
+	
+	
+	
+	
+	
+	
+	@Transactional(readOnly=true)
+	public List<WSInventory> findInventoryDetailByMaterialAndStk(Long idMaterial,Long stkId)
+	{
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		List<SInventory> ls;
+		if(idMaterial==null)
+		{
+			if(stkId==null)
+			{
+				ls = new ArrayList<SInventory>();
+			}
+			else
+			{
+				ls = sInventoryRepository.findInventorySummaryByStk(companyId, stkId);
+			}
+			
+		}
+		else
+		{
+			if(stkId==null)
+			{
+				ls = sInventoryRepository.findInventorySummaryByMaterial(idMaterial, companyId);
+			}
+			else
+			{
+				ls = sInventoryRepository.findInventorySummaryByMaterialAndStk(idMaterial, companyId, stkId);
+			}
+		}
+		List<WSInventory> infos = new ArrayList<WSInventory>();
+	
+	    for(SInventory s: ls)
+	    {
+	    	
+	    			WSInventory i = new WSInventory();
+	    			i.setDes(s.getSMaterial().getDes());
+	    			i.setPno(s.getSMaterial().getPno());
+	    			i.setRev(s.getSMaterial().getRev());
+	    			i.setIdMaterial(s.getSMaterial().getIdMaterial());
+	    			i.setStkId(s.getSBin().getSStk().getId());
+	    			i.setStkName(s.getSBin().getSStk().getStkName());
+	    			i.setBinName(s.getSBin().getBin());
+	    			i.setBinId(s.getSBin().getIdBin());
+	    			i.setQty(s.getQty());
+	    			i.setBox(s.getBox());
+	    			i.setLotNo(s.getLotNo());
+	    			infos.add(i);
+	    	
+	    	
 	    }
 	    return infos;
 	}

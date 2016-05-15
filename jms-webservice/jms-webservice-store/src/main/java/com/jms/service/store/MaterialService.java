@@ -56,6 +56,7 @@ public class MaterialService {
 	@Transactional(readOnly=true)
 	public List<WSMaterial> getMaterials(Long idCompany,Long idMaterialType,String q) throws Exception {
 	
+		
 		List<WSMaterial> wsMaterialList = new ArrayList<WSMaterial>();
 		List<SMaterial> sMaterialList;
 		if(idMaterialType==null)
@@ -66,6 +67,8 @@ public class MaterialService {
 			}
 			else
 			{
+				logger.debug("idCompany: " + idCompany +", q: " + q);
+				q= '%'+q+'%';
 				sMaterialList =sMaterialRepository.getByCompanyIdAndQuery(idCompany,q);
 			}
 			
@@ -78,6 +81,7 @@ public class MaterialService {
 			}
 			else
 			{
+				q= '%'+q+'%';
 				sMaterialList =sMaterialRepository.getByCompanyIdAndMaterialTypeAndQuery(idCompany, idMaterialType, q);
 			}
 			
@@ -85,6 +89,7 @@ public class MaterialService {
 		
 		for(SMaterial s : sMaterialList)
 		{
+			logger.debug("material: " + s.getPno());
 			wsMaterialList.add(toWSMaterial(s));
 		}
 		
@@ -155,8 +160,12 @@ public class MaterialService {
 			if(!m.getSMaterialPics().isEmpty())
 			{
 				SPic spic = m.getSMaterialPics().iterator().next().getSPic();
-				wsMc.setFileName(spic.getFilename());
-				wsMc.setFileId(spic.getId());
+				if(spic!=null)
+				{
+					wsMc.setFileName(spic.getFilename());
+					wsMc.setFileId(spic.getId());
+				}
+			
 			}
 			return wsMc;
 

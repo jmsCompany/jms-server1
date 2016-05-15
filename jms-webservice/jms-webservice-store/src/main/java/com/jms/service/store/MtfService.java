@@ -64,7 +64,34 @@ public class MtfService {
 
 	@Autowired
 	private SSoRepository sSoRepository;
+	
+	
+	//校验
+	public Valid updateMtfStatus(WSSMtf wsSMtf)
+	{
+		Valid valid = new Valid();
+		if(wsSMtf.getTypeId().intValue()==1) 
+		{
+			for (String k : wsSMtf.getSmtfItems().keySet()) {
+				WSSMtfMaterial wm = wsSMtf.getSmtfItems().get(k);
+				SMtfMaterial sMtfMaterial =sMtfMaterialRepository.findOne(wm.getIdMtfMaterial());
+				sMtfMaterial.setSStatusDic(sStatusDicRepository.findOne(wm.getStatusId()));
+				sMtfMaterialRepository.save(sMtfMaterial);
+			}
+	
+		}
+		else
+		{
+			valid.setValid(false);
+		}
+	
+		valid.setValid(true);
+		return valid;
+		
+	}
 
+	
+	
 	public Valid saveMtf(WSSMtf wsSMtf) {
 		Valid valid = new Valid();
 		try {
@@ -74,14 +101,20 @@ public class MtfService {
 			if (wsSMtf.getIdMt() == null || wsSMtf.getIdMt().equals(0l)) {
 				sMtf = new SMtf();
 			}
-			// update
+			// update 不允许被编辑。！！！！！！
 			else {
 				sMtf = sMtfRepository.findOne(wsSMtf.getIdMt());
-				sMtfMaterialRepository.deleteByMtId(wsSMtf.getIdMt());
+			/*	for(SMtfMaterial s:sMtf.getSMtfMaterials())
+				{
+					sMtfMaterialRepository.delete(s);
+				}
+			
 				sMtf.getSMtfMaterials().clear();
+				*/
 			}
 
 			sMtf = toDBMtf(wsSMtf, sMtf);
+			
 			SMtf sMtf1 = sMtfRepository.save(sMtf);
 
 			for (String k : wsSMtf.getSmtfItems().keySet()) {
@@ -375,9 +408,10 @@ public class MtfService {
 				
 				wsSMtf.setCoCompanyId(s.getSPoMaterial().getSPo().getSCompanyCo().getId());
 				wsSMtf.setPoId(s.getSPoMaterial().getSPo().getIdPo());
-				break;
+				//break;
 			}
 		}
+	
 		// wsSMtf.setma
 		//System.out.println("mtNo: " + wsSMtf.getMtNo());
 

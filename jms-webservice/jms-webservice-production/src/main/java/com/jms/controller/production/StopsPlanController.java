@@ -2,6 +2,7 @@ package com.jms.controller.production;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,6 +17,7 @@ import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.production.WSPStopsCode;
 import com.jms.domain.ws.production.WSPStopsPlan;
 import com.jms.domain.ws.production.WSPWorkCenter;
+import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PStopsCodeRepository;
 import com.jms.repositories.p.PStopsPlanRepository;
 import com.jms.repositories.p.PSubCodeRepository;
@@ -39,6 +41,7 @@ public class StopsPlanController {
 	
 	@Autowired private SecurityUtils securityUtils;
 
+	@Autowired private PStatusDicRepository pStatusDicRepository;
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/p/savePStopsPlan", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -62,7 +65,36 @@ public class StopsPlanController {
 		
 	}
 	
-
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findPStopsPlans", method=RequestMethod.GET)
+	public List<WSPStopsPlan> findPStopsPlans() throws Exception {
+		return pStopsPlanService.findWSPStopsPlans();
+	
+	}
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/p/pStopsActStart", method=RequestMethod.GET)
+	public Valid pStopsActStart(@RequestParam Long idStopsPlan) throws Exception {
+		PStopsPlan pStopPlan = pStopPlanRepository.findOne(idStopsPlan);
+		pStopPlan.setActSt(new Date());
+		pStopPlanRepository.save(pStopPlan);
+		Valid valid = new Valid();
+		valid.setValid(true);
+		return valid;
+	}
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/p/pStopsActFinish", method=RequestMethod.GET)
+	public Valid pStopsActFinish(@RequestParam Long idStopsPlan) throws Exception {
+		PStopsPlan pStopPlan = pStopPlanRepository.findOne(idStopsPlan);
+		pStopPlan.setActFt(new Date());
+		pStopPlan.setPStatusDic(pStatusDicRepository.findOne(17l)); //结束
+		pStopPlanRepository.save(pStopPlan);
+		Valid valid = new Valid();
+		valid.setValid(true);
+		return valid;
+	}
+	
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/findPStopsPlanList", method=RequestMethod.GET)

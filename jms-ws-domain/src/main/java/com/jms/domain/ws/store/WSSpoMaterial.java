@@ -13,7 +13,8 @@ public class WSSpoMaterial {
     private String codePo;
     private Date dateOrder;
     private String username;
-    private String codeCo;
+  //  private String codeCo;
+    private String coShortName;
     private String sStatus;
 	
 	
@@ -128,12 +129,7 @@ public class WSSpoMaterial {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public String getCodeCo() {
-		return codeCo;
-	}
-	public void setCodeCo(String codeCo) {
-		this.codeCo = codeCo;
-	}
+
 	public String getsStatus() {
 		return sStatus;
 	}
@@ -163,6 +159,12 @@ public class WSSpoMaterial {
 	}
 	public void setUprice(BigDecimal uprice) {
 		this.uprice = uprice;
+	}
+	public String getCoShortName() {
+		return coShortName;
+	}
+	public void setCoShortName(String coShortName) {
+		this.coShortName = coShortName;
 	}
    
 }

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Iterator;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
@@ -18,12 +19,11 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 public class FileUploadService{
 	
     FileMeta fileMeta = null;
-	private String filePath ="/Users/renhongtao/jms_files/";
-	//private String filePath ="D:/eme_files/";
-	
-	    public  FileMeta upload(MultipartHttpServletRequest request, HttpServletResponse response) {
+    @Value("${filePath}")
+	private String filePath;
+    
+	    public  FileMeta upload(MultipartHttpServletRequest request, HttpServletResponse response, boolean trim) {
 	 
-	    	
 	        //1. build an iterator
 	         Iterator<String> itr =  request.getFileNames();
 	         MultipartFile mpf = null;
@@ -43,19 +43,25 @@ public class FileUploadService{
 	             fileMeta.setOrgName(mpf.getOriginalFilename());
 	             String hashCode=new BCryptPasswordEncoder().encode(mpf.getOriginalFilename());
 	             hashCode = hashCode.replaceAll("/", "");
-	             fileMeta.setFileName(hashCode+"_"+new Date().getTime() +extension);
+	             if(trim)
+	             {
+	            	 
+	            	 fileMeta.setFileName(hashCode.substring(0, 14) + extension);
+	             }
+	             else
+	             {
+	            	 fileMeta.setFileName(hashCode+"_"+new Date().getTime() +extension);
+	             }
+	            
+	             
 	             fileMeta.setFileSize(mpf.getSize()/1024+" Kb");
 	             fileMeta.setFileType(mpf.getContentType());
 	             
 	             try {
-	                fileMeta.setBytes(mpf.getBytes());
-	  
-	                 // copy file to local disk (make sure the path "e.g. D:/temp/files" exists)            
-	                 FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(filePath+fileMeta.getFileName()));
-
+	                fileMeta.setBytes(mpf.getBytes());         
+	                FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(filePath+fileMeta.getFileName()));
 	  
 	             } catch (IOException e) {
-	                // TODO Auto-generated catch block
 	                e.printStackTrace();
 	            }
 	          

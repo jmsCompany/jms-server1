@@ -95,6 +95,19 @@ public class PStopsPlanService {
 		
 	}
 
+	@Transactional(readOnly=true) 
+	public List<WSPStopsPlan> findWSPStopsPlans() throws Exception
+	{	
+		List<PStopsPlan> pStopsPlans = pStopsPlanRepository.getPStopsPlansByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+		List<WSPStopsPlan>  ws = new ArrayList<WSPStopsPlan>();
+		for(PStopsPlan p: pStopsPlans)
+		{
+			ws.add(toWSPStopsPlan(p));
+		}
+		return  ws;
+		
+	}
+	
 	
 	private PStopsPlan toDBPStopsPlan(WSPStopsPlan wsPStopsPlan,PStopsPlan pStopsPlan) throws Exception
 	{

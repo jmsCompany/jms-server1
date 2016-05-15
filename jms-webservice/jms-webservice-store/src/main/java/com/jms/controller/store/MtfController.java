@@ -38,6 +38,13 @@ public class MtfController {
 		return mtfService.findSMtf(smtfId);
 	}
 
+
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/s/updateMtfStatus", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public Valid updateMtfStatus(@RequestBody WSSMtf wsSMtf) {
+		return mtfService.updateMtfStatus(wsSMtf);
+	}
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/smtfMaterialList", method=RequestMethod.GET)
 	public WSTableData  getSmtfMaterialList(@RequestParam Long typeId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
@@ -116,14 +123,14 @@ public class MtfController {
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/getSmtfMaterialListByTypeAndQ", method=RequestMethod.GET)
+	@RequestMapping(value="/s/getSmtfMaterialListByTypeAndMaterial", method=RequestMethod.GET)
 	public WSTableData  getSmtfMaterialListByTypeAndQ(@RequestParam(required=false,value="typeId") Long typeId,
-			@RequestParam(required=false,value="q") String q,
+			@RequestParam(required=false,value="materialId") Long materialId,
 			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 	
-		List<WSSMtfMaterial> wsSMtfMaterials = mtfMaterialService.findWSSMtfMaterial(companyId, typeId,q);
+		List<WSSMtfMaterial> wsSMtfMaterials = mtfMaterialService.findWSSMtfMaterial(companyId, typeId,materialId);
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
 		if(wsSMtfMaterials.size()<start + length)
@@ -166,7 +173,7 @@ public class MtfController {
 			}
 
 			
-			String[] d = {mtNo,w.getType(),w.getMtNo(),material,lotNo,fromBin,toBin,""+w.getQty(),w.getEmpMtUser(),w.getRecMtUser(),w.getCreationTime().toString()};
+			String[] d = {mtNo,w.getType(),material,lotNo,fromBin,toBin,""+w.getQty(),w.getEmpMtUser(),w.getRecMtUser(),w.getCreationTime().toString(),""+w.getIdMt()};
 			lst.add(d);
 		}
 
@@ -178,14 +185,6 @@ public class MtfController {
 	    t.setData(lst);
 	    return t;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	

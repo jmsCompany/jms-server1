@@ -168,6 +168,7 @@ public class SsoService {
 		}
 	
 		wsSso.setUserName(sso.getUsers().getName());
+		wsSso.setUprice(sso.getUPrice());
 		return wsSso;
 	}
 
@@ -184,8 +185,12 @@ public class SsoService {
 			if(!m.getSMaterialPics().isEmpty())
 			{
 				SPic spic = m.getSMaterialPics().iterator().next().getSPic();
-				wsMc.setFileName(spic.getFilename());
-				wsMc.setFileId(spic.getId());
+				if(spic!=null)
+				{
+					wsMc.setFileName(spic.getFilename());
+					wsMc.setFileId(spic.getId());
+				}
+				
 			}
 			return wsMc;
 

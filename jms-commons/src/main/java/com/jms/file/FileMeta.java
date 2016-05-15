@@ -15,7 +15,9 @@ public class FileMeta {
 	 private String fileName;
 	 private String fileSize;
 	 private String fileType;
+	 private String des;
      private byte[] bytes;
+     
 	/**
 	 * @return the fileName
 	 */
@@ -75,6 +77,12 @@ public class FileMeta {
 	}
 	public void setFileId(Long fileId) {
 		this.fileId = fileId;
+	}
+	public String getDes() {
+		return des;
+	}
+	public void setDes(String des) {
+		this.des = des;
 	}
 	
 	

@@ -147,7 +147,7 @@ public class SpoMaterialService {
 		wsSpoMaterial.setCodePo(spoMaterial.getSPo().getCodePo());
 		if(spoMaterial.getSPo().getSCompanyCo()!=null)
 		{
-			wsSpoMaterial.setCodeCo(spoMaterial.getSPo().getSCompanyCo().getCode());
+			wsSpoMaterial.setCoShortName(spoMaterial.getSPo().getSCompanyCo().getShortName());
 		}
 	
 		wsSpoMaterial.setDateOrder(spoMaterial.getSPo().getDateOrder());

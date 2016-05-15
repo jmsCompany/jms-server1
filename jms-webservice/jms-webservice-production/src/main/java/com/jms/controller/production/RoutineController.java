@@ -2,18 +2,28 @@ package com.jms.controller.production;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.jms.domain.db.PAttDraw;
 import com.jms.domain.db.PBomLabel;
+import com.jms.domain.db.PDraw;
 import com.jms.domain.db.PRoutine;
 import com.jms.domain.db.PRoutineD;
+import com.jms.domain.db.PRoutineDAtt;
 import com.jms.domain.db.PShiftPlan;
 import com.jms.domain.db.PWo;
 import com.jms.domain.db.SMaterial;
+import com.jms.domain.db.SMaterialPic;
+import com.jms.domain.db.SPic;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
@@ -21,10 +31,13 @@ import com.jms.domain.ws.production.WSPBom;
 import com.jms.domain.ws.production.WSPRoutine;
 import com.jms.domain.ws.production.WSPWo;
 import com.jms.domain.ws.production.WSShiftPlan;
+import com.jms.file.FileMeta;
+import com.jms.file.FileUploadService;
 import com.jms.repositories.p.PAttDrawRepository;
 import com.jms.repositories.p.PBomLabelRepository;
 import com.jms.repositories.p.PDrawRepository;
 import com.jms.repositories.p.PLineRepository;
+import com.jms.repositories.p.PRoutineDAttRepository;
 import com.jms.repositories.p.PRoutineDRepository;
 import com.jms.repositories.p.PRoutineRepository;
 import com.jms.repositories.p.PShiftPlanDRepository;
@@ -57,7 +70,8 @@ public class RoutineController {
 	private PRoutineRepository pRoutineRepository;
 	@Autowired
 	private PLineRepository pLineRepository;
-	
+	@Autowired
+	private PRoutineDAttRepository pRoutineDAttRepository;
 	@Autowired
 	private PWorkCenterRepository pWorkCenterRepository;
 	@Autowired
@@ -70,6 +84,8 @@ public class RoutineController {
 	
 	@Autowired
 	private PWoRepository pWoRepository;
+	@Autowired
+	private FileUploadService fileUploadService;
 
 	
 	@Transactional(readOnly = false)
@@ -146,6 +162,80 @@ public class RoutineController {
 	
 	
 	
+	@Transactional(readOnly = false)
+	@RequestMapping(value = "/p/uploadDrawImage", method = RequestMethod.POST)
+	public FileMeta uploadDrawImage(@RequestParam(required=false, value="drawId") Long drawId, MultipartHttpServletRequest request,
+			HttpServletResponse response) {
+		FileMeta fileMeta = new FileMeta();
+		if (request.getFileNames().hasNext()) {
+			fileMeta = fileUploadService.upload(request, response,true);
+			if (drawId != null && !drawId.equals(0l)) {
+				PDraw pdraw = pDrawRepository.findOne(drawId);
+				pdraw.setDrawAtt(fileMeta.getFileName());
+			}
+			fileMeta.setFileId(drawId);
+			fileMeta.setBytes(null);
+
+		}
+		return fileMeta;
+	}
+	
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value = "/p/uploadRoutineDAtt", method = RequestMethod.POST)
+	public FileMeta uploadRoutineDAtt( @RequestParam("routineDId") Long routineDId, MultipartHttpServletRequest request,
+			HttpServletResponse response) {
+		FileMeta fileMeta = new FileMeta();
+		if (request.getFileNames().hasNext()) {
+			fileMeta = fileUploadService.upload(request, response,true);
+
+				PAttDraw pAttDraw = new PAttDraw();
+				pAttDraw.setCreationTime(new Date());
+				String des = fileMeta.getOrgName();
+				if(des.lastIndexOf(".")!=-1)
+				{
+					des = des.substring(0, des.lastIndexOf("."));
+				}
+				pAttDraw.setDes(des);
+				pAttDraw.setName(des);
+				pAttDraw.setFilename(fileMeta.getFileName());
+				pAttDraw.setOrgFilename(fileMeta.getOrgName());
+				pAttDraw.setUsers(securityUtils.getCurrentDBUser());
+				pAttDraw = pAttDrawRepository.save(pAttDraw);
+				PRoutineDAtt pRoutineDAtt = new PRoutineDAtt();
+				pRoutineDAtt.setPAttDraw(pAttDraw);
+				pRoutineDAtt.setPRoutineD(pRoutineDRepository.findOne(routineDId));
+				pRoutineDAttRepository.save(pRoutineDAtt);
+			    fileMeta.setBytes(null);
+
+		}
+		return fileMeta;
+	}
+	
+	
+	
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value = "/p/getRoutineDAtts", method = RequestMethod.GET)
+	public List<FileMeta> getRoutineDAtts( @RequestParam("routineDId") Long routineDId) {
+		List<FileMeta> fileMetas = new ArrayList<FileMeta>();
+		
+		for(PRoutineDAtt pRoutineDAtt: pRoutineDAttRepository.getByRoutineDId(routineDId))
+		{
+			FileMeta f = new FileMeta();
+			f.setFileId(pRoutineDAtt.getIdRoutineDAtt());
+			f.setFileName(pRoutineDAtt.getPAttDraw().getFilename());
+			f.setOrgName(pRoutineDAtt.getPAttDraw().getOrgFilename());
+			f.setDes(pRoutineDAtt.getPAttDraw().getDes());
+			
+			fileMetas.add(f);
+		}
+		
+		return fileMetas;
+		
+	}
 	
 
 }

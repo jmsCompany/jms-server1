@@ -118,6 +118,7 @@ public class RoutineService {
 			draw= new PDraw();
 			draw.setDrawNo(wsPRoutine.getDrawNo());
 			draw.setDrawVer(wsPRoutine.getDrawVer());
+			draw.setDrawAtt(wsPRoutine.getDrawAtt());
 			draw = pDrawRepository.save(draw);
 		}
 		else
@@ -125,6 +126,7 @@ public class RoutineService {
 		    draw =pDrawRepository.findOne(wsPRoutine.getDrawId());
 			draw.setDrawNo(wsPRoutine.getDrawNo());
 			draw.setDrawVer(wsPRoutine.getDrawVer());
+			draw.setDrawAtt(wsPRoutine.getDrawAtt());
 			draw = pDrawRepository.save(draw);
 		}
 		dbPRoutine.setPDraw(draw);

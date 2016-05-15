@@ -42,7 +42,7 @@ public class SpoController {
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveSpo", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public WSSpo saveSpo(@RequestBody WSSpo wsSpo) throws Exception {
-		//System.out.println("save Spo!");
+		System.out.println("save Spo!");
 		return spoService.saveSpo(wsSpo);
 	}
 	
@@ -54,7 +54,7 @@ public class SpoController {
 		logger.debug("upload spo attachment: spo id: " +  spoId);
 		FileMeta fileMeta = new FileMeta();
 		if (request.getFileNames().hasNext()) {
-			fileMeta = fileUploadService.upload(request, response);
+			fileMeta = fileUploadService.upload(request, response,false);
 			SAttachment spic = new SAttachment();
 			spic.setOrgFilename(fileMeta.getOrgName());
 			spic.setFilename(fileMeta.getFileName());
@@ -117,7 +117,7 @@ public class SpoController {
 		for (int i = start; i < end; i++) {
 			WSSpoMaterial w = wsSpoMaterials.get(i);
 			String del = (w.getDeliveryDate()==null)?"":w.getDeliveryDate().toString();
-			String[] d = {w.getCodePo(),""+w.getDateOrder(),w.getUsername(),w.getCodeCo(),w.getsStatus(),w.getsMaterial(),w.getRev(),w.getDes(),w.getUnit(),""+w.getQtyPo(),""+w.getTotalPrice(),del,""+w.getQtyReceived(),""+w.getsPoId()};
+			String[] d = {w.getCodePo(),""+w.getDateOrder(),w.getUsername(),w.getCoShortName(),w.getsStatus(),w.getsMaterial(),w.getRev(),w.getDes(),w.getUnit(),""+w.getQtyPo(),""+w.getTotalPrice(),del,""+w.getQtyReceived(),""+w.getsPoId()};
 			lst.add(d);
 
 		}

@@ -23,14 +23,14 @@ public SInventory findByMaterialIdAndBinId(Long materialId,Long binId);
 public List<SInventory> findBinsByMaterialIdAndLotNoAndStkId(Long materialId,String lotNo,Long stkId);
 
 
-@Query("select s from SInventory s where s.SMaterial.idMaterial=?1 and s.SBin.SStk.company.idCompany=?2 and s.SBin.SStk.id=?3 and s.SBin.SStk.SStkTypeDic.idStkType<>4 order by s.SBin.SStk.id")
+@Query("select s from SInventory s where s.SMaterial.idMaterial=?1 and s.SMaterial.company.idCompany=?2 and s.SBin.SStk.id=?3 and s.SBin.SStk.SStkTypeDic.idStkType<>4 order by s.SBin.SStk.id")
 public List<SInventory> findInventorySummaryByMaterialAndStk(Long idMaterial,Long companyId,Long stkId);
 
 
-@Query("select s from SInventory s where s.SMaterial.idMaterial=?1 and s.SBin.SStk.company.idCompany=?2 and s.SBin.SStk.SStkTypeDic.idStkType<>4  order by s.SBin.SStk.id")
+@Query("select s from SInventory s where s.SMaterial.idMaterial=?1 and s.SMaterial.company.idCompany=?2 and s.SBin.SStk.SStkTypeDic.idStkType<>4  order by s.SBin.SStk.id")
 public List<SInventory> findInventorySummaryByMaterial(Long idMaterial,Long companyId);
 
-@Query("select s from SInventory s where s.SBin.SStk.company.idCompany=?1 and s.SBin.SStk.id=?2 and s.SBin.SStk.SStkTypeDic.idStkType<>4 order by s.SBin.SStk.id, s.SMaterial.idMaterial")
+@Query("select s from SInventory s where s.SMaterial.company.idCompany=?1 and s.SBin.SStk.id=?2 and s.SBin.SStk.SStkTypeDic.idStkType<>4 order by s.SBin.SStk.id, s.SMaterial.idMaterial")
 public List<SInventory> findInventorySummaryByStk(Long companyId,Long stkId);
 
 

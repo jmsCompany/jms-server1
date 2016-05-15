@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.jms.domain.ws.WSTableData;
+import com.jms.domain.ws.store.WSInventory;
 import com.jms.domain.ws.store.WSInventoryInfo;
 import com.jms.domain.ws.store.WSMaterial;
 import com.jms.service.store.SInventoryService;
@@ -47,6 +48,37 @@ public class InventoryController {
 		for (int i = start; i < end; i++) {
 			WSInventoryInfo w = is.get(i);
 			String[] d = { w.getStkName(), w.getPno(), w.getRev(),w.getDes(), "" + w.getQty() };
+			lst.add(d);
+
+		}
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(is.size());
+		t.setRecordsFiltered(is.size());
+		t.setData(lst);
+		return t;
+	}
+	
+	
+
+	@Transactional(readOnly = true)
+	@RequestMapping(value = "/s/inventoryDetail", method = RequestMethod.GET)
+	public WSTableData inventoryDetail(@RequestParam(required=false,value="materialId") Long materialId,
+			@RequestParam(required=false,value="stkId") Long stkId, 
+			@RequestParam Integer draw,
+			@RequestParam Integer start,
+			@RequestParam Integer length) throws Exception {
+
+		List<WSInventory> is= sInventoryService.findInventoryDetailByMaterialAndStk(materialId, stkId);
+		List<String[]> lst = new ArrayList<String[]>();
+		int end = 0;
+		if (is.size() < start + length)
+			end = is.size();
+		else
+			end = start + length;
+		for (int i = start; i < end; i++) {
+			WSInventory w = is.get(i);
+			String[] d = { w.getStkName(), w.getPno(), w.getRev(),w.getDes(), w.getBinName(),w.getLotNo(),""+w.getBox(),""+w.getUQty(),""+w.getQty() };
 			lst.add(d);
 
 		}
