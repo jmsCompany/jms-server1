@@ -1,7 +1,10 @@
 package com.jms.service.production;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
@@ -70,10 +73,14 @@ public class PCheckPlanService {
 
 	@Transactional(readOnly=true)
 	public List<WSPCheckPlan> findWSPCheckPlans(Long cppId) throws Exception {
-		
+		//logger.debug("find check plans: cppId: " + cppId +", userId: " + securityUtils.getCurrentDBUser().getIdUser());
 		List<WSPCheckPlan>  ws = new ArrayList<WSPCheckPlan>();
 		for(PCheckPlan p: pCheckPlanRepository.getByUserIdAndCppId(securityUtils.getCurrentDBUser().getIdUser(), cppId))
 		{
+			//logger.debug(p.getPlanCheckTime().getTime());
+			//logger.debug(p.getPlanCheckTime().toString());
+		
+			//logger.debug("find check plan: cppId: " +p.getCheckTime());
 			ws.add(toWSPCheckPlan(p));
 		}
 		
@@ -92,6 +99,7 @@ public class PCheckPlanService {
         }
         dbPCheckPlan.setCreationTime(new Date());
         dbPCheckPlan.setCheckTime(new Date());
+        dbPCheckPlan.setUsersByCreator(securityUtils.getCurrentDBUser());
         if(wsPCheckPlan.getFinQty()<wsPCheckPlan.getToBeQty())
         {
         	 dbPCheckPlan.setPStatusDic(pStatusDicRepository.findOne(23l)); //不满意
@@ -113,7 +121,18 @@ public class PCheckPlanService {
 	    
 	    }
 	    pc.setTotalQty(pCheckPlan.getPCPp().getQty());
-	    pc.setPcppId(pCheckPlan.getPCPp().getIdCPp());
+	     pc.setPcppId(pCheckPlan.getPCPp().getIdCPp());
+	    Date d = pCheckPlan.getPlanCheckTime();
+	  //  Date today = new Date();
+	  // d.t
+	    DateFormat fmtDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    Date today = new Date();
+	    
+	    DateFormat fmtDate = new SimpleDateFormat("yyyy-MM-dd");
+	    String s = fmtDate.format(today);
+	    Date date = fmtDateTime.parse(s+" "+d.toString());  
+	  //  logger.debug("new plan time: " + date);
+	    pc.setPlanCheckTime(date);
 		return pc;
 	}
 }

@@ -4,6 +4,9 @@ package com.jms.controller.production;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +25,7 @@ import com.jms.repositories.p.PStopsCodeRepository;
 import com.jms.repositories.p.PStopsPlanRepository;
 import com.jms.repositories.p.PSubCodeRepository;
 import com.jms.repositories.p.PWorkCenterRepository;
+import com.jms.service.production.PCheckPlanService;
 import com.jms.service.production.PStopsCodeService;
 import com.jms.service.production.PStopsPlanService;
 import com.jms.service.production.WorkCenterService;
@@ -33,7 +37,9 @@ import com.jms.web.security.SecurityUtils;
 @RestController
 @Transactional(readOnly=true)
 public class StopsPlanController {
-	
+
+	private static final Logger logger = LogManager.getLogger(StopsPlanController.class
+			.getCanonicalName());
 	@Autowired private PStopsPlanService pStopsPlanService;
 	//@Autowired private PStopsCodeRepository pStopsCodeRepository;
 	@Autowired
@@ -68,6 +74,7 @@ public class StopsPlanController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/findPStopsPlans", method=RequestMethod.GET)
 	public List<WSPStopsPlan> findPStopsPlans() throws Exception {
+		logger.debug("/p/findPStopsPlans");
 		return pStopsPlanService.findWSPStopsPlans();
 	
 	}

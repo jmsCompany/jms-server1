@@ -15,8 +15,12 @@ public interface SInventoryRepository  extends JpaRepository<SInventory, Long>{
 public SInventory findByMaterialIdAndBinIdAndLotNo(Long materialId,Long binId,String lotNo);
 
 
+//@Query("select s from SInventory s where s.SMaterial.idMaterial=?1 and s.SBin.idBin=?2")
+//public SInventory findByMaterialIdAndBinId(Long materialId,Long binId);
+
+
 @Query("select s from SInventory s where s.SMaterial.idMaterial=?1 and s.SBin.idBin=?2")
-public SInventory findByMaterialIdAndBinId(Long materialId,Long binId);
+public List<SInventory> findByMaterialIdAndBinId(Long materialId,Long binId);
 
 
 @Query("select s from SInventory s where s.SMaterial.idMaterial=?1 and s.lotNo=?2 and s.SBin.SStk.id=?3 and s.SBin.SStk.SStkTypeDic.idStkType<>4")

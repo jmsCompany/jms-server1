@@ -12,7 +12,7 @@ import com.jms.domain.db.PStopsPlan;
 @Repository
 public interface PStopsPlanRepository extends JpaRepository<PStopsPlan, Long>{
 	
-	@Query("select p from PStopsPlan p where p.company.idCompany=?1 and p.PStatusDic.idPstatus=16")
+	@Query("select p from PStopsPlan p where p.company.idCompany=?1  and DATE(p.planSt)=CURDATE()")
 	public List<PStopsPlan> getPStopsPlansByCompanyId(Long companyId);
 
 }

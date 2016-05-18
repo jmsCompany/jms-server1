@@ -1,6 +1,8 @@
 package com.jms.service.store;
 
 import java.util.Date;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,12 +131,16 @@ public class MtfService {
 				case 1: // 来料入库
 				{
 					SPoMaterial spoMaterial = sSpoMaterialRepository.getOne(wm.getPoMaterialId());
-					SInventory sInventory;
+					SInventory sInventory=null;
 					if (wm.getLotNo() != null) {
 						sInventory = sInventoryRepository.findByMaterialIdAndBinIdAndLotNo(wm.getMaterialId(),
 								wm.getToBinId(), wm.getLotNo());
 					} else {
-						sInventory = sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
+						List<SInventory> sInventorys= sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
+				        if(sInventorys!=null&&!sInventorys.isEmpty())
+				        {
+				        	sInventory = sInventorys.get(0);
+				        }
 					}
 					if (sInventory == null) {
 						sInventory = new SInventory();
@@ -168,25 +174,58 @@ public class MtfService {
 				case 2: // 采购退货
 				{
 					logger.debug("采购退货。。。");
-					SInventory sInventory;
+					SInventory sInventory=null;
 					logger.debug("material Id: " + wm.getMaterialId() +", binId: " + wm.getFromBinId() +", " +wm.getLotNo());
 					
 					if(wm.getLotNo()!=null&&!wm.getLotNo().isEmpty())
 					{
 						sInventory = sInventoryRepository.findByMaterialIdAndBinIdAndLotNo(wm.getMaterialId(),
 								wm.getFromBinId(),wm.getLotNo());
+						logger.debug("找到库存 id：" + sInventory.getIdInv() );
+						if (sInventory.getBox() != null && wm.getBox()!=null)
+							sInventory.setBox(sInventory.getBox() - wm.getBox());
+						sInventory.setQty(sInventory.getQty() - wm.getQty());
+
+						sInventoryRepository.save(sInventory);
 					}
 					else
 					{
-						sInventory = sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(),
-								wm.getFromBinId());
+					//	sInventory = sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(),
+					//			wm.getFromBinId());
+						
+						List<SInventory> sInventorys= sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
+				        if(sInventorys!=null&&!sInventorys.isEmpty())
+				        {
+				        	
+				        	for(SInventory s :sInventorys)
+				        	{
+				        	
+				        		if(s.getQty()>= wm.getQty())
+				        		{
+				        			if (s.getBox() != null && wm.getBox()!=null)
+										s.setBox(s.getBox() - wm.getBox());
+				        			s.setQty(s.getQty() - wm.getQty());
+									sInventoryRepository.save(s);
+									break;
+				        		}
+				        		else
+				        		{	
+				        			wm.setQty(wm.getQty()-s.getQty());
+				        			if (s.getBox() != null && wm.getBox()!=null)
+				        			{
+				        				wm.setBox(wm.getBox()-s.getBox());
+										s.setBox(0l);
+				        			}
+			
+				        			s.setQty(0l);
+									sInventoryRepository.save(s);
+				        		}
+								
+				        	}
+				        }
+						
 					}
-					logger.debug("找到库存 id：" + sInventory.getIdInv() );
-					if (sInventory.getBox() != null && wm.getBox()!=null)
-						sInventory.setBox(sInventory.getBox() - wm.getBox());
-					sInventory.setQty(sInventory.getQty() - wm.getQty());
-
-					sInventoryRepository.save(sInventory);
+				
 
 					SPoMaterial sPoMaterial = sSpoMaterialRepository.getOne(wm.getPoMaterialId());
 					if (sPoMaterial.getQtyReceived() != null) {
@@ -203,9 +242,18 @@ public class MtfService {
 				case 4: // 工单流转
 				{
                     logger.debug(" case 3 or 4:  to:  wm.getToBinId()" +  wm.getToBinId() +", from :" + wm.getFromBinId() +", material id: " + wm.getMaterialId());
-					SInventory to = sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
+					SInventory to=null;
+					
+					List<SInventory> sInventorys= sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
+			        if(sInventorys!=null&&!sInventorys.isEmpty())
+			        {
+			        	to = sInventorys.get(0);
+			        	if (to.getBox() != null)
+							to.setBox(to.getBox() + wm.getBox());
+						to.setQty(to.getQty() + wm.getQty());
+			        }
 
-					if (to == null) {
+			        else{
 						 logger.debug("can not find inventory by tobin, so create new one");
 						to = new SInventory();
 						to.setCreationTime(new Date());
@@ -216,17 +264,21 @@ public class MtfService {
 						to.setSBin(sBinRepository.findOne(wm.getToBinId()));
 						// to.setSMaterial(spoMaterial.getSMaterial());
 						to.setSMaterial(sMaterialRepository.findOne(wm.getMaterialId()));
-					} else {
-						logger.debug("find inventory: current qty: "+to.getQty());
-						if (to.getBox() != null)
-							to.setBox(to.getBox() + wm.getBox());
-						to.setQty(to.getQty() + wm.getQty());
-					}
+					} 
 					sInventoryRepository.save(to);
-
-					SInventory from = sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(),
-							wm.getFromBinId());
-					if(from == null)
+					SInventory from=null;
+					List<SInventory> fromInventorys= sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
+			        if(fromInventorys!=null&&!fromInventorys.isEmpty())
+			        {
+			        	from = fromInventorys.get(0);
+						logger.debug( "find inventory by  from bin, qty: " +from.getQty() );
+						if (from.getBox() != null) {
+							from.setBox(from.getBox() - wm.getBox());
+						}
+						from.setQty(from.getQty() - wm.getQty());
+					
+			        }
+			        else
 					{
 						logger.debug("can not find inventory by  from bin, so create new one");
 						from = new SInventory();
@@ -242,15 +294,6 @@ public class MtfService {
 						// to.setSMaterial(spoMaterial.getSMaterial());
 						from.setSMaterial(sMaterialRepository.findOne(wm.getMaterialId()));
 					}
-					else
-					{
-						 logger.debug( "find inventory by  from bin, qty: " +from.getQty() );
-						if (from.getBox() != null) {
-							from.setBox(from.getBox() - wm.getBox());
-						}
-						from.setQty(from.getQty() - wm.getQty());
-					}
-					
 					sInventoryRepository.save(from);
 					break;
 				}
@@ -258,15 +301,45 @@ public class MtfService {
 				case 5: // 出货
 				{
 			
-					SInventory sInventory = sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(),
-							wm.getFromBinId());
-					if (sInventory == null) {
+				
+					List<SInventory> sInventorys= sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
+			        if(sInventorys!=null&&!sInventorys.isEmpty())
+			        {
+
+			        	
+			        	for(SInventory s :sInventorys)
+			        	{
+			        	
+			        		if(s.getQty()>= wm.getQty())
+			        		{
+			        			if (s.getBox() != null && wm.getBox()!=null)
+									s.setBox(s.getBox() - wm.getBox());
+			        			s.setQty(s.getQty() - wm.getQty());
+								sInventoryRepository.save(s);
+								break;
+			        		}
+			        		else
+			        		{	
+			        			wm.setQty(wm.getQty()-s.getQty());
+			        			if (s.getBox() != null && wm.getBox()!=null)
+			        			{
+			        				wm.setBox(wm.getBox()-s.getBox());
+									s.setBox(0l);
+			        			}
+		
+			        			s.setQty(0l);
+								sInventoryRepository.save(s);
+			        		}
+							
+			        	}
+			        
+			        }
+			        
+			        else {
 						valid.setMsg("无库存，不能出货");
+						break;
 					}
-					if (sInventory.getBox() != null)
-						sInventory.setBox(sInventory.getBox() - wm.getBox());
-					sInventory.setQty(sInventory.getQty() - wm.getQty());
-					sInventoryRepository.save(sInventory);
+					
 
 					SSo sSo = sSoRepository.getOne(wm.getSoId());
 					if (sSo.getQtyDelivered() != null) {
@@ -283,10 +356,19 @@ public class MtfService {
 
 				case 6: // 销售退货
 				{
-					SInventory sInventory = sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(),
-							wm.getToBinId());
+				
+					
+					SInventory sInventory=null;
+					List<SInventory> sInventorys= sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
+			        if(sInventorys!=null&&!sInventorys.isEmpty())
+			        {
+			        	sInventory = sInventorys.get(0);
+			        	if (sInventory.getBox() != null)
+							sInventory.setBox(sInventory.getBox() + wm.getBox());
+						sInventory.setQty(sInventory.getQty() + wm.getQty());
+			        }
 
-					if (sInventory == null) {
+			        else {
 						sInventory = new SInventory();
 						sInventory.setCreationTime(new Date());
 						sInventory.setBox(wm.getBox());
@@ -296,10 +378,6 @@ public class MtfService {
 						sInventory.setSBin(sBinRepository.findOne(wm.getToBinId()));
 						sInventory.setSMaterial(sMaterialRepository.findOne(wm.getMaterialId()));
 
-					} else {
-						if (sInventory.getBox() != null)
-							sInventory.setBox(sInventory.getBox() + wm.getBox());
-						sInventory.setQty(sInventory.getQty() + wm.getQty());
 					}
 
 					sInventoryRepository.save(sInventory);
