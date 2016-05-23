@@ -184,7 +184,7 @@ public class CompanyCoService {
 		wsCom.setAddressAct(dbc.getAddressAct());
 		wsCom.setAddressReg(dbc.getAddressReg());
 		wsCom.setArtificialPerson(dbc.getArtificialPerson());
-		wsCom.setAuditBy("");
+		wsCom.setAuditBy(dbc.getAuditBy());
 		wsCom.setAutoRemark(dbc.getAutoRemark());
 		wsCom.setBank(dbc.getBank());
 		wsCom.setBankAccNo(dbc.getBankAccNo());

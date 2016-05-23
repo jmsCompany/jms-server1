@@ -6,7 +6,7 @@ public class WSLinkman {
     private Long idLinkman;
     private String name;
     private String position;
-    private Long phoneNo;
+    private String phoneNo;
     private String email;
     private Long qq;
     private String weChat;
@@ -32,10 +32,10 @@ public class WSLinkman {
 	public void setPosition(String position) {
 		this.position = position;
 	}
-	public Long getPhoneNo() {
+	public String getPhoneNo() {
 		return phoneNo;
 	}
-	public void setPhoneNo(Long phoneNo) {
+	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
 	}
 	public String getEmail() {

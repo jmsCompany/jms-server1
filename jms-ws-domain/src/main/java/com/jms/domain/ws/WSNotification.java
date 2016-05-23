@@ -11,6 +11,8 @@ public class WSNotification implements java.io.Serializable{
 	private Date creationTime;
 	private String event;
 	private String details;
+	
+
 	public String getDetails() {
 		return details;
 	}

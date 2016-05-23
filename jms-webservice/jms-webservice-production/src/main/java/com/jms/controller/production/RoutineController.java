@@ -237,5 +237,19 @@ public class RoutineController {
 		
 	}
 	
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value = "/p/deleteRoutineDAttById", method = RequestMethod.GET)
+	public Valid deleteRoutineDAttById( @RequestParam("fileId") Long fileId) {
+		Valid v = new Valid();
+		
+		pRoutineDAttRepository.delete(fileId);
+	
+		v.setValid(true);
+		return v;
+		
+	}
+	
 
 }

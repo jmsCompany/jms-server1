@@ -71,6 +71,14 @@ public class BomLabelService {
 		if(wsPBom.getIdBomLabel()!=null&&!wsPBom.getIdBomLabel().equals(0l))
 		{
 			pBomLabel = pBomLabelRepository.findOne(wsPBom.getIdBomLabel());
+
+				for(PBom p: pBomLabel.getPBoms())
+				{
+					pBomRepository.delete(p);
+				}
+				
+	
+				pBomLabel.getPBoms().clear();
 		}
 		else
 		{
@@ -83,11 +91,7 @@ public class BomLabelService {
 		dbPBomLabel = pBomLabelRepository.save(dbPBomLabel);
 	
 	
-		if(wsPBom.getIdBomLabel()!=null&&!wsPBom.getIdBomLabel().equals(0l))
-		{
-			//System.out.println("bom label id: " + wsPBom.getIdBomLabel());
-			pBomRepository.deleteByBomLabelId(wsPBom.getIdBomLabel());
-		}
+
 		wsPBom.setIdBomLabel(dbPBomLabel.getIdBomLabel());
 		WSPBomItem wsPBomItem = new WSPBomItem();
 		wsPBomItem.setIdBomLabel(dbPBomLabel.getIdBomLabel());

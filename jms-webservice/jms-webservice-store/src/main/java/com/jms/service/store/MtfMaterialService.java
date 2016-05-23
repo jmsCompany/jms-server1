@@ -151,7 +151,7 @@ public class MtfMaterialService {
 			Long materialId = sm.getSPoMaterial().getSMaterial().getIdMaterial();
 			String lotNo = sm.getLotNo();
 			WSSMtfMaterial w = toWSSMtfMaterial(sm);
-			logger.debug("material id: " + materialId +" lot no: " + lotNo +", stk id: " + stkId);
+		//	logger.debug("material id: " + materialId +" lot no: " + lotNo +", stk id: " + stkId);
 			List<SInventory> sInventorys = sInventoryRepository.findBinsByMaterialIdAndLotNoAndStkId(materialId, lotNo, stkId);
 			if(sInventorys!=null&&!sInventorys.isEmpty())
 			{
@@ -258,12 +258,12 @@ public class MtfMaterialService {
 			}
 			if(sMtf.getSStkByFromStk()!=null)
 			{
-				wsSMtfMaterial.setFromStk(sMtf.getSStkByFromStk().getDes());
+				wsSMtfMaterial.setFromStk(sMtf.getSStkByFromStk().getStkName());
 				wsSMtfMaterial.setFromStkId(sMtf.getSStkByFromStk().getId());
 			}
 			if(sMtf.getSStkByToStk()!=null)
 			{
-				wsSMtfMaterial.setToStk(sMtf.getSStkByToStk().getDes());
+				wsSMtfMaterial.setToStk(sMtf.getSStkByToStk().getStkName());
 				wsSMtfMaterial.setToStkId(sMtf.getSStkByToStk().getId());
 			}
 			if(sMtf.getUsersByEmpMt()!=null)
@@ -284,9 +284,9 @@ public class MtfMaterialService {
 		{
 			wsSMtfMaterial.setPoMaterialId(sMtfMaterial.getSPoMaterial().getIdPoMaterial());
 			wsSMtfMaterial.setCodeCo(sMtfMaterial.getSPoMaterial().getSPo().getSCompanyCo().getCode());
-			logger.debug("set codeCo: " +sMtfMaterial.getSPoMaterial().getSPo().getSCompanyCo().getCode());
+		//	logger.debug("set codeCo: " +sMtfMaterial.getSPoMaterial().getSPo().getSCompanyCo().getCode());
 			wsSMtfMaterial.setCodePo(sMtfMaterial.getSPoMaterial().getSPo().getCodePo());
-			logger.debug("set codePo: " +sMtfMaterial.getSPoMaterial().getSPo().getCodePo());
+		//	logger.debug("set codePo: " +sMtfMaterial.getSPoMaterial().getSPo().getCodePo());
 			wsSMtfMaterial.setDeliveryDate(sMtfMaterial.getSPoMaterial().getDeliveryDate());
 			wsSMtfMaterial.setQtyPo(sMtfMaterial.getSPoMaterial().getQtyPo());
 			wsSMtfMaterial.setQtyReceived(sMtfMaterial.getSPoMaterial().getQtyReceived());

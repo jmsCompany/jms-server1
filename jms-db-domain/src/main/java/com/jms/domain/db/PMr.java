@@ -33,6 +33,8 @@ public class PMr  implements java.io.Serializable {
      private Date st;
      private Date ft;
      private String remark;
+     
+     private Long type;
 
     public PMr() {
     }
@@ -120,6 +122,14 @@ public class PMr  implements java.io.Serializable {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+    @Column(name="type")
+	public Long getType() {
+		return type;
+	}
+
+	public void setType(Long type) {
+		this.type = type;
+	}
 
 
 

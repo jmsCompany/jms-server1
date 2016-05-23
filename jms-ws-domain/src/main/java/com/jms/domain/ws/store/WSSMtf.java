@@ -29,6 +29,8 @@ public class WSSMtf {
 	     private Long coCompanyId;
 	     private Long poId;
 	     
+	     private Long idWo;
+	     
 	     private Map<String,WSSMtfMaterial> smtfItems = new LinkedHashMap<String,WSSMtfMaterial>(0);
 		public Long getIdMt() {
 			return idMt;
@@ -157,6 +159,12 @@ public class WSSMtf {
 		}
 		public void setCoCompanyId(Long coCompanyId) {
 			this.coCompanyId = coCompanyId;
+		}
+		public Long getIdWo() {
+			return idWo;
+		}
+		public void setIdWo(Long idWo) {
+			this.idWo = idWo;
 		}
    
 }

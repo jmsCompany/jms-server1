@@ -94,7 +94,7 @@ public class StopsCodeController {
 		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
 		for(PSubCode pSubCode: pSubCodeRepository.findAll())
 		{
-			WSSelectObj w = new WSSelectObj(pSubCode.getIdSubCode(), pSubCode.getSubCode()+"_"+pSubCode.getSubDes());
+			WSSelectObj w = new WSSelectObj(pSubCode.getIdSubCode(), pSubCode.getSubCode());
 			ws.add(w);		
 		}
 		

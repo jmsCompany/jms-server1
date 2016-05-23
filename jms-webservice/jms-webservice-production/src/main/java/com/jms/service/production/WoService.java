@@ -22,6 +22,7 @@ import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SStk;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
+import com.jms.domain.ws.WSBomMaterialObj;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.production.WSPRoutineD;
 import com.jms.domain.ws.production.WSPWo;
@@ -173,11 +174,11 @@ public class WoService {
 	}
 	
 	
-	public List<WSSelectObj> getMaterialsByWoId(@RequestParam("woId") Long woId) throws Exception {
+	public List<WSBomMaterialObj> getMaterialsByWoId(@RequestParam("woId") Long woId) throws Exception {
 		
-		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
+		List<WSBomMaterialObj> ws = new ArrayList<WSBomMaterialObj>();
 		SMaterial s = pWoRepository.findByWoId(woId); //
-		logger.debug("woId: " + woId + " , materialId: " + s.getIdMaterial());
+	//	logger.debug("woId: " + woId + " , materialId: " + s.getIdMaterial());
 		PBom pBom = pBomRepository.findProductByMaterialId(s.getIdMaterial());
 		
 		
@@ -186,7 +187,7 @@ public class WoService {
 			for(PBom p: pBom.getPBoms())
 			{
 				SMaterial material =p.getSMaterial();
-				WSSelectObj w = new WSSelectObj(material.getIdMaterial(),material.getPno()+"-"+ material.getRev()+"-"+material.getDes());
+				WSBomMaterialObj w = new WSBomMaterialObj(p.getIdBom()+"_"+material.getIdMaterial(),material.getPno()+"-"+ material.getRev()+"-"+material.getDes());
 			    ws.add(w);
 			   
 			}

@@ -51,7 +51,7 @@ public class TokenUtilsImpl implements TokenUtils {
 
 	@Override
 	public boolean validate(String token) {
-		LOGGER.debug("find user by token !  "  + token);
+		//LOGGER.debug("find user by token !  "  + token);
 		Users user = usersRepository.findByToken(token);
 		boolean flag =false;
 	    if(user!=null)

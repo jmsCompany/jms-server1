@@ -71,6 +71,11 @@
 			<artifactId>jms-webservice-production</artifactId>
 			<version>1.0</version>
 		</dependency>
+			<dependency>
+			<groupId>com.jms</groupId>
+			<artifactId>jms-webservice-quality</artifactId>
+			<version>1.0</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>cglib</groupId>

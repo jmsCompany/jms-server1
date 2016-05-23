@@ -91,4 +91,13 @@ public class InventoryController {
 	}
 	
 	
+	@Transactional(readOnly = true)
+	@RequestMapping(value = "/s/findInventoryDetails", method = RequestMethod.GET)
+	public List<WSInventory> findInventoryDetails(@RequestParam(required=false,value="materialId") Long materialId) throws Exception {
+
+		return sInventoryService.findInventoryDetailByMaterialAndStk(materialId, null);
+		
+	}
+	
+	
 }

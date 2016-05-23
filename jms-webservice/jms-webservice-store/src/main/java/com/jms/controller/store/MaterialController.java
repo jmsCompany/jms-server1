@@ -138,7 +138,7 @@ public class MaterialController {
 	@RequestMapping(value = "/s/getMaterialListObjs", method = RequestMethod.GET)
 	public List<WSSelectObj> getMaterialListObjs(
 			@RequestParam(value = "q", required = false) String q) throws Exception {
-		System.out.println("find material by q: " + q);
+		//System.out.println("find material by q: " + q);
 
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		List<WSSelectObj> ws =new ArrayList<WSSelectObj>();

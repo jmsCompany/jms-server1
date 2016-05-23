@@ -75,7 +75,7 @@ public class SpoService {
 			if(!spo.getSPoMaterials().isEmpty())
 			{
 				
-				logger.debug("delete po material: " + spo.getSPoMaterials().size());
+				//logger.debug("delete po material: " + spo.getSPoMaterials().size());
 				for(SPoMaterial spoMaterial: spo.getSPoMaterials())
 				{
 					sSpoMaterialRepository.delete(spoMaterial);
@@ -91,7 +91,7 @@ public class SpoService {
 		wsSpo.setIdPo(sp.getIdPo());
 		for(String k: wsSpo.getPoItems().keySet())
 		{
-			logger.debug("save po material: " + k);
+		//	logger.debug("save po material: " + k);
 			WSSpoMaterial wm =wsSpo.getPoItems().get(k);
 			wm.setLine(Long.parseLong(k.substring(4)));
 		

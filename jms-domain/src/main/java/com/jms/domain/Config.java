@@ -72,5 +72,15 @@ public class Config {
      
    //时间单位
      public static final String[] workCategories = {"车","铣","钳"};
+     
+     
+     //非计划停机
+     public static final String[] subCodes = {"设备","缺料","工人","质量","工程","其它"};
+     
+     //Qtester type
+     public static final String[] testerTypes = {"作业员","检查员"};
+     
+     //Item type
+     public static final String[] itemTypes = {"作业","检查"};
 
 }

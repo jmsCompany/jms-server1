@@ -62,7 +62,7 @@ public class SsoController {
 			String status=(w.getSStatusDic()==null)?"":w.getSStatusDic().getName();
 			String unit =(w.getSMaterial().getSUnitDicByUnitInf()==null)?"":w.getSMaterial().getSUnitDicByUnitInf().getName();
 			String companyCoShortName =(w.getSCompanyCo()==null)?"":w.getSCompanyCo().getShortName();
-			String[] d = {w.getCodeSo(),""+w.getDateOrder(),w.getUsers().getName(),companyCoShortName,status,w.getSMaterial().getPno(),w.getSMaterial().getRev(),w.getSMaterial().getDes(),unit,""+w.getQtySo(),""+w.getTotalAmount(),w.getDeliveryDate().toString(),""+w.getQtyDelivered(),""+w.getIdSo()};
+			String[] d = {w.getCodeSo(),""+w.getDateOrder(),w.getUsers().getName(),companyCoShortName,status,w.getSMaterial().getPno()+"_"+w.getSMaterial().getRev()+"_"+w.getSMaterial().getDes(),unit,""+w.getQtySo(),""+w.getTotalAmount(),w.getDeliveryDate().toString(),""+w.getQtyDelivered(),""+w.getIdSo()};
 			lst.add(d);
 
 		}

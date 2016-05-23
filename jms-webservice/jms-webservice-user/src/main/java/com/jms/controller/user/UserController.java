@@ -134,12 +134,16 @@ public class UserController {
 					}
 				 
 					m.setFt(cpp.getPlanFt().getTime());
+					m.setSt(cpp.getPlanSt().getTime());
+					
+				//	System.out.println("plan st: " + cpp.getPlanFt().getTime() +", plan ft: " + cpp.getPlanFt().getTime());
 					if(cpp.getMMachine().getPLine()!=null)
 					{
 						m.setLine(cpp.getMMachine().getPLine().getPline());
 					}
 				
 					m.setmNo(cpp.getMMachine().getCode());
+					m.setIdMachine(cpp.getMMachine().getIdMachine());
 					m.setOp(cpp.getUsers().getName());
 					m.setpNo(cpp.getPWo().getSSo().getSMaterial().getPno());
 					m.setQty(cpp.getQty());

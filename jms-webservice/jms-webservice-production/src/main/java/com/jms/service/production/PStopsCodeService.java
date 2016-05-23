@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jms.domain.Config;
 import com.jms.domain.db.FCostCenter;
 import com.jms.domain.db.PStopsCode;
 import com.jms.domain.db.PSubCode;
@@ -64,6 +65,21 @@ public class PStopsCodeService {
 		dbPSubCode = pSubCodeRepository.save(dbPSubCode);
 		wsPStopsCode.setIdStopsCode(dbPSubCode.getIdSubCode());
 		return wsPStopsCode;		
+		
+	}
+	
+	
+	@Transactional(readOnly=false)
+	public void loadSubCodes()  {
+		
+	for(String s: Config.subCodes)
+	{
+		PSubCode pSubCode  = new PSubCode();
+		pSubCode.setSubCode(s);
+		pSubCodeRepository.save(pSubCode);
+		
+	}
+	
 		
 	}
 

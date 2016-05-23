@@ -28,7 +28,7 @@ public class SLinkman  implements java.io.Serializable {
      private SCompanyCo SCompanyCo;
      private String name;
      private String position;
-     private Long phoneNo;
+     private String phoneNo;
      private String EMail;
      private Long qq;
      private String weChat;
@@ -39,7 +39,7 @@ public class SLinkman  implements java.io.Serializable {
     public SLinkman() {
     }
 
-    public SLinkman(SStatusDic SStatusDic, SGenderDic SGenderDic, SCompanyCo SCompanyCo, String name, String position, Long phoneNo, String EMail, Long qq, String weChat, String wangwang, String remark, String autoRemark) {
+    public SLinkman(SStatusDic SStatusDic, SGenderDic SGenderDic, SCompanyCo SCompanyCo, String name, String position, String phoneNo, String EMail, Long qq, String weChat, String wangwang, String remark, String autoRemark) {
        this.SStatusDic = SStatusDic;
        this.SGenderDic = SGenderDic;
        this.SCompanyCo = SCompanyCo;
@@ -111,11 +111,11 @@ public class SLinkman  implements java.io.Serializable {
     }
     
     @Column(name="phone_no")
-    public Long getPhoneNo() {
+    public String getPhoneNo() {
         return this.phoneNo;
     }
     
-    public void setPhoneNo(Long phoneNo) {
+    public void setPhoneNo(String phoneNo) {
         this.phoneNo = phoneNo;
     }
     

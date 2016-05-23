@@ -89,7 +89,7 @@ public class MaterialService {
 		
 		for(SMaterial s : sMaterialList)
 		{
-			logger.debug("material: " + s.getPno());
+			//logger.debug("material: " + s.getPno());
 			wsMaterialList.add(toWSMaterial(s));
 		}
 		

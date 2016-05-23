@@ -25,13 +25,13 @@ public class QTester  implements java.io.Serializable {
 
 
      private Long idTester;
-     private Long des;
+     private String des;
      private Set<QCheckList> QCheckLists = new HashSet<QCheckList>(0);
 
     public QTester() {
     }
 
-    public QTester(Long des, Set<QCheckList> QCheckLists) {
+    public QTester(String des, Set<QCheckList> QCheckLists) {
        this.des = des;
        this.QCheckLists = QCheckLists;
     }
@@ -47,12 +47,12 @@ public class QTester  implements java.io.Serializable {
         this.idTester = idTester;
     }
     
-    @Column(name="des")
-    public Long getDes() {
+    @Column(name="des", length=64)
+    public String getDes() {
         return this.des;
     }
     
-    public void setDes(Long des) {
+    public void setDes(String des) {
         this.des = des;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="QTester")

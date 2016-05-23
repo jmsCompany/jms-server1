@@ -41,6 +41,8 @@ public class SMtf  implements java.io.Serializable {
      private String mtNo;
      private Date dateMt;
      private Date creationTime;
+     
+     private Long idWo;
      private Set<SMtfMaterial> SMtfMaterials = new HashSet<SMtfMaterial>(0);
 
     public SMtf() {
@@ -178,6 +180,15 @@ public class SMtf  implements java.io.Serializable {
     public void setSMtfMaterials(Set<SMtfMaterial> SMtfMaterials) {
         this.SMtfMaterials = SMtfMaterials;
     }
+
+    @Column(name="id_wo")
+	public Long getIdWo() {
+		return idWo;
+	}
+
+	public void setIdWo(Long idWo) {
+		this.idWo = idWo;
+	}
 
 
 

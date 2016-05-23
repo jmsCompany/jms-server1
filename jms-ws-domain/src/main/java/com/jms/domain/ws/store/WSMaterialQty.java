@@ -7,6 +7,8 @@ public class WSMaterialQty {
     private String pno;
     private String rev;
     private String des;
+    private Long bomId;
+    private Long cppId;
     private Long qty;
 
     public Long getIdMaterial() {
@@ -38,6 +40,18 @@ public class WSMaterialQty {
 	}
 	public void setQty(Long qty) {
 		this.qty = qty;
+	}
+	public Long getBomId() {
+		return bomId;
+	}
+	public void setBomId(Long bomId) {
+		this.bomId = bomId;
+	}
+	public Long getCppId() {
+		return cppId;
+	}
+	public void setCppId(Long cppId) {
+		this.cppId = cppId;
 	}
 
 }

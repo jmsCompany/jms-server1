@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.jms.domain.db.PWo;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.ws.Valid;
+import com.jms.domain.ws.WSBomMaterialObj;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.production.WSPWo;
@@ -49,12 +50,17 @@ public class WoController {
 		return woService.findWSPwo(woId);
 		
 	}
+	
+	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/findWSMaterialQtyByWoId", method=RequestMethod.GET)
 	public WSMaterialQty findWSMaterialQtyByWoId(@RequestParam("woId") Long woId) throws Exception {
 		return woService.findWSMaterialQtyByWoId(woId);
 		
 	}
+	
+
+	
 	
 	
 	@Transactional(readOnly = true)
@@ -115,7 +121,7 @@ public class WoController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/getMaterialByWoBom", method=RequestMethod.GET)
-	public List<WSSelectObj> getMaterialByWoBom(@RequestParam("woId") Long woId) throws Exception {	
+	public List<WSBomMaterialObj> getMaterialByWoBom(@RequestParam("woId") Long woId) throws Exception {	
 	   return woService.getMaterialsByWoId(woId);
 	}
 	

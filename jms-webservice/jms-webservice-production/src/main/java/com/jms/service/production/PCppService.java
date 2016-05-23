@@ -9,20 +9,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jms.domain.db.PBom;
 import com.jms.domain.db.PCPp;
 import com.jms.domain.db.PCheckTime;
 import com.jms.domain.db.PDraw;
 import com.jms.domain.db.PRoutineD;
 import com.jms.domain.db.PWip;
+import com.jms.domain.db.SMaterial;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.production.WSPCheckTime;
 import com.jms.domain.ws.production.WSPCpp;
+import com.jms.domain.ws.production.WSPMr;
 import com.jms.domain.ws.production.WSPRoutineD;
 import com.jms.domain.ws.production.WSPWip;
+import com.jms.domain.ws.store.WSMaterialQty;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.m.MMachineRepository;
+import com.jms.repositories.p.PBomRepository;
 import com.jms.repositories.p.PCPpRepository;
 import com.jms.repositories.p.PCheckTimeRepository;
 import com.jms.repositories.p.PPUTimeRepository;
@@ -65,6 +70,8 @@ public class PCppService {
 	private PShiftPlanDRepository pShiftPlanDRepository;
 	@Autowired
 	private  UsersRepository usersRepository;
+	@Autowired
+	private  PBomRepository pBomRepository;
 		
 		
 	@Transactional(readOnly=false)
@@ -184,4 +191,35 @@ public class PCppService {
 	}
 	
 
+	@Transactional(readOnly=true)
+	public List<WSPMr>  findWSPMrsByCppId(Long cppId)
+	{
+		 List<WSPMr> ws = new ArrayList<WSPMr>();
+		 
+		 PCPp pCPp = pCPpRepository.findOne(cppId);
+		 SMaterial material =  pCPp.getPWo().getSSo().getSMaterial();
+		 
+		 PBom pBom = pBomRepository.findProductByMaterialId(material.getIdMaterial());
+			
+			
+			if(pBom!=null)
+			{
+				for(PBom p: pBom.getPBoms())
+				{
+					SMaterial s =p.getSMaterial();
+					WSPMr w = new WSPMr();
+					w.setDes(s.getDes());
+					w.setIdMaterial(s.getIdMaterial());
+					w.setPno(s.getPno());
+					w.setQty(s.getMpq());
+					w.setCppId(cppId);
+					w.setRev(s.getRev());
+					w.setBomId(p.getIdBom());
+				    ws.add(w);
+				   
+				}
+				
+			}
+		 return ws;
+	}
 }

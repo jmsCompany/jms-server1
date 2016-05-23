@@ -15,6 +15,8 @@ import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.production.WSPCpp;
 import com.jms.domain.ws.production.WSPLine;
+import com.jms.domain.ws.production.WSPMr;
+import com.jms.domain.ws.store.WSMaterialQty;
 import com.jms.repositories.p.PCPpRepository;
 import com.jms.repositories.p.PCheckTimeRepository;
 import com.jms.repositories.p.PLineRepository;
@@ -81,6 +83,13 @@ public class CppController {
 	    return t;
 	}
 	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findWSPMrsByCppId", method=RequestMethod.GET)
+	public List<WSPMr> findWSPMrsByCppId(@RequestParam("cppId") Long cppId) throws Exception {
+		return pCppService.findWSPMrsByCppId(cppId);
+		
+	}
 	
 
 

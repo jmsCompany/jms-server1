@@ -9,6 +9,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +22,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class AuthenticationTokenProcessingFilter extends
 		AbstractPreAuthenticatedProcessingFilter {
@@ -30,6 +33,8 @@ public class AuthenticationTokenProcessingFilter extends
 	private TokenUtils tokenUtils;
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	private static final Logger logger = LogManager.getLogger(AuthenticationTokenProcessingFilter.class
+			.getCanonicalName());
 
 	public AuthenticationTokenProcessingFilter() {
 	}
@@ -58,17 +63,18 @@ public class AuthenticationTokenProcessingFilter extends
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res,
 			FilterChain chain) throws IOException, ServletException {
+		HttpServletRequest request = (HttpServletRequest) req;
+		HttpServletResponse response = (HttpServletResponse) res;
+		logger.debug("request: " + request.getHeader("User-Agent"));
+		logger.debug("from: " + request.getRemoteAddr());
 		if (req instanceof org.apache.catalina.connector.RequestFacade) {
 			//logger.debug("WTF?:  "  +res.getClass().getCanonicalName());
-			HttpServletRequest request = (HttpServletRequest) req;
-			HttpServletResponse response = (HttpServletResponse) res;
+		
 			chain.doFilter(request, response);
 			
 		}
 		else
 		{
-			HttpServletRequest request = (HttpServletRequest) req;
-			HttpServletResponse response = (HttpServletResponse) res;
 			if (SecurityContextHolder.getContext().getAuthentication() == null) {
 				String token = request.getHeader("JMS-TOKEN");
 				if (token != null) {

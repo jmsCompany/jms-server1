@@ -76,6 +76,7 @@ public class SInventoryService {
 		List<WSInventoryInfo> infos = new ArrayList<WSInventoryInfo>();
 		Long currentStkId=0l,currentMaterialId=0l,currentQty=0l;
 		SInventory before=null;
+		int num=0;
 	    for(SInventory s: ls)
 	    {
 	    	Long sId = s.getSBin().getSStk().getId();
@@ -88,6 +89,7 @@ public class SInventoryService {
 	    	{
 	    		currentStkId = sId;
 	    		currentMaterialId = mId;
+	    	//	currentQty=s.getQty();
 	    		if(!currentQty.equals(0l))
 	    		{
 	    			WSInventoryInfo i = new WSInventoryInfo();
@@ -104,6 +106,19 @@ public class SInventoryService {
 	    	}
 	    	
 	    	before = s;
+	    	num++;
+	    	if(num==ls.size())
+	    	{
+	    		WSInventoryInfo i = new WSInventoryInfo();
+    			i.setDes(before.getSMaterial().getDes());
+    			i.setPno(before.getSMaterial().getPno());
+    			i.setRev(before.getSMaterial().getRev());
+    			i.setIdMaterial(before.getSMaterial().getIdMaterial());
+    			i.setStkId(before.getSBin().getSStk().getId());
+    			i.setStkName(before.getSBin().getSStk().getStkName());
+    			i.setQty(currentQty);
+    			infos.add(i);
+	    	}
 	    }
 	    return infos;
 	}

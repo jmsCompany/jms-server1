@@ -19,7 +19,9 @@ public class WSPCppAndriod implements java.io.Serializable{
 	private Long drawNo;//产品图纸编号
 	private String drawVer;//产品图纸版本
 	private String route;//工艺
-	private String mNo;//机器号
+	private String mNo;//机器编码
+	
+	private Long idMachine; //机器ID
 	private Long stdWtLabor;//人力标准工时
 	private Long stdWtMachine;//机器标准工时
 	private Long stdWtSetup;//装载标准工时
@@ -170,6 +172,12 @@ public class WSPCppAndriod implements java.io.Serializable{
 	}
 	public void setCppId(Long cppId) {
 		this.cppId = cppId;
+	}
+	public Long getIdMachine() {
+		return idMachine;
+	}
+	public void setIdMachine(Long idMachine) {
+		this.idMachine = idMachine;
 	}
 	
    

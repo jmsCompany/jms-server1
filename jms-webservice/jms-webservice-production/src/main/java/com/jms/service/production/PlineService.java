@@ -97,6 +97,8 @@ public class PlineService {
 		for(PLine pLine: pLineRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
 		{
 			WSSelectObj o = new WSSelectObj(pLine.getIdPline(),pLine.getPline());
+			
+			System.out.println("line: " + pLine.getPline());
 			objs.add(o);
 		}
 		return objs;

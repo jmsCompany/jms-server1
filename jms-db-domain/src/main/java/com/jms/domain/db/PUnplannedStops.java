@@ -30,6 +30,7 @@ public class PUnplannedStops  implements java.io.Serializable {
      private PStopsCode PStopsCode;
      private PStatusDic PStatusDic;
      private Long unplannedStopsNo;
+     private Long idMachine;
      private String opDes;
      private Date unplannedSt;
      private String reason;
@@ -175,6 +176,15 @@ public class PUnplannedStops  implements java.io.Serializable {
     public void setOpFt(Date opFt) {
         this.opFt = opFt;
     }
+    
+    @Column(name="id_machine")
+	public Long getIdMachine() {
+		return idMachine;
+	}
+
+	public void setIdMachine(Long idMachine) {
+		this.idMachine = idMachine;
+	}
 
 
 

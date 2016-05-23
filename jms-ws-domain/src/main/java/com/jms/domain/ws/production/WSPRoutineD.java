@@ -18,6 +18,7 @@ public class WSPRoutineD {
     private Long stdWtLabor;
     private Long stdWtMachine;
     private Long stdWtSetup;
+    
 	public Long getIdRoutineD() {
 		return idRoutineD;
 	}

@@ -241,7 +241,7 @@ public class MtfService {
 			    case 3: // 手动流转
 				case 4: // 工单流转
 				{
-                    logger.debug(" case 3 or 4:  to:  wm.getToBinId()" +  wm.getToBinId() +", from :" + wm.getFromBinId() +", material id: " + wm.getMaterialId());
+                    logger.debug(" case 3 or 4:  to:  wm.getToBinId(): " +  wm.getToBinId() +", from :" + wm.getFromBinId() +", material id: " + wm.getMaterialId() +", qty: " +wm.getQty());
 					SInventory to=null;
 					
 					List<SInventory> sInventorys= sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
@@ -265,14 +265,15 @@ public class MtfService {
 						// to.setSMaterial(spoMaterial.getSMaterial());
 						to.setSMaterial(sMaterialRepository.findOne(wm.getMaterialId()));
 					} 
+			        logger.debug("save to bin: " + to.getQty());
 					sInventoryRepository.save(to);
 					SInventory from=null;
-					List<SInventory> fromInventorys= sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
+					List<SInventory> fromInventorys= sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getFromBinId());
 			        if(fromInventorys!=null&&!fromInventorys.isEmpty())
 			        {
 			        	from = fromInventorys.get(0);
 						logger.debug( "find inventory by  from bin, qty: " +from.getQty() );
-						if (from.getBox() != null) {
+						if (from.getBox() != null&&wm.getBox()!=null) {
 							from.setBox(from.getBox() - wm.getBox());
 						}
 						from.setQty(from.getQty() - wm.getQty());
@@ -284,7 +285,7 @@ public class MtfService {
 						from = new SInventory();
 						from.setCreationTime(new Date());
 						//from.setBox(0-wm.getBox());
-						if (from.getBox() != null) {
+						if (from.getBox() != null&& wm.getBox()!=null) {
 							from.setBox(from.getBox() - wm.getBox());
 						}
 						from.setLotNo(wm.getLotNo());
@@ -363,7 +364,7 @@ public class MtfService {
 			        if(sInventorys!=null&&!sInventorys.isEmpty())
 			        {
 			        	sInventory = sInventorys.get(0);
-			        	if (sInventory.getBox() != null)
+			        	if (sInventory.getBox() != null&&wm.getBox()!=null)
 							sInventory.setBox(sInventory.getBox() + wm.getBox());
 						sInventory.setQty(sInventory.getQty() + wm.getQty());
 			        }
@@ -464,11 +465,11 @@ public class MtfService {
 			wsSMtf.setStatusId(sMtf.getSStatusDic().getId());
 		}
 		if (sMtf.getSStkByFromStk() != null) {
-			wsSMtf.setFromStk(sMtf.getSStkByFromStk().getDes());
+			wsSMtf.setFromStk(sMtf.getSStkByFromStk().getStkName());
 			wsSMtf.setFromStkId(sMtf.getSStkByFromStk().getId());
 		}
 		if (sMtf.getSStkByToStk() != null) {
-			wsSMtf.setToStk(sMtf.getSStkByToStk().getDes());
+			wsSMtf.setToStk(sMtf.getSStkByToStk().getStkName());
 			wsSMtf.setToStkId(sMtf.getSStkByToStk().getId());
 		}
 		if (sMtf.getUsersByEmpMt() != null) {
