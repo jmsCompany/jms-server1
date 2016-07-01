@@ -21,9 +21,9 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 	@Autowired
 	private VelocityEngine velocityEngine;
 	// @Value("#{email_prop['template']}")
-	private String template = "emailTemplate.vm";
+	private String template = "pmrTemplate.vm";
 	// @Value("#{email_prop['from']}")
-	private String from = "hongtao@mail.dlut.edu.cn";
+	private String from = "cloud.system@vqingyun.com";
 
 	@Override
 	public void sendEmail(final String[] toEmailAddresses, final String subject, final Map<String, Object> model,

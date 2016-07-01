@@ -23,6 +23,7 @@ import org.springframework.security.acls.model.Sid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
+import com.jms.domain.db.Groups;
 import com.jms.web.security.JMSUserDetails;
 
 
@@ -52,6 +53,8 @@ public class JMSPermissionEvaluator implements PermissionEvaluator {
 
         return checkPermission(authentication, objectIdentity, permission);
     }
+    
+
 
     public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
         ObjectIdentity objectIdentity = objectIdentityGenerator.createObjectIdentity(targetId, targetType);
@@ -89,6 +92,13 @@ public class JMSPermissionEvaluator implements PermissionEvaluator {
         return false;
 
     }
+    
+    
+    
+
+    
+    
+    
 
     List<Permission> resolvePermission(Object permission) {
         if (permission instanceof Integer) {

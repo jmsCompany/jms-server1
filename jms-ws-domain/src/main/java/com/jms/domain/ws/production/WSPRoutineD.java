@@ -15,9 +15,9 @@ public class WSPRoutineD {
     private Long routineId;
     private String routeNo;
     private String des;
-    private Long stdWtLabor;
-    private Long stdWtMachine;
-    private Long stdWtSetup;
+    private Float stdWtLabor;
+    private Float stdWtMachine;
+    private Float stdWtSetup;
     
 	public Long getIdRoutineD() {
 		return idRoutineD;
@@ -80,22 +80,22 @@ public class WSPRoutineD {
 	public void setDes(String des) {
 		this.des = des;
 	}
-	public Long getStdWtLabor() {
+	public Float getStdWtLabor() {
 		return stdWtLabor;
 	}
-	public void setStdWtLabor(Long stdWtLabor) {
+	public void setStdWtLabor(Float stdWtLabor) {
 		this.stdWtLabor = stdWtLabor;
 	}
-	public Long getStdWtMachine() {
+	public Float getStdWtMachine() {
 		return stdWtMachine;
 	}
-	public void setStdWtMachine(Long stdWtMachine) {
+	public void setStdWtMachine(Float stdWtMachine) {
 		this.stdWtMachine = stdWtMachine;
 	}
-	public Long getStdWtSetup() {
+	public Float getStdWtSetup() {
 		return stdWtSetup;
 	}
-	public void setStdWtSetup(Long stdWtSetup) {
+	public void setStdWtSetup(Float stdWtSetup) {
 		this.stdWtSetup = stdWtSetup;
 	}
 }

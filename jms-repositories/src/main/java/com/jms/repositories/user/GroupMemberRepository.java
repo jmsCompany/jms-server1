@@ -3,6 +3,7 @@ package com.jms.repositories.user;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +23,10 @@ public interface GroupMemberRepository extends JpaRepository<GroupMembers, Group
 	
 	@Query("select distinct g.users from GroupMembers g where g.groups.company.idCompany=?1 and g.groups.groupName='OP'")	
 	public List<Users> findOPByCompanyId(Long companyId);
+	
+	@Modifying
+	@Query(value="delete from group_members where id_user=?1 and id_group=?2",nativeQuery=true)
+	public void deleteByIdUserAndIdGroup(Long idUser,Long idGroup);
 	
 
 }

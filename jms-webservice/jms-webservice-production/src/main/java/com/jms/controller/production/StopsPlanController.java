@@ -44,6 +44,7 @@ public class StopsPlanController {
 	//@Autowired private PStopsCodeRepository pStopsCodeRepository;
 	@Autowired
 	private  PStopsPlanRepository pStopPlanRepository;
+	//pStopsPlanRepository
 	
 	@Autowired private SecurityUtils securityUtils;
 
@@ -74,10 +75,20 @@ public class StopsPlanController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/findPStopsPlans", method=RequestMethod.GET)
 	public List<WSPStopsPlan> findPStopsPlans() throws Exception {
-		logger.debug("/p/findPStopsPlans");
+		//logger.debug("/p/findPStopsPlans");
 		return pStopsPlanService.findWSPStopsPlans();
 	
 	}
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findPStopsPlansByMachineId", method=RequestMethod.GET)
+	public List<WSPStopsPlan> findPStopsPlansByMachineId(@RequestParam Long machineId) throws Exception {
+		//logger.debug("/p/findPStopsPlans");
+		return pStopsPlanService.findWSPStopsPlansByMachineId(machineId);
+	
+	}
+	
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/p/pStopsActStart", method=RequestMethod.GET)
@@ -106,7 +117,7 @@ public class StopsPlanController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/findPStopsPlanList", method=RequestMethod.GET)
 	public WSTableData  findPStopsPlanList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
-		List<PStopsPlan> pStopsPlans =pStopPlanRepository.findAll();
+		List<PStopsPlan> pStopsPlans =pStopPlanRepository.getPStopsPlansByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
 		if(pStopsPlans.size()<start + length)
@@ -116,6 +127,39 @@ public class StopsPlanController {
 		for (int i = start; i < end; i++) {
 			PStopsPlan w = pStopsPlans.get(i);
 			String[] d = {""+w.getMMachine().getCode(),w.getPSubCode().getSubCode()+"_"+w.getPSubCode().getSubDes(),w.getPlanFt().toString(),w.getPlanSt().toString(),w.getPStatusDic().getName(),""+w.getIdStopsPlan()};
+			lst.add(d);
+
+		}
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(pStopsPlans.size());
+		t.setRecordsFiltered(pStopsPlans.size());
+	    t.setData(lst);
+	    return t;
+	}
+	
+	
+	
+	
+//	显示顺序：机器编号-机器名字、停机编码-停机原因、计划开始时间、计划停止时间、实际开始时间、实际停止时间
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findPStopsPlanReportList", method=RequestMethod.GET)
+	public WSTableData  findPStopsPlanReportList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		List<PStopsPlan> pStopsPlans = pStopPlanRepository.getPStopsPlansByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(pStopsPlans.size()<start + length)
+			end =pStopsPlans.size();
+		else
+			end =start + length;
+		for (int i = start; i < end; i++) {
+			PStopsPlan w = pStopsPlans.get(i);
+			String ps=(w.getPlanSt()==null)?"":w.getPlanSt().toString();
+			String pf=(w.getPlanFt()==null)?"":w.getPlanFt().toString();
+			String as=(w.getActSt()==null)?"":w.getActSt().toString();
+			String af=(w.getActFt()==null)?"":w.getActFt().toString();
+			String[] d = {""+w.getMMachine().getCode(),w.getPSubCode().getSubCode(),w.getPSubCode().getSubDes(),ps,pf,as,af};
 			lst.add(d);
 
 		}

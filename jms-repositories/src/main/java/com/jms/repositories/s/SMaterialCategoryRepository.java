@@ -13,5 +13,9 @@ public interface SMaterialCategoryRepository  extends JpaRepository<SMaterialCat
 	
 	@Query("select s from SMaterialCategory s where s.company.idCompany=?1")
 	public List<SMaterialCategory> findByIdCompany(Long idCompany);
+	
+	
+	@Query("select s from SMaterialCategory s where s.company.idCompany=?1 and s.name=?2")
+	public SMaterialCategory findByIdCompanyAndName(Long idCompany,String name);
 		
 }

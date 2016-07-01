@@ -17,4 +17,8 @@ public interface GroupRepository extends JpaRepository<Groups, Long>{
 	@Query("select g from Groups g where  g.company.idCompany=?1 order by seq")
 	public List<Groups> findByIdCompany(Long idCompany);
 	
+	
+	@Query("select g from Groups g where  g.groupType.idGroupType=2 and g.groupName=?1")
+	public Groups findHimselfGroupByIdUser(String sIdUser);
+	
 }

@@ -13,4 +13,8 @@ public interface FCostCenterRepository extends JpaRepository<FCostCenter, Long>{
 
 	@Query("select f from FCostCenter f where f.company.idCompany=?1")
 	public List<FCostCenter> getByCompanyId(Long idCompany);
+	
+	@Query("select f from FCostCenter f where f.company.idCompany=?1 and f.costCenterNo=?2")
+	public FCostCenter getByCompanyIdAndCostCenterNo(Long idCompany, Long costCenterNo);
+	
 }

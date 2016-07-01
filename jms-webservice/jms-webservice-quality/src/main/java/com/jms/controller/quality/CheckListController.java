@@ -29,7 +29,7 @@ public class CheckListController {
 	private QCheckListRepository qCheckListRepository;
 
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/q/saveCheckList'", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/q/saveCheckList", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public WSQCheckList saveCheckList(@RequestBody WSQCheckList wsQCheckList) throws Exception {
 		return checkListService.saveCheckList(wsQCheckList);
 	}
@@ -37,10 +37,20 @@ public class CheckListController {
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/q/deleteCheckList", method=RequestMethod.GET)
-	public Valid deleteCheckList(@RequestParam("checkListlId") Long checkListlId) {
-		return checkListService.deleteCheckList(checkListlId);
+	public Valid deleteCheckList(@RequestParam("checkListId") Long checkListId) {
+		return checkListService.deleteCheckList(checkListId);
 		
 	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/q/findCheckList", method=RequestMethod.GET)
+	public WSQCheckList findCheckList(@RequestParam("checkListId") Long checkListId) throws Exception {
+		return checkListService.findCheckList(checkListId);
+		
+	}
+	
+	
+	
 
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/q/getCheckList", method=RequestMethod.GET)
@@ -56,7 +66,7 @@ public class CheckListController {
 			end =start + length;
 		for (int i = start; i < end; i++) {
 			QCheckList w = checkList.get(i);
-			String[] d = {w.getItem(),w.getTestMethod(),w.getSpecification(),""+w.getSMaterial().getIdMaterial(),w.getSMaterial().getPno(),""+w.getFrequency(),""+w.getQTester().getIdTester(),w.getQTester().getDes(),""+w.getIdCheckList()};
+			String[] d = {w.getItem(),w.getTestMethod(),w.getSpecification(),w.getSMaterial().getPno()+"-"+w.getSMaterial().getRev()+"-"+w.getSMaterial().getDes(),""+w.getFrequency(),""+w.getQTester().getDes(),""+w.getIdCheckList()};
 			lst.add(d);
 
 		}

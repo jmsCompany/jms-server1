@@ -65,8 +65,8 @@ public class AuthenticationTokenProcessingFilter extends
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
-		logger.debug("request: " + request.getHeader("User-Agent"));
-		logger.debug("from: " + request.getRemoteAddr());
+		//logger.debug("request: " + request.getHeader("User-Agent"));
+		//logger.debug("from: " + request.getRemoteAddr());
 		if (req instanceof org.apache.catalina.connector.RequestFacade) {
 			//logger.debug("WTF?:  "  +res.getClass().getCanonicalName());
 		

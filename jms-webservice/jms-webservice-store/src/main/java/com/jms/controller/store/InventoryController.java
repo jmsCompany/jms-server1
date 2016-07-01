@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.store.WSInventory;
 import com.jms.domain.ws.store.WSInventoryInfo;
@@ -78,7 +79,7 @@ public class InventoryController {
 			end = start + length;
 		for (int i = start; i < end; i++) {
 			WSInventory w = is.get(i);
-			String[] d = { w.getStkName(), w.getPno(), w.getRev(),w.getDes(), w.getBinName(),w.getLotNo(),""+w.getBox(),""+w.getUQty(),""+w.getQty() };
+			String[] d = { w.getStkName(), w.getPno(), w.getRev(),w.getDes(), w.getBinName(),w.getLotNo(),""+w.getQty() };
 			lst.add(d);
 
 		}
@@ -96,6 +97,32 @@ public class InventoryController {
 	public List<WSInventory> findInventoryDetails(@RequestParam(required=false,value="materialId") Long materialId) throws Exception {
 
 		return sInventoryService.findInventoryDetailByMaterialAndStk(materialId, null);
+		
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value = "/s/findInventoryDetailsObjs", method = RequestMethod.GET)
+	public List<WSSelectObj> findInventoryDetailsObjs(@RequestParam(required=false,value="materialId") Long materialId) throws Exception {
+
+		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
+		List<WSInventory> wsis = sInventoryService.findInventoryDetailByMaterialAndStk(materialId, null);
+		for(WSInventory i: wsis)
+		{
+			WSSelectObj w = new WSSelectObj(i.getInventoryId(),i.getStkName()+"_"+i.getBinName()+", 库存: " +i.getQty());
+			ws.add(w);
+		}
+		
+		return ws;
+		
+	}
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value = "/s/findInventoryDetailsByMaterialAndStk", method = RequestMethod.GET)
+	public List<WSInventory> findInventoryDetailsByMaterialAndStk(@RequestParam(required=false,value="materialId") Long materialId,
+	@RequestParam(required=false,value="stkId") Long stkId) throws Exception {
+
+		return sInventoryService.findInventoryDetailByMaterialAndStk(materialId, stkId);
 		
 	}
 	

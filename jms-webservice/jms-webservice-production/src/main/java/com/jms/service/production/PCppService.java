@@ -13,9 +13,11 @@ import com.jms.domain.db.PBom;
 import com.jms.domain.db.PCPp;
 import com.jms.domain.db.PCheckTime;
 import com.jms.domain.db.PDraw;
+import com.jms.domain.db.PMr;
 import com.jms.domain.db.PRoutineD;
 import com.jms.domain.db.PWip;
 import com.jms.domain.db.SMaterial;
+import com.jms.domain.db.SMtfNo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.production.WSPCheckTime;
@@ -30,12 +32,14 @@ import com.jms.repositories.m.MMachineRepository;
 import com.jms.repositories.p.PBomRepository;
 import com.jms.repositories.p.PCPpRepository;
 import com.jms.repositories.p.PCheckTimeRepository;
+import com.jms.repositories.p.PMrRepository;
 import com.jms.repositories.p.PPUTimeRepository;
 import com.jms.repositories.p.PRoutineDRepository;
 import com.jms.repositories.p.PShiftPlanDRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PWipRepository;
 import com.jms.repositories.p.PWoRepository;
+import com.jms.repositories.s.SMtfNoRepository;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.web.security.SecurityUtils;
 
@@ -72,6 +76,13 @@ public class PCppService {
 	private  UsersRepository usersRepository;
 	@Autowired
 	private  PBomRepository pBomRepository;
+	
+	@Autowired
+	private  PMrRepository pMrRepository;
+	
+	@Autowired
+	private SMtfNoRepository sMtfNoRepository;
+	
 		
 		
 	@Transactional(readOnly=false)
@@ -84,11 +95,39 @@ public class PCppService {
 		else
 		{
 			pCPp = new PCPp();
+			
 	
 		}
 		PCPp dbPCPp= toDBPCPp(wsPCpp,pCPp);
 		dbPCPp = pCPpRepository.save(dbPCPp);
 		wsPCpp.setIdCpp(dbPCPp.getIdCPp());
+		
+		//生成需料报告
+		
+         SMaterial material =  pCPp.getPWo().getSSo().getSMaterial();
+		 
+		 PBom pBom = pBomRepository.findProductByMaterialId(material.getIdMaterial());
+			
+			
+			if(pBom!=null)
+			{
+				for(PBom p: pBom.getPBoms())
+				{
+					
+					PMr pmr = new PMr();
+					pmr.setPBom(p);
+					pmr.setPCPp(dbPCPp);
+					pmr.setPStatusDic(pStatusDicRepository.findOne(9l));
+					pmr.setQty(p.getQpu()*dbPCPp.getQty());
+					pmr.setSt(dbPCPp.getPlanSt());
+					pmr.setType(2l); //自动生成需料
+					pMrRepository.save(pmr);
+				   
+				}
+				
+			}
+		
+		
 		return wsPCpp;		
 		
 	}
@@ -117,7 +156,19 @@ public class PCppService {
 	
 		PCPp dbPCPp = (PCPp)BeanUtil.shallowCopy(wsPCpp, PCPp.class, pCPp);
 		dbPCPp.setIdCPp(wsPCpp.getIdCpp());
-		dbPCPp.setCPpCode(wsPCpp.getCppCode());
+	
+		if(wsPCpp.getIdCpp()==null||wsPCpp.getIdCpp().equals(0l))
+		{
+		SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 12l);
+		
+	    long currentVal =smtfNo.getCurrentVal()+1;
+	    smtfNo.setCurrentVal(currentVal);
+	    sMtfNoRepository.save(smtfNo);
+		
+	    String mtNo = smtfNo.getPrefix()+String.format("%08d", currentVal);
+	    pCPp.setCPpCode(mtNo);
+		}
+		
 
         if(wsPCpp.getmMachineId()!=null)
         {

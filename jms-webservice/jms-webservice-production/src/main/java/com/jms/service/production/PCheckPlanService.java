@@ -13,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jms.domain.db.PCPp;
 import com.jms.domain.db.PCheckPlan;
 import com.jms.domain.db.PCheckTime;
 import com.jms.domain.db.PRoutineD;
 import com.jms.domain.db.PWip;
+import com.jms.domain.db.PWo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.production.WSPCheckPlan;
@@ -32,6 +34,7 @@ import com.jms.repositories.p.PCheckTimeRepository;
 import com.jms.repositories.p.PPUTimeRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PWipRepository;
+import com.jms.repositories.p.PWoRepository;
 import com.jms.web.security.SecurityUtils;
 
 @Service
@@ -57,7 +60,8 @@ public class PCheckPlanService {
 	@Autowired 
 	private PCPpRepository pCPpRepository;
 	
-
+	@Autowired 
+	private PWoRepository pWoRepository;
 	@Autowired
 	private SecurityUtils securityUtils;
 		
@@ -67,20 +71,30 @@ public class PCheckPlanService {
 		PCheckPlan pCheckPlan = new PCheckPlan();
 		PCheckPlan dbPCheckPlan= toDBPCheckPlan(wsPCheckPlan,pCheckPlan);
 		dbPCheckPlan = pCheckPlanRepository.save(dbPCheckPlan);
+		PWo pwo = dbPCheckPlan.getPCPp().getPWo();
+		
+		Long qtyFinished =0l;
+		for(PCPp p: pwo.getPCPps())
+		{
+			List<PCheckPlan> pCheckPlans =pCheckPlanRepository.getMaxCheckPlanByCppId(p.getIdCPp());
+			if(pCheckPlans!=null&&!pCheckPlans.isEmpty())
+				qtyFinished =qtyFinished +pCheckPlans.get(0).getFinQty();
+		}
+		if(qtyFinished>=pwo.getQty())
+		{
+			pwo.setPStatusDic(pStatusDicRepository.findOne(13l)); //结束工单
+			pWoRepository.save(pwo);
+			
+		}
 		return wsPCheckPlan;		
 		
 	}
 
 	@Transactional(readOnly=true)
 	public List<WSPCheckPlan> findWSPCheckPlans(Long cppId) throws Exception {
-		//logger.debug("find check plans: cppId: " + cppId +", userId: " + securityUtils.getCurrentDBUser().getIdUser());
 		List<WSPCheckPlan>  ws = new ArrayList<WSPCheckPlan>();
 		for(PCheckPlan p: pCheckPlanRepository.getByUserIdAndCppId(securityUtils.getCurrentDBUser().getIdUser(), cppId))
 		{
-			//logger.debug(p.getPlanCheckTime().getTime());
-			//logger.debug(p.getPlanCheckTime().toString());
-		
-			//logger.debug("find check plan: cppId: " +p.getCheckTime());
 			ws.add(toWSPCheckPlan(p));
 		}
 		
@@ -100,7 +114,7 @@ public class PCheckPlanService {
         dbPCheckPlan.setCreationTime(new Date());
         dbPCheckPlan.setCheckTime(new Date());
         dbPCheckPlan.setUsersByCreator(securityUtils.getCurrentDBUser());
-        if(wsPCheckPlan.getFinQty()<wsPCheckPlan.getToBeQty())
+        if(wsPCheckPlan.getFinQty()<wsPCheckPlan.getPlanQty())
         {
         	 dbPCheckPlan.setPStatusDic(pStatusDicRepository.findOne(23l)); //不满意
         }
@@ -121,10 +135,10 @@ public class PCheckPlanService {
 	    
 	    }
 	    pc.setTotalQty(pCheckPlan.getPCPp().getQty());
-	     pc.setPcppId(pCheckPlan.getPCPp().getIdCPp());
+	    pc.setPcppId(pCheckPlan.getPCPp().getIdCPp());
 	    Date d = pCheckPlan.getPlanCheckTime();
-	  //  Date today = new Date();
-	  // d.t
+
+
 	    DateFormat fmtDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	    Date today = new Date();
 	    

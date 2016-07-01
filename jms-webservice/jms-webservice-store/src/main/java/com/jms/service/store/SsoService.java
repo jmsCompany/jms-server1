@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jms.domain.db.SMaterial;
+import com.jms.domain.db.SMtfNo;
 import com.jms.domain.db.SPic;
 import com.jms.domain.db.SPo;
 import com.jms.domain.db.SPoMaterial;
@@ -19,6 +20,7 @@ import com.jms.domain.db.SSo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.store.WSMaterial;
+import com.jms.domain.ws.store.WSSSoRemark;
 import com.jms.domain.ws.store.WSSpo;
 import com.jms.domain.ws.store.WSSpoMaterial;
 import com.jms.domain.ws.store.WSSpoRemark;
@@ -27,6 +29,7 @@ import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.s.SCompanyCoRepository;
 import com.jms.repositories.s.SCurrencyTypeRepository;
 import com.jms.repositories.s.SMaterialRepository;
+import com.jms.repositories.s.SMtfNoRepository;
 import com.jms.repositories.s.SSoRepository;
 import com.jms.repositories.s.SSpoMaterialRepository;
 import com.jms.repositories.s.SSpoRepository;
@@ -66,6 +69,9 @@ public class SsoService {
 
 	@Autowired
 	private  SMaterialRepository sMaterialRepository;
+	
+	@Autowired private SMtfNoRepository sMtfNoRepository;
+	@Autowired private SMtfNoService sMtfNoService;
 
 	public Valid saveSSo(WSSso wsSso) throws Exception {
 		
@@ -108,6 +114,22 @@ public class SsoService {
 	
 		SSo dbSso = (SSo)BeanUtil.shallowCopy(wsSso, SSo.class, sso);
 		
+		if(wsSso.getIdSo()==null||wsSso.getIdSo().equals(0l))
+		{
+		SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 11l);
+	    if(smtfNo==null)
+	    {
+	    	sMtfNoService.loadSmtfNosByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+	    	smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 11l);
+	    }
+	    long currentVal =smtfNo.getCurrentVal()+1;
+	    smtfNo.setCurrentVal(currentVal);
+	    sMtfNoRepository.save(smtfNo);
+		
+	    String codeSo = smtfNo.getPrefix()+String.format("%08d", currentVal);
+	    dbSso.setCodeSo(codeSo);
+		}
+		
 		if(wsSso.getFreightTermId()!=null)
 		{
 			dbSso.setSTermDicByFreightTerm(sStermDicRepository.findOne(wsSso.getFreightTermId()));
@@ -135,6 +157,20 @@ public class SsoService {
 		
 
 		return dbSso;
+	}
+	
+	
+
+	public Valid saveSoAutoRemark(WSSSoRemark wsSSoRemark) {
+		
+		SSo sso = sSoRepository.findOne(wsSSoRemark.getIdSo());	
+		sso.setAutoRemark(wsSSoRemark.getAutoRemark());
+		
+		sSoRepository.save(sso);
+		
+		Valid valid = new Valid();
+		valid.setValid(true);
+		return valid;
 	}
 	
 	protected WSSso toWSSso(SSo sso) throws Exception

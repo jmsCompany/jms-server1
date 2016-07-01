@@ -14,5 +14,9 @@ public interface PStopsPlanRepository extends JpaRepository<PStopsPlan, Long>{
 	
 	@Query("select p from PStopsPlan p where p.company.idCompany=?1  and DATE(p.planSt)=CURDATE()")
 	public List<PStopsPlan> getPStopsPlansByCompanyId(Long companyId);
+	
+	
+	@Query("select p from PStopsPlan p where p.company.idCompany=?1  and p.MMachine.idMachine=?2 and DATE(p.planSt)=CURDATE()")
+	public List<PStopsPlan> getPStopsPlansByCompanyIdAndMachineId(Long companyId,Long machineId);
 
 }

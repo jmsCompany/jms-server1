@@ -11,7 +11,9 @@ import com.jms.repositories.company.CompanyRepository;
 
 @Service @Transactional(readOnly=true)
 public class RoleAdapter {
+
 	private @Autowired  CompanyRepository companyRepository;
+
 	public Roles toDBRole(WSRoles wsRoles) throws Exception
 	{
 		Roles roles = (Roles)BeanUtil.shallowCopy(wsRoles,Roles.class,null);

@@ -73,6 +73,8 @@ public class WSSMtfMaterial {
     private Long qtyStored;
     
     
+    private Long inventoryId;
+    
 	public Long getIdMtfMaterial() {
 		return idMtfMaterial;
 	}
@@ -367,6 +369,12 @@ public class WSSMtfMaterial {
 	}
 	public void setCurrentBin(String currentBin) {
 		this.currentBin = currentBin;
+	}
+	public Long getInventoryId() {
+		return inventoryId;
+	}
+	public void setInventoryId(Long inventoryId) {
+		this.inventoryId = inventoryId;
 	}
     
   

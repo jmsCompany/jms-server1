@@ -14,5 +14,10 @@ public interface PActualSetupRepository extends JpaRepository<PActualSetup, Long
 
 	@Query("select p from PActualSetup p where p.PCPp.idCPp=?1 order by p.actSt desc")
 	public List<PActualSetup> findByCppId(Long cppId);
+	
+	
+	@Query("select p from PActualSetup p where p.PCPp.company.idCompany=?1 order by p.actSt desc")
+	public List<PActualSetup> findByCompanyId(Long companyId);
+	
 
 }

@@ -19,6 +19,7 @@ import com.jms.repositories.p.PCPpRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PSubCodeRepository;
 import com.jms.repositories.p.PUnplannedStopsRepository;
+import com.jms.web.security.SecurityUtils;
 
 @Service
 @Transactional
@@ -34,7 +35,7 @@ public class PUnplannedStopsService {
 	private PCPpRepository pCPpRepository;
 	@Autowired 
 	private  PStatusDicRepository pStatusDicRepository;
-	
+	@Autowired private SecurityUtils securityUtils;
 	
 	@Transactional(readOnly=false)
 	public WSPUnplannedStops saveWSPStopsPlan(WSPUnplannedStops wsPUnplannedStops) throws Exception {
@@ -53,6 +54,7 @@ public class PUnplannedStopsService {
 			pUnplannedStops.setOpSt(new Date());
 		}
 		PUnplannedStops dbPUnplannedStops= toDBPUnplannedStops(wsPUnplannedStops,pUnplannedStops);
+		dbPUnplannedStops.setIdCompany(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 		dbPUnplannedStops = pUnplannedStopsRepository.save(dbPUnplannedStops);
 		wsPUnplannedStops.setIdUnplannedStops(dbPUnplannedStops.getIdUnplannedStops());
 		return wsPUnplannedStops;		
@@ -65,11 +67,14 @@ public class PUnplannedStopsService {
 	@Transactional(readOnly=false)
 	public Valid updateWSPStopsPlan(Long machineId, Long type) {
 		
+		logger.debug("更改 停机状态： "+machineId+", type: " +type);
 		Valid v = new Valid();
 		List<PUnplannedStops> pUnplannedStops =pUnplannedStopsRepository.getByMachineIdAndStatusId(machineId,18l);
-		if(pUnplannedStops!=null)
+		if(pUnplannedStops!=null&&!pUnplannedStops.isEmpty())
 		{
 			PUnplannedStops p = pUnplannedStops.get(0);
+			
+			logger.debug("更改 停机状态： "+ p.getIdUnplannedStops() +",  " + p.getIdMachine() +" type: " +type);
 		    if(type.equals(0l))
 		    {
 		    	p.setEqSt(new Date());
@@ -120,10 +125,10 @@ public class PUnplannedStopsService {
 	}
 	
 	@Transactional(readOnly=true) 
-	public List<WSPUnplannedStops> findWSPUnplannedStopsBySubCodeId(Long pSubCodeId) throws Exception
+	public List<WSPUnplannedStops> findWSPUnplannedStopsBySubCodeId(Long pSubCodeId, Long companyId) throws Exception
 	{	
 	
-		List<PUnplannedStops> pUnplannedStops =pUnplannedStopsRepository.getByPSubCodeId(pSubCodeId);
+		List<PUnplannedStops> pUnplannedStops =pUnplannedStopsRepository.getByPSubCodeId(pSubCodeId,companyId);
 		List<WSPUnplannedStops>  ws = new ArrayList<WSPUnplannedStops>();
 		for(PUnplannedStops p: pUnplannedStops)
 		{

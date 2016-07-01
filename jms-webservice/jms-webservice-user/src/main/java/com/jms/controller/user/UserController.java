@@ -1,6 +1,8 @@
 package com.jms.controller.user;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,14 +15,17 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import com.jms.acl.SecuredObjectService;
+import com.jms.domain.GroupTypeEnum;
 import com.jms.domain.SandVikRoleEnum;
 import com.jms.domain.db.Apps;
+import com.jms.domain.db.GroupAuthorities;
 import com.jms.domain.db.GroupMembers;
 import com.jms.domain.db.Groups;
 import com.jms.domain.db.PCPp;
 import com.jms.domain.db.PCheckTime;
 import com.jms.domain.db.PRoutineDAtt;
 import com.jms.domain.db.PRoutineDCategory;
+import com.jms.domain.db.Roles;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSAndriodMenuItem;
@@ -28,8 +33,10 @@ import com.jms.domain.ws.WSFileMeta;
 import com.jms.domain.ws.WSMenu;
 import com.jms.domain.ws.WSRoles;
 import com.jms.domain.ws.WSSelectObj;
+import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.WSUser;
 import com.jms.domain.ws.WSUserProfile;
+import com.jms.domain.ws.WSUserRoles;
 import com.jms.domain.ws.m.WSMachine;
 import com.jms.domain.ws.production.WSPCppAndriod;
 import com.jms.domain.ws.production.WSPWo;
@@ -37,7 +44,11 @@ import com.jms.domainadapter.UserAdapter;
 import com.jms.repositories.p.PCPpRepository;
 import com.jms.repositories.system.AppsRepository;
 import com.jms.repositories.user.GroupMemberRepository;
+import com.jms.repositories.user.GroupRepository;
+import com.jms.repositories.user.GroupTypeRepository;
+import com.jms.repositories.user.RoleRepository;
 import com.jms.repositories.user.UsersRepository;
+import com.jms.service.user.GroupService;
 import com.jms.service.user.UserService;
 import com.jms.service.user.WSUsersValidator;
 import com.jms.web.security.JMSUserDetails;
@@ -49,6 +60,8 @@ public class UserController {
 	
 	@Autowired @Qualifier("userService")
 	private UserService userService;
+	@Autowired 
+	private GroupService groupService;
 	
 	@Autowired 
 	private UserAdapter userAdapter;
@@ -66,6 +79,19 @@ public class UserController {
 	private SecurityUtils securityUtils;
 	@Autowired
 	private PCPpRepository pCPpRepository;
+	
+	
+	@Autowired
+	private GroupRepository groupRepository;
+	
+	@Autowired
+	private  GroupTypeRepository groupTypeRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
+	
+//	@Autowired
+//	private GroupAuthoritiesRepository groupAuthoritiesRepository;
 	
 	/*
 	@InitBinder
@@ -91,11 +117,13 @@ public class UserController {
 		userProfile.setLogoURL("www.sandvik.com");
 		userProfile.setIdCompany(u.getCompany().getIdCompany());
 		userProfile.setName(u.getName());
-		userProfile.setDepartment("生产部");
+		userProfile.setDepartment("");
 		Boolean isOP= false;
 		for(GroupMembers g:u.getGroupMemberses())
 		{
-			if(g.getRoles().getRole().equals("OP"))
+			
+//			g.getGroups().getGroupType().getIdGroupType().equals(5l)&&
+			if(g.getGroups().getGroupName().equals("OP"))
 			{
 				isOP=true;
 				Long companyId= u.getCompany().getIdCompany();
@@ -110,40 +138,52 @@ public class UserController {
 					m.setCppId(cpp.getIdCPp());
 					
 					//产品图纸
-					if(cpp.getPRoutineD().getPRoutine()!=null)
+					if(cpp.getPRoutineD()!=null)
 					{
-						if(cpp.getPRoutineD().getPRoutine().getPDraw()!=null)
+						if(cpp.getPRoutineD().getPRoutine()!=null)
 						{
-							if(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawAtt()!=null)
+							if(cpp.getPRoutineD().getPRoutine().getPDraw()!=null)
 							{
-								WSFileMeta f = new WSFileMeta();
-								f.setName(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawAtt());
-								f.setDescription("产品图纸");
-								m.getFiles().add(f);
-								m.setDrawNo(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawNo());
-								m.setDrawVer(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawVer());
+								if(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawAtt()!=null)
+								{
+									WSFileMeta f = new WSFileMeta();
+									f.setName(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawAtt());
+									f.setDescription("产品图纸");
+									m.getFiles().add(f);
+									m.setDrawNo(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawNo());
+									m.setDrawVer(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawVer());
+								}
 							}
+							
 						}
 						
+						
+						//工种
+						for(PRoutineDCategory pr:cpp.getPRoutineD().getPRoutineDCategories())
+						{
+							m.getCategories().add(pr.getClass().getSimpleName());
+						}
 					}
 					
-					//工种
-					for(PRoutineDCategory pr:cpp.getPRoutineD().getPRoutineDCategories())
-					{
-						m.getCategories().add(pr.getClass().getSimpleName());
-					}
+				
 				 
 					m.setFt(cpp.getPlanFt().getTime());
 					m.setSt(cpp.getPlanSt().getTime());
 					
 				//	System.out.println("plan st: " + cpp.getPlanFt().getTime() +", plan ft: " + cpp.getPlanFt().getTime());
-					if(cpp.getMMachine().getPLine()!=null)
+					
+					if(cpp.getMMachine()!=null)
 					{
-						m.setLine(cpp.getMMachine().getPLine().getPline());
+						if(cpp.getMMachine().getPLine()!=null)
+						{
+							m.setLine(cpp.getMMachine().getPLine().getPline());
+						}
+						m.setmNo(cpp.getMMachine().getCode());
+						m.setIdMachine(cpp.getMMachine().getIdMachine());
 					}
 				
-					m.setmNo(cpp.getMMachine().getCode());
-					m.setIdMachine(cpp.getMMachine().getIdMachine());
+				
+		
 					m.setOp(cpp.getUsers().getName());
 					m.setpNo(cpp.getPWo().getSSo().getSMaterial().getPno());
 					m.setQty(cpp.getQty());
@@ -161,6 +201,7 @@ public class UserController {
 					m.setWoNo(cpp.getPWo().getWoNo());
 					m.setShift(cpp.getPShiftPlanD().getShift());
 					m.setSt(cpp.getPlanSt().getTime());
+				
 					m.setStdWtLabor(cpp.getPRoutineD().getStdWtLabor());
 					m.setStdWtMachine(cpp.getPRoutineD().getStdWtMachine());
 					m.setStdWtSetup(cpp.getPRoutineD().getStdWtSetup());
@@ -238,6 +279,13 @@ public class UserController {
 	
 	
 	
+	@Transactional(readOnly=false)
+	@RequestMapping(value="/user/updateInfo", method=RequestMethod.POST)
+	public WSUser updateInfo(@RequestBody WSUser wsUser) throws Exception {
+		return userService.updateInfo(wsUser);
+	}
+	
+	
 	@Transactional(readOnly=true)
 	@RequestMapping(value="/getAndroidMenu", method=RequestMethod.GET)
 	public List<WSAndriodMenuItem> getAndroidMenu() throws Exception {
@@ -248,17 +296,18 @@ public class UserController {
 		//System.out.println(" get android menu: the token is:  " + ud.getToken());
 		for(GrantedAuthority g: ud.getAuthorities())
 		{
-			if(g.getAuthority().equals(SandVikRoleEnum.OP.name()))
+			Groups opGroup = groupRepository.findGroupByGroupNameAndCompany(SandVikRoleEnum.OP.name(), securityUtils.getCurrentDBUser().getCompany().getIdCompany(),GroupTypeEnum.Role.name());
+			
+			if(opGroup!=null&&g.getAuthority().equals(""+opGroup.getIdGroup()))
 			{
-				System.out.println(" get OP: ");
-				WSAndriodMenuItem i1 = new WSAndriodMenuItem("OP","操作员","MRstopforOP","MRstopforOP","需料与停机（操作工人的主界面");
-				WSAndriodMenuItem i2 = new WSAndriodMenuItem("OP","操作员","Qtycheck","Qtycheck","到点检查已经生产的数量");
-				WSAndriodMenuItem i3 = new WSAndriodMenuItem("OP","操作员","Stopbyplan","Stopbyplan","按计划停机");
-				WSAndriodMenuItem i4 = new WSAndriodMenuItem("OP","操作员","Actualsetup","Actualsetup","实际装载时间记录");
+				WSAndriodMenuItem i1 = new WSAndriodMenuItem("OP","操作员","MRstopforOP","MRstopforOP","需料停机");
+				WSAndriodMenuItem i2 = new WSAndriodMenuItem("OP","操作员","Qtycheck","Qtycheck","到点检查");
+				WSAndriodMenuItem i3 = new WSAndriodMenuItem("OP","操作员","Stopbyplan","Stopbyplan","计划停机");
+				WSAndriodMenuItem i4 = new WSAndriodMenuItem("OP","操作员","Actualsetup","Actualsetup","实际装载");
 				WSAndriodMenuItem i5 = new WSAndriodMenuItem("OP","操作员","Checklist","Checklist","检查清单");
-				WSAndriodMenuItem i6 = new WSAndriodMenuItem("OP","操作员","Eqstopforop","Eqstopforop","由操作工人填写设备故障原因");
+				WSAndriodMenuItem i6 = new WSAndriodMenuItem("OP","操作员","Eqstopforop","Eqstopforop","设备故障");
 				//WSAndriodMenuItem i7 = new WSAndriodMenuItem("OP","操作员","Ehslogin","Ehslogin","EHS登录");
-				WSAndriodMenuItem i8 = new WSAndriodMenuItem("OP","操作员","Thinkthroughthetask","Thinkthroughthetask","进行安全检查");
+				WSAndriodMenuItem i8 = new WSAndriodMenuItem("OP","操作员","Thinkthroughthetask","Thinkthroughthetask","安全检查");
 				items.add(i1);
 				items.add(i2);
 				items.add(i3);
@@ -269,9 +318,12 @@ public class UserController {
 				items.add(i8);
 				break;
 			}
-			if(g.getAuthority().equals(SandVikRoleEnum.equipment.name()))
+			Groups equipmentGroup = groupRepository.findGroupByGroupNameAndCompany(SandVikRoleEnum.equipment.name(), securityUtils.getCurrentDBUser().getCompany().getIdCompany(),GroupTypeEnum.Role.name());
+		System.out.println("");
+			
+			if(equipmentGroup!=null&&g.getAuthority().equals(""+equipmentGroup.getIdGroup()))
 			{
-				System.out.println(" get equipment: ");
+				//System.out.println(" get equipment: ");
 				WSAndriodMenuItem i1 = new WSAndriodMenuItem("equipment","设备","Unplanned_equipment","Unplanned_equipment","计划外的设备原因导致停机");
 				WSAndriodMenuItem i2 = new WSAndriodMenuItem("equipment","设备","Eqstopforeq","Eqstopforeq","由设备部员工填写设备故障原因");
 				WSAndriodMenuItem i3 = new WSAndriodMenuItem("equipment","设备","Maintainance","Maintainance","设备保养计划");
@@ -282,28 +334,33 @@ public class UserController {
 				
 				break;
 			}
-			if(g.getAuthority().equals(SandVikRoleEnum.quality.name()))
+			
+			Groups qualityGroup = groupRepository.findGroupByGroupNameAndCompany(SandVikRoleEnum.quality.name(), securityUtils.getCurrentDBUser().getCompany().getIdCompany(),GroupTypeEnum.Role.name());
+			if(qualityGroup!=null&&g.getAuthority().equals(""+qualityGroup.getIdGroup()))
 			{
-				System.out.println(" get quality: ");
+				//System.out.println(" get quality: ");
 				WSAndriodMenuItem i1 = new WSAndriodMenuItem("quality","质量","Unplanned_quality","Unplanned_quality","计划外的质量原因导致停机");
 				WSAndriodMenuItem i2 = new WSAndriodMenuItem("quality","质量","Problem_des","Problem_des","质量问题描述");
 				items.add(i1);
 				items.add(i2);
 				break;
 			}
-			if(g.getAuthority().equals(SandVikRoleEnum.warehouse.name()))
+			Groups warehouseGroup = groupRepository.findGroupByGroupNameAndCompany(SandVikRoleEnum.warehouse.name(), securityUtils.getCurrentDBUser().getCompany().getIdCompany(),GroupTypeEnum.Role.name());
+			if(warehouseGroup!=null&&g.getAuthority().equals(""+warehouseGroup.getIdGroup()))
 			{
-				System.out.println(" get warehouse: ");
-				WSAndriodMenuItem i1 = new WSAndriodMenuItem("warehouse","仓库","Mrforwh","Mrforwh","仓库发料满足工人的需料要求");
-				WSAndriodMenuItem i2 = new WSAndriodMenuItem("warehouse","仓库","Unplanned_ms","Unplanned_ms","计划外的缺料导致停机");
-				WSAndriodMenuItem i3 = new WSAndriodMenuItem("warehouse","仓库","Msstopforwh","Msstopforwh","仓库发料满足工人的需料要求");
-				WSAndriodMenuItem i4 = new WSAndriodMenuItem("warehouse","仓库","Returnrmlist","Returnrmlist","退料列表");
-				WSAndriodMenuItem i5 = new WSAndriodMenuItem("warehouse","仓库","Returnrm","Returnrm","新建退料");
-				WSAndriodMenuItem i6 = new WSAndriodMenuItem("warehouse","仓库","Receiving","Receiving","从供应商处收货");
-				WSAndriodMenuItem i7 = new WSAndriodMenuItem("warehouse","仓库","Delivery","Delivery","发货给客户");
-				WSAndriodMenuItem i8 = new WSAndriodMenuItem("warehouse","仓库","RTV","RTV","退货给供应商");
-				WSAndriodMenuItem i9 = new WSAndriodMenuItem("warehouse","仓库","Inventorysummary","Inventorysummary","库存汇总");
-				WSAndriodMenuItem i10 = new WSAndriodMenuItem("warehouse","仓库","Inventorydetail","Inventorydetail","库存明细");
+				//System.out.println(" get warehouse: ");
+				WSAndriodMenuItem i1 = new WSAndriodMenuItem("warehouse","仓库","Mrforwh","Mrforwh","需料配料");
+				WSAndriodMenuItem i2 = new WSAndriodMenuItem("warehouse","仓库","Unplanned_ms","Unplanned_ms","缺料停机");
+				WSAndriodMenuItem i3 = new WSAndriodMenuItem("warehouse","仓库","Msstopforwh","Msstopforwh","缺料配料");
+				WSAndriodMenuItem i4 = new WSAndriodMenuItem("warehouse","仓库","Returnrm","Returnrm","手动流转");
+				WSAndriodMenuItem i5 = new WSAndriodMenuItem("warehouse","仓库","Receiving2","Receiving2","新建来料");
+				WSAndriodMenuItem i6 = new WSAndriodMenuItem("warehouse","仓库","Receiving3","Receiving3","检验入库");
+				WSAndriodMenuItem i7 = new WSAndriodMenuItem("warehouse","仓库","Delivery","Delivery","出货管理");
+				WSAndriodMenuItem i8 = new WSAndriodMenuItem("warehouse","仓库","RTV","RTV","采购退货");
+				WSAndriodMenuItem i9 = new WSAndriodMenuItem("warehouse","仓库","RFC","RFC","销售退货");
+				WSAndriodMenuItem i10 = new WSAndriodMenuItem("warehouse","仓库","Inventorysummary","Inventorysummary","库存汇总");
+				WSAndriodMenuItem i11 = new WSAndriodMenuItem("warehouse","仓库","Inventorydetail","Inventorydetail","库存明细");
+				WSAndriodMenuItem i12 = new WSAndriodMenuItem("warehouse","仓库","pmreport","pmreport","发料报告");
 				items.add(i1);
 				items.add(i2);
 				items.add(i3);
@@ -314,11 +371,14 @@ public class UserController {
 				items.add(i8);
 				items.add(i9);
 				items.add(i10);
+				items.add(i11);
+				items.add(i12);
 				break;
 			}
-			if(g.getAuthority().equals(SandVikRoleEnum.supervisor.name()))
+			Groups supervisorGroup = groupRepository.findGroupByGroupNameAndCompany(SandVikRoleEnum.supervisor.name(), securityUtils.getCurrentDBUser().getCompany().getIdCompany(),GroupTypeEnum.Role.name());
+			if(supervisorGroup!=null&&g.getAuthority().equals(""+supervisorGroup.getIdGroup()))
 			{
-				System.out.println(" get supervisor: ");
+				//System.out.println(" get supervisor: ");
 				WSAndriodMenuItem i1 = new WSAndriodMenuItem("supervisor","主管","MRstopforOP","MRstopforOP","需料与停机（操作工人的主界面");
 				WSAndriodMenuItem i2 = new WSAndriodMenuItem("supervisor","主管","Qtycheck","Qtycheck","到点检查已经生产的数量");
 				WSAndriodMenuItem i3 = new WSAndriodMenuItem("supervisor","主管","Stopbyplan","Stopbyplan","按计划停机");
@@ -358,5 +418,137 @@ public class UserController {
 		return ws;
 	}
 	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/u/userList", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<WSUser> findUsersByCompanyId() throws Exception
+	{
+		List<WSUser> ws = new ArrayList<WSUser>();
+		List<Users> users = usersRepository.findUsersByIdCompany(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+		for(Users u : users)
+		{
+			ws.add(userAdapter.toWSUser(u));
+		}
+		return ws;
+	}
+	
+
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/u/userTable", method=RequestMethod.GET)
+	public WSTableData  findUserTableByCompanyId(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		
+		List<Users> users = usersRepository.findUsersByIdCompany(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(users.size()<start + length)
+			end =users.size();
+		else
+			end =start + length;
+		for (int i = start; i < end; i++) {
+			Users w = users.get(i);
+			String name = (w.getName()==null)?"":w.getName();
+			String mobile = (w.getMobile()==null)?"":w.getMobile();
+			String email = (w.getEmail()==null)?"":w.getEmail();
+			String username = (w.getUsername()==null)?"":w.getUsername();
+			if(username.contains("@@"))
+			{
+				username = username.substring(0,username.indexOf("@@"));
+			}
+			String gender = (w.getSysDicDByGender()==null)?"":w.getSysDicDByGender().getName();
+				
+			String[] d = {name,gender,username,mobile,email,""+w.getIdUser()};
+			lst.add(d);
+
+		}
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(users.size());
+		t.setRecordsFiltered(users.size());
+	    t.setData(lst);
+	    return t;
+	}
+	
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/u/addRoles", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public Valid addRolesforUser( @RequestBody WSUserRoles wsUserRoles) throws Exception
+	{
+		return userService.addRolesforUser(wsUserRoles);
+	}
+	
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/u/getRolesByUserId", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<WSRoles> getRolesByUserId(@RequestParam Long userId) throws Exception
+	{
+		return userService.getRolesByUserId(userId);
+	}
+	
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/u/getWSMenuList", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<WSMenu> getWSMenuList() throws Exception
+	{
+		List<Apps> appList =appsRepository.findAll();
+		
+		List<WSMenu> wsMenuList = new ArrayList<WSMenu>();
+		for(Apps a : appList)
+		{
+			WSMenu item = new WSMenu();
+			item.setGroup(a.getGroups());
+			item.setName(a.getAppName());
+			item.setId(a.getIdApp());
+			item.setUrl(a.getUrl());
+		
+			wsMenuList.add(item);
+		}
+		
+		return wsMenuList;
+	}
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/u/getWSMenuListByRoleId", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<WSMenu> getWSMenuListByRoleId(@RequestParam Long roleId) throws Exception
+	{
+		
+		Roles r = roleRepository.findOne(roleId);
+		Groups g = groupRepository.findGroupByGroupNameAndCompany(r.getRole(), securityUtils.getCurrentDBUser().getCompany().getIdCompany(), GroupTypeEnum.Role.name());
+		
+		List<Apps> appList =appsRepository.findAll();
+		
+		List<WSMenu> wsMenuList = new ArrayList<WSMenu>();
+		Map<Apps, String> smap= securedObjectService.getSecuredObjectsWithPermissions(g, appList);
+		
+		for(Apps a : smap.keySet())
+		{
+			WSMenu item = new WSMenu();
+			item.setGroup(a.getGroups());
+			item.setName(a.getAppName());
+			item.setId(a.getIdApp());
+			item.setUrl(a.getUrl());
+			item.setPermission(smap.get(a));
+			wsMenuList.add(item);
+		}
+		
+		return wsMenuList;
+	}
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/u/getUserByUserId", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	public WSUser getUserByUserId(@RequestParam Long userId) throws Exception
+	{
+		return userService.getUsersByIdUser(userId);
+	}
+	
+	
+	
+
 
 }

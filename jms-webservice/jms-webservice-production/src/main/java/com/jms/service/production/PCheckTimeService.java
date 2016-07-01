@@ -54,13 +54,29 @@ public class PCheckTimeService {
 	@Transactional(readOnly=false)
 	public WSPCheckTime saveWSPCheckTime(WSPCheckTime wsPCheckTime) throws Exception {
 		PCheckTime pCheckTime;
+		Long machineId = wsPCheckTime.getmMachineId();
+		
+		 List<PCheckTime> pcs = pCheckTimeRepository.getByMachineId(machineId);
+		 Long dbCId = 0l;
+		 if(pcs!=null&&!pcs.isEmpty())
+		 {
+			 dbCId = pcs.get(0).getIdCheckTime();
+		 }
 		if(wsPCheckTime.getIdCheckTime()!=null&&!wsPCheckTime.getIdCheckTime().equals(0l))
 		{
 			pCheckTime = pCheckTimeRepository.findOne(wsPCheckTime.getIdCheckTime());
+			if(!dbCId.equals(0l)&&!pCheckTime.getIdCheckTime().equals(dbCId))
+			{
+				return wsPCheckTime;
+			}
 		}
 		else
 		{
 			pCheckTime = new PCheckTime();
+			if(!dbCId.equals(0l))
+			{
+				return wsPCheckTime;
+			}
 	
 		}
 		PCheckTime dbPCheckTime= toDBPCheckTime(wsPCheckTime,pCheckTime);

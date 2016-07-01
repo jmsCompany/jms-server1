@@ -25,6 +25,8 @@ public class WSPMr {
     
     private String op;
     private String machine;
+    
+    private Long binId;
 
 	public Long getIdMaterial() {
 		return idMaterial;
@@ -152,6 +154,14 @@ public class WSPMr {
 
 	public void setMachine(String machine) {
 		this.machine = machine;
+	}
+
+	public Long getBinId() {
+		return binId;
+	}
+
+	public void setBinId(Long binId) {
+		this.binId = binId;
 	}
 
 }

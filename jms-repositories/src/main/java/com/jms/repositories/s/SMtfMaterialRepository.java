@@ -45,6 +45,7 @@ public interface SMtfMaterialRepository  extends JpaRepository<SMtfMaterial, Lon
 	public List<SBin> getToBinsBySpoIdAndMaterialId(Long spoId,Long materialId);
 	
 	
-
+	@Query("select s from SMtfMaterial s where s.SMtf.idWo=?1 and s.SMaterial.idMaterial=?2")
+	public List<SMtfMaterial> getByWoIdAndMaterialId(Long woId,Long materialId);
 		
 }

@@ -138,14 +138,6 @@ public class IUserServiceImpl implements IUserService {
 	@Transactional(readOnly=true)
 	public List<WSUser> getUsersByIdGroup(Long idGroup) throws Exception
 	{
-		//Pageable p = new PageRequest(0,1);
-		// Page<Users> requestedPage = usersRepository.findAll(p);
-		// for(Users u:requestedPage.getContent())
-		// {
-		//	 logger.debug("uid:   "+u.getIdUser());
-		// }
-		//return requestedPage.getContent();
-	
 
 		List<WSUser> wsUsers = new ArrayList<WSUser>(0);
 		for(Users u:usersRepository.findUsersByIdGroup(idGroup))
@@ -157,4 +149,7 @@ public class IUserServiceImpl implements IUserService {
 		return wsUsers;
 	}
 	
+	
+	
+
 }

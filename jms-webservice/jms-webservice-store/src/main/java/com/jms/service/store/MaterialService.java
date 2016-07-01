@@ -1,5 +1,9 @@
 package com.jms.service.store;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
@@ -7,9 +11,16 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.csvreader.CsvReader;
+import com.jms.domain.db.Company;
+import com.jms.domain.db.FCostCenter;
+import com.jms.domain.db.MMachine;
 import com.jms.domain.db.SMaterial;
+import com.jms.domain.db.SMaterialCategory;
 import com.jms.domain.db.SMaterialPic;
 import com.jms.domain.db.SPic;
+import com.jms.domain.db.SUnitDic;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.store.WSMaterial;
 import com.jms.domainadapter.BeanUtil;
@@ -252,6 +263,93 @@ public class MaterialService {
 
 		
 		return wsMaterial;
+	}
+	
+	
+	
+	
+public void loadMaterialsByCompanyId(InputStream inputStream,Long companyId)throws IOException {
+		
+	    Company company =companyRepository.findOne(companyId);
+		CsvReader reader = new CsvReader(inputStream,',', Charset.forName("UTF-8"));
+		reader.readHeaders();
+	
+		while(reader.readRecord())
+		{
+			SMaterial s = new  SMaterial();
+			s.setPno(reader.get(0));
+			s.setRev(reader.get(1));
+			s.setDes(reader.get(2));
+			
+			Long type = Long.parseLong(reader.get(3));
+			s.setSMaterialTypeDic(sMaterialTypeDicRepository.findOne(type));
+			
+			String pUnit = reader.get(4); //采购单位
+		//	String sUnit = reader.get(5);//库存单位
+			
+			if(pUnit!=null&&!pUnit.trim().isEmpty())
+			{
+				SUnitDic sUnitDic = sUnitDicRepository.findByName(pUnit.trim());
+				if(sUnitDic==null)
+				{
+					sUnitDic = new SUnitDic();
+					sUnitDic.setName(pUnit.trim());
+					sUnitDic =sUnitDicRepository.save(sUnitDic);
+				}
+				s.setSUnitDicByUnitPur(sUnitDic);
+				s.setSUnitDicByUnitInf(sUnitDic);
+			}
+			s.setBrand(reader.get(6));
+			String cost = reader.get(7);
+			if(cost!=null&&!cost.trim().isEmpty())
+			{
+				s.setCost(new BigDecimal(cost.trim()));
+			}
+			
+			String costCenter =reader.get(8);
+			if(costCenter!=null&&!costCenter.trim().isEmpty())
+			{
+				FCostCenter fCostCenter= fCostCenterRepository.getByCompanyIdAndCostCenterNo(companyId, Long.parseLong(costCenter.trim()));
+				if(fCostCenter==null)
+				{
+					fCostCenter = new FCostCenter();
+					fCostCenter.setCompany(company);
+					fCostCenter.setCostCenterNo(Long.parseLong(costCenter.trim()));
+					fCostCenter = fCostCenterRepository.save(fCostCenter);
+					
+				
+				}
+				s.setFCostCenter(fCostCenter);
+			}
+			String category = reader.get(9);
+			if(category!=null&&!category.trim().isEmpty())
+			{
+				SMaterialCategory sMaterialCategory =sMaterialCategoryRepository.findByIdCompanyAndName(companyId, category.trim());
+				if(sMaterialCategory==null)
+				{
+					sMaterialCategory = new SMaterialCategory();
+					sMaterialCategory.setCompany(company);
+					sMaterialCategory.setName(category.trim());
+					sMaterialCategory = sMaterialCategoryRepository.save(sMaterialCategory);
+				}
+				s.setSMaterialCategory(sMaterialCategory);
+			}
+			String mpq = reader.get(10);
+			if(mpq!=null&&!mpq.trim().isEmpty())
+			{
+			   s.setMpq(Long.parseLong(mpq.trim()));
+			}
+			String safety_inv = reader.get(11);
+			
+			if(safety_inv!=null&&!safety_inv.trim().isEmpty())
+			{
+			   s.setSafetyInv(Long.parseLong(safety_inv.trim()));
+			}
+			s.setCompany(company);
+			sMaterialRepository.save(s);
+			
+		}
+		
 	}
 
 }

@@ -33,9 +33,9 @@ public class PRoutineD  implements java.io.Serializable {
      private PRoutine PRoutine;
      private String routeNo;
      private String des;
-     private Long stdWtLabor;
-     private Long stdWtMachine;
-     private Long stdWtSetup;
+     private Float stdWtLabor;
+     private Float stdWtMachine;
+     private Float stdWtSetup;
      private Set<PRoutineDCategory> PRoutineDCategories = new HashSet<PRoutineDCategory>(0);
      private Set<QFaiInFinal> QFaiInFinals = new HashSet<QFaiInFinal>(0);
      private Set<PWoRoute> PWoRoutes = new HashSet<PWoRoute>(0);
@@ -46,23 +46,6 @@ public class PRoutineD  implements java.io.Serializable {
     public PRoutineD() {
     }
 
-    public PRoutineD(PWorkCenter PWorkCenter, Users users, PAttDraw PAttDraw, PRoutine PRoutine, String routeNo, String des, Long stdWtLabor, Long stdWtMachine, Long stdWtSetup, Set<PRoutineDCategory> PRoutineDCategories, Set<QFaiInFinal> QFaiInFinals, Set<PWoRoute> PWoRoutes, Set<PRoutineDAtt> PRoutineDAtts, Set<QCheckList> QCheckLists, Set<PCPp> PCPps) {
-       this.PWorkCenter = PWorkCenter;
-       this.users = users;
-       this.PAttDraw = PAttDraw;
-       this.PRoutine = PRoutine;
-       this.routeNo = routeNo;
-       this.des = des;
-       this.stdWtLabor = stdWtLabor;
-       this.stdWtMachine = stdWtMachine;
-       this.stdWtSetup = stdWtSetup;
-       this.PRoutineDCategories = PRoutineDCategories;
-       this.QFaiInFinals = QFaiInFinals;
-       this.PWoRoutes = PWoRoutes;
-       this.PRoutineDAtts = PRoutineDAtts;
-       this.QCheckLists = QCheckLists;
-       this.PCPps = PCPps;
-    }
    
      @Id @GeneratedValue(strategy=IDENTITY)
     
@@ -129,30 +112,30 @@ public class PRoutineD  implements java.io.Serializable {
         this.des = des;
     }
     
-    @Column(name="std_wt_labor", precision=10, scale=0)
-    public Long getStdWtLabor() {
+    @Column(name="std_wt_labor")
+    public Float getStdWtLabor() {
         return this.stdWtLabor;
     }
     
-    public void setStdWtLabor(Long stdWtLabor) {
+    public void setStdWtLabor(Float stdWtLabor) {
         this.stdWtLabor = stdWtLabor;
     }
     
-    @Column(name="std_wt_machine", precision=10, scale=0)
-    public Long getStdWtMachine() {
+    @Column(name="std_wt_machine")
+    public Float getStdWtMachine() {
         return this.stdWtMachine;
     }
     
-    public void setStdWtMachine(Long stdWtMachine) {
+    public void setStdWtMachine(Float stdWtMachine) {
         this.stdWtMachine = stdWtMachine;
     }
     
-    @Column(name="std_wt_setup", precision=10, scale=0)
-    public Long getStdWtSetup() {
+    @Column(name="std_wt_setup")
+    public Float getStdWtSetup() {
         return this.stdWtSetup;
     }
     
-    public void setStdWtSetup(Long stdWtSetup) {
+    public void setStdWtSetup(Float stdWtSetup) {
         this.stdWtSetup = stdWtSetup;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="PRoutineD")

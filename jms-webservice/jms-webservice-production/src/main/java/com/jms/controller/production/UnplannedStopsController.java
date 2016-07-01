@@ -11,12 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import com.jms.domain.db.MMachine;
 import com.jms.domain.db.PStopsPlan;
+import com.jms.domain.db.PUnplannedStops;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.production.WSPStopsPlan;
 import com.jms.domain.ws.production.WSPUnplannedStops;
+import com.jms.repositories.m.MMachineRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PStopsPlanRepository;
 import com.jms.repositories.p.PUnplannedStopsRepository;
@@ -43,6 +47,7 @@ public class UnplannedStopsController {
 	@Autowired private SecurityUtils securityUtils;
 
 	@Autowired private PStatusDicRepository pStatusDicRepository;
+	@Autowired private MMachineRepository mMachineRepository;
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/p/saveWSPUnplannedStops", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -71,9 +76,44 @@ public class UnplannedStopsController {
 	@RequestMapping(value="/p/findWSPUnplannedStopsBySubCodeId", method=RequestMethod.GET)
 	public List<WSPUnplannedStops> findWSPUnplannedStopsBySubCodeId(@RequestParam("subCodeId") Long subCodeId) throws Exception {
 
-		return pUnplannedStopsService.findWSPUnplannedStopsBySubCodeId(subCodeId);
+		return pUnplannedStopsService.findWSPUnplannedStopsBySubCodeId(subCodeId,securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 	
 	}
 	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/etUnplannedStopsList", method=RequestMethod.GET)
+	public WSTableData  etUnplannedStopsList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		List<PUnplannedStops> pUnplannedStops=pUnplannedStopsRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(pUnplannedStops.size()<start + length)
+			end =pUnplannedStops.size();
+		else
+			end =start + length;
+		for (int i = start; i < end; i++) {
+			PUnplannedStops w = pUnplannedStops.get(i);
+			
+			MMachine m = mMachineRepository.findOne(w.getIdMachine());
+			String opSt =(w.getOpSt()==null)?"":w.getOpSt().toString();
+			String eqSt=(w.getEqSt()==null)?"":w.getEqSt().toString();
+			String eqFt=(w.getEqFt()==null)?"":w.getEqFt().toString();
+			String opFt =(w.getOpFt()==null)?"":w.getOpFt().toString();
+			String subCode="";
+			if(w.getPSubCode()!=null)
+			{
+				subCode =w.getPSubCode().getSubCode()+"_"+w.getPSubCode().getSubDes();
+			}
+			String[] d = {""+m.getCode()+"_"+m.getName(),subCode,opSt,eqSt,eqFt,opFt};
+			lst.add(d);
+
+		}
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(pUnplannedStops.size());
+		t.setRecordsFiltered(pUnplannedStops.size());
+	    t.setData(lst);
+	    return t;
+	}
 
 }

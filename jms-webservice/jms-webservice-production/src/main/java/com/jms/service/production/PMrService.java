@@ -3,7 +3,10 @@ package com.jms.service.production;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.jms.domain.EventTypeEnum;
+import com.jms.domain.NotificationMethodEnum;
+import com.jms.domain.db.EventReceiver;
 import com.jms.domain.db.FCostCenter;
+import com.jms.domain.db.Groups;
 import com.jms.domain.db.PBom;
 import com.jms.domain.db.PMr;
 import com.jms.domain.db.PWo;
@@ -30,6 +37,7 @@ import com.jms.domain.ws.production.WSPWo;
 import com.jms.domain.ws.production.WSPWorkCenter;
 import com.jms.domain.ws.store.WSMaterialQty;
 import com.jms.domainadapter.BeanUtil;
+import com.jms.email.EmailSenderService;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.f.FCostCenterRepository;
 import com.jms.repositories.p.PBomRepository;
@@ -39,6 +47,11 @@ import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PWoRepository;
 import com.jms.repositories.p.PWorkCenterRepository;
 import com.jms.repositories.s.SSoRepository;
+import com.jms.repositories.system.EventReceiverRepository;
+import com.jms.repositories.user.GroupRepository;
+import com.jms.repositories.user.GroupTypeRepository;
+import com.jms.repositories.user.UsersRepository;
+import com.jms.system.INotificationService;
 import com.jms.web.security.SecurityUtils;
 
 @Service
@@ -62,12 +75,27 @@ public class PMrService {
 	private PMrRepository pMrRepository;
 	@Autowired 
 	private PStatusDicRepository pStatusDicRepository;
+	@Autowired
+	private EmailSenderService emailSenderService;
+
+	@Autowired
+	private UsersRepository usersRepository;
 	
 
 	@Autowired
 	private SecurityUtils securityUtils;
 	
-
+	@Autowired
+	private INotificationService notificationService;
+	
+	@Autowired
+	private GroupRepository groupRepository;
+	@Autowired
+	private GroupTypeRepository groupTypeRepository;
+	
+	
+	@Autowired
+	private EventReceiverRepository eventReceiverRepository;
 	
 	@Transactional(readOnly=false)
 	public WSPMr saveWSPMr(WSPMr wsPMr) throws Exception {
@@ -94,7 +122,7 @@ public class PMrService {
 	public List<WSPMr> getWSPMrsByType(Long type) throws Exception {
 		List<WSPMr> wsPMrs = new ArrayList<WSPMr>();
 		
-		for(PMr p: pMrRepository.getByType(type))
+		for(PMr p: pMrRepository.getByTypeAndCompanyId(type, securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
 		{
 			WSPMr w = new WSPMr();
 			w.setBomId(p.getPBom().getIdBom());
@@ -104,6 +132,7 @@ public class PMrService {
 			w.setIdMaterial(s.getIdMaterial());
 			w.setIdMr(p.getIdMr());
 			w.setMachine(p.getPCPp().getMMachine().getCode());
+			//System.out.println("machineX: " +p.getPCPp().getMMachine().getCode() );
 			w.setOp(p.getPCPp().getUsers().getName());
 			w.setPno(s.getPno());
 			w.setQty(p.getQty());
@@ -112,6 +141,7 @@ public class PMrService {
 			w.setStatus(p.getPStatusDic().getName());
 			w.setStatusId(p.getPStatusDic().getIdPstatus());
 			w.setType(p.getType());
+			w.setBinId(p.getPCPp().getMMachine().getSBin().getIdBin());
 			
 			wsPMrs.add(w);
 		}
@@ -151,18 +181,99 @@ public class PMrService {
 	
 	@Transactional(readOnly=false)
 	public Valid saveWSPMrs(List<WSPMr> wsPMrs) throws Exception {
+	
 		Valid v = new Valid();
-		
-		
+		boolean sendMsg=false;
+		PMr dbPMr =new PMr();
+		Long type=0l;
 		for(WSPMr w : wsPMrs)
 		{
+			type=w.getType();
+			// logger.debug("save PMR: mat: " + w.getIdMaterial() +", binId: " + w.getBinId()+", machine: " + w.getMachine());
 			saveWSPMr(w);
+		    
+			if(w.getIdMr()!=null)
+			{
+				dbPMr = pMrRepository.findOne(w.getIdMr());
+				sendMsg=true;
+			}
 		}
-		
-		
 		v.setMsg("OK");
 		v.setValid(true);
+		if(sendMsg)
+		{         
+			List<Long> idGroups = new ArrayList<Long>();
+			
+			for(EventReceiver e : eventReceiverRepository.findByIdEventAndIdCompany(7l,securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
+			{
+				idGroups.add(e.getIdGroup());
+	
+			}
+			
+			List<String> ems = new ArrayList<String>();
+			if(!idGroups.isEmpty())
+			{
+				
+				for(Long idGroup: idGroups)
+				{
+					Groups g = groupRepository.findOne(idGroup);
+					Users u = usersRepository.findOne(Long.parseLong(g.getGroupName()));
+					
+					if(u.getEmail()!=null)
+					{
+						ems.add(u.getEmail());
+					}
+					//System.out.println(u.getEmail());
+					
+				}
+			
+				
+			}
+			
+			if(!ems.isEmpty()){
+			
+				
+				int i=0;
+				String[] toEmailAddresses = new String[ems.size()];
+				for(String s:ems )
+				{
+					toEmailAddresses[i] = s;
+					i++;
+				}
+				Map<String, Object> model = new HashMap<String, Object>();
+				model.put("woNo",dbPMr.getPCPp().getPWo().getWoNo() );
+				model.put("pNo", dbPMr.getPBom().getSMaterial().getPno());
+				model.put("machine", dbPMr.getPCPp().getMMachine().getCode());
+				
+				if(type.equals(0l)) //缺料
+				{
+					//need to be update
+					notificationService.createNotification(securityUtils.getCurrentDBUser().getCompany(),dbPMr, EventTypeEnum.create_ms, NotificationMethodEnum.sys, idGroups);
+					try{
+						emailSenderService.sendEmail(toEmailAddresses, "MS", model, null);
+					}catch(Exception e){
+						
+					}
+					
+				}
+				else if(type.equals(1l)) //需料
+				{
+					notificationService.createNotification(securityUtils.getCurrentDBUser().getCompany(),dbPMr, EventTypeEnum.create, NotificationMethodEnum.sys, idGroups);		
+					try{
+						emailSenderService.sendEmail(toEmailAddresses, "MR", model, null);
+					}catch(Exception e){
+						
+					}
+				}
+				else
+				{
+					
+				}
+			}
+			
+			
 		
+		}
 		return v;
 		
 	}

@@ -14,4 +14,13 @@ public interface PCheckPlanRepository extends JpaRepository<PCheckPlan, Long>{
 
     @Query("select p from PCheckPlan p where p.usersByCreator.idUser=?1 and p.PCPp.idCPp=?2 and DATE(p.checkTime)=CURDATE() order by p.planCheckTime desc")
 	public List<PCheckPlan> getByUserIdAndCppId(Long userId,Long pcppId);
+    
+    
+    @Query("select p from PCheckPlan p where p.usersByCreator.company.idCompany=?1 and DATE(p.checkTime)=CURDATE() order by p.PCPp.idCPp asc,p.planCheckTime desc")
+	public List<PCheckPlan> getCheckPlans(Long companyId);
+    
+    
+    @Query("select p from PCheckPlan p where p.PCPp.idCPp=?1 order by p.idCheck DESC")
+	public List<PCheckPlan> getMaxCheckPlanByCppId(Long pcppId);
+    
 }

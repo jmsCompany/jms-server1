@@ -22,9 +22,9 @@ public class WSPCppAndriod implements java.io.Serializable{
 	private String mNo;//机器编码
 	
 	private Long idMachine; //机器ID
-	private Long stdWtLabor;//人力标准工时
-	private Long stdWtMachine;//机器标准工时
-	private Long stdWtSetup;//装载标准工时
+	private Float stdWtLabor;//人力标准工时
+	private Float stdWtMachine;//机器标准工时
+	private Float stdWtSetup;//装载标准工时
 
 	private String checklistId;//检查清单
 	private String wiId;//用户使用手册
@@ -99,22 +99,22 @@ public class WSPCppAndriod implements java.io.Serializable{
 	public void setmNo(String mNo) {
 		this.mNo = mNo;
 	}
-	public Long getStdWtLabor() {
+	public Float getStdWtLabor() {
 		return stdWtLabor;
 	}
-	public void setStdWtLabor(Long stdWtLabor) {
+	public void setStdWtLabor(Float stdWtLabor) {
 		this.stdWtLabor = stdWtLabor;
 	}
-	public Long getStdWtMachine() {
+	public Float getStdWtMachine() {
 		return stdWtMachine;
 	}
-	public void setStdWtMachine(Long stdWtMachine) {
+	public void setStdWtMachine(Float stdWtMachine) {
 		this.stdWtMachine = stdWtMachine;
 	}
-	public Long getStdWtSetup() {
+	public Float getStdWtSetup() {
 		return stdWtSetup;
 	}
-	public void setStdWtSetup(Long stdWtSetup) {
+	public void setStdWtSetup(Float stdWtSetup) {
 		this.stdWtSetup = stdWtSetup;
 	}
 

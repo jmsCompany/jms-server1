@@ -189,7 +189,7 @@ public class MyJdbcMutableAclService  extends JdbcAclService implements MutableA
                 new Object[] {Boolean.valueOf(sidIsPrincipal), sidName},  Long.class);
 
         if (!sidIds.isEmpty()) {
-        	System.out.println("sid is not empty: !!!! ");
+        	//System.out.println("sid is not empty: !!!! ");
             return sidIds.get(0);
         }
 

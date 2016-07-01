@@ -14,4 +14,8 @@ public interface PShiftPlanDRepository extends JpaRepository<PShiftPlanD, Long>{
 	
 	@Query("select p from PShiftPlanD p where p.PShiftPlan.company.idCompany=?1")
 	public List<PShiftPlanD> getByCompanyId(Long companyId);
+	
+	
+	@Query("select p from PShiftPlanD p where p.PShiftPlan.idShiftPlan=?1")
+	public List<PShiftPlanD> getByShiftId(Long shiftId);
 }

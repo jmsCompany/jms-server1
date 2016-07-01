@@ -22,6 +22,7 @@ public class WSQCheckList  implements java.io.Serializable{
     private String testMethod;
     private String specification;
     private Long frequency;
+    
 	public Long getIdCheckList() {
 		return idCheckList;
 	}

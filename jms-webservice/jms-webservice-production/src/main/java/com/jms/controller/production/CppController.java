@@ -70,7 +70,12 @@ public class CppController {
 			end =start + length;
 		for (int i = start; i < end; i++) {
 			PCPp w = pCpps.get(i);
-			String[] d = {""+w.getCPpCode(),w.getPWo().getWoNo(),w.getPRoutineD().getRouteNo(),w.getPWo().getSSo().getSMaterial().getPno(),w.getPWo().getSSo().getSMaterial().getRev(),""+w.getPWo().getQty(),w.getPShiftPlanD().getShift(),w.getPlanSt().toString(),w.getPlanFt().toString(),w.getMMachine().getCode()+""
+			String routineDNo ="";
+			if(w.getPRoutineD()!=null)
+			{
+				routineDNo=w.getPRoutineD().getRouteNo();
+			}
+			String[] d = {""+w.getCPpCode(),w.getPWo().getWoNo(),routineDNo,w.getPWo().getSSo().getSMaterial().getPno(),w.getPWo().getSSo().getSMaterial().getRev(),""+w.getPWo().getQty(),w.getPShiftPlanD().getShift(),w.getPlanSt().toString(),w.getPlanFt().toString(),w.getMMachine().getCode()+""
 					+ "-"+w.getMMachine().getSpec(),w.getUsers().getName(),""+w.getQty(),""+w.getIdCPp()};
 			lst.add(d);
 

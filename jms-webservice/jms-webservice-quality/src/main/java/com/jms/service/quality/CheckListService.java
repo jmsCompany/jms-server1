@@ -50,6 +50,7 @@ public class CheckListService {
 			qCheckList.setCompany(securityUtils.getCurrentDBUser().getCompany());
 		}
 		QCheckList dbQCheckList = toDBQCheckList(wsQCheckList,qCheckList);
+		qCheckListRepository.save(dbQCheckList);
 		wsQCheckList.setIdCheckList(dbQCheckList.getIdCheckList());
 		return wsQCheckList;
 	}
@@ -63,8 +64,10 @@ public class CheckListService {
 		
 	}
 	
-	
-
+	@Transactional(readOnly=true)
+	public WSQCheckList findCheckList(Long checkListId) throws Exception {
+		return toWSQCheckList(qCheckListRepository.findOne(checkListId));
+	}
 	
 
 	
@@ -74,8 +77,9 @@ public class CheckListService {
 		QCheckList dbQCheckList = (QCheckList)BeanUtil.shallowCopy(wsQCheckList, QCheckList.class, qCheckList);
 
 		dbQCheckList.setCompany(securityUtils.getCurrentDBUser().getCompany());
+		logger.debug("routineDId: " + wsQCheckList.getpRoutineDId());
 		dbQCheckList.setPRoutineD(pRoutineDRepository.findOne(wsQCheckList.getpRoutineDId()));
-		dbQCheckList.setQItemType(qItemTypeRepository.findOne(wsQCheckList.getqItemTypeId()));
+	//	dbQCheckList.setQItemType(qItemTypeRepository.findOne(wsQCheckList.getqItemTypeId()));
 		dbQCheckList.setQTester(qTesterRepository.findOne(wsQCheckList.getqTesterId()));
 		dbQCheckList.setSMaterial(sMaterialRepository.findOne(wsQCheckList.getMaterialId()));
 		return dbQCheckList;
@@ -92,8 +96,8 @@ public class CheckListService {
         pc.setDes(qCheckList.getSMaterial().getDes());
         pc.setpRoutineD(qCheckList.getPRoutineD().getRouteNo());
         pc.setpRoutineDId(qCheckList.getPRoutineD().getIdRoutineD());
-        pc.setqItemType(qCheckList.getQItemType().getDes());
-        pc.setqItemTypeId(qCheckList.getQItemType().getIdItemType());
+      //  pc.setqItemType(qCheckList.getQItemType().getDes());
+     //   pc.setqItemTypeId(qCheckList.getQItemType().getIdItemType());
         pc.setqTester(qCheckList.getQTester().getDes());
         pc.setqTesterId(qCheckList.getQTester().getIdTester());	
 		return pc;

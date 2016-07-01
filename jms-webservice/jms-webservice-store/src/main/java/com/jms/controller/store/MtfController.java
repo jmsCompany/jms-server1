@@ -6,11 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import com.jms.domain.db.SMtf;
+import com.jms.domain.db.SMtfMaterial;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
+import com.jms.domain.ws.store.WSMaterialChecked;
 import com.jms.domain.ws.store.WSSMtf;
 import com.jms.domain.ws.store.WSSMtfMaterial;
+import com.jms.repositories.s.SMtfRepository;
 import com.jms.service.store.MtfMaterialService;
 import com.jms.service.store.MtfService;
 import com.jms.service.store.SMtfTypeDicService;
@@ -25,6 +30,7 @@ public class MtfController {
 	@Autowired private MtfService mtfService;
 	@Autowired private MtfMaterialService mtfMaterialService;
 	@Autowired private SMtfTypeDicService sMtfTypeDicService;
+	@Autowired private SMtfRepository sMtfRepository;
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveSmtf", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -37,8 +43,61 @@ public class MtfController {
 	public WSSMtf findWSSMtf(@RequestParam("smtfId") Long smtfId) throws Exception {
 		return mtfService.findSMtf(smtfId);
 	}
+	
 
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/findSmtfMaterialObjs", method=RequestMethod.GET)
+	public List<WSSelectObj> findSmtfMaterialObjs(@RequestParam("smtfId") Long smtfId) throws Exception {
+		List<WSSelectObj> ws =new ArrayList<WSSelectObj>();
+		SMtf sMtf = sMtfRepository.findOne(smtfId);
+		for(SMtfMaterial sm: sMtf.getSMtfMaterials())
+		{
+			Long qty = (sm.getQty()==null)?0:sm.getQty();
+			Long qtyChecked = (sm.getQty3417()==null)?0:sm.getQty3417();
+			String lotNo =(sm.getLotNo()==null)?"":sm.getLotNo();
+			WSSelectObj w = new WSSelectObj();
+			w.setSid(sm.getIdMtfMaterial()+"_"+sm.getSMaterial().getIdMaterial());
+			w.setName(sm.getSMaterial().getPno()+"_"+sm.getSMaterial().getRev()+"_"+sm.getSMaterial().getDes()+", 批号: "+lotNo+ ", 数量: " +qty+", 已检: " + qtyChecked);
+		    ws.add(w);
+		}
+		return ws;
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/findSmtfMaterialChecked", method=RequestMethod.GET)
+	public List<WSMaterialChecked> findSmtfMaterialChecked(@RequestParam("smtfId") Long smtfId) throws Exception {
+		List<WSMaterialChecked> ws =new ArrayList<WSMaterialChecked>();
+		SMtf sMtf = sMtfRepository.findOne(smtfId);
+		for(SMtfMaterial sm: sMtf.getSMtfMaterials())
+		{
+			Long qty = (sm.getQty()==null)?0:sm.getQty();
+			Long qtyChecked = (sm.getQty3417()==null)?0:sm.getQty3417();
+			String lotNo =(sm.getLotNo()==null)?"":sm.getLotNo();
+			WSMaterialChecked w = new WSMaterialChecked();
+		    w.setIdMaterial(sm.getSMaterial().getIdMaterial());
+		    w.setDes(sm.getSMaterial().getDes());
+		    w.setPno(sm.getSMaterial().getPno());
+		    w.setIdMtfMaterial(sm.getIdMtfMaterial());
+		    w.setQty(qty);
+		    w.setQtyChecked(qtyChecked);
+		    w.setRev(sm.getSMaterial().getRev());
+		    w.setLotNo(lotNo);
+		    ws.add(w);
+		}
+		return ws;
+	}
+	
+	
 
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/getIncomeList", method=RequestMethod.GET)
+	public List<WSSelectObj> getIncomeList(@RequestParam("typeId") Long typeId) throws Exception {
+		return mtfService.getIncomeList(typeId);
+	}
+
+	
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/updateMtfStatus", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -68,7 +127,8 @@ public class MtfController {
 		    	//System.out.println("case 1 来料入库 " + typeId);
 		    	for (int i = start; i < end; i++) {
 					WSSMtfMaterial w = wsSMtfMaterials.get(i);
-					String[] d = {w.getMtNo(),""+w.getCodePo(),w.getCodeCo(),w.getDeliveryDate().toString(),w.getCreationTime().toString(),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),""+w.getStatus(),""+w.getIdMt()};
+					String status =(w.getStatus()==null)?"":""+w.getStatus();
+					String[] d = {w.getMtNo(),""+w.getCodePo(),w.getCodeCo(),w.getDeliveryDate().toString(),w.getCreationTime().toString(),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),status,""+w.getIdMt()};
 					lst.add(d);
 					//System.out.println(d[10]);
 

@@ -62,8 +62,6 @@ public class MtfMaterialService {
 	private SInventoryRepository sInventoryRepository;
 
 
-	
-
 	public Valid saveMtfMaterial(WSSMtfMaterial wsSMtfMaterial) throws Exception {
 		
 		SMtfMaterial sMtfMaterial;
@@ -151,7 +149,7 @@ public class MtfMaterialService {
 			Long materialId = sm.getSPoMaterial().getSMaterial().getIdMaterial();
 			String lotNo = sm.getLotNo();
 			WSSMtfMaterial w = toWSSMtfMaterial(sm);
-		//	logger.debug("material id: " + materialId +" lot no: " + lotNo +", stk id: " + stkId);
+			//logger.debug("material id: " + materialId +" lot no: " + lotNo +", stk id: " + stkId);
 			List<SInventory> sInventorys = sInventoryRepository.findBinsByMaterialIdAndLotNoAndStkId(materialId, lotNo, stkId);
 			if(sInventorys!=null&&!sInventorys.isEmpty())
 			{
@@ -181,6 +179,7 @@ public class MtfMaterialService {
 		if(wsSMtfMaterial.getFromBinId()!=null)
 		{
 			dbSMtfMaterial.setSBinByFromBin(sBinRepository.findOne(wsSMtfMaterial.getFromBinId()));
+		
 		}
 		if(wsSMtfMaterial.getToBinId()!=null)
 		{

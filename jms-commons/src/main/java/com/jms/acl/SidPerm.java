@@ -7,7 +7,7 @@ public class SidPerm implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String sid;
 	private String permission;
-	private String type; //Company, GROUP, SECTOR;
+	private String type; //Company, GROUP, SECTOR,ROLE,USER;
 	public String getSid() {
 		return sid;
 	}

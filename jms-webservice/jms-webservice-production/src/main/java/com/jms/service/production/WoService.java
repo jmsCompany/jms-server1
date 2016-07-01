@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jms.domain.db.FCostCenter;
 import com.jms.domain.db.PBom;
+import com.jms.domain.db.PCPp;
+import com.jms.domain.db.PCheckPlan;
 import com.jms.domain.db.PWo;
 import com.jms.domain.db.PWoRoute;
 import com.jms.domain.db.PWorkCenter;
 import com.jms.domain.db.SMaterial;
+import com.jms.domain.db.SMtfNo;
 import com.jms.domain.db.SStk;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
@@ -32,9 +35,11 @@ import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.f.FCostCenterRepository;
 import com.jms.repositories.p.PBomRepository;
+import com.jms.repositories.p.PCheckPlanRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PWoRepository;
 import com.jms.repositories.p.PWorkCenterRepository;
+import com.jms.repositories.s.SMtfNoRepository;
 import com.jms.repositories.s.SSoRepository;
 import com.jms.web.security.SecurityUtils;
 
@@ -61,7 +66,9 @@ public class WoService {
 
 	@Autowired
 	private SecurityUtils securityUtils;
-	
+	@Autowired
+	private PCheckPlanRepository pCheckPlanRepository;
+	@Autowired private SMtfNoRepository sMtfNoRepository;
 
 	
 	@Transactional(readOnly=false)
@@ -108,7 +115,6 @@ public class WoService {
 	public WSMaterialQty findWSMaterialQtyByWoId(Long woId) 
 	{	
 		WSMaterialQty mq = new WSMaterialQty();
-		
 		PWo pWo = pWoRepository.findOne(woId);
 		SMaterial material =pWo.getSSo().getSMaterial();
 		mq.setIdMaterial(material.getIdMaterial());
@@ -126,6 +132,16 @@ public class WoService {
 	{
 	
 		PWo dbPWo = (PWo)BeanUtil.shallowCopy(wsPWo, PWo.class, pWo);
+		
+//		SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 9l);
+//	    long currentVal =smtfNo.getCurrentVal()+1;
+//	    smtfNo.setCurrentVal(currentVal);
+//	    sMtfNoRepository.save(smtfNo);
+//		
+//	    String codeWo = smtfNo.getPrefix()+String.format("%08d", currentVal);
+//	    dbPWo.setWoNo(codeWo);
+		
+	//	dbPWo.setWoNo(wsPWo.getWoNo());
 
         if(wsPWo.getSoId()!=null)
         	dbPWo.setSSo(sSoRepository.findOne(wsPWo.getSoId()));
@@ -169,7 +185,17 @@ public class WoService {
 			wd.setRouteNo(routine.getPRoutineD().getRouteNo());
 			pc.getRoutines().add(wd);
 		}
-	//	pc.setQty(pWo.getQty());
+	   
+		//pc.setQty(pWo.getQty());
+		Long qtyFinished =0l;
+		for(PCPp p: pWo.getPCPps())
+		{
+			List<PCheckPlan> pCheckPlans =pCheckPlanRepository.getMaxCheckPlanByCppId(p.getIdCPp());
+			if(pCheckPlans!=null&&!pCheckPlans.isEmpty())
+			qtyFinished =qtyFinished +pCheckPlans.get(0).getFinQty();
+		}
+		
+		pc.setQtyFinished(qtyFinished);
 		return pc;
 	}
 	

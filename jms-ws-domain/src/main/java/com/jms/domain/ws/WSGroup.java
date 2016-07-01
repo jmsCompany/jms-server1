@@ -13,6 +13,7 @@ public class WSGroup implements java.io.Serializable{
     private Long seq;
 	private String type;
     private Date creationTime;
+    
 	public String getDescription() {
 		return description;
 	}

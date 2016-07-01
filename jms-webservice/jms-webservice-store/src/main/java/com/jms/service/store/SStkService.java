@@ -1,6 +1,9 @@
 package com.jms.service.store;
 
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,13 +13,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.csvreader.CsvReader;
 import com.jms.domain.Config;
+import com.jms.domain.GroupTypeEnum;
+import com.jms.domain.SystemRoleEnum;
+import com.jms.domain.db.Company;
+import com.jms.domain.db.Groups;
+import com.jms.domain.db.Roles;
 import com.jms.domain.db.SStk;
 import com.jms.domain.db.SStkTypeDic;
+import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.store.WSStk;
 import com.jms.domain.ws.store.WSStkType;
+import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.s.SStatusDicRepository;
 import com.jms.repositories.s.SStkRepository;
 import com.jms.repositories.s.SStkTypeDicRepository;
@@ -38,6 +49,8 @@ public class SStkService {
 
 	@Autowired 
 	private  SecurityUtils securityUtils;
+	@Autowired 
+	private CompanyRepository companyRepository;
 	
 
 	public Valid saveStk(WSStk wsStk) {
@@ -154,5 +167,24 @@ public class SStkService {
 		
 		return valid;
 	}
+	
+	public void loadStksByCompanyId(InputStream inputStream, Long companyId) throws IOException {
+
+		Company company = companyRepository.findOne(companyId);
+		
+		CsvReader reader = new CsvReader(inputStream, ',', Charset.forName("UTF-8"));
+		reader.readHeaders();
+		while (reader.readRecord()) {
+			SStk s = new SStk();
+			s.setStkName(reader.get(0));
+			s.setDes(reader.get(1));
+			s.setCompany(company);
+			s.setSStatusDic(sStatusDicRepository.findOne(27l));//有效
+			s.setSStkTypeDic(sStkTypeDicRepository.findOne(Long.parseLong(reader.get(2))));
+			sStkRepository.save(s);
+		}
+	}
+	
+	
 
 }

@@ -4,6 +4,7 @@ public class WSSelectObj {
 	
 
 	private Long id;
+	private String sid;
 	private String name;
 	
 	public WSSelectObj() {
@@ -25,6 +26,14 @@ public class WSSelectObj {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getSid() {
+		return sid;
+	}
+
+	public void setSid(String sid) {
+		this.sid = sid;
 	}
 
 }

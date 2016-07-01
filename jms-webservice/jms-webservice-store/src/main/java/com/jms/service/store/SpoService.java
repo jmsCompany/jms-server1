@@ -10,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.jms.domain.db.SMtfNo;
 import com.jms.domain.db.SPo;
 import com.jms.domain.db.SPoMaterial;
 import com.jms.domain.ws.Valid;
@@ -21,6 +23,7 @@ import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.s.SAttachmentRepository;
 import com.jms.repositories.s.SCompanyCoRepository;
 import com.jms.repositories.s.SCurrencyTypeRepository;
+import com.jms.repositories.s.SMtfNoRepository;
 import com.jms.repositories.s.SSpoMaterialRepository;
 import com.jms.repositories.s.SSpoRepository;
 import com.jms.repositories.s.SStatusDicRepository;
@@ -57,6 +60,8 @@ public class SpoService {
 	@Autowired
 	private  SSpoMaterialRepository sSpoMaterialRepository;
 	@Autowired private SAttachmentRepository sAttachmentRepository;
+	@Autowired private SMtfNoRepository sMtfNoRepository;
+	@Autowired private SMtfNoService sMtfNoService;
 	
 
 	public WSSpo saveSpo(WSSpo wsSpo) throws Exception {
@@ -163,6 +168,23 @@ public class SpoService {
 	{
 	
 		SPo dbSpo = (SPo)BeanUtil.shallowCopy(wsSpo, SPo.class, spo);
+		if(wsSpo.getIdPo()==null||wsSpo.getIdPo().equals(0l))
+		{
+		SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 10l);
+	    if(smtfNo==null)
+	    {
+	    	sMtfNoService.loadSmtfNosByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+	    	smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 10l);
+	    }
+	    long currentVal =smtfNo.getCurrentVal()+1;
+	    smtfNo.setCurrentVal(currentVal);
+	    sMtfNoRepository.save(smtfNo);
+		
+	    String codePo = smtfNo.getPrefix()+String.format("%08d", currentVal);
+		dbSpo.setCodePo(codePo);
+		}
+		
+		
 		
 		if(wsSpo.getFreightTermId()!=null)
 		{

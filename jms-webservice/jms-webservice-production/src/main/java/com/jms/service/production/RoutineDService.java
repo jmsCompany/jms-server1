@@ -120,6 +120,10 @@ public class RoutineDService {
 	{
 	
 		PRoutineD dbPRoutineD = (PRoutineD)BeanUtil.shallowCopy(wsPRoutineD, PRoutineD.class, pRoutineD);
+		
+		dbPRoutineD.setStdWtLabor(wsPRoutineD.getStdWtLabor());
+		dbPRoutineD.setStdWtMachine(wsPRoutineD.getStdWtMachine());
+		dbPRoutineD.setStdWtSetup(wsPRoutineD.getStdWtSetup());
 
         if(wsPRoutineD.getRoutineId()!=null)
         {

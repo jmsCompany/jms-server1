@@ -1,5 +1,8 @@
 package com.jms.service.user;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.csvreader.CsvReader;
 import com.jms.domain.GroupTypeEnum;
 import com.jms.domain.SystemRoleEnum;
 import com.jms.domain.db.Company;
@@ -49,31 +53,31 @@ public class GroupService {
 
 	public void createDefaultGroups(Company company) {
 		Users dbUser = securityUtils.getCurrentDBUser();
-		Groups companyGroup = createGroup(company, GroupTypeEnum.Company,
-				"全公司", "全公司", null);
+		Groups companyGroup = createGroup(company, GroupTypeEnum.Company, "全公司", "全公司", null);
 		createGroup(company, GroupTypeEnum.Sector, "财务部", "财务部", 1l);
 		createGroup(company, GroupTypeEnum.Sector, "总裁办", "总裁办", 2l);
 		createGroup(company, GroupTypeEnum.Sector, "项目办", "项目办", 3l);
-		
-		Groups adminSelf = createGroup(company, GroupTypeEnum.User, ""+dbUser.getIdUser(), ""+dbUser.getIdUser(), null);
-		
-		Roles adminRole = roleRepository.findByRoleAndCompanyName(
-				SystemRoleEnum.admin.name(), company.getCompanyName());
+
+		Groups adminSelf = createGroup(company, GroupTypeEnum.User, "" + dbUser.getIdUser(), "" + dbUser.getIdUser(),
+				null);
+
+		Roles adminRole = roleRepository.findByRoleAndCompanyName(SystemRoleEnum.admin.name(),
+				company.getCompanyName());
 		addUserToDefaultGroup(dbUser, companyGroup, adminRole);
-	
-		Roles userRole = roleRepository.findByRoleAndCompanyName(
-				SystemRoleEnum.user.name(), company.getCompanyName());
-		
+
+		Roles userRole = roleRepository.findByRoleAndCompanyName(SystemRoleEnum.user.name(), company.getCompanyName());
+
 		Users normalUser = usersRepository.findByUsername("user");
-		
-		Groups normalUserSelf = createGroup(company, GroupTypeEnum.User, ""+normalUser.getIdUser(), ""+normalUser.getIdUser(), null);
+
+		Groups normalUserSelf = createGroup(company, GroupTypeEnum.User, "" + normalUser.getIdUser(),
+				"" + normalUser.getIdUser(), null);
 		addUserToDefaultGroup(normalUser, companyGroup, userRole);
 		addUserToDefaultGroup(dbUser, adminSelf, userRole);
 		addUserToDefaultGroup(normalUser, normalUserSelf, userRole);
 	}
 
-	public Groups createGroup(Company company, GroupTypeEnum groupTyppe,
-			String groupName, String description, Long seq) {
+	public Groups createGroup(Company company, GroupTypeEnum groupTyppe, String groupName, String description,
+			Long seq) {
 		Users dbUser = securityUtils.getCurrentDBUser();
 		Groups g = new Groups();
 		g.setCompany(company);
@@ -94,16 +98,23 @@ public class GroupService {
 		GroupMembersId id = new GroupMembersId();
 		id.setIdGroup(group.getIdGroup());
 		id.setIdUser(user.getIdUser());
-		gm.setId(id);
-		gm.setRoles(role);
-		groupMemberRepository.save(gm);
+		
+	//	System.out.println("uid:" + user.getIdUser() +", g_id:" + group.getIdGroup());
+//		if(groupMemberRepository.findOne(id)!=null)
+//			return;
+//		else{
+		//	System.out.println("save gm");
+			gm.setId(id);
+			gm.setRoles(role);
+			groupMemberRepository.save(gm);
+//		}
+		
 	}
 
 	public WSGroup save(WSGroup wsGroup) throws Exception {
-		Company company = companyRepository.findByCompanyName(wsGroup
-				.getCompanyName());
-		Groups group = groupRepository.findGroupByGroupNameAndCompany(
-				wsGroup.getGroupName(), company.getIdCompany(), wsGroup.getType());
+		Company company = companyRepository.findByCompanyName(wsGroup.getCompanyName());
+		Groups group = groupRepository.findGroupByGroupNameAndCompany(wsGroup.getGroupName(), company.getIdCompany(),
+				wsGroup.getType());
 		if (wsGroup.getIdGroup() == null) {
 
 			if (group != null)
@@ -115,8 +126,7 @@ public class GroupService {
 			}
 		} else {
 
-			if (group != null
-					&& !group.getIdGroup().equals(wsGroup.getIdGroup())) {
+			if (group != null && !group.getIdGroup().equals(wsGroup.getIdGroup())) {
 				throw new Exception("该部门或则群组已经存在！");
 			} else {
 				Groups g = groupsAdapter.toDBGroup(wsGroup, group);
@@ -126,33 +136,58 @@ public class GroupService {
 		}
 		return wsGroup;
 	}
-	
-	public List<WSGroup> getGroupsByIdCompany(Long idCompany) throws Exception
-	{
+
+	public List<WSGroup> getGroupsByIdCompany(Long idCompany) throws Exception {
 		List<WSGroup> groups = new ArrayList<WSGroup>(0);
-		for(Groups g: groupRepository.findByIdCompany(idCompany))
-		{
+		for (Groups g : groupRepository.findByIdCompany(idCompany)) {
 			groups.add(groupsAdapter.toWSGroup(g));
 		}
 		return groups;
 	}
-	public List<WSGroup> getSectorsByIdCompany(Long idCompany) throws Exception
-	{
+
+	public List<WSGroup> getSectorsByIdCompany(Long idCompany) throws Exception {
 		List<WSGroup> groups = new ArrayList<WSGroup>(0);
-		for(Groups g: groupRepository.findByIdCompany(idCompany))
-		{
-			if(g.getGroupType().getGroupType().equals(GroupTypeEnum.Sector.name()))
-			{
+		for (Groups g : groupRepository.findByIdCompany(idCompany)) {
+			if (g.getGroupType().getGroupType().equals(GroupTypeEnum.Sector.name())) {
 				groups.add(groupsAdapter.toWSGroup(g));
 			}
-			
+
 		}
 		return groups;
 	}
-	public WSGroup getWSGroup(Long idGroup) throws Exception
-	{
-		Groups g= groupRepository.findOne(idGroup);
+
+	public WSGroup getWSGroup(Long idGroup) throws Exception {
+		Groups g = groupRepository.findOne(idGroup);
 		return groupsAdapter.toWSGroup(g);
 
+	}
+
+	public void loadDepartmentMembersByCompanyId(InputStream inputStream, Long companyId) throws IOException {
+
+		Company company = companyRepository.findOne(companyId);
+		CsvReader reader = new CsvReader(inputStream, ',', Charset.forName("UTF-8"));
+		reader.readHeaders();
+		while (reader.readRecord()) {
+			String login = reader.get(0).trim();
+			String department = reader.get(1).trim();
+			Users u = usersRepository.findByUsername(login+"@@"+company.getIdCompany());
+			Groups g = groupRepository.findGroupByGroupNameAndCompany(department, companyId, GroupTypeEnum.Sector.name());
+			addUserToDefaultGroup(u, g, null); 
+		}
+	}
+	
+	
+	
+	public void loadDepartmentsByCompanyId(InputStream inputStream, Long companyId) throws IOException {
+
+		Company company = companyRepository.findOne(companyId);
+		CsvReader reader = new CsvReader(inputStream, ',', Charset.forName("UTF-8"));
+		reader.readHeaders();
+		long seq = 10;
+		while (reader.readRecord()) {
+			String dept = reader.get(0);
+			createGroup(company, GroupTypeEnum.Sector, dept, dept, seq);
+			seq++;
+		}
 	}
 }

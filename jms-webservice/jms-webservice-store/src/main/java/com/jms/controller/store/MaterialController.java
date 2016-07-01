@@ -154,9 +154,6 @@ public class MaterialController {
 	}
 
 	
-	
-	
-	
 
 	// 物料大类
 	@Transactional(readOnly = true)
@@ -240,10 +237,8 @@ public class MaterialController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value = "/s/findLotNos", method = RequestMethod.GET)
 	public List<WSLotNo> findLotNos(@RequestParam("spoId") Long spoId, @RequestParam("materialId") Long materialId) {
-		// System.out.println("find lot nos by spoid: " + spoId);
 		List<WSLotNo> wso = new ArrayList<WSLotNo>();
 		for (String s : sMtfMaterialRepository.getLotNosBySpoIdAndMaterialId(spoId, materialId)) {
-			// System.out.println("add s: " + s);
 			wso.add(new WSLotNo(s, s));
 		}
 		return wso;
@@ -253,10 +248,8 @@ public class MaterialController {
 	@RequestMapping(value = "/s/findToBinsBySpoIdAndMaterialID", method = RequestMethod.GET)
 	public List<WSSelectObj> findToBinsBySpoIdAndMaterialID(@RequestParam("spoId") Long spoId,
 			@RequestParam("materialId") Long materialId) {
-		// System.out.println("find lot nos by spoid: " + spoId);
 		List<WSSelectObj> wso = new ArrayList<WSSelectObj>();
 		for (SBin s : sMtfMaterialRepository.getToBinsBySpoIdAndMaterialId(spoId, materialId)) {
-			// System.out.println("add s: " + s);
 			wso.add(new WSSelectObj(s.getIdBin(), s.getBin()));
 		}
 		return wso;
@@ -294,10 +287,6 @@ public class MaterialController {
 		return fileMeta;
 	}
 
-	@RequestMapping(value = "/s/getMaterialImage/{img}/", method = RequestMethod.GET)
-	public void getImage(@PathVariable("img") String img, HttpServletResponse response) throws IOException {
-		FileInputStream fs = new FileInputStream(new File(filePath + img));
-		ByteStreams.copy(fs, response.getOutputStream());
-	}
+
 
 }

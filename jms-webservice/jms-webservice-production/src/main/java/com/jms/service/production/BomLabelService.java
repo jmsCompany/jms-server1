@@ -4,6 +4,8 @@ package com.jms.service.production;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,24 +63,30 @@ public class BomLabelService {
 	@Transactional(readOnly=false)
 	public WSPBom savePBomLabel(WSPBom wsPBom) throws Exception {
 		PBomLabel pBomLabel;
+	
+		boolean isNew=true;
+		if(wsPBom.getIdBomLabel()!=null&&!wsPBom.getIdBomLabel().equals(0l))
+		{
+			isNew=false;
+		}
+		
+		
 		List<PBom> pBoms=	pBomRepository.findProductsByMaterialId(wsPBom.getMaterialId());
-		if(pBoms!=null&&!pBoms.isEmpty())
+		if(isNew&&pBoms!=null&&!pBoms.isEmpty())
 		{
 			wsPBom.setIdBomLabel(0l);
 			return wsPBom;
 		}
 			
-		if(wsPBom.getIdBomLabel()!=null&&!wsPBom.getIdBomLabel().equals(0l))
+		if(!isNew)
 		{
 			pBomLabel = pBomLabelRepository.findOne(wsPBom.getIdBomLabel());
-
-				for(PBom p: pBomLabel.getPBoms())
-				{
-					pBomRepository.delete(p);
-				}
+			pBomRepository.deleteByBomLabelIdAnPidIdNotNull(pBomLabel.getIdBomLabel());
+			pBomRepository.deleteByBomLabelIdAnPidIdNull(pBomLabel.getIdBomLabel());
+			pBomLabel.getPBoms().clear();
 				
 	
-				pBomLabel.getPBoms().clear();
+				
 		}
 		else
 		{
@@ -88,6 +96,8 @@ public class BomLabelService {
 		
 		}
 		PBomLabel dbPBomLabel= toDBPBomLabel(wsPBom,pBomLabel);
+		
+		logger.debug(" bomlabel: " + dbPBomLabel.getIdBomLabel());
 		dbPBomLabel = pBomLabelRepository.save(dbPBomLabel);
 	
 	
@@ -109,7 +119,7 @@ public class BomLabelService {
 			WSPBomItem wm =wsPBom.getBomItems().get(k);
 			wm.setIdBomLabel(dbPBomLabel.getIdBomLabel());
 			wm.setIdParentBom(wsPBomItem.getIdBom());
-			wm.setLvl(2l);
+			wm.setLvl(wm.getLvl());
 			bomService.saveWSPBomItem(wm);
 		}
 	
@@ -157,15 +167,20 @@ public class BomLabelService {
 	
 		PBomLabel dbPBomLabel = (PBomLabel)BeanUtil.shallowCopy(wsPBom, PBomLabel.class, pBomLabel);
 
+		if(wsPBom.getIdBomLabel()!=null&&!wsPBom.getIdBomLabel().equals(0l))
+		{
+			dbPBomLabel.setIdBomLabel(wsPBom.getIdBomLabel());
+		}
+	
         if(wsPBom.getCompanyId()!=null)
-        	pBomLabel.setCompany(companyRepository.findOne(wsPBom.getCompanyId()));
+        	dbPBomLabel.setCompany(companyRepository.findOne(wsPBom.getCompanyId()));
         else
         {
-        	pBomLabel.setCompany(securityUtils.getCurrentDBUser().getCompany());
+        	dbPBomLabel.setCompany(securityUtils.getCurrentDBUser().getCompany());
         }
-        pBomLabel.setUsers(securityUtils.getCurrentDBUser());
+        dbPBomLabel.setUsers(securityUtils.getCurrentDBUser());
 		if(wsPBom.getStatusId()!=null)
-			pBomLabel.setPStatusDic(pStatusDicRepository.findOne(wsPBom.getStatusId()));
+			dbPBomLabel.setPStatusDic(pStatusDicRepository.findOne(wsPBom.getStatusId()));
 
 		return dbPBomLabel;
 	}
@@ -189,7 +204,9 @@ public class BomLabelService {
 			pc.setCompanyId(pBomLabel.getCompany().getIdCompany());
 		}
 		int i=0;
-		for(PBom p:pBomLabel.getPBoms())
+		
+		List<PBom> pboms = pBomRepository.findByBomLabelId(pBomLabel.getIdBomLabel());
+		for(PBom p:pboms)
 		{
 			if(p.getPBom()!=null)
 			{

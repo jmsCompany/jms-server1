@@ -25,15 +25,23 @@ public class GroupTypeService {
 		user.setGroupType(GroupTypeEnum.User.name());
 		groupTypeRepository.save(user);
 		
+		GroupType sector = new GroupType();
+		sector.setIdGroupType(GroupTypeEnum.Sector.getStatusCode());
+		sector.setGroupType(GroupTypeEnum.Sector.name());
+		groupTypeRepository.save(sector);
+		
 		GroupType group = new GroupType();
 		group.setIdGroupType(GroupTypeEnum.Group.getStatusCode());
 		group.setGroupType(GroupTypeEnum.Group.name());
 		groupTypeRepository.save(group);
 		
-		GroupType sector = new GroupType();
-		sector.setIdGroupType(GroupTypeEnum.Sector.getStatusCode());
-		sector.setGroupType(GroupTypeEnum.Sector.name());
-		groupTypeRepository.save(sector);
+
+		
+		
+		GroupType role = new GroupType();
+		role.setIdGroupType(GroupTypeEnum.Role.getStatusCode());
+		role.setGroupType(GroupTypeEnum.Role.name());
+		groupTypeRepository.save(role);
 	}
 
 }

@@ -108,6 +108,19 @@ public class PStopsPlanService {
 		
 	}
 	
+	@Transactional(readOnly=true) 
+	public List<WSPStopsPlan> findWSPStopsPlansByMachineId(Long machineId) throws Exception
+	{	
+		List<PStopsPlan> pStopsPlans = pStopsPlanRepository.getPStopsPlansByCompanyIdAndMachineId(securityUtils.getCurrentDBUser().getCompany().getIdCompany(),machineId);
+		List<WSPStopsPlan>  ws = new ArrayList<WSPStopsPlan>();
+		for(PStopsPlan p: pStopsPlans)
+		{
+			ws.add(toWSPStopsPlan(p));
+		}
+		return  ws;
+		
+	}
+	
 	
 	private PStopsPlan toDBPStopsPlan(WSPStopsPlan wsPStopsPlan,PStopsPlan pStopsPlan) throws Exception
 	{

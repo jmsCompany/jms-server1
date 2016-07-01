@@ -22,6 +22,9 @@ public class WSPWo {
     private String des;
     private Long materialId;
     
+    
+    private Long qtyFinished;
+    
     List<WSPRoutineD> routines = new ArrayList<WSPRoutineD>();
 
 	public Long getIdWo() {
@@ -107,6 +110,12 @@ public class WSPWo {
 	}
 	public void setRoutines(List<WSPRoutineD> routines) {
 		this.routines = routines;
+	}
+	public Long getQtyFinished() {
+		return qtyFinished;
+	}
+	public void setQtyFinished(Long qtyFinished) {
+		this.qtyFinished = qtyFinished;
 	}
 
 

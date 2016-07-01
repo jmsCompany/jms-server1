@@ -91,7 +91,7 @@ public class MMachineService {
 	}
 	
 	
-	public void loadMachinesForSandVik(InputStream inputStream)throws IOException {
+	public void loadMachinesForSandVik(InputStream inputStream, Long companyId)throws IOException {
 		
 		CsvReader reader = new CsvReader(inputStream,',', Charset.forName("UTF-8"));
 		//reader.readHeaders();
@@ -106,7 +106,7 @@ public class MMachineService {
         	  m.setTotalKwa(Long.parseLong(reader.get(2)));
           }
           m.setMMachineGroup(mMachineGroupRepository.findByGroupName(reader.get(3)));
-          m.setCompany(companyRepository.findByCompanyName("SandVik"));
+          m.setCompany(companyRepository.findOne(companyId));
 	
           m.setMStatusDic(mStatusDicRepository.getBySourceAndName("m_machine", reader.get(4)));
           mMachineRepository.save(m);

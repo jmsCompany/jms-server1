@@ -1,5 +1,7 @@
 package com.jms.acl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,9 +11,12 @@ import javax.persistence.PersistenceContext;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.model.AccessControlEntry;
+import org.springframework.security.acls.model.Acl;
 import org.springframework.security.acls.model.MutableAcl;
 import org.springframework.security.acls.model.MutableAclService;
+import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.security.acls.model.ObjectIdentity;
+import org.springframework.security.acls.model.ObjectIdentityRetrievalStrategy;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.acls.model.Sid;
 import org.springframework.security.core.Authentication;
@@ -21,10 +26,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
+import org.springframework.security.acls.domain.ObjectIdentityRetrievalStrategyImpl;
 import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import com.jms.domain.db.AbstractSecuredEntity;
+import com.jms.domain.db.Groups;
 import com.jms.domain.db.Users;
 import com.jms.web.security.JMSUserDetailService;
 import com.jms.web.security.JMSUserDetails;
@@ -53,6 +60,9 @@ public class SecuredObjectService {
 	private JMSUserDetailService userDetailService;
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	
+	
+	private ObjectIdentityRetrievalStrategy objectIdentityRetrievalStrategy = new ObjectIdentityRetrievalStrategyImpl();
 
 	@Transactional(readOnly = true)
 	public <T extends AbstractSecuredEntity> Map<T,String> getSecuredObjectsWithPermissions(
@@ -104,6 +114,117 @@ public class SecuredObjectService {
 			
 	}
 
+	
+	
+	
+
+	@Transactional(readOnly = true)
+	public <T extends AbstractSecuredEntity> Map<T,String> getSecuredObjectsWithPermissions(
+			Groups group, List<T> secureObjList) {
+		
+
+		
+	 //  System.out.println("all apps: " + secureObjList.size());
+		Map<T, String> pMap = new LinkedHashMap<T, String>(
+				secureObjList.size());
+		
+	
+		
+		for (T obj : secureObjList) {
+
+		        ObjectIdentity objectIdentity = objectIdentityRetrievalStrategy.getObjectIdentity(obj);
+
+		        if(checkPermission( group, objectIdentity,BasePermission.READ))
+		        {
+		        	System.out.println("has perm: ");
+		        	pMap.put(obj, "READ");
+		        }
+		        if(checkPermission( group, objectIdentity,BasePermission.ADMINISTRATION))
+		        {
+		        	System.out.println("has perm: ");
+		        	pMap.put(obj, "ADMIN");
+		        }
+					
+
+		}
+		
+		return pMap;
+			
+	}
+	
+	
+	
+	@Transactional(readOnly = false)
+	public <T extends AbstractSecuredEntity> void removePermissions(
+			Groups group, List<T> secureObjList) {
+
+		for (T obj : secureObjList) {
+
+		        ObjectIdentity objectIdentity = objectIdentityRetrievalStrategy.getObjectIdentity(obj);
+
+		        if(checkPermission(group, objectIdentity,BasePermission.READ))
+		        {
+		        	try{
+		        		securityACLDAO.deletePermission(objectIdentity, new GrantedAuthoritySid(""+group.getIdGroup()), BasePermission.READ);
+		        	}catch(Exception e)
+		        	{
+		        		System.out.println("no found: " + obj.getClass().getName() +", id: " + obj.getId());
+		        	}
+		        	
+		        	
+		        }
+		        
+
+		        if(checkPermission(group, objectIdentity,BasePermission.ADMINISTRATION))
+		        {
+		        	try{
+		        		securityACLDAO.deletePermission(objectIdentity, new GrantedAuthoritySid(""+group.getIdGroup()), BasePermission.ADMINISTRATION);
+		        	}catch(Exception e)
+		        	{
+		        		System.out.println("no found: " + obj.getClass().getName() +", id: " + obj.getId());
+		        	}
+		        	
+		        }
+					
+
+		}
+		
+		
+			
+	}
+	
+	
+	
+	
+    
+    private boolean checkPermission(Groups group, ObjectIdentity oid,Permission permission) {
+ 
+           List<Sid> sids = new ArrayList<Sid>();
+         
+          sids.add(new GrantedAuthoritySid(""+group.getIdGroup()));
+     
+           try {
+               // Lookup only ACLs for SIDs we're interested in
+               Acl acl = mutableAclService.readAclById(oid, sids);
+               List<Permission> pl = new ArrayList<Permission>();
+               pl.add(permission);
+               if (acl.isGranted(pl, sids, false)) {
+                   return true;
+               }
+   
+         
+
+           } catch (NotFoundException nfe) {
+               
+           }
+
+           return false;
+
+       }
+    
+    
+	
+	
 	@Transactional(readOnly = true)
 	public Map<String, String> findSidPermissionMap(Class clazz, Long id,
 			String sidType) {

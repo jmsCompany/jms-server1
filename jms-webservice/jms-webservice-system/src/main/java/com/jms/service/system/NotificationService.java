@@ -77,6 +77,7 @@ public class NotificationService implements INotificationService{
 			receiver.setGroups(group);
 			receiver.setNotification(noti);
 			receiver.setUnsubscribe(0l);
+			receiver.setChecked(0l);
 			receiverRepository.save(receiver);
 		}
 	

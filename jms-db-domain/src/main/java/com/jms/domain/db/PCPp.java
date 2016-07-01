@@ -36,7 +36,7 @@ public class PCPp  implements java.io.Serializable {
      private PShiftPlanD PShiftPlanD;
      private Users users;
      private PWo PWo;
-     private Long CPpCode;
+     private String CPpCode;
      private Long qty;
      private Date planSt;
      private Date planFt;
@@ -47,21 +47,6 @@ public class PCPp  implements java.io.Serializable {
     public PCPp() {
     }
 
-    public PCPp(Company company, MMachine MMachine, PRoutineD PRoutineD, PShiftPlanD PShiftPlanD, Users users, PWo PWo, Long CPpCode, Long qty, Date planSt, Date planFt, Set<PActualSetup> PActualSetups, Set<PCheckPlan> PCheckPlans, Set<PMr> PMrs) {
-       this.company = company;
-       this.MMachine = MMachine;
-       this.PRoutineD = PRoutineD;
-       this.PShiftPlanD = PShiftPlanD;
-       this.users = users;
-       this.PWo = PWo;
-       this.CPpCode = CPpCode;
-       this.qty = qty;
-       this.planSt = planSt;
-       this.planFt = planFt;
-       this.PActualSetups = PActualSetups;
-       this.PCheckPlans = PCheckPlans;
-       this.PMrs = PMrs;
-    }
    
      @Id @GeneratedValue(strategy=IDENTITY)
     
@@ -128,12 +113,12 @@ public class PCPp  implements java.io.Serializable {
         this.PWo = PWo;
     }
     
-    @Column(name="c_pp_code")
-    public Long getCPpCode() {
+    @Column(name="c_pp_code", length=64)
+    public String getCPpCode() {
         return this.CPpCode;
     }
     
-    public void setCPpCode(Long CPpCode) {
+    public void setCPpCode(String CPpCode) {
         this.CPpCode = CPpCode;
     }
     

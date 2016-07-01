@@ -1,0 +1,89 @@
+SR01	,Disc Fitting	        	,60	,pulleys	,有效
+SW01-02	,Horizontal Welding		,170	,pulleys	,有效
+SW01-01	,Vertical Welding		,120	,pulleys	,有效
+WL01	,End Disc Welding		,60	,pulleys	,有效
+SR02	,Disc Fitting			,50	,pulleys	,有效
+CT01	,Cutting 			,10	,pulleys	,有效
+ET03-1	,Vertical CNC Lathe		,60	,pulleys	,有效
+ET03-2	,Vertical CNC Lathe		,65	,pulleys	,有效
+EB01	,Horizontal Boring		,110	,pulleys	,有效
+ET01	,Horizontal CNC Lathe		,70	,pulleys	,有效
+ST01	,Horizontal Manual Lathe	,90	,pulleys	,有效
+LR01	,Lagging Machine		,6	,pulleys	,有效
+LR02	,Lagging Machine		,6	,pulleys	,有效
+SB01	,Sand blasting			,15	,pulleys	,有效	
+CR01	,Cooling Room			,30	,pulleys	,有效
+ACL01	,Autoclave			,195	,pulleys	,有效	
+BS01-2	,Cutting Weight Saw		,5	,pulleys	,有效
+BS01-3	,Ventilation for Welding Fume	,5	,pulleys	,有效
+BS01-4	,MIG Welder			,30	,pulleys	,有效
+PB01	,Painting			,30	,pulleys	,有效	
+RD01	,Radial Drill			,10	,pulleys	,有效
+GC01	,Gib Crane			,10	,pulleys	,有效
+GC02	,Gib Crane			,10	,pulleys	,有效
+HT06	,Hoist				,	,pulleys	,有效
+HT07	,Hoist				,	,pulleys	,有效
+S1	,Cutting Machine		,40	,roller line	,有效
+S2A	,Boring Machine			,26	,roller line	,有效
+S2B	,Boring Machine			,26	,roller line	,有效
+S3	,Bearing Housing Ass		,132	,roller line	,有效
+S4A	,Robert welder			,	,roller line	,有效	
+S4B	,Robert welder			,	,roller line	,有效
+S7A	,Rubber Seal ASS		,6	,roller line	,有效
+S7B	,Rubber Seal ASS		,6	,roller line	,有效	
+H1	,Transportation			,	,roller line	,有效
+H2	,Transportation			,	,roller line	,有效	
+H3	,Transportation			,	,roller line	,有效	
+H4	,Transportation			,	,roller line	,有效
+H5	,Transportation			,	,roller line	,有效	
+H6	,Transportation			,	,roller line	,有效
+S8A	,Performance Test		,	,roller line	,有效
+S8B	,Performance Test		,	,roller line	,有效
+S9A	,Laser Marking			,	,roller line	,有效
+S9B	,Laser Marking			,	,roller line	,有效
+S10A	,Dynamic Balancing Test		,	,roller line	,有效
+S10B	,Dynamic Balancing Test		,	,roller line	,有效
+S11	,Drilling			,	,roller line	,有效
+S12	,Balance Weight			,	,roller line	,有效	
+S13	,Run_out Measurment		,	,roller line	,有效
+LB01	,Manual Lathe			,11	,roller line	,有效
+LB02	,Manual Lathe			,11	,roller line	,有效
+LB03	,Manual Lathe			,11	,roller line	,有效
+LB04	,Manual Lathe			,11	,roller line	,有效
+GC03	,Gib Crane			,10	,roller line	,有效
+GC04	,Gib Crane			,10	,roller line	,有效
+GC05	,Gib Crane			,10	,roller line	,有效
+HT01	,Hoist	55			,	,roller line	,有效
+HT02	,Hoist	55			,	,roller line	,有效
+HT03	,Hoist	17			,	,roller line	,有效
+HT04	,Hoist	17			,	,roller line	,有效
+HT05	,Hoist				,	,roller line	,有效
+AC01	,Air Compressor			,75	,facility	,有效
+AC02	,Air Compressor			,75	,facility	,有效	
+DR01	,Air Dryer			,	,facility	,有效
+DR02	,Air Dryer			,	,facility	,有效
+LDB1	,Lighting distribution box	,10	,facility	,有效
+LDB2	,Lighting distribution box	,10	,facility	,有效
+LDB3	,Lighting distribution box	,10	,facility	,有效
+LDB4	,Lighting distribution box	,10	,facility	,有效
+PDB1	,				,	,facility	,有效
+PDB2	,				,	,facility	,有效
+PDB3	,				,	,facility	,有效	
+PDB4	,				,	,facility	,有效
+UPS01	,				,	,facility	,有效
+UPS02	,				,	,facility	,有效	
+FFP01	,Firefighting Pump		,5	,facility	,有效
+FFP02	,Firefighting Steady Pump	,4	,facility	,有效
+FFP03	,Firefighting steady Pump	,4	,facility	,有效	
+HWH01	,				,	,facility	,有效
+HWH02	,				,	,facility	,有效
+HWH03	,				,	,facility	,有效
+HWH04	,				,	,facility	,有效
+HWH05	,				,	,facility	,有效
+FFSP01	,Firefighting Spay Pump		,220	,facility	,有效
+GE01	,Generator			,	,facility	,有效	
+EX01	,Exhaust01			,	,facility	,有效
+EX02	,Exhaust02			,	,facility	,有效
+EX03	,Exhaust03			,	,facility	,有效
+EX04	,Exhaust04			,	,facility	,有效
+	

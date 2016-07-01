@@ -114,10 +114,18 @@ public class SpoController {
 			end =wsSpoMaterials.size();
 		else
 			end =start + length;
+//		6、8、9、11
 		for (int i = start; i < end; i++) {
 			WSSpoMaterial w = wsSpoMaterials.get(i);
 			String del = (w.getDeliveryDate()==null)?"":w.getDeliveryDate().toString();
-			String[] d = {w.getCodePo(),""+w.getDateOrder(),w.getUsername(),w.getCoShortName(),w.getsStatus(),w.getsMaterial()+"_"+w.getRev()+"_"+w.getDes(),w.getUnit(),""+w.getQtyPo(),""+w.getTotalPrice(),del,""+w.getQtyReceived(),""+w.getsPoId()};
+			String pno=(w.getsMaterial()==null)?"":w.getsMaterial();
+			String rev=(w.getRev()==null)?"":w.getRev();
+			String des=(w.getDes()==null)?"":w.getDes();
+			String qtyPo=(w.getQtyPo()==null)?"":""+w.getQtyPo();
+			String totalPrice =(w.getTotalPrice()==null)?"":""+w.getTotalPrice();
+			String qtyRev =(w.getQtyReceived()==null)?"":""+w.getQtyReceived();
+			
+			String[] d = {w.getCodePo(),""+w.getDateOrder(),w.getUsername(),w.getCoShortName(),w.getsStatus(),pno+"_"+rev+"_"+des,w.getUnit(),qtyPo,totalPrice,del,qtyRev,""+w.getsPoId()};
 			lst.add(d);
 
 		}

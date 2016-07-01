@@ -117,6 +117,31 @@ public class SecurityACLDAO {
 		
 	}
 
+	
+	@Transactional
+	public void deletePermission(ObjectIdentity oid, Sid recipient, Permission permission) {
+
+      
+        MutableAcl acl = (MutableAcl) mutableAclService.readAclById(oid);
+
+        // Remove all permissions associated with this particular recipient (string equality to KISS)
+        List<AccessControlEntry> entries = acl.getEntries();
+
+        for (int i = 0; i < entries.size(); i++) {
+            if (entries.get(i).getSid().equals(recipient) && entries.get(i).getPermission().equals(permission)) {
+                acl.deleteAce(i);
+                
+            }
+        }
+
+        mutableAclService.updateAcl(acl);
+
+		
+	}
+
+	
+	
+	
 	/*
 	 * Check if ACE - Access Control Entry exists already
 	 */

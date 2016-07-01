@@ -2,10 +2,12 @@ package com.jms.controller.store;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
 
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SSo;
@@ -14,7 +16,9 @@ import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.store.WSMaterial;
 import com.jms.domain.ws.store.WSMaterialDelivered;
+import com.jms.domain.ws.store.WSSSoRemark;
 import com.jms.domain.ws.store.WSSso;
+
 import com.jms.repositories.s.SSoRepository;
 import com.jms.service.store.SsoService;
 import com.jms.web.security.SecurityUtils;
@@ -32,7 +36,6 @@ public class SsoController {
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveSo", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public Valid saveSo(@RequestBody WSSso wsSso) throws Exception {
-	//	System.out.println("save So");
 		return ssoService.saveSSo(wsSso);
 	}
 	
@@ -62,7 +65,8 @@ public class SsoController {
 			String status=(w.getSStatusDic()==null)?"":w.getSStatusDic().getName();
 			String unit =(w.getSMaterial().getSUnitDicByUnitInf()==null)?"":w.getSMaterial().getSUnitDicByUnitInf().getName();
 			String companyCoShortName =(w.getSCompanyCo()==null)?"":w.getSCompanyCo().getShortName();
-			String[] d = {w.getCodeSo(),""+w.getDateOrder(),w.getUsers().getName(),companyCoShortName,status,w.getSMaterial().getPno()+"_"+w.getSMaterial().getRev()+"_"+w.getSMaterial().getDes(),unit,""+w.getQtySo(),""+w.getTotalAmount(),w.getDeliveryDate().toString(),""+w.getQtyDelivered(),""+w.getIdSo()};
+			String qtyDel = (w.getQtyDelivered()==null)?"":""+w.getQtyDelivered();
+			String[] d = {w.getCodeSo(),""+w.getDateOrder(),w.getUsers().getName(),companyCoShortName,status,w.getSMaterial().getPno()+"_"+w.getSMaterial().getRev()+"_"+w.getSMaterial().getDes(),unit,""+w.getQtySo(),""+w.getTotalAmount(),w.getDeliveryDate().toString(),qtyDel,""+w.getIdSo()};
 			lst.add(d);
 
 		}
@@ -73,6 +77,8 @@ public class SsoController {
 	    t.setData(lst);
 	    return t;
 	}
+	
+	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/getSoListObjsByCompanyCoId", method=RequestMethod.GET)
 	public List<WSSelectObj> getSoListByCompanyCoId(@RequestParam("companyCoId") Long companyCoId) throws Exception {
@@ -135,4 +141,13 @@ public class SsoController {
 		return ssoService.getMaterialBySoId(soId);
 
 	}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/s/saveSSoAutoRemark", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public Valid saveSSoRemark(@RequestBody WSSSoRemark wsSSoRemark) throws Exception {
+		return ssoService.saveSoAutoRemark(wsSSoRemark);
+	}
+	
+	
 }

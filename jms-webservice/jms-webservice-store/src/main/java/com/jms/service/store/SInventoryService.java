@@ -126,12 +126,10 @@ public class SInventoryService {
 	
 	
 	
-	
-	
-	
 	@Transactional(readOnly=true)
 	public List<WSInventory> findInventoryDetailByMaterialAndStk(Long idMaterial,Long stkId)
-	{
+	{		
+	//	logger.debug("material id: " + idMaterial +", stkId: " + stkId);
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		List<SInventory> ls;
 		if(idMaterial==null)
@@ -163,6 +161,7 @@ public class SInventoryService {
 	    {
 	    	
 	    			WSInventory i = new WSInventory();
+	    			i.setInventoryId(s.getIdInv());
 	    			i.setDes(s.getSMaterial().getDes());
 	    			i.setPno(s.getSMaterial().getPno());
 	    			i.setRev(s.getSMaterial().getRev());

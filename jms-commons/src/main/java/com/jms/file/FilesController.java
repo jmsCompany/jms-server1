@@ -3,6 +3,8 @@ package com.jms.file;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -42,9 +44,18 @@ public class FilesController {
 		return fileMeta;
 	}
 */
-	@RequestMapping(value = "/getFile/{fileName}/", method = RequestMethod.GET)
-	public void getFile(@PathVariable("fileName") String fileName, HttpServletResponse response) throws IOException {
-		FileInputStream fs = new FileInputStream(new File(filePath + fileName));
+	@RequestMapping(value = "/getFile/{fileName}/{orgFileName}/", method = RequestMethod.GET)
+	public void getFile(@PathVariable("fileName") String fileName,@PathVariable("orgFileName") String orgFileName,  HttpServletRequest request,  
+          HttpServletResponse response) throws IOException {
+		
+		 response.setContentType("text/html;charset=UTF-8");  
+	     request.setCharacterEncoding("UTF-8");
+	     File f = new File(filePath + fileName);
+	     long fileLength =f.length();  
+	     response.setHeader("Content-disposition", "attachment; filename="  
+	                + new String(orgFileName.getBytes("utf-8"), "ISO8859-1"));  
+	     response.setHeader("Content-Length", String.valueOf(fileLength));
+		FileInputStream fs = new FileInputStream(f);
 		ByteStreams.copy(fs, response.getOutputStream());
 	}
 

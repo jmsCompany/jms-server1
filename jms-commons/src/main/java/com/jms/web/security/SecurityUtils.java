@@ -63,17 +63,16 @@ public class SecurityUtils {
 		if(user == null) {
 			return l;
 		}
-		
-		Map<String,String> roles = new HashMap<String,String>();
+
 		Map<Long,String> groups = new HashMap<Long,String>();
 		//todo:
 	   for(final GroupMembers gm : user.getGroupMemberses()) {
 		   
-		  // System.out.println("gm: " + gm.getGroups().getGroupName());
-		   
+		   System.out.println("g: " + gm.getGroups().getGroupName() );
 		   if(groups.containsKey(gm.getId().getIdGroup()))
 			   continue;
 		   groups.put(gm.getId().getIdGroup(), ""+gm.getId().getIdGroup());
+		  
 			l.add( new GrantedAuthority() {
 				private static final long serialVersionUID = 1L;
 				
@@ -87,26 +86,25 @@ public class SecurityUtils {
 					return getAuthority();
 				}
 			});
-			final String role = gm.getRoles().getRole();
-			if(!roles.containsKey(role))
-			{
-				roles.put(role, role);
-				l.add( new GrantedAuthority() {
-					private static final long serialVersionUID = 1L;
-					
-					@Override
-					public String getAuthority() {
-						return role;
-					}
-					
-					@Override
-					public String toString() {
-						return getAuthority();
-					}
-				});
-			}
+			
 		
 		}
+	   
+		 //  System.out.println("auth: admin" );
+		   l.add( new GrantedAuthority() {
+				private static final long serialVersionUID = 1L;
+				
+				@Override
+				public String getAuthority() {
+					return "admin";
+				}
+				
+				@Override
+				public String toString() {
+					return getAuthority();
+				}
+			});
+	   
 		
 		return l;		
 	}	

@@ -100,6 +100,9 @@ public class CompanyService {
 	@Autowired
 	private SStkRepository sStkRepository;
 	
+	
+	
+	
 	@Autowired
 	private INotificationService notificationService;
 
@@ -157,6 +160,7 @@ public class CompanyService {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		securityACLDAO.addPermission(company, Company.class,
 				BasePermission.ADMINISTRATION);
+		
 		// todo: find template company by some rules!!
 		Company templateCompany = companyRepository.findByCompanyName("企业模版");
 		copyDataBetweenCompanies(templateCompany, company);
@@ -231,6 +235,7 @@ public class CompanyService {
 	@Transactional(readOnly = false)
 	private void copyDataBetweenCompanies(Company from, Company to) {
 
+	
 		// copy roles
 		for (Roles r : from.getRoleses()) {
 			Roles r1 = new Roles();
@@ -361,6 +366,19 @@ public class CompanyService {
 	public Boolean createSTK(SStk sStk) {
 		sStkRepository.save(sStk);
 		return true;
+	}
+	
+	public void addAppsPerms()
+	{
+		List<Apps> appList = appsRepository.findAll();
+		Users admin = securityUtils.getCurrentDBUser();
+
+
+		PrincipalSid pid = new PrincipalSid("" + admin.getIdUser());
+		// logger.debug("creator id: " + creator.getIdUser());
+		for (Apps a : appList) {
+			securityACLDAO.addPermission(a, pid, BasePermission.ADMINISTRATION);
+		}
 	}
 
 }

@@ -151,7 +151,7 @@ public class ShiftPlanService {
 	    	pc.setCompanyName(pShiftPlan.getCompany().getCompanyName());
 	    }
 	    int i=0;
-	    for(PShiftPlanD ps: pShiftPlan.getPShiftPlanDs())
+	    for(PShiftPlanD ps: pShiftPlanDRepository.getByShiftId(pShiftPlan.getIdShiftPlan()))
 	    {
 	    	pc.getShifPlanItems().put("item"+i, shiftPlanDService.toWSShiftPlanD(ps));
 	    	i++;

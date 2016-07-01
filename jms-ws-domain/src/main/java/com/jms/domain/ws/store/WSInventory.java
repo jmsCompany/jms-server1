@@ -2,7 +2,9 @@ package com.jms.domain.ws.store;
 
 
 public class WSInventory {
-
+	
+	
+    private Long inventoryId;
     private Long idMaterial;
     private String pno;
     private String rev;
@@ -88,6 +90,12 @@ public class WSInventory {
 	}
 	public void setBox(Long box) {
 		this.box = box;
+	}
+	public Long getInventoryId() {
+		return inventoryId;
+	}
+	public void setInventoryId(Long inventoryId) {
+		this.inventoryId = inventoryId;
 	}
 
 }

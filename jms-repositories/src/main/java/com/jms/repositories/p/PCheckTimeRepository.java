@@ -14,4 +14,8 @@ public interface PCheckTimeRepository extends JpaRepository<PCheckTime, Long>{
 
     @Query("select p from PCheckTime p where p.MMachine.company.idCompany=?1")
 	public List<PCheckTime> getByCompanyId(Long companyId);
+    
+    
+    @Query("select p from PCheckTime p where p.MMachine.idMachine=?1")
+	public List<PCheckTime> getByMachineId(Long machineId);
 }

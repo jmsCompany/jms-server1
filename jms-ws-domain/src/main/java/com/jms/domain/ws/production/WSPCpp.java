@@ -20,7 +20,7 @@ public class WSPCpp implements java.io.Serializable{
     private String op;
     private String pwo;
     private Long pwoId;
-    private Long cppCode;
+    private String cppCode;
     private Long qty;
     private Date planSt;
     private Date planFt;
@@ -146,10 +146,10 @@ public class WSPCpp implements java.io.Serializable{
 	public void setIdCpp(Long idCpp) {
 		this.idCpp = idCpp;
 	}
-	public Long getCppCode() {
+	public String getCppCode() {
 		return cppCode;
 	}
-	public void setCppCode(Long cppCode) {
+	public void setCppCode(String cppCode) {
 		this.cppCode = cppCode;
 	}
    
