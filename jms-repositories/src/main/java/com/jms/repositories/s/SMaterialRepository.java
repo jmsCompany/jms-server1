@@ -18,10 +18,20 @@ public interface SMaterialRepository  extends JpaRepository<SMaterial, Long>{
   @Query("select s from SMaterial s where s.company.idCompany=?1 and s.SMaterialTypeDic.id=?2")
   public List<SMaterial> getByCompanyIdAndMaterialType(Long companyId,Long materialTypeId);
   
+  @Query("select s from SMaterial s where s.company.idCompany=?1 and s.SMaterialTypeDic.id in ?2")
+  public List<SMaterial> getByCompanyIdAndMaterialTypes(Long companyId,List<Long> types);
+  
+  
   @Query("select s from SMaterial s where s.company.idCompany=?1 and s.SMaterialTypeDic.id=?2 and (s.pno like ?3 or s.rev like ?3 or s.des like ?3)")
   public List<SMaterial> getByCompanyIdAndMaterialTypeAndQuery(Long companyId,Long materialTypeId,String q);
   
+  @Query("select s from SMaterial s where s.company.idCompany=?1 and s.SMaterialTypeDic.id in ?2 and (s.pno like ?3 or s.rev like ?3 or s.des like ?3)")
+  public List<SMaterial> getByCompanyIdAndMaterialTypesAndQuery(Long companyId,List<Long> types,String q);
+  
   @Query("select s from SMaterial s where s.company.idCompany=?1 and (s.pno like ?2 or s.rev like ?2 or s.des like ?2)")
   public List<SMaterial> getByCompanyIdAndQuery(Long companyId,String q);
+  
+  @Query("select s from SMaterial s where s.company.idCompany=?1 and s.pno=?2")
+  public SMaterial getByCompanyIdAndPno(Long companyId,String pno);
 		
 }

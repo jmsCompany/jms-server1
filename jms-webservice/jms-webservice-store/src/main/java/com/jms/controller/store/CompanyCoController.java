@@ -15,7 +15,7 @@ import com.jms.domain.db.STypeDic;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.store.WSCompanyCo;
+import com.jms.domain.ws.s.WSCompanyCo;
 import com.jms.repositories.s.SCountryDicRepository;
 import com.jms.repositories.s.SLevelDicRepository;
 import com.jms.repositories.s.SStatusDicRepository;
@@ -123,7 +123,7 @@ public class CompanyCoController {
 	}
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/companyCoList", method=RequestMethod.GET)
+	@RequestMapping(value="/s/companyCoList", method=RequestMethod.POST)
 	public WSTableData  getCompanyCoList(@RequestParam(required=false, value="companyCoTypeId") Long companyCoTypeId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		System.out.println("co Type: " + companyCoTypeId);
 		List<WSCompanyCo> wsCompanyCos = companyCoService.getCoCompanies(companyCoTypeId,securityUtils.getCurrentDBUser().getCompany().getId());

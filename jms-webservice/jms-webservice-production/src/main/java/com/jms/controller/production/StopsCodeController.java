@@ -14,8 +14,8 @@ import com.jms.domain.db.PWorkCenter;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.production.WSPStopsCode;
-import com.jms.domain.ws.production.WSPWorkCenter;
+import com.jms.domain.ws.p.WSPStopsCode;
+import com.jms.domain.ws.p.WSPWorkCenter;
 import com.jms.repositories.p.PStopsCodeRepository;
 import com.jms.repositories.p.PSubCodeRepository;
 import com.jms.repositories.p.PWorkCenterRepository;
@@ -63,7 +63,7 @@ public class StopsCodeController {
 
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/p/findPStopsCodeList", method=RequestMethod.GET)
+	@RequestMapping(value="/p/findPStopsCodeList", method=RequestMethod.POST)
 	public WSTableData  findPStopsCodeList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		List<PSubCode> pStopscodes =pSubCodeRepository.findAll();
 		List<String[]> lst = new ArrayList<String[]>();

@@ -15,14 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.csvreader.CsvReader;
 import com.jms.domain.db.Company;
 import com.jms.domain.db.FCostCenter;
-import com.jms.domain.db.MMachine;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMaterialCategory;
 import com.jms.domain.db.SMaterialPic;
 import com.jms.domain.db.SPic;
 import com.jms.domain.db.SUnitDic;
 import com.jms.domain.ws.Valid;
-import com.jms.domain.ws.store.WSMaterial;
+import com.jms.domain.ws.s.WSMaterial;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.f.FCostCenterRepository;
@@ -78,7 +77,7 @@ public class MaterialService {
 			}
 			else
 			{
-				logger.debug("idCompany: " + idCompany +", q: " + q);
+				//logger.debug("idCompany: " + idCompany +", q: " + q);
 				q= '%'+q+'%';
 				sMaterialList =sMaterialRepository.getByCompanyIdAndQuery(idCompany,q);
 			}
@@ -109,6 +108,59 @@ public class MaterialService {
 		
 	}
 
+	
+	
+	@Transactional(readOnly=true)
+	public List<WSMaterial> getMaterialsByTypesAndQ(Long idCompany,List<Long> types,String q) throws Exception {
+	
+		
+		List<WSMaterial> wsMaterialList = new ArrayList<WSMaterial>();
+		List<SMaterial> sMaterialList;
+		if(types==null)
+		{
+			if(q==null)
+			{
+				sMaterialList =sMaterialRepository.getByCompanyId(idCompany);
+			}
+			else
+			{
+				//logger.debug("idCompany: " + idCompany +", q: " + q);
+				q= '%'+q+'%';
+				sMaterialList =sMaterialRepository.getByCompanyIdAndQuery(idCompany,q);
+			}
+			
+		}
+		else 
+		{
+			if(q==null)
+			{
+				sMaterialList =sMaterialRepository.getByCompanyIdAndMaterialTypes(idCompany, types);
+			}
+			else
+			{
+				q= '%'+q+'%';
+				sMaterialList =sMaterialRepository.getByCompanyIdAndMaterialTypesAndQuery(idCompany, types, q);
+			}
+			
+		}
+		
+		for(SMaterial s : sMaterialList)
+		{
+			//logger.debug("material: " + s.getPno());
+			wsMaterialList.add(toWSMaterial(s));
+		}
+		
+		
+        return wsMaterialList;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	@Transactional(readOnly=false)
 	public WSMaterial saveMaterial(WSMaterial m) throws Exception {
@@ -151,9 +203,18 @@ public class MaterialService {
 	public Valid deleteMaterial(Long materialId)
 	{
 		Valid valid = new Valid();
-	//	SMaterial m = sMaterialRepository.findOne(materialId);
-		sMaterialRepository.delete(materialId);
-		valid.setValid(true);
+		SMaterial m = sMaterialRepository.findOne(materialId);
+		if(m.getPBoms().isEmpty()&&m.getPRoutines().isEmpty()&&m.getSInventories().isEmpty()&&m.getSMtfMaterials().isEmpty()&&m.getSPoMaterials().isEmpty())
+		{
+			 sMaterialRepository.delete(materialId);
+			 valid.setValid(true);
+		}
+		else
+		{	
+			valid.setValid(false);
+			
+		}
+	
 		return valid;
 	}
 	
@@ -182,7 +243,36 @@ public class MaterialService {
 
 	}
 
-	
+	public Boolean checkPno(String pno, Long idMaterial) {
+
+		String dbPno = "";
+		// 已有物料修改
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		if (idMaterial != null) {
+			SMaterial material = sMaterialRepository.findOne(idMaterial);
+			dbPno= material.getPno();
+			if (pno != null && !pno.isEmpty()) {
+				if (sMaterialRepository.getByCompanyIdAndPno(companyId, pno) == null
+						|| pno.equals(dbPno)) {
+					return true;
+				} else {
+					return false;
+				}
+			} else
+				return true;
+		} else {
+			if (pno == null || pno.isEmpty())
+				return false;
+			else {
+				if (sMaterialRepository.getByCompanyIdAndPno(companyId, pno) == null) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+	}
+
 	
 	
 	public SMaterial toDBSmaterial(WSMaterial wsMaterial,SMaterial sMaterial) throws Exception

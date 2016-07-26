@@ -15,8 +15,8 @@ import com.jms.domain.db.SStk;
 import com.jms.domain.db.SysDic;
 import com.jms.domain.db.SysDicD;
 import com.jms.domain.ws.Valid;
-import com.jms.domain.ws.store.WSBin;
-import com.jms.domain.ws.store.WSMaterialCategory;
+import com.jms.domain.ws.s.WSBin;
+import com.jms.domain.ws.s.WSMaterialCategory;
 import com.jms.repositories.s.SMaterialCategoryPicRepository;
 import com.jms.repositories.s.SMaterialCategoryRepository;
 import com.jms.repositories.s.SMaterialTypeDicRepository;
@@ -53,6 +53,7 @@ public class MaterialCategoryService {
 			wsCat.setName(dbcat.getName());
 			wsCat.setDes(dbcat.getDes());
 			wsCat.setOrderBy(dbcat.getOrderBy());
+			if(dbcat.getSStatusDic()!=null)
 			wsCat.setStatusName(dbcat.getSStatusDic().getName());
 			wsCats.add(wsCat);
 		}

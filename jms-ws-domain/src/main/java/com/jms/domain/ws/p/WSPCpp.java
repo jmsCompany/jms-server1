@@ -1,4 +1,4 @@
-package com.jms.domain.ws.production;
+package com.jms.domain.ws.p;
 
 import java.util.Date;
 
@@ -30,7 +30,12 @@ public class WSPCpp implements java.io.Serializable{
 	private Long drawNo;//产品图纸编号
 	private String drawVer;//产品图纸版本
 	
-
+	
+	
+    private Date actSt;
+    private Date actFt;
+	
+    private Long actQty;
 	public String getCompanyName() {
 		return companyName;
 	}
@@ -151,6 +156,24 @@ public class WSPCpp implements java.io.Serializable{
 	}
 	public void setCppCode(String cppCode) {
 		this.cppCode = cppCode;
+	}
+	public Date getActSt() {
+		return actSt;
+	}
+	public void setActSt(Date actSt) {
+		this.actSt = actSt;
+	}
+	public Date getActFt() {
+		return actFt;
+	}
+	public void setActFt(Date actFt) {
+		this.actFt = actFt;
+	}
+	public Long getActQty() {
+		return actQty;
+	}
+	public void setActQty(Long actQty) {
+		this.actQty = actQty;
 	}
    
 }

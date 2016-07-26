@@ -12,6 +12,7 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -25,6 +26,7 @@ import com.jms.web.AccessControlAllowFilter;
 import com.jms.web.JsonpCallbackFilter;
 import com.jms.web.security.AuthenticationTokenProcessingFilter;
 
+@EnableScheduling
 @SpringBootApplication
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @EnableTransactionManagement(proxyTargetClass = true)

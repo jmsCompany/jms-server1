@@ -12,11 +12,12 @@ import com.jms.domain.db.PStopsPlan;
 @Repository
 public interface PStopsPlanRepository extends JpaRepository<PStopsPlan, Long>{
 	
-	@Query("select p from PStopsPlan p where p.company.idCompany=?1  and DATE(p.planSt)=CURDATE()")
+//	and DATE(p.planSt)=CURDATE()
+	@Query("select p from PStopsPlan p where p.company.idCompany=?1  order by p.planSt desc")
 	public List<PStopsPlan> getPStopsPlansByCompanyId(Long companyId);
 	
-	
-	@Query("select p from PStopsPlan p where p.company.idCompany=?1  and p.MMachine.idMachine=?2 and DATE(p.planSt)=CURDATE()")
+//	and DATE(p.planSt)=CURDATE() 
+	@Query("select p from PStopsPlan p where p.company.idCompany=?1  and p.MMachine.idMachine=?2 and now()>p.planSt and now()<p.planFt order by p.planSt desc")
 	public List<PStopsPlan> getPStopsPlansByCompanyIdAndMachineId(Long companyId,Long machineId);
 
 }

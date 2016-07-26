@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jms.domain.db.FCostCenter;
+import com.jms.domain.db.MMachine;
 import com.jms.domain.db.PStopsCode;
 import com.jms.domain.db.PStopsPlan;
 import com.jms.domain.db.PSubCode;
@@ -19,9 +20,9 @@ import com.jms.domain.db.SStk;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.production.WSPStopsCode;
-import com.jms.domain.ws.production.WSPStopsPlan;
-import com.jms.domain.ws.production.WSPWorkCenter;
+import com.jms.domain.ws.p.WSPStopsCode;
+import com.jms.domain.ws.p.WSPStopsPlan;
+import com.jms.domain.ws.p.WSPWorkCenter;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.f.FCostCenterRepository;
@@ -58,20 +59,37 @@ public class PStopsPlanService {
 
 	
 	@Transactional(readOnly=false)
-	public WSPStopsPlan saveWSPStopsPlan(WSPStopsPlan wsPStopsPlan) throws Exception {
-		PStopsPlan pStopsPlan;
-		if(wsPStopsPlan.getIdStopsPlan()!=null&&!wsPStopsPlan.getIdStopsPlan().equals(0l))
+	public Valid saveWSPStopsPlan(WSPStopsPlan wsPStopsPlan) throws Exception {
+	
+		if(wsPStopsPlan.getMachineId().equals(-1l))
 		{
-			pStopsPlan = pStopsPlanRepository.findOne(wsPStopsPlan.getIdStopsPlan());
+			for(MMachine m:mMachineRepository.getActiveMachinesByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
+			{
+				PStopsPlan pStopsPlan = new PStopsPlan();
+				
+				PStopsPlan dbPStopsPlan= toDBPStopsPlan(wsPStopsPlan,pStopsPlan);
+				dbPStopsPlan.setMMachine(m);
+			    pStopsPlanRepository.save(dbPStopsPlan);
+			}
 		}
 		else
 		{
-			pStopsPlan = new PStopsPlan();
+			PStopsPlan pStopsPlan;
+			if(wsPStopsPlan.getIdStopsPlan()!=null&&!wsPStopsPlan.getIdStopsPlan().equals(0l))
+			{
+				pStopsPlan = pStopsPlanRepository.findOne(wsPStopsPlan.getIdStopsPlan());
+			}
+			else
+			{
+				pStopsPlan = new PStopsPlan();
+			}
+			PStopsPlan dbPStopsPlan= toDBPStopsPlan(wsPStopsPlan,pStopsPlan);
+		    pStopsPlanRepository.save(dbPStopsPlan);
 		}
-		PStopsPlan dbPStopsPlan= toDBPStopsPlan(wsPStopsPlan,pStopsPlan);
-		dbPStopsPlan = pStopsPlanRepository.save(dbPStopsPlan);
-		wsPStopsPlan.setIdStopsPlan(dbPStopsPlan.getIdStopsPlan());
-		return wsPStopsPlan;		
+		
+		Valid v = new Valid();
+		v.setValid(true);
+		return v;		
 		
 	}
 
@@ -125,14 +143,18 @@ public class PStopsPlanService {
 	private PStopsPlan toDBPStopsPlan(WSPStopsPlan wsPStopsPlan,PStopsPlan pStopsPlan) throws Exception
 	{
 	
-		PStopsPlan dbPStopsPlan = (PStopsPlan)BeanUtil.shallowCopy(wsPStopsPlan, PStopsPlan.class, pStopsPlan);
-
-		dbPStopsPlan.setCompany(securityUtils.getCurrentDBUser().getCompany());
-		dbPStopsPlan.setMMachine(mMachineRepository.findOne(wsPStopsPlan.getMachineId()));
-		dbPStopsPlan.setPSubCode(pSubCodeRepository.findOne(wsPStopsPlan.getpSubCodeId()));
-		dbPStopsPlan.setPStatusDic(pStatusDicRepository.findOne(wsPStopsPlan.getStatusId()));
+	
+			PStopsPlan dbPStopsPlan = (PStopsPlan)BeanUtil.shallowCopy(wsPStopsPlan, PStopsPlan.class, pStopsPlan);
+			dbPStopsPlan.setCompany(securityUtils.getCurrentDBUser().getCompany());
+			if(!wsPStopsPlan.getMachineId().equals(-1l))
+			{
+				dbPStopsPlan.setMMachine(mMachineRepository.findOne(wsPStopsPlan.getMachineId()));
+			}
+			
+			dbPStopsPlan.setPSubCode(pSubCodeRepository.findOne(wsPStopsPlan.getpSubCodeId()));
+			dbPStopsPlan.setPStatusDic(pStatusDicRepository.findOne(wsPStopsPlan.getStatusId()));
+			return dbPStopsPlan;
 		
-		return dbPStopsPlan;
 	}
 	
 	private WSPStopsPlan toWSPStopsPlan(PStopsPlan pStopsPlan) throws Exception

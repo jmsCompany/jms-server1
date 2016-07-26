@@ -19,13 +19,13 @@ import com.jms.domain.db.SPoMaterial;
 import com.jms.domain.db.SStk;
 import com.jms.domain.db.SStkTypeDic;
 import com.jms.domain.ws.Valid;
-import com.jms.domain.ws.store.WSBin;
-import com.jms.domain.ws.store.WSCompanyCo;
-import com.jms.domain.ws.store.WSMaterial;
-import com.jms.domain.ws.store.WSSpo;
-import com.jms.domain.ws.store.WSSpoMaterial;
-import com.jms.domain.ws.store.WSStk;
-import com.jms.domain.ws.store.WSStkType;
+import com.jms.domain.ws.s.WSBin;
+import com.jms.domain.ws.s.WSCompanyCo;
+import com.jms.domain.ws.s.WSMaterial;
+import com.jms.domain.ws.s.WSSpo;
+import com.jms.domain.ws.s.WSSpoMaterial;
+import com.jms.domain.ws.s.WSStk;
+import com.jms.domain.ws.s.WSStkType;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.s.SBinRepository;
 import com.jms.repositories.s.SCompanyCoRepository;
@@ -133,7 +133,7 @@ public class SpoMaterialService {
 		WSSpoMaterial wsSpoMaterial = (WSSpoMaterial)BeanUtil.shallowCopy(spoMaterial, WSSpoMaterial.class, null);
 		if(spoMaterial.getSMaterial()!=null)
 		{
-			wsSpoMaterial.setsMaterial(spoMaterial.getSMaterial().getDes());
+			wsSpoMaterial.setsMaterial(spoMaterial.getSMaterial().getPno());
 			wsSpoMaterial.setsMaterialId(spoMaterial.getSMaterial().getIdMaterial());
 			wsSpoMaterial.setRev(spoMaterial.getSMaterial().getRev());
 			wsSpoMaterial.setDes(spoMaterial.getSMaterial().getDes());
@@ -158,6 +158,11 @@ public class SpoMaterialService {
 		}
 		wsSpoMaterial.setsPoId(spoMaterial.getSPo().getIdPo());
 		wsSpoMaterial.setUprice(spoMaterial.getUPrice());
+		if(spoMaterial.getQtyReceived()==null)
+		{
+			wsSpoMaterial.setQtyReceived(0l);
+		}
+		
 		return wsSpoMaterial;
 	}
 

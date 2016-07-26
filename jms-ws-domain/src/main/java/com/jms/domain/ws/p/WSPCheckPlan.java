@@ -1,4 +1,4 @@
-package com.jms.domain.ws.production;
+package com.jms.domain.ws.p;
 
 import java.util.Date;
 
@@ -9,8 +9,8 @@ public class WSPCheckPlan {
 	private Long pcppId; //日计划ID
     private Date planCheckTime; //计划检查时间
     private Date checkTime;    //实际检查时间
-    private Long planQty;    //当前按计划需完成总数
-    private Long finQty;     //实际完成总数
+    private Long planQty;    //当前按计划需完成数
+    private Long finQty;     //实际完成数
     private Long totalQty;    //日计划需要完成数量
     private String status;   //满意，不满意
     

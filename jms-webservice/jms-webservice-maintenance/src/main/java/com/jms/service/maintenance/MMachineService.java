@@ -28,7 +28,7 @@ import com.jms.domain.db.SStatusDic;
 import com.jms.domain.db.SysDic;
 import com.jms.domain.db.SysDicD;
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.store.WSSStatus;
+import com.jms.domain.ws.s.WSSStatus;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.m.MMachineGroupRepository;
 import com.jms.repositories.m.MMachineRepository;
@@ -63,7 +63,7 @@ public class MMachineService {
 	public List<WSSelectObj> getMachinesObj()
 	{
 		List<WSSelectObj> wss = new ArrayList<WSSelectObj>();
-		for(MMachine m :mMachineRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
+		for(MMachine m :mMachineRepository.getActiveMachinesByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
 		//for(MMachine m :mMachineRepository.findAll())
 		{
 			WSSelectObj ws = new WSSelectObj();

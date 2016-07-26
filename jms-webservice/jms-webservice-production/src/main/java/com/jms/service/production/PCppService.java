@@ -2,6 +2,7 @@ package com.jms.service.production;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,16 +17,17 @@ import com.jms.domain.db.PDraw;
 import com.jms.domain.db.PMr;
 import com.jms.domain.db.PRoutineD;
 import com.jms.domain.db.PWip;
+import com.jms.domain.db.PWo;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMtfNo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.production.WSPCheckTime;
-import com.jms.domain.ws.production.WSPCpp;
-import com.jms.domain.ws.production.WSPMr;
-import com.jms.domain.ws.production.WSPRoutineD;
-import com.jms.domain.ws.production.WSPWip;
-import com.jms.domain.ws.store.WSMaterialQty;
+import com.jms.domain.ws.p.WSPCheckTime;
+import com.jms.domain.ws.p.WSPCpp;
+import com.jms.domain.ws.p.WSPMr;
+import com.jms.domain.ws.p.WSPRoutineD;
+import com.jms.domain.ws.p.WSPWip;
+import com.jms.domain.ws.s.WSMaterialQty;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.m.MMachineRepository;
@@ -141,6 +143,87 @@ public class PCppService {
 		
 		return valid;
 	}
+	
+	
+	@Transactional(readOnly=false)
+	public Valid startCpp(Long idCpp) throws Exception {
+		Valid v = new Valid();
+		
+		PCPp dbPCPp = pCPpRepository.findOne(idCpp);
+		dbPCPp.setActSt(new Date());
+		pCPpRepository.save(dbPCPp);
+		
+		PWo pwo = dbPCPp.getPWo();
+		if(pwo.getActSt()==null)
+		{
+			pwo.setActFt(new Date());
+			pWoRepository.save(pwo);
+		}
+		
+		v.setValid(true);
+		return v;
+	}
+	
+	@Transactional(readOnly=true)
+	public Valid hasCheckPlans(Long idCpp) {
+		Valid v = new Valid();
+		
+		PCPp dbPCPp = pCPpRepository.findOne(idCpp);
+		if(dbPCPp.getPCheckPlans().isEmpty())
+		{
+			v.setValid(false);
+		}
+		else
+		{
+			v.setValid(true);
+		}
+	
+		return v;
+	}
+	
+	
+	
+	@Transactional(readOnly=false)
+	public Valid finishCpp(Long idCpp) throws Exception {
+		Valid v = new Valid();
+		
+		PCPp dbPCPp = pCPpRepository.findOne(idCpp);
+		dbPCPp.setActFt(new Date());
+		pCPpRepository.save(dbPCPp);
+		//判断是否有检查数据，如果无 返回
+		if(dbPCPp.getPCheckPlans().isEmpty()) //无检查数据
+		{
+			v.setValid(false);
+			
+		}
+		else
+		{
+			v.setValid(true);
+		}
+			
+		return v;
+	}
+	
+	
+	
+	@Transactional(readOnly=true)
+	public Valid isStarted(Long idCpp) throws Exception {
+		Valid v = new Valid();
+		
+		PCPp dbPCPp = pCPpRepository.findOne(idCpp);
+		if(dbPCPp.getActSt()==null)
+		{
+			v.setValid(false);
+		}
+		else
+		{
+			v.setValid(true);
+		}
+		
+		
+		return v;
+	}
+	
 	
 	
 	@Transactional(readOnly=true) 

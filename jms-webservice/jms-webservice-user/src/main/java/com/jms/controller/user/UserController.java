@@ -38,8 +38,8 @@ import com.jms.domain.ws.WSUser;
 import com.jms.domain.ws.WSUserProfile;
 import com.jms.domain.ws.WSUserRoles;
 import com.jms.domain.ws.m.WSMachine;
-import com.jms.domain.ws.production.WSPCppAndriod;
-import com.jms.domain.ws.production.WSPWo;
+import com.jms.domain.ws.p.WSPCppAndriod;
+import com.jms.domain.ws.p.WSPWo;
 import com.jms.domainadapter.UserAdapter;
 import com.jms.repositories.p.PCPpRepository;
 import com.jms.repositories.system.AppsRepository;
@@ -114,7 +114,7 @@ public class UserController {
 		userProfile.setLogin(wsUser.getLogin());
 		userProfile.setToken(token);
 		userProfile.setIdUser(u.getIdUser());
-		userProfile.setLogoURL("www.sandvik.com");
+		//userProfile.setLogoURL("www.sandvik.com");
 		userProfile.setIdCompany(u.getCompany().getIdCompany());
 		userProfile.setName(u.getName());
 		userProfile.setDepartment("");
@@ -131,11 +131,20 @@ public class UserController {
 			
 				List<WSPCppAndriod> cpps = new ArrayList<WSPCppAndriod>();
 			//	System.out.println("取得日计划。。。。");
+				
 				for( PCPp cpp:pCPpRepository.getByCompanyIdAndUserId(companyId, userId))
 				{
+					if(cpp.getPlanSt().getTime()>(new Date().getTime())+86400000) //忽略大于明天的cpp
+					{
+						continue;
+					}
 					WSPCppAndriod m = new WSPCppAndriod();
 					m.setChecklistId("001"); //需要修改
 					m.setCppId(cpp.getIdCPp());
+					if(cpp.getActFt()!=null)
+					m.setActFt(cpp.getActFt().getTime());
+					if(cpp.getActSt()!=null)
+						m.setActSt(cpp.getActSt().getTime());
 					
 					//产品图纸
 					if(cpp.getPRoutineD()!=null)
@@ -286,6 +295,16 @@ public class UserController {
 	}
 	
 	
+	
+	@Transactional(readOnly=false)
+	@RequestMapping(value="/user/updateUserPassword", method=RequestMethod.POST)
+	public Valid updateUserPassword(@RequestBody WSUser wsUser) throws Exception {
+		return userService.updateUserPassword(wsUser);
+	}
+	
+	
+	
+	
 	@Transactional(readOnly=true)
 	@RequestMapping(value="/getAndroidMenu", method=RequestMethod.GET)
 	public List<WSAndriodMenuItem> getAndroidMenu() throws Exception {
@@ -304,7 +323,7 @@ public class UserController {
 				WSAndriodMenuItem i2 = new WSAndriodMenuItem("OP","操作员","Qtycheck","Qtycheck","到点检查");
 				WSAndriodMenuItem i3 = new WSAndriodMenuItem("OP","操作员","Stopbyplan","Stopbyplan","计划停机");
 				WSAndriodMenuItem i4 = new WSAndriodMenuItem("OP","操作员","Actualsetup","Actualsetup","实际装载");
-				WSAndriodMenuItem i5 = new WSAndriodMenuItem("OP","操作员","Checklist","Checklist","检查清单");
+				WSAndriodMenuItem i5 = new WSAndriodMenuItem("OP","操作员","Checklist","Checklist","非计划点料");
 				WSAndriodMenuItem i6 = new WSAndriodMenuItem("OP","操作员","Eqstopforop","Eqstopforop","设备故障");
 				//WSAndriodMenuItem i7 = new WSAndriodMenuItem("OP","操作员","Ehslogin","Ehslogin","EHS登录");
 				WSAndriodMenuItem i8 = new WSAndriodMenuItem("OP","操作员","Thinkthroughthetask","Thinkthroughthetask","安全检查");
@@ -360,7 +379,7 @@ public class UserController {
 				WSAndriodMenuItem i9 = new WSAndriodMenuItem("warehouse","仓库","RFC","RFC","销售退货");
 				WSAndriodMenuItem i10 = new WSAndriodMenuItem("warehouse","仓库","Inventorysummary","Inventorysummary","库存汇总");
 				WSAndriodMenuItem i11 = new WSAndriodMenuItem("warehouse","仓库","Inventorydetail","Inventorydetail","库存明细");
-				WSAndriodMenuItem i12 = new WSAndriodMenuItem("warehouse","仓库","pmreport","pmreport","发料报告");
+				WSAndriodMenuItem i12 = new WSAndriodMenuItem("warehouse","仓库","pmreport","pmreport","计划发料");
 				items.add(i1);
 				items.add(i2);
 				items.add(i3);
@@ -435,7 +454,7 @@ public class UserController {
 
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/u/userTable", method=RequestMethod.GET)
+	@RequestMapping(value="/u/userTable", method=RequestMethod.POST)
 	public WSTableData  findUserTableByCompanyId(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
 		List<Users> users = usersRepository.findUsersByIdCompany(securityUtils.getCurrentDBUser().getCompany().getIdCompany());

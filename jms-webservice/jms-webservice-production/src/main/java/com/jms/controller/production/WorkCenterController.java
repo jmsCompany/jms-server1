@@ -12,7 +12,7 @@ import com.jms.domain.db.PWorkCenter;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.production.WSPWorkCenter;
+import com.jms.domain.ws.p.WSPWorkCenter;
 import com.jms.repositories.p.PWorkCenterRepository;
 import com.jms.service.production.WorkCenterService;
 import com.jms.web.security.SecurityUtils;
@@ -54,7 +54,7 @@ public class WorkCenterController {
 
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/p/workCenterList", method=RequestMethod.GET)
+	@RequestMapping(value="/p/workCenterList", method=RequestMethod.POST)
 	public WSTableData  getWorkCenterList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		List<PWorkCenter> pWorkCenters =pWorkCenterRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 		List<String[]> lst = new ArrayList<String[]>();

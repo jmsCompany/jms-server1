@@ -15,7 +15,7 @@ import com.jms.domain.db.PWip;
 import com.jms.domain.db.SMtfTypeDic;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.production.WSPWip;
+import com.jms.domain.ws.p.WSPWip;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.p.PCheckTimeRepository;

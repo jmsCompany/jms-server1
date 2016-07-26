@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.store.WSLinkman;
+import com.jms.domain.ws.s.WSLinkman;
 import com.jms.service.store.LinkmanService;
 
 
@@ -46,7 +46,7 @@ public class LinkmanController {
 
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/LinkmanList", method=RequestMethod.GET)
+	@RequestMapping(value="/s/LinkmanList", method=RequestMethod.POST)
 	public WSTableData  getLinkmanList(@RequestParam("companyCoId") Long companyCoId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		List<WSLinkman> wsLinkmen = linkmanService.getLinkmans(companyCoId);
 		List<String[]> lst = new ArrayList<String[]>();

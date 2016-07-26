@@ -21,10 +21,10 @@ import com.jms.domain.db.PWip;
 import com.jms.domain.db.PWo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.production.WSPCheckPlan;
-import com.jms.domain.ws.production.WSPCheckTime;
-import com.jms.domain.ws.production.WSPRoutineD;
-import com.jms.domain.ws.production.WSPWip;
+import com.jms.domain.ws.p.WSPCheckPlan;
+import com.jms.domain.ws.p.WSPCheckTime;
+import com.jms.domain.ws.p.WSPRoutineD;
+import com.jms.domain.ws.p.WSPWip;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.m.MMachineRepository;
@@ -71,21 +71,31 @@ public class PCheckPlanService {
 		PCheckPlan pCheckPlan = new PCheckPlan();
 		PCheckPlan dbPCheckPlan= toDBPCheckPlan(wsPCheckPlan,pCheckPlan);
 		dbPCheckPlan = pCheckPlanRepository.save(dbPCheckPlan);
-		PWo pwo = dbPCheckPlan.getPCPp().getPWo();
+		PCPp cp = dbPCheckPlan.getPCPp();
+		List<PCheckPlan> cpCheckPlans =pCheckPlanRepository.getMaxCheckPlanByCppId(cp.getIdCPp());
+		cp.setActQty(cpCheckPlans.get(0).getFinQty());
+		pCPpRepository.save(cp);
+		
+		PWo pwo = cp.getPWo();
 		
 		Long qtyFinished =0l;
 		for(PCPp p: pwo.getPCPps())
 		{
 			List<PCheckPlan> pCheckPlans =pCheckPlanRepository.getMaxCheckPlanByCppId(p.getIdCPp());
 			if(pCheckPlans!=null&&!pCheckPlans.isEmpty())
+			{
 				qtyFinished =qtyFinished +pCheckPlans.get(0).getFinQty();
+			   
+			}
+				
 		}
 		if(qtyFinished>=pwo.getQty())
 		{
 			pwo.setPStatusDic(pStatusDicRepository.findOne(13l)); //结束工单
-			pWoRepository.save(pwo);
-			
+
 		}
+		pwo.setActQty(qtyFinished);
+		pWoRepository.save(pwo);
 		return wsPCheckPlan;		
 		
 	}
@@ -136,17 +146,23 @@ public class PCheckPlanService {
 	    }
 	    pc.setTotalQty(pCheckPlan.getPCPp().getQty());
 	    pc.setPcppId(pCheckPlan.getPCPp().getIdCPp());
+	    
 	    Date d = pCheckPlan.getPlanCheckTime();
 
+	    if(d!=null)
+	    {
+	        DateFormat fmtDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		    Date today = new Date();
+		    
+		    DateFormat fmtDate = new SimpleDateFormat("yyyy-MM-dd");
+		    String s = fmtDate.format(today);
+		    Date date = fmtDateTime.parse(s+" "+d.toString());  
+		  //  logger.debug("new plan time: " + date);
+		    pc.setPlanCheckTime(date);
+	    	
+	    }
 
-	    DateFormat fmtDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	    Date today = new Date();
-	    
-	    DateFormat fmtDate = new SimpleDateFormat("yyyy-MM-dd");
-	    String s = fmtDate.format(today);
-	    Date date = fmtDateTime.parse(s+" "+d.toString());  
-	  //  logger.debug("new plan time: " + date);
-	    pc.setPlanCheckTime(date);
+	
 		return pc;
 	}
 }

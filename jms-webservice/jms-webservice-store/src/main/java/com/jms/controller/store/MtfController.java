@@ -12,9 +12,10 @@ import com.jms.domain.db.SMtfMaterial;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.store.WSMaterialChecked;
-import com.jms.domain.ws.store.WSSMtf;
-import com.jms.domain.ws.store.WSSMtfMaterial;
+import com.jms.domain.ws.s.WSMaterialChecked;
+import com.jms.domain.ws.s.WSSMtf;
+import com.jms.domain.ws.s.WSSMtfMaterial;
+import com.jms.repositories.s.SMtfMaterialRepository;
 import com.jms.repositories.s.SMtfRepository;
 import com.jms.service.store.MtfMaterialService;
 import com.jms.service.store.MtfService;
@@ -31,6 +32,7 @@ public class MtfController {
 	@Autowired private MtfMaterialService mtfMaterialService;
 	@Autowired private SMtfTypeDicService sMtfTypeDicService;
 	@Autowired private SMtfRepository sMtfRepository;
+	@Autowired private SMtfMaterialRepository sMtfMaterialRepository;
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveSmtf", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -51,7 +53,7 @@ public class MtfController {
 	public List<WSSelectObj> findSmtfMaterialObjs(@RequestParam("smtfId") Long smtfId) throws Exception {
 		List<WSSelectObj> ws =new ArrayList<WSSelectObj>();
 		SMtf sMtf = sMtfRepository.findOne(smtfId);
-		for(SMtfMaterial sm: sMtf.getSMtfMaterials())
+		for(SMtfMaterial sm:sMtfMaterialRepository.getNotReceivedBySmtfId(sMtf.getIdMt()))
 		{
 			Long qty = (sm.getQty()==null)?0:sm.getQty();
 			Long qtyChecked = (sm.getQty3417()==null)?0:sm.getQty3417();
@@ -105,7 +107,7 @@ public class MtfController {
 		return mtfService.updateMtfStatus(wsSMtf);
 	}
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/smtfMaterialList", method=RequestMethod.GET)
+	@RequestMapping(value="/s/smtfMaterialList", method=RequestMethod.POST)
 	public WSTableData  getSmtfMaterialList(@RequestParam Long typeId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
 		//System.out.println("get smtf materials:  type = " + typeId);
@@ -183,7 +185,7 @@ public class MtfController {
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/getSmtfMaterialListByTypeAndMaterial", method=RequestMethod.GET)
+	@RequestMapping(value="/s/getSmtfMaterialListByTypeAndMaterial", method=RequestMethod.POST)
 	public WSTableData  getSmtfMaterialListByTypeAndQ(@RequestParam(required=false,value="typeId") Long typeId,
 			@RequestParam(required=false,value="materialId") Long materialId,
 			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   

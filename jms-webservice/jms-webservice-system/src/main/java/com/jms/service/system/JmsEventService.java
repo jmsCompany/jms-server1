@@ -97,6 +97,40 @@ public class JmsEventService {
 		jmsEventRepository.save(incomeGroup);
 		
 		
+		
+		
+		
+		JmsEvent eqStopGroup = new JmsEvent();
+		eqStopGroup.setClass_(PUnplannedStops.class.getCanonicalName());
+		eqStopGroup.setName(EventTypeEnum.create_eq.name());
+		eqStopGroup.setDescription("EQ停机");
+		jmsEventRepository.save(eqStopGroup);
+		
+		JmsEvent qaStopGroup = new JmsEvent();
+		qaStopGroup.setClass_(PUnplannedStops.class.getCanonicalName());
+		qaStopGroup.setName(EventTypeEnum.create_qa.name());
+		qaStopGroup.setDescription("QA停机");
+		jmsEventRepository.save(opStopGroup);
+		
+		
+		
+		JmsEvent meStopGroup = new JmsEvent();
+		meStopGroup.setClass_(PUnplannedStops.class.getCanonicalName());
+		meStopGroup.setName(EventTypeEnum.create_me.name());
+		meStopGroup.setDescription("ME停机");
+		jmsEventRepository.save(opStopGroup);
+		
+		
+		
+		JmsEvent saStopGroup = new JmsEvent();
+		saStopGroup.setClass_(PUnplannedStops.class.getCanonicalName());
+		saStopGroup.setName(EventTypeEnum.create_sa.name());
+		saStopGroup.setDescription("SA停机");
+		jmsEventRepository.save(opStopGroup);
+		
+	
+		
+		
 	}
 
 	

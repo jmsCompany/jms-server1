@@ -1,4 +1,4 @@
-package com.jms.domain.ws.store;
+package com.jms.domain.ws.s;
 
 import java.util.Map;
 

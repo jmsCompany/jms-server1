@@ -1,4 +1,4 @@
-package com.jms.domain.ws.production;
+package com.jms.domain.ws.p;
 
 import java.util.Date;
 

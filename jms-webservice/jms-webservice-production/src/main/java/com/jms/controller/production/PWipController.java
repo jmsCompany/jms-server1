@@ -10,7 +10,7 @@ import com.jms.domain.db.PWip;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.production.WSPWip;
+import com.jms.domain.ws.p.WSPWip;
 import com.jms.repositories.p.PWipRepository;
 import com.jms.service.production.PWipService;
 import com.jms.web.security.SecurityUtils;
@@ -48,7 +48,7 @@ public class PWipController {
 	}
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/p/wipList", method=RequestMethod.GET)
+	@RequestMapping(value="/p/wipList", method=RequestMethod.POST)
 	public WSTableData  getWipList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		List<PWip> pWips =pWipRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 		List<String[]> lst = new ArrayList<String[]>();

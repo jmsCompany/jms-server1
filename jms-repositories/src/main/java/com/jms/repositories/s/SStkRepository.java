@@ -15,7 +15,15 @@ public interface SStkRepository  extends JpaRepository<SStk, Long>{
 	@Query("select s from SStk s where s.company.idCompany=?1 and s.SStatusDic.id=?2")
 	public List<SStk> findByIdCompanyAndStatus(Long companyId,Long statusId);
 	
+	
+
+	@Query("select s from SStk s where s.company.idCompany=?1 and s.SStatusDic.id=?2 and s.SStkTypeDic.idStkType in ?3")
+	public List<SStk> findByIdCompanyAndStatusAndTypes(Long companyId,Long statusId,List<Long> types);
+	
 	@Query("select s from SStk s where s.company.idCompany=?1")
 	public List<SStk> findByIdCompany(Long companyId);
+	
+	@Query("select s from SStk s where s.company.idCompany=?1 and s.stkName=?2")
+	public SStk findByIdCompanyAndStkName(Long companyId,String stkName);
 		
 }

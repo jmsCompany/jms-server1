@@ -1,19 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN">
-    <Properties>
-        <Property name="PID">????</Property>
+<configuration name="defaultConfiguration" status="warn" strict="true" monitorInterval="5">
+    <properties>
+         <Property name="PID">????</Property>
         <Property name="LOG_PATTERN">[%d{yyyy-MM-dd HH:mm:ss.SSS}] log4j2%X{context} - ${sys:PID} %5p [%t] --- %c{1}: %m%n</Property>
-    </Properties>
-    <Appenders>
-        <Console name="Console" target="SYSTEM_OUT" follow="true">
+        <property name="filename">c:/log/jmslog.log</property>
+        <property name="filenamePattern">c:/log/mylog-%d{yyyy-dd-MM}-%i.log.gz</property>
+    </properties>
+    <appenders>
+         <Console name="Console" target="SYSTEM_OUT" follow="true">
             <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
-    </Appenders>
-    <Loggers>
-
-        <Logger name="com.jms" level="debug" />
+         <File name="log" fileName="/Users/renhongtao/log/current.log" append="false">
+                <PatternLayout pattern="${LOG_PATTERN}" />
+          </File> 
+            
+        <appender name="File" type="RollingFile" fileName="${filename}" filePattern="${filenamePattern}" bufferedIO="true" immediateFlush="true"
+        append="true">
+           <PatternLayout pattern="${LOG_PATTERN}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="50 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="30" />
+        </appender>
+        
+   
+    </appenders>
+    <loggers>
+    
+      <Logger name="com.jms" level="debug" />
         <Root level="warn">
             <AppenderRef ref="Console"/>
+            <AppenderRef ref="File" />
+            <AppenderRef ref="log" />
         </Root>
-    </Loggers>
-</Configuration>
+    </loggers>
+</configuration>

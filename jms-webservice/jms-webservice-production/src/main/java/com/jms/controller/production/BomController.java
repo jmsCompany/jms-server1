@@ -12,8 +12,8 @@ import com.jms.domain.db.PBomLabel;
 import com.jms.domain.db.PWo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.production.WSPBom;
-import com.jms.domain.ws.production.WSPWo;
+import com.jms.domain.ws.p.WSPBom;
+import com.jms.domain.ws.p.WSPWo;
 import com.jms.repositories.p.PBomLabelRepository;
 import com.jms.repositories.p.PWoRepository;
 import com.jms.service.production.BomLabelService;
@@ -58,7 +58,7 @@ public class BomController {
 
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/p/getBomList", method=RequestMethod.GET)
+	@RequestMapping(value="/p/getBomList", method=RequestMethod.POST)
 	public WSTableData  getBomList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
 		List<WSPBom> wsPBoms =bomLabelService.findWSPBomList();

@@ -116,6 +116,18 @@ public class UserService extends IUserServiceImpl{
 	}
 	
 	
+	@Transactional(readOnly=false)
+	public Valid updateUserPassword(WSUser wsUser)
+	{
+		Valid v = new Valid();
+		Long userId = wsUser.getIdUser();
+		Users u = usersRepository.findOne(userId);
+		u.setPassword(new BCryptPasswordEncoder().encode(wsUser.getPassword()));
+		usersRepository.save(u);
+		v.setValid(true);
+		return v;
+	}
+	
 
 	@Transactional(readOnly=false)
 	public WSUser updateInfo(WSUser wsUser) throws Exception
@@ -138,12 +150,14 @@ public class UserService extends IUserServiceImpl{
 			if (!userValid)
 				throw new java.lang.Exception("用户已经被注册了");
 			Users dbUser = usersRepository.findOne(wsUser.getIdUser());
+			String p = dbUser.getPassword();
+			String t = dbUser.getToken();
 			Users dbUser1 = userAdapter.toDBUser(wsUser, dbUser);
-			dbUser1.setPassword(dbUser.getPassword());
-			dbUser1.setToken(dbUser.getToken());
+			dbUser1.setPassword(p);
+			dbUser1.setToken(t);
 			if(securityUtils.getCurrentDBUser()!=null)
 			{
-				dbUser.setCompany(securityUtils.getCurrentDBUser().getCompany());
+				dbUser1.setCompany(securityUtils.getCurrentDBUser().getCompany());
 			}
 			usersRepository.save(dbUser1);
 			wsUser.setIdUser(dbUser1.getIdUser());

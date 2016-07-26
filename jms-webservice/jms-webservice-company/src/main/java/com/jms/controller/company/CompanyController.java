@@ -58,23 +58,6 @@ public class CompanyController {
 	}
 	
 	
-	@Transactional(readOnly = true)
-	@RequestMapping(value="/dic/test", method=RequestMethod.GET)
-	public WSTableData  test(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {
-		List<String[]> lst = new ArrayList<String[]>();
-		for (int i = start; i < start + length; i++) {
-			String[] d = { "co1_data" + i, "col2_data" + i ,"col3_data" + i,"col4_data" + i,"col5_data" + i};
-			lst.add(d);
-
-		}
-		WSTableData t = new WSTableData();
-		t.setDraw(draw);
-		t.setRecordsTotal(1000000);
-		t.setRecordsFiltered(1000000);
-	    t.setData(lst);
-	    return t;
-	}
-	
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="company/view", method=RequestMethod.GET)
@@ -99,17 +82,6 @@ public class CompanyController {
 		return valid;
 	}
 
-	/*just for example, need to move another module */
-	@Transactional(readOnly = false)
-	@RequestMapping(value="/s/createSTK", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public Valid createSTK(@RequestBody SStk sstk) throws Exception {
-		sstk.setUsers(securityUtils.getCurrentDBUser());
-		sstk.setCompany(securityUtils.getCurrentDBUser().getCompany());
-		Boolean returnVal= companyService.createSTK(sstk);
-		Valid valid = new Valid();
-		valid.setValid(returnVal);
-		return valid;
-	}
-	
+
 	
 }

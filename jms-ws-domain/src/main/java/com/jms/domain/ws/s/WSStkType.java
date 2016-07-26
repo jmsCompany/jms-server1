@@ -1,4 +1,4 @@
-package com.jms.domain.ws.store;
+package com.jms.domain.ws.s;
 
 
 public class WSStkType {

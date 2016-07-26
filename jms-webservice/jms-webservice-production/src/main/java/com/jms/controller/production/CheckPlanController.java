@@ -14,10 +14,10 @@ import com.jms.domain.db.PLine;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.production.WSPBom;
-import com.jms.domain.ws.production.WSPCheckPlan;
-import com.jms.domain.ws.production.WSPCheckTime;
-import com.jms.domain.ws.production.WSPLine;
+import com.jms.domain.ws.p.WSPBom;
+import com.jms.domain.ws.p.WSPCheckPlan;
+import com.jms.domain.ws.p.WSPCheckTime;
+import com.jms.domain.ws.p.WSPLine;
 import com.jms.repositories.p.PCheckPlanRepository;
 import com.jms.repositories.p.PCheckTimeRepository;
 import com.jms.repositories.p.PLineRepository;
@@ -55,7 +55,7 @@ public class CheckPlanController {
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/p/getCheckPlanList", method=RequestMethod.GET)
+	@RequestMapping(value="/p/getCheckPlanList", method=RequestMethod.POST)
 	public WSTableData  getCheckPlanList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
 		List<PCheckPlan> pCheckPlans =pCheckPlanRepository.getCheckPlans(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
@@ -75,10 +75,10 @@ public class CheckPlanController {
 
 			SMaterial s = w.getPCPp().getPWo().getSSo().getSMaterial();
 			String material = s.getPno()+"-"+s.getRev()+"-"+s.getDes();
-			//String  u =
+			String  plancheckTime =(w.getPlanCheckTime()==null)?"":w.getPlanCheckTime().toString();
 			
-			String[] d = {w.getPCPp().getPWo().getWoNo(),w.getPCPp().getPRoutineD().getRouteNo(),material,w.getPCPp().getPShiftPlanD().getShift(),w.getPCPp().getMMachine().getCode(),w.getPCPp().getUsers().getName(),w.getPlanCheckTime().toString()
-					,""+w.getToBeQty(),w.getPlanCheckTime().toString(),""+w.getFinQty(),""+w.getToBeQty()};
+			String[] d = {w.getPCPp().getPWo().getWoNo(),w.getPCPp().getPRoutineD().getRouteNo(),material,w.getPCPp().getPShiftPlanD().getShift(),w.getPCPp().getMMachine().getCode(),w.getPCPp().getUsers().getName(),plancheckTime
+					,""+w.getToBeQty(),w.getCheckTime().toString(),""+w.getFinQty(),""+w.getToBeQty()};
 			lst.add(d);
 
 		}

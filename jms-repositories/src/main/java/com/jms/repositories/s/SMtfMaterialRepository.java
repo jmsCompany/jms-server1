@@ -4,7 +4,6 @@ package com.jms.repositories.s;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -31,6 +30,9 @@ public interface SMtfMaterialRepository  extends JpaRepository<SMtfMaterial, Lon
 	@Query("select s from SMtfMaterial s where s.SPoMaterial.SPo.idPo=?1 and s.SBinByToBin is not null")
 	public List<SMtfMaterial> getBySpoId(Long spoId);
 	
+	@Query("select s from SMtfMaterial s where s.SPoMaterial.SPo.idPo=?1 and s.SMaterial.idMaterial=?2 and s.SBinByToBin is not null")
+	public List<SMtfMaterial> getBySpoIdAndMaterialId(Long spoId,Long materialId);
+	
 	//@Modifying
 	//@Query("delete from SMtfMaterial s where s.SMtf.idMt=?1")
 	//@Query(value="delete from qa_concern_user where user_id=?1 and concern_user_id=?2)",nativeQuery=true)
@@ -47,5 +49,14 @@ public interface SMtfMaterialRepository  extends JpaRepository<SMtfMaterial, Lon
 	
 	@Query("select s from SMtfMaterial s where s.SMtf.idWo=?1 and s.SMaterial.idMaterial=?2")
 	public List<SMtfMaterial> getByWoIdAndMaterialId(Long woId,Long materialId);
+	
+	
+	@Query("select s from SMtfMaterial s where s.SMtf.idMt=?1 and s.qty<>s.qty3417")
+	public List<SMtfMaterial> getNotReceivedBySmtfId(Long smtfId);
+	
+	@Query("select s from SMtfMaterial s where s.SMtf.idMt=?1")
+	public List<SMtfMaterial> getBySmtfId(Long smtfId);
+	
+	
 		
 }

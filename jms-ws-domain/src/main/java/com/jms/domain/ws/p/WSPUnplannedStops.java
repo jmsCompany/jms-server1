@@ -1,4 +1,4 @@
-package com.jms.domain.ws.production;
+package com.jms.domain.ws.p;
 
 import java.util.Date;
 
@@ -11,6 +11,7 @@ public class WSPUnplannedStops {
 	private String status;
 	private Long unplannedStopsNo;
 	private Long idMachine;
+	private String machine;
 	private String opDes;
 	private Date unplannedSt;
 	private String reason;
@@ -21,6 +22,7 @@ public class WSPUnplannedStops {
 	private Date opFt;
 
 	private Long idCpp;
+	private Long eventId;
 	
 	public Long getIdUnplannedStops() {
 		return idUnplannedStops;
@@ -149,6 +151,22 @@ public class WSPUnplannedStops {
 
 	public void setIdCpp(Long idCpp) {
 		this.idCpp = idCpp;
+	}
+
+	public String getMachine() {
+		return machine;
+	}
+
+	public void setMachine(String machine) {
+		this.machine = machine;
+	}
+
+	public Long getEventId() {
+		return eventId;
+	}
+
+	public void setEventId(Long eventId) {
+		this.eventId = eventId;
 	}
 
 }

@@ -43,6 +43,11 @@ public class PCPp  implements java.io.Serializable {
      private Set<PActualSetup> PActualSetups = new HashSet<PActualSetup>(0);
      private Set<PCheckPlan> PCheckPlans = new HashSet<PCheckPlan>(0);
      private Set<PMr> PMrs = new HashSet<PMr>(0);
+     
+     
+     private Date actSt;
+     private Date actFt;
+     private Long actQty;
 
     public PCPp() {
     }
@@ -156,7 +161,7 @@ public class PCPp  implements java.io.Serializable {
     public void setPActualSetups(Set<PActualSetup> PActualSetups) {
         this.PActualSetups = PActualSetups;
     }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="PCPp")
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="PCPp")
     public Set<PCheckPlan> getPCheckPlans() {
         return this.PCheckPlans;
     }
@@ -164,7 +169,7 @@ public class PCPp  implements java.io.Serializable {
     public void setPCheckPlans(Set<PCheckPlan> PCheckPlans) {
         this.PCheckPlans = PCheckPlans;
     }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="PCPp")
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="PCPp")
     public Set<PMr> getPMrs() {
         return this.PMrs;
     }
@@ -174,6 +179,35 @@ public class PCPp  implements java.io.Serializable {
     }
 
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="act_st", length=19)
+	public Date getActSt() {
+		return actSt;
+	}
+
+	public void setActSt(Date actSt) {
+		this.actSt = actSt;
+	}
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="act_ft", length=19)
+	public Date getActFt() {
+		return actFt;
+	}
+
+	public void setActFt(Date actFt) {
+		this.actFt = actFt;
+	}
+
+    @Column(name="act_qty")
+	public Long getActQty() {
+		return this.actQty;
+	}
+
+
+	public void setActQty(Long actQty) {
+		this.actQty = actQty;
+	}
 
 
 }

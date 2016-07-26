@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.Resource;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,6 +33,7 @@ import com.jms.service.store.MaterialService;
 import com.jms.service.store.MaterialTypeService;
 import com.jms.service.store.SCountryDicService;
 import com.jms.service.store.SGenderDicService;
+import com.jms.service.store.SInventoryService;
 import com.jms.service.store.SLevelDicService;
 import com.jms.service.store.SMtfNoService;
 import com.jms.service.store.SMtfTypeDicService;
@@ -53,6 +55,7 @@ import com.jms.service.user.GroupTypeService;
 import com.jms.service.user.RoleService;
 import com.jms.service.user.UserService;
 import com.jms.service.workmanagement.ProjectService;
+import com.jms.system.INotificationService;
 
 @Service
 @Transactional
@@ -159,6 +162,10 @@ public class DatabaseInit {
 	
 	@Autowired
 	private EmailSenderTest emailSenderTest;
+	@Autowired
+	private SInventoryService sInventoryService;
+	@Autowired
+	private INotificationService notificationService;
 	
 	// 在系统初装的执行切只能执行一次，读取csv文件的数据到数据库中。
 	// todo:详细说明系统预设的所有信息这些信息的用途
@@ -292,15 +299,25 @@ public class DatabaseInit {
 		//sMtfNoService.loadSmtfNosByCompanyId(8l);
 //		 Resource receiversFile = ctx.getResource("classpath:data/san_receivers.csv");
 //		 eventReceiverService.loadReceivers(receiversFile.getInputStream(), 8l);
-	try {
-		emailSenderTest.testSendEmail();
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-		
+//	try {
+//		emailSenderTest.testSendEmail();
+//	} catch (Exception e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	}
+	
+	
+//	sInventoryService.test();
 		
 	//	companyService.addAppsPerms();
+	}
+	
+	
+
+	@Scheduled(fixedRate=1000*60)
+	public void sendEmails() {
+		notificationService.sendEmails();
+		
 	}
 
 }

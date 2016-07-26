@@ -18,8 +18,8 @@ import com.jms.domain.db.PUnplannedStops;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.production.WSPStopsPlan;
-import com.jms.domain.ws.production.WSPUnplannedStops;
+import com.jms.domain.ws.p.WSPStopsPlan;
+import com.jms.domain.ws.p.WSPUnplannedStops;
 import com.jms.repositories.m.MMachineRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PStopsPlanRepository;
@@ -82,7 +82,7 @@ public class UnplannedStopsController {
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/p/etUnplannedStopsList", method=RequestMethod.GET)
+	@RequestMapping(value="/p/etUnplannedStopsList", method=RequestMethod.POST)
 	public WSTableData  etUnplannedStopsList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		List<PUnplannedStops> pUnplannedStops=pUnplannedStopsRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 		List<String[]> lst = new ArrayList<String[]>();

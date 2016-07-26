@@ -1,29 +1,21 @@
 package com.jms.service.production;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.jms.domain.db.PCheckTime;
-import com.jms.domain.db.PRoutineD;
-import com.jms.domain.db.PWip;
 import com.jms.domain.ws.Valid;
-import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.production.WSPCheckTime;
-import com.jms.domain.ws.production.WSPRoutineD;
-import com.jms.domain.ws.production.WSPWip;
+import com.jms.domain.ws.p.WSPCheckTime;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.m.MMachineRepository;
 import com.jms.repositories.p.PCheckTimeRepository;
 import com.jms.repositories.p.PPUTimeRepository;
 import com.jms.repositories.p.PStatusDicRepository;
-import com.jms.repositories.p.PWipRepository;
 import com.jms.web.security.SecurityUtils;
 
 @Service
@@ -52,7 +44,10 @@ public class PCheckTimeService {
 		
 		
 	@Transactional(readOnly=false)
-	public WSPCheckTime saveWSPCheckTime(WSPCheckTime wsPCheckTime) throws Exception {
+	public Valid saveWSPCheckTime(WSPCheckTime wsPCheckTime) throws Exception {
+		
+		Valid v = new Valid();
+		
 		PCheckTime pCheckTime;
 		Long machineId = wsPCheckTime.getmMachineId();
 		
@@ -67,22 +62,25 @@ public class PCheckTimeService {
 			pCheckTime = pCheckTimeRepository.findOne(wsPCheckTime.getIdCheckTime());
 			if(!dbCId.equals(0l)&&!pCheckTime.getIdCheckTime().equals(dbCId))
 			{
-				return wsPCheckTime;
+				v.setValid(false);
+				return v;
 			}
 		}
 		else
 		{
-			pCheckTime = new PCheckTime();
 			if(!dbCId.equals(0l))
 			{
-				return wsPCheckTime;
+				v.setValid(false);
+				return v;
 			}
 	
 		}
+		pCheckTime = new PCheckTime();
 		PCheckTime dbPCheckTime= toDBPCheckTime(wsPCheckTime,pCheckTime);
 		dbPCheckTime = pCheckTimeRepository.save(dbPCheckTime);
-		wsPCheckTime.setIdCheckTime(dbPCheckTime.getIdCheckTime());
-		return wsPCheckTime;		
+
+		v.setValid(true);
+		return v;		
 		
 	}
 
@@ -121,6 +119,8 @@ public class PCheckTimeService {
 		return dbPCheckTime;
 	}
 	
+	
+	
 	protected WSPCheckTime toWSPCheckTime(PCheckTime pCheckTime) throws Exception
 	{
 		WSPCheckTime pc = (WSPCheckTime)BeanUtil.shallowCopy(pCheckTime, WSPCheckTime.class, null);
@@ -138,4 +138,6 @@ public class PCheckTimeService {
 	    }
 		return pc;
 	}
+	
+	
 }

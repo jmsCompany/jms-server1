@@ -19,12 +19,12 @@ import com.jms.domain.db.SPoMaterial;
 import com.jms.domain.db.SSo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.store.WSMaterial;
-import com.jms.domain.ws.store.WSSSoRemark;
-import com.jms.domain.ws.store.WSSpo;
-import com.jms.domain.ws.store.WSSpoMaterial;
-import com.jms.domain.ws.store.WSSpoRemark;
-import com.jms.domain.ws.store.WSSso;
+import com.jms.domain.ws.s.WSMaterial;
+import com.jms.domain.ws.s.WSSSoRemark;
+import com.jms.domain.ws.s.WSSpo;
+import com.jms.domain.ws.s.WSSpoMaterial;
+import com.jms.domain.ws.s.WSSpoRemark;
+import com.jms.domain.ws.s.WSSso;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.s.SCompanyCoRepository;
 import com.jms.repositories.s.SCurrencyTypeRepository;
@@ -115,19 +115,18 @@ public class SsoService {
 		SSo dbSso = (SSo)BeanUtil.shallowCopy(wsSso, SSo.class, sso);
 		
 		if(wsSso.getIdSo()==null||wsSso.getIdSo().equals(0l))
+	
 		{
-		SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 11l);
-	    if(smtfNo==null)
-	    {
-	    	sMtfNoService.loadSmtfNosByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
-	    	smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 11l);
-	    }
-	    long currentVal =smtfNo.getCurrentVal()+1;
-	    smtfNo.setCurrentVal(currentVal);
-	    sMtfNoRepository.save(smtfNo);
-		
-	    String codeSo = smtfNo.getPrefix()+String.format("%08d", currentVal);
-	    dbSso.setCodeSo(codeSo);
+			if(wsSso.getCodeSo()==null)
+			{
+				SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 11l);
+			    long currentVal =smtfNo.getCurrentVal()+1;
+			    smtfNo.setCurrentVal(currentVal);
+			    sMtfNoRepository.save(smtfNo);
+			    String codeSo = smtfNo.getPrefix()+String.format("%08d", currentVal);
+			    dbSso.setCodeSo(codeSo);
+			}
+
 		}
 		
 		if(wsSso.getFreightTermId()!=null)
@@ -165,6 +164,11 @@ public class SsoService {
 		
 		SSo sso = sSoRepository.findOne(wsSSoRemark.getIdSo());	
 		sso.setAutoRemark(wsSSoRemark.getAutoRemark());
+		if(wsSSoRemark.getStatusId()!=null)
+		{
+			sso.setSStatusDic(sStatusDicRepository.findOne(wsSSoRemark.getStatusId()));
+		}
+	
 		
 		sSoRepository.save(sso);
 		

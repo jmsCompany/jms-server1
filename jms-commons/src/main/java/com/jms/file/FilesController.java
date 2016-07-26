@@ -58,5 +58,21 @@ public class FilesController {
 		FileInputStream fs = new FileInputStream(f);
 		ByteStreams.copy(fs, response.getOutputStream());
 	}
+	
+	
+	@RequestMapping(value = "/getImage/{fileName}/", method = RequestMethod.GET)
+	public void getImage(@PathVariable("fileName") String fileName,  HttpServletRequest request,  
+          HttpServletResponse response) throws IOException {
+		 String ext = fileName.substring(fileName.lastIndexOf(".")+1);
+		 response.setContentType("image/" +ext);  
+	  //   request.setCharacterEncoding("UTF-8");
+	     File f = new File(filePath + fileName);
+	     long fileLength =f.length();  
+	     response.setHeader("Content-disposition", "attachment; filename="  
+	                + new String(fileName.getBytes("utf-8"), "ISO8859-1"));  
+	     response.setHeader("Content-Length", String.valueOf(fileLength));
+		FileInputStream fs = new FileInputStream(f);
+		ByteStreams.copy(fs, response.getOutputStream());
+	}
 
 }

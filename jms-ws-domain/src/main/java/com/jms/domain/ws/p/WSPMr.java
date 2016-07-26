@@ -1,4 +1,4 @@
-package com.jms.domain.ws.production;
+package com.jms.domain.ws.p;
 
 
 import java.util.Date;
@@ -6,7 +6,6 @@ import java.util.Date;
 
 public class WSPMr {
 
-	
 	private Long idMr;
     private Long idMaterial;
     private String pno;
@@ -14,19 +13,21 @@ public class WSPMr {
     private String des;
     private Long bomId;
     private Long cppId;
-    private Long qty;
+    private Long qty; //本次发料
     private Long statusId;
     private String status;
     private Date st;
     private Date ft;
     private String remark;
     private Long type;
-    
-    
     private String op;
     private String machine;
-    
+    private Long idUnplannedStop;
     private Long binId;
+    private Long stkId;
+    
+    private Long qtyDelivered; //已发
+    private Long qtyStored; //库存
 
 	public Long getIdMaterial() {
 		return idMaterial;
@@ -162,6 +163,30 @@ public class WSPMr {
 
 	public void setBinId(Long binId) {
 		this.binId = binId;
+	}
+
+	public Long getIdUnplannedStop() {
+		return idUnplannedStop;
+	}
+
+	public void setIdUnplannedStop(Long idUnplannedStop) {
+		this.idUnplannedStop = idUnplannedStop;
+	}
+
+	public Long getStkId() {
+		return stkId;
+	}
+
+	public void setStkId(Long stkId) {
+		this.stkId = stkId;
+	}
+
+	public Long getQtyDelivered() {
+		return qtyDelivered;
+	}
+
+	public void setQtyDelivered(Long qtyDelivered) {
+		this.qtyDelivered = qtyDelivered;
 	}
 
 }

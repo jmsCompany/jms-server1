@@ -27,10 +27,10 @@ import com.jms.domain.db.SPic;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.production.WSPBom;
-import com.jms.domain.ws.production.WSPRoutine;
-import com.jms.domain.ws.production.WSPWo;
-import com.jms.domain.ws.production.WSShiftPlan;
+import com.jms.domain.ws.p.WSPBom;
+import com.jms.domain.ws.p.WSPRoutine;
+import com.jms.domain.ws.p.WSPWo;
+import com.jms.domain.ws.p.WSShiftPlan;
 import com.jms.file.FileMeta;
 import com.jms.file.FileUploadService;
 import com.jms.repositories.p.PAttDrawRepository;
@@ -134,7 +134,7 @@ public class RoutineController {
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/p/getRoutineList", method=RequestMethod.GET)
+	@RequestMapping(value="/p/getRoutineList", method=RequestMethod.POST)
 	public WSTableData  getShiftPlanList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
 		List<PRoutine> pRoutines =pRoutineRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
@@ -147,7 +147,11 @@ public class RoutineController {
 			end =start + length;
 		for (int i = start; i < end; i++) {
 			PRoutine w = pRoutines.get(i);
-			String drawNo=(w.getPDraw()==null)?"":""+w.getPDraw().getDrawNo();
+			String drawNo="";
+			if(w.getPDraw()!=null&&w.getPDraw().getDrawNo()!=null)
+				{
+				    drawNo=""+w.getPDraw().getDrawNo();
+				}
 			String[] d = {w.getSMaterial().getPno(),w.getSMaterial().getRev(),w.getSMaterial().getDes(),w.getPLine().getPline(),drawNo,""+w.getIdRoutine()};
 			lst.add(d);
 

@@ -12,9 +12,19 @@ import com.jms.domain.db.SMaterial;
 @Repository
 public interface PWoRepository extends JpaRepository<PWo, Long>{
 
-   @Query("select p from PWo p where p.SSo.company.idCompany=?1")
+    @Query("select p from PWo p where p.SSo.company.idCompany=?1 order by p.PStatusDic.idPstatus")
     public List<PWo> getByCompanyId(Long companyId);
 
     @Query("select s.SSo.SMaterial from PWo s where s.idWo=?1")
 	public SMaterial findByWoId(Long woId);
+    
+    
+    @Query("select p from PWo p where p.SSo.company.idCompany=?1 and p.PStatusDic.idPstatus=12 order by p.actSt")
+    public List<PWo> getActiveWosByCompanyId(Long companyId);
+    
+    
+    @Query("select p from PWo p where p.SSo.company.idCompany=?1 and p.woNo like ?2 order by p.PStatusDic.idPstatus")
+    public List<PWo> getByCompanyIdAndQuery(Long companyId,String q);
+    
+    
 }

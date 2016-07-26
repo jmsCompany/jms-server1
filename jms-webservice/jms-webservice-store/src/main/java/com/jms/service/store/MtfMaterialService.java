@@ -2,7 +2,10 @@ package com.jms.service.store;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +16,11 @@ import com.jms.domain.db.SInventory;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMtf;
 import com.jms.domain.db.SMtfMaterial;
+import com.jms.domain.db.SPo;
 import com.jms.domain.db.SPoMaterial;
 import com.jms.domain.db.SSo;
 import com.jms.domain.ws.Valid;
-import com.jms.domain.ws.store.WSSMtfMaterial;
+import com.jms.domain.ws.s.WSSMtfMaterial;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.p.PWoBomRepository;
 import com.jms.repositories.s.SBinRepository;
@@ -26,6 +30,7 @@ import com.jms.repositories.s.SMtfMaterialRepository;
 import com.jms.repositories.s.SMtfRepository;
 import com.jms.repositories.s.SSoRepository;
 import com.jms.repositories.s.SSpoMaterialRepository;
+import com.jms.repositories.s.SSpoRepository;
 import com.jms.repositories.s.SStatusDicRepository;
 
 
@@ -53,6 +58,10 @@ public class MtfMaterialService {
 	private SSoRepository sSoRepository;
 	
 	@Autowired
+	private SSpoRepository sSpoRepository;
+	
+	
+	@Autowired
 	private SMtfRepository sMtfRepository;
 	
 	
@@ -76,6 +85,7 @@ public class MtfMaterialService {
 			sMtfMaterial = sMtfMaterialRepository.findOne(wsSMtfMaterial.getIdMtfMaterial());	
 		}
 		sMtfMaterial=toDBMtfMaterial(wsSMtfMaterial,sMtfMaterial);
+		
 		sMtfMaterialRepository.save(sMtfMaterial);
 		Valid valid = new Valid();
 		valid.setValid(true);
@@ -143,29 +153,58 @@ public class MtfMaterialService {
 	
 	public List<WSSMtfMaterial> findWSSMtfMaterialBySpoId(Long spoId,Long stkId) throws Exception
 	{
+		//SPo spo = sSpoRepository.findOne(spoId);
 		List<WSSMtfMaterial> ws = new ArrayList<WSSMtfMaterial>();
-		for(SMtfMaterial sm: sMtfMaterialRepository.getBySpoId(spoId))
+		List<SPoMaterial> pms = sSpoMaterialRepository.getReceivedBySpoId(spoId);
+		if(pms!=null&&!pms.isEmpty())
 		{
-			Long materialId = sm.getSPoMaterial().getSMaterial().getIdMaterial();
-			String lotNo = sm.getLotNo();
-			WSSMtfMaterial w = toWSSMtfMaterial(sm);
-			//logger.debug("material id: " + materialId +" lot no: " + lotNo +", stk id: " + stkId);
-			List<SInventory> sInventorys = sInventoryRepository.findBinsByMaterialIdAndLotNoAndStkId(materialId, lotNo, stkId);
-			if(sInventorys!=null&&!sInventorys.isEmpty())
+			for(SPoMaterial pm:pms)
 			{
-				for(SInventory s: sInventorys)
+				SMaterial material = pm.getSMaterial();
+				Long materialId = material.getIdMaterial();
+				Long received = pm.getQtyReceived();
+				List<SMtfMaterial> sms =sMtfMaterialRepository.getBySpoIdAndMaterialId(spoId, materialId);
+				Map<String,String> lotMap = new HashMap<String,String>();
+				for(SMtfMaterial sm: sms)
 				{
-					WSSMtfMaterial w1 =w;
-					w1.setCurrentBin(s.getSBin().getBin());
-					w1.setCurrentBinId(s.getSBin().getIdBin());
-					w1.setQtyStored(s.getQty());
-					ws.add(w1);
+					String lotNo = sm.getLotNo();
+					if(!lotMap.containsKey(lotNo))
+					{
+						lotMap.put(lotNo, lotNo);
+					}
 				}
-			
+				
+				for(String lotNo:lotMap.keySet())
+				{
+					List<SInventory> sInventorys = sInventoryRepository.findBinsByMaterialIdAndLotNoAndStkId(materialId, lotNo, stkId);
+					if(sInventorys!=null&&!sInventorys.isEmpty())
+					{
+						for(SInventory s: sInventorys)
+						{
+							WSSMtfMaterial w = new WSSMtfMaterial();
+							w.setMaterialId(materialId);
+							w.setMaterialDes(material.getDes());
+							w.setMaterialPno(material.getPno());
+							w.setMaterialRev(material.getRev());
+							if(material.getSUnitDicByUnitPur()!=null)
+							w.setMarterialUnit(material.getSUnitDicByUnitPur().getName());
+							w.setDeliveryDate(pm.getDeliveryDate());
+							w.setQtyPo(pm.getQtyPo());
+							w.setLotNo(lotNo);
+							w.setFromBin(s.getSBin().getBin());
+							w.setFromBinId(s.getSBin().getIdBin());
+							w.setRemark(pm.getRemark());
+							w.setQtyStored(s.getQty());
+							w.setPoMaterialId(pm.getIdPoMaterial());
+							w.setQtyReceived(pm.getQtyReceived());
+							ws.add(w);
+						}
+				    }
+				}
+				}
 			}
 			
-		}
-		
+
 		return ws;
 	}
 	
@@ -215,6 +254,10 @@ public class MtfMaterialService {
 			dbSMtfMaterial.setSStatusDic(sStatusDicRepository.findOne(wsSMtfMaterial.getStatusId()));
 		}
 		dbSMtfMaterial.setUQty(wsSMtfMaterial.getUqty());
+		if(wsSMtfMaterial.getQtyChecked()!=null)
+		{
+			dbSMtfMaterial.setQty3417(wsSMtfMaterial.getQtyChecked());
+		}
 		
 		return dbSMtfMaterial;
 	}

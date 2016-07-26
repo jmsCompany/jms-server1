@@ -56,7 +56,10 @@ public class Config {
 	public static final String picRelativePath = "C:/jms_file/pic/";
 	
 	//仓库类别
-	public static final String[] stkTypes = {"原材料仓","成品仓","半成品仓","账号","其它"};
+	
+	public static final String[] stkTypes = {"原材料仓","车间","成品仓","来料检验仓","原料退货仓","不合格品仓","成品退货仓","帐号","其它"};
+
+	public static final String[] stkTypeCodes = {"RM","WIP","FG","IQC","RTV","MRB","MRA","ACC","OTC"};
 	
 	//合作公司类型
 	public static final String[] sTypes = {"供应商","客户","二者都是","其它"};
@@ -64,7 +67,7 @@ public class Config {
 	//合作公司级别
      public static final String[] sLevels = {"A","B","C"};
  	//物流流转类型
-     public static final String[] sMtfTypes = {"新建来料","采购退货","手动流转","工单流转","出货","销售退货","发料","检验入库"};
+     public static final String[] sMtfTypes = {"来料清单","采购退货","手动流转","工单流转","出货","销售退货","发料","检验入库"};
      
      
  	//时间单位

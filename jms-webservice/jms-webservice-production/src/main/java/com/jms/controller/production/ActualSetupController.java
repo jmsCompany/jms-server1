@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.jms.domain.db.PActualSetup;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.production.WSPActualSetup;
+import com.jms.domain.ws.p.WSPActualSetup;
 import com.jms.repositories.p.PActualSetupRepository;
 import com.jms.service.production.ActualSetupService;
 import com.jms.web.security.SecurityUtils;
@@ -43,7 +43,7 @@ public class ActualSetupController {
 	
 //	工单woNO、物料pno-rev-des、班次shift、机器machineCode- machineName、实际开始停机actSt、实际结束停机actFt
 	@Transactional(readOnly = true)
-	@RequestMapping(value = "/p/getActSetupList", method = RequestMethod.GET)
+	@RequestMapping(value = "/p/getActSetupList", method = RequestMethod.POST)
 	public WSTableData getActSetupList(
 			@RequestParam Integer draw,
 			@RequestParam Integer start,

@@ -1,9 +1,10 @@
-package com.jms.domain.ws.store;
+package com.jms.domain.ws.s;
 
 public class WSSpoRemark {
 
     private Long idPo;
     private String remark;
+    private Long statusId;
 	public Long getIdPo() {
 		return idPo;
 	}
@@ -15,6 +16,12 @@ public class WSSpoRemark {
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
 	}
   
    

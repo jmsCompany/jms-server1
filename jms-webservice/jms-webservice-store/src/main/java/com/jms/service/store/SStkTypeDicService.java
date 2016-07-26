@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jms.domain.Config;
 import com.jms.domain.db.SStkTypeDic;
-import com.jms.domain.ws.store.WSStkType;
+import com.jms.domain.ws.s.WSStkType;
 import com.jms.repositories.s.SStkTypeDicRepository;
 
 
@@ -25,17 +25,19 @@ public class SStkTypeDicService {
 	@Autowired
 	private SStkTypeDicRepository sStkTypeDicRepository;
 	
-
 	//导入仓库类型
 	public void loadStkTypes() {
-		
+		int i=0;
 		for(String stkType: Config.stkTypes)
 		{
 			SStkTypeDic s = new SStkTypeDic();
 			s.setName(stkType);
+			s.setCode(Config.stkTypeCodes[i]);
 			sStkTypeDicRepository.save(s);
+			i++;
 		}
 	}
+	
 	
 	@Transactional(readOnly=true)
 	public List<WSStkType> getStkTypes()

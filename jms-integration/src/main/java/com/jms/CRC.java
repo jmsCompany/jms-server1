@@ -26,14 +26,12 @@ public class CRC {
                       por = por >> 1;
               }
           }
-          System.out.println(por);
-         // return por;
-          return String.format("{0:X4}", por);
+          return ""+Integer.toHexString(por);
       }
 	
 	public static void main(String[] args) {
 
-		  String data = "ST=32;CN=2051;PW=123456;MN=32060032020014;CP=&&DataTime=20160620000000;B01-Min=40.2999,B01-Avg=43.0200,B01-Max=43.7999,B01-Cou=7.0000;001-Min=7.0000,001-Avg=7.0000,001-Max=7.0000,001-Cou=0.0490;011-Min=20.0000,011-Avg=20.0000,011-Max=20.0000,011-Cou=0.1400;060-Min=20.0700,060-Avg=20.0700,060-Max=20.0700,060-Cou=0.1405&&";
+		  String data = "ST=32;CN=2031;PW=123456;MN=32060032020014;CP=&&DataTime=20160612000000;B01-Min=0.0000,B01-Avg=13.0090,B01-Max=46.5999,B01-Cou=311.0000;001-Min=7.0000,001-Avg=7.0000,001-Max=7.0000,001-Cou=2.1770;011-Min=41.5000,011-Avg=51.4222,011-Max=60.1000,011-Cou=17.2828;060-Min=28.5100,060-Avg=29.4431,060-Max=32.3600,060-Cou=9.3910&&";
 		  try {
 			System.out.println(CRC16(data));
 		} catch (UnsupportedEncodingException e) {

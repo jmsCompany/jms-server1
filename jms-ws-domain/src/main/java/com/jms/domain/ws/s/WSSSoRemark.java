@@ -1,10 +1,12 @@
-package com.jms.domain.ws.store;
+package com.jms.domain.ws.s;
 
 public class WSSSoRemark {
 
     private Long idSo;
     private String autoRemark;
-	public Long getIdSo() {
+    private Long statusId;
+	
+    public Long getIdSo() {
 		return idSo;
 	}
 	public void setIdSo(Long idSo) {
@@ -15,6 +17,12 @@ public class WSSSoRemark {
 	}
 	public void setAutoRemark(String autoRemark) {
 		this.autoRemark = autoRemark;
+	}
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
 	}
 
    

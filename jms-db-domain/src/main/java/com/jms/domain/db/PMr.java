@@ -36,6 +36,8 @@ public class PMr   extends AbstractSecuredEntity  implements java.io.Serializabl
      private String remark;
      
      private Long type;
+     
+     private Long idUnplannedStop;
 
     public PMr() {
     }
@@ -141,6 +143,14 @@ public class PMr   extends AbstractSecuredEntity  implements java.io.Serializabl
   	public Users getUser() {
   		return this.getUser();
   	}
+   @Column(name="id_unplanned_stop")
+public Long getIdUnplannedStop() {
+	return idUnplannedStop;
+}
+
+public void setIdUnplannedStop(Long idUnplannedStop) {
+	this.idUnplannedStop = idUnplannedStop;
+}
 
 }
 

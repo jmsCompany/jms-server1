@@ -41,6 +41,7 @@ public class PUnplannedStops  implements java.io.Serializable {
      private Date opFt;
      
      private Long idCompany;
+     private Long idCpp;
 
     public PUnplannedStops() {
     }
@@ -195,6 +196,14 @@ public class PUnplannedStops  implements java.io.Serializable {
 
 	public void setIdCompany(Long idCompany) {
 		this.idCompany = idCompany;
+	}
+	@Column(name="id_cpp")
+	public Long getIdCpp() {
+		return idCpp;
+	}
+
+	public void setIdCpp(Long idCpp) {
+		this.idCpp = idCpp;
 	}
 
 

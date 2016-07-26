@@ -21,6 +21,7 @@ import com.jms.domain.NotificationMethodEnum;
 import com.jms.domain.db.EventReceiver;
 import com.jms.domain.db.FCostCenter;
 import com.jms.domain.db.Groups;
+import com.jms.domain.db.MMachine;
 import com.jms.domain.db.PBom;
 import com.jms.domain.db.PMr;
 import com.jms.domain.db.PWo;
@@ -31,11 +32,13 @@ import com.jms.domain.db.SStk;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.production.WSPMr;
-import com.jms.domain.ws.production.WSPRoutineD;
-import com.jms.domain.ws.production.WSPWo;
-import com.jms.domain.ws.production.WSPWorkCenter;
-import com.jms.domain.ws.store.WSMaterialQty;
+import com.jms.domain.ws.p.WSPMr;
+import com.jms.domain.ws.p.WSPRoutineD;
+import com.jms.domain.ws.p.WSPUnplannedStops;
+import com.jms.domain.ws.p.WSPWo;
+import com.jms.domain.ws.p.WSPWorkCenter;
+import com.jms.domain.ws.p.WSPmrRequest;
+import com.jms.domain.ws.s.WSMaterialQty;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.email.EmailSenderService;
 import com.jms.repositories.company.CompanyRepository;
@@ -87,15 +90,17 @@ public class PMrService {
 	
 	@Autowired
 	private INotificationService notificationService;
+	@Autowired
+	private EventReceiverRepository eventReceiverRepository;
 	
 	@Autowired
 	private GroupRepository groupRepository;
 	@Autowired
 	private GroupTypeRepository groupTypeRepository;
 	
-	
+
 	@Autowired
-	private EventReceiverRepository eventReceiverRepository;
+	private  PUnplannedStopsService pUnplannedStopsService;
 	
 	@Transactional(readOnly=false)
 	public WSPMr saveWSPMr(WSPMr wsPMr) throws Exception {
@@ -162,7 +167,10 @@ public class PMrService {
 			w.setDes(s.getDes());
 			w.setIdMaterial(s.getIdMaterial());
 			w.setIdMr(p.getIdMr());
-			w.setMachine(p.getPCPp().getMMachine().getCode());
+			
+			MMachine machine = p.getPCPp().getMMachine();
+			
+			w.setMachine(machine.getCode());
 			w.setOp(p.getPCPp().getUsers().getName());
 			w.setPno(s.getPno());
 			w.setQty(p.getQty());
@@ -172,111 +180,44 @@ public class PMrService {
 			w.setStatusId(p.getPStatusDic().getIdPstatus());
 			w.setType(p.getType());
 			
+			if(machine.getSBin()!=null)
+			{
+				w.setBinId(machine.getSBin().getIdBin());
+				w.setStkId(machine.getSBin().getSStk().getId());
+				
+			}
+			
+			
 	      return w;
 	}
 	
 	
 	
-	
-	
 	@Transactional(readOnly=false)
-	public Valid saveWSPMrs(List<WSPMr> wsPMrs) throws Exception {
-	
+	public Valid saveWSPMrRequest(WSPmrRequest wsPmrRequest) throws Exception {
 		Valid v = new Valid();
-		boolean sendMsg=false;
-		PMr dbPMr =new PMr();
-		Long type=0l;
-		for(WSPMr w : wsPMrs)
-		{
-			type=w.getType();
-			// logger.debug("save PMR: mat: " + w.getIdMaterial() +", binId: " + w.getBinId()+", machine: " + w.getMachine());
-			saveWSPMr(w);
-		    
-			if(w.getIdMr()!=null)
-			{
-				dbPMr = pMrRepository.findOne(w.getIdMr());
-				sendMsg=true;
-			}
-		}
-		v.setMsg("OK");
 		v.setValid(true);
-		if(sendMsg)
-		{         
-			List<Long> idGroups = new ArrayList<Long>();
-			
-			for(EventReceiver e : eventReceiverRepository.findByIdEventAndIdCompany(7l,securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
-			{
-				idGroups.add(e.getIdGroup());
+		
+		WSPUnplannedStops wsPUnplannedStops =pUnplannedStopsService.saveWSPStopsPlan(wsPmrRequest.getWsPUnplannedStops());
 	
-			}
-			
-			List<String> ems = new ArrayList<String>();
-			if(!idGroups.isEmpty())
-			{
-				
-				for(Long idGroup: idGroups)
-				{
-					Groups g = groupRepository.findOne(idGroup);
-					Users u = usersRepository.findOne(Long.parseLong(g.getGroupName()));
-					
-					if(u.getEmail()!=null)
-					{
-						ems.add(u.getEmail());
-					}
-					//System.out.println(u.getEmail());
-					
-				}
-			
-				
-			}
-			
-			if(!ems.isEmpty()){
-			
-				
-				int i=0;
-				String[] toEmailAddresses = new String[ems.size()];
-				for(String s:ems )
-				{
-					toEmailAddresses[i] = s;
-					i++;
-				}
-				Map<String, Object> model = new HashMap<String, Object>();
-				model.put("woNo",dbPMr.getPCPp().getPWo().getWoNo() );
-				model.put("pNo", dbPMr.getPBom().getSMaterial().getPno());
-				model.put("machine", dbPMr.getPCPp().getMMachine().getCode());
-				
-				if(type.equals(0l)) //缺料
-				{
-					//need to be update
-					notificationService.createNotification(securityUtils.getCurrentDBUser().getCompany(),dbPMr, EventTypeEnum.create_ms, NotificationMethodEnum.sys, idGroups);
-					try{
-						emailSenderService.sendEmail(toEmailAddresses, "MS", model, null);
-					}catch(Exception e){
-						
-					}
-					
-				}
-				else if(type.equals(1l)) //需料
-				{
-					notificationService.createNotification(securityUtils.getCurrentDBUser().getCompany(),dbPMr, EventTypeEnum.create, NotificationMethodEnum.sys, idGroups);		
-					try{
-						emailSenderService.sendEmail(toEmailAddresses, "MR", model, null);
-					}catch(Exception e){
-						
-					}
-				}
-				else
-				{
-					
-				}
-			}
-			
-			
+		if(wsPUnplannedStops.getIdUnplannedStops()==null)
+		{
+			v.setValid(false);
+			return v;
+		}
+		
+		for(WSPMr w : wsPmrRequest.getWsPMrs())
+		{
+			w.setIdUnplannedStop(wsPUnplannedStops.getIdUnplannedStops());	
+			w=saveWSPMr(w);
 		
 		}
+	
 		return v;
-		
 	}
+	
+	
+
 
 
 	

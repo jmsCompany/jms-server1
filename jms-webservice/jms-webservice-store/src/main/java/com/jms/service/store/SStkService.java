@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,13 +21,14 @@ import com.jms.domain.SystemRoleEnum;
 import com.jms.domain.db.Company;
 import com.jms.domain.db.Groups;
 import com.jms.domain.db.Roles;
+import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SStk;
 import com.jms.domain.db.SStkTypeDic;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.store.WSStk;
-import com.jms.domain.ws.store.WSStkType;
+import com.jms.domain.ws.s.WSStk;
+import com.jms.domain.ws.s.WSStkType;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.s.SStatusDicRepository;
 import com.jms.repositories.s.SStkRepository;
@@ -116,6 +118,20 @@ public class SStkService {
 	
 	
 	@Transactional(readOnly=true)
+	public List<WSSelectObj> findStksSelectObjByTypes(Long statusId,List<Long> types)
+	{
+		List<WSSelectObj> wsStkList = new ArrayList<WSSelectObj>();
+		for(SStk stk: sStkRepository.findByIdCompanyAndStatusAndTypes(securityUtils.getCurrentDBUser().getCompany().getIdCompany(),statusId,types))
+		{
+			WSSelectObj o = new WSSelectObj(stk.getId(),stk.getStkName());
+			wsStkList.add(o);
+		}
+		
+		return wsStkList;
+	}
+	
+	
+	@Transactional(readOnly=true)
 	public WSStk findStk(Long stkId)
 	{
 		
@@ -186,5 +202,58 @@ public class SStkService {
 	}
 	
 	
+	@Transactional(readOnly=true)
+	public Boolean checkStkName(String stkName, Long idStk) {
 
+		String dbStkName = "";
+		// 已有仓库修改
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		if (idStk != null) {
+
+			SStk stk =sStkRepository.findOne(idStk);
+			dbStkName= stk.getStkName();
+			if (stkName != null && !stkName.isEmpty()) {
+				if (sStkRepository.findByIdCompanyAndStkName(companyId, stkName) == null
+						|| stkName.equals(dbStkName)) {
+					return true;
+				} else {
+					return false;
+				}
+			} else
+				return true;
+		} else {
+			if (stkName == null || stkName.isEmpty())
+				return false;
+			else {
+				if (sStkRepository.findByIdCompanyAndStkName(companyId, stkName) == null) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+	}
+
+	
+	
+	
+	@Transactional(readOnly=true)
+	public WSStk findByStkName(String stkName)
+	{
+		
+		    SStk stk = sStkRepository.findByIdCompanyAndStkName(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), stkName);
+		
+			WSStk wsStk = new WSStk();
+			if(stk==null)
+				return wsStk;
+			wsStk.setAddress(stk.getAddress());
+			wsStk.setDes(stk.getDes());
+			wsStk.setIdStk(stk.getId());
+			wsStk.setIdStkType(stk.getSStkTypeDic().getIdStkType());
+			wsStk.setStatus(stk.getSStatusDic().getId());
+			wsStk.setStkName(stk.getStkName());
+		
+		
+		return wsStk;
+	}
 }

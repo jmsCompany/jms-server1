@@ -1,4 +1,4 @@
-package com.jms.domain.ws.store;
+package com.jms.domain.ws.s;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -30,6 +30,8 @@ public class WSSMtf {
 	     private Long poId;
 	     
 	     private Long idWo;
+	     
+	     private String coOrderNo;
 	     
 	     private Map<String,WSSMtfMaterial> smtfItems = new LinkedHashMap<String,WSSMtfMaterial>(0);
 		public Long getIdMt() {
@@ -165,6 +167,12 @@ public class WSSMtf {
 		}
 		public void setIdWo(Long idWo) {
 			this.idWo = idWo;
+		}
+		public String getCoOrderNo() {
+			return coOrderNo;
+		}
+		public void setCoOrderNo(String coOrderNo) {
+			this.coOrderNo = coOrderNo;
 		}
    
 }

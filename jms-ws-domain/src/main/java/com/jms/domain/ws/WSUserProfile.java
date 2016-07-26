@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jms.domain.ws.m.WSMachine;
-import com.jms.domain.ws.production.WSPCppAndriod;
-import com.jms.domain.ws.production.WSPWo;
+import com.jms.domain.ws.p.WSPCppAndriod;
+import com.jms.domain.ws.p.WSPWo;
 
 public class WSUserProfile implements java.io.Serializable{
 	

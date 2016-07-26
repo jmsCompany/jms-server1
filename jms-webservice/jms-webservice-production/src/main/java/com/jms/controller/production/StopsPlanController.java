@@ -17,9 +17,9 @@ import com.jms.domain.db.PWorkCenter;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.production.WSPStopsCode;
-import com.jms.domain.ws.production.WSPStopsPlan;
-import com.jms.domain.ws.production.WSPWorkCenter;
+import com.jms.domain.ws.p.WSPStopsCode;
+import com.jms.domain.ws.p.WSPStopsPlan;
+import com.jms.domain.ws.p.WSPWorkCenter;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PStopsCodeRepository;
 import com.jms.repositories.p.PStopsPlanRepository;
@@ -52,7 +52,7 @@ public class StopsPlanController {
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/p/savePStopsPlan", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public WSPStopsPlan savePStopsPlan(@RequestBody WSPStopsPlan wsPStopsPlan) throws Exception {
+	public Valid savePStopsPlan(@RequestBody WSPStopsPlan wsPStopsPlan) throws Exception {
 		return pStopsPlanService.saveWSPStopsPlan(wsPStopsPlan);
 	}
 	
@@ -75,7 +75,6 @@ public class StopsPlanController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/findPStopsPlans", method=RequestMethod.GET)
 	public List<WSPStopsPlan> findPStopsPlans() throws Exception {
-		//logger.debug("/p/findPStopsPlans");
 		return pStopsPlanService.findWSPStopsPlans();
 	
 	}
@@ -115,7 +114,7 @@ public class StopsPlanController {
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/p/findPStopsPlanList", method=RequestMethod.GET)
+	@RequestMapping(value="/p/findPStopsPlanList", method=RequestMethod.POST)
 	public WSTableData  findPStopsPlanList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		List<PStopsPlan> pStopsPlans =pStopPlanRepository.getPStopsPlansByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 		List<String[]> lst = new ArrayList<String[]>();
@@ -126,7 +125,7 @@ public class StopsPlanController {
 			end =start + length;
 		for (int i = start; i < end; i++) {
 			PStopsPlan w = pStopsPlans.get(i);
-			String[] d = {""+w.getMMachine().getCode(),w.getPSubCode().getSubCode()+"_"+w.getPSubCode().getSubDes(),w.getPlanFt().toString(),w.getPlanSt().toString(),w.getPStatusDic().getName(),""+w.getIdStopsPlan()};
+			String[] d = {""+w.getMMachine().getCode(),w.getPSubCode().getSubCode(),w.getPlanSt().toString(),w.getPlanFt().toString(),w.getPStatusDic().getName(),""+w.getIdStopsPlan()};
 			lst.add(d);
 
 		}
@@ -144,7 +143,7 @@ public class StopsPlanController {
 //	显示顺序：机器编号-机器名字、停机编码-停机原因、计划开始时间、计划停止时间、实际开始时间、实际停止时间
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/p/findPStopsPlanReportList", method=RequestMethod.GET)
+	@RequestMapping(value="/p/findPStopsPlanReportList", method=RequestMethod.POST)
 	public WSTableData  findPStopsPlanReportList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		List<PStopsPlan> pStopsPlans = pStopPlanRepository.getPStopsPlansByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 		List<String[]> lst = new ArrayList<String[]>();
@@ -159,7 +158,7 @@ public class StopsPlanController {
 			String pf=(w.getPlanFt()==null)?"":w.getPlanFt().toString();
 			String as=(w.getActSt()==null)?"":w.getActSt().toString();
 			String af=(w.getActFt()==null)?"":w.getActFt().toString();
-			String[] d = {""+w.getMMachine().getCode(),w.getPSubCode().getSubCode(),w.getPSubCode().getSubDes(),ps,pf,as,af};
+			String[] d = {""+w.getMMachine().getCode(),w.getPSubCode().getSubCode(),ps,pf,as,af};
 			lst.add(d);
 
 		}

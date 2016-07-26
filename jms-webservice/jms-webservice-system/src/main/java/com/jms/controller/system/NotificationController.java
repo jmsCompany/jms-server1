@@ -76,7 +76,6 @@ public class NotificationController {
 			re.setChecked(1l);
 			receiverRepository.save(re);
 		}
-
 		v.setValid(true);
 		return v;
 	}

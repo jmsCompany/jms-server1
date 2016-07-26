@@ -19,7 +19,7 @@ import com.jms.domain.db.SStk;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.production.WSPWorkCenter;
+import com.jms.domain.ws.p.WSPWorkCenter;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.e.EWorkCategoryDicRepository;

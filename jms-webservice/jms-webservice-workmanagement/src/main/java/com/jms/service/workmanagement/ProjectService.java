@@ -62,7 +62,7 @@ public class ProjectService {
 		 Map<String, String> map = securedObjectService.findSidPermissionMap(WProject.class, 4l, "group");
 	       for(String m:map.keySet())
 	       {
-	    	   
+	
 	    	   System.out.println("group id: " + m +", permission: " + map.get(m));
 	       }
 	       

@@ -41,23 +41,14 @@ public class PWo  implements java.io.Serializable {
      private Set<PSPp> PSPps = new HashSet<PSPp>(0);
      private Set<PWoRoute> PWoRoutes = new HashSet<PWoRoute>(0);
      private Set<PCPp> PCPps = new HashSet<PCPp>(0);
+     
+     private Date actSt;
+     private Date actFt;
+     private Long actQty;
 
     public PWo() {
     }
 
-    public PWo(SSo SSo, Users users, PStatusDic PStatusDic, String woNo, Date creationTime, Long qty, Set<PWoBom> PWoBoms, Set<QFaiInFinal> QFaiInFinals, Set<PSPp> PSPps, Set<PWoRoute> PWoRoutes, Set<PCPp> PCPps) {
-       this.SSo = SSo;
-       this.users = users;
-       this.PStatusDic = PStatusDic;
-       this.woNo = woNo;
-       this.creationTime = creationTime;
-       this.qty = qty;
-       this.PWoBoms = PWoBoms;
-       this.QFaiInFinals = QFaiInFinals;
-       this.PSPps = PSPps;
-       this.PWoRoutes = PWoRoutes;
-       this.PCPps = PCPps;
-    }
    
      @Id @GeneratedValue(strategy=IDENTITY)
     
@@ -163,6 +154,34 @@ public class PWo  implements java.io.Serializable {
     public void setPCPps(Set<PCPp> PCPps) {
         this.PCPps = PCPps;
     }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="act_st", length=19)
+	public Date getActSt() {
+		return actSt;
+	}
+
+	public void setActSt(Date actSt) {
+		this.actSt = actSt;
+	}
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="act_ft", length=19)
+	public Date getActFt() {
+		return actFt;
+	}
+
+	public void setActFt(Date actFt) {
+		this.actFt = actFt;
+	}
+    @Column(name="act_qty")
+	public Long getActQty() {
+		return this.actQty;
+	}
+
+	public void setActQty(Long actQty) {
+		this.actQty = actQty;
+	}
 
 
 

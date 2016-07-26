@@ -21,7 +21,7 @@ import com.jms.domain.ws.WSMenu;
 import com.jms.domain.ws.WSRolePermissions;
 import com.jms.domain.ws.WSRoles;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.production.WSPBom;
+import com.jms.domain.ws.p.WSPBom;
 import com.jms.repositories.system.AppsRepository;
 import com.jms.repositories.user.GroupRepository;
 import com.jms.repositories.user.GroupTypeRepository;
@@ -97,7 +97,7 @@ public class RoleController {
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/u/roles/list", method=RequestMethod.GET)
+	@RequestMapping(value="/u/roles/list", method=RequestMethod.POST)
 	public WSTableData  roles(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
 		List<Roles> rs =roleRepository.findByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());

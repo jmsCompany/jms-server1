@@ -31,10 +31,12 @@ public class SBin  implements java.io.Serializable {
      private SStk SStk;
      private SStatusDic SStatusDic;
      private String bin;
+     private String des;
      private Set<SInventory> SInventories = new HashSet<SInventory>(0);
      private Set<SMtfMaterial> SMtfMaterialsForToBin = new HashSet<SMtfMaterial>(0);
      private Set<SMtfMaterial> SMtfMaterialsForFromBin = new HashSet<SMtfMaterial>(0);
      private Set<MMachine> MMachines = new HashSet<MMachine>(0);
+
 
     public SBin() {
     }
@@ -128,6 +130,15 @@ public class SBin  implements java.io.Serializable {
     public void setMMachines(Set<MMachine> MMachines) {
         this.MMachines = MMachines;
     }
+
+    @Column(name="des", length=256)
+	public String getDes() {
+		return des;
+	}
+
+	public void setDes(String des) {
+		this.des = des;
+	}
 
 
 

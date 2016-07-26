@@ -1,4 +1,4 @@
-package com.jms.domain.ws.production;
+package com.jms.domain.ws.p;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +24,10 @@ public class WSPWo {
     
     
     private Long qtyFinished;
+    
+    private Date actSt;
+    private Date actFt;
+    private Long actQty;
     
     List<WSPRoutineD> routines = new ArrayList<WSPRoutineD>();
 
@@ -116,6 +120,24 @@ public class WSPWo {
 	}
 	public void setQtyFinished(Long qtyFinished) {
 		this.qtyFinished = qtyFinished;
+	}
+	public Date getActSt() {
+		return actSt;
+	}
+	public void setActSt(Date actSt) {
+		this.actSt = actSt;
+	}
+	public Date getActFt() {
+		return actFt;
+	}
+	public void setActFt(Date actFt) {
+		this.actFt = actFt;
+	}
+	public Long getActQty() {
+		return actQty;
+	}
+	public void setActQty(Long actQty) {
+		this.actQty = actQty;
 	}
 
 

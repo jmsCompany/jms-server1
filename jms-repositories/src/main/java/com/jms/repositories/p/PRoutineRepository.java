@@ -15,4 +15,7 @@ public interface PRoutineRepository extends JpaRepository<PRoutine, Long>{
 @Query("select p from PRoutine p where p.company.idCompany=?1")
 public List<PRoutine> getByCompanyId(Long companyId);
 
+
+@Query("select p from PRoutine p where p.SMaterial.idMaterial=?1 and p.PLine.pline=?2")
+public PRoutine getByMaterialIdAndPline(Long materialId,String pline);
 }

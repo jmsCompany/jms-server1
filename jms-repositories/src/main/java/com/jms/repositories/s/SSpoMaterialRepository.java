@@ -18,11 +18,14 @@ public interface SSpoMaterialRepository  extends JpaRepository<SPoMaterial, Long
 	public void deleteBySpoId(Long spoId);
 	
 	
-	@Query("select s from SPoMaterial s where s.SPo.company.idCompany=?1")
+	@Query("select s from SPoMaterial s where s.SPo.company.idCompany=?1 order by s.SPo.dateOrder desc")
 	public List<SPoMaterial> getByCompanyId(Long companyId);
 	
 	@Query("select s from SPoMaterial s where s.SPo.idPo=?1")
 	public List<SPoMaterial> getBySpoId(Long spoId);
+	
+	@Query("select s from SPoMaterial s where s.SPo.idPo=?1 and s.qtyReceived is not null")
+	public List<SPoMaterial> getReceivedBySpoId(Long spoId);
 	
 	
 	@Query("select s.SMaterial from SPoMaterial s where s.idPoMaterial=?1")

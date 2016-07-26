@@ -14,9 +14,9 @@ import com.jms.domain.db.PWo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.production.WSPBom;
-import com.jms.domain.ws.production.WSPWo;
-import com.jms.domain.ws.production.WSShiftPlan;
+import com.jms.domain.ws.p.WSPBom;
+import com.jms.domain.ws.p.WSPWo;
+import com.jms.domain.ws.p.WSShiftPlan;
 import com.jms.repositories.p.PBomLabelRepository;
 import com.jms.repositories.p.PShiftPlanDRepository;
 import com.jms.repositories.p.PShiftPlanRepository;
@@ -76,7 +76,7 @@ public class ShifPlanController {
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/p/getShiftPlanList", method=RequestMethod.GET)
+	@RequestMapping(value="/p/getShiftPlanList", method=RequestMethod.POST)
 	public WSTableData  getShiftPlanList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
 		List<PShiftPlan> shifPlans =pShiftPlanRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());

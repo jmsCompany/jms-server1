@@ -7,21 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
 import com.jms.domain.db.PCPp;
-import com.jms.domain.db.PCheckTime;
-import com.jms.domain.db.PLine;
+import com.jms.domain.db.PWo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.production.WSPCpp;
-import com.jms.domain.ws.production.WSPLine;
-import com.jms.domain.ws.production.WSPMr;
-import com.jms.domain.ws.store.WSMaterialQty;
+import com.jms.domain.ws.p.WSPCpp;
+import com.jms.domain.ws.p.WSPMr;
 import com.jms.repositories.p.PCPpRepository;
-import com.jms.repositories.p.PCheckTimeRepository;
-import com.jms.repositories.p.PLineRepository;
+import com.jms.repositories.p.PWoRepository;
 import com.jms.service.production.PCppService;
-import com.jms.service.production.PlineService;
 import com.jms.web.security.SecurityUtils;
 
 
@@ -31,14 +25,36 @@ public class CppController {
 	
 	@Autowired private PCppService pCppService;
 	@Autowired private PCPpRepository pCPpRepository;
+	@Autowired private PWoRepository pWoRepository;
 	@Autowired private SecurityUtils securityUtils;
 
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/p/saveWSPCpp", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public WSPCpp saveCheckTime(@RequestBody WSPCpp wsPCpp) throws Exception {
+	public WSPCpp saveWSPCpp(@RequestBody WSPCpp wsPCpp) throws Exception {
 		return pCppService.saveWSPCPp(wsPCpp);
 	}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/p/startCpp", method=RequestMethod.GET)
+	public Valid startCpp(@RequestParam("idCpp") Long idCpp) throws Exception {
+		return pCppService.startCpp(idCpp);
+	}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/p/finishCpp", method=RequestMethod.GET)
+	public Valid finishCpp(@RequestParam("idCpp") Long idCpp) throws Exception {
+		return pCppService.finishCpp(idCpp);
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/isStarted", method=RequestMethod.GET)
+	public Valid isStarted(@RequestParam("idCpp") Long idCpp) throws Exception {
+		return pCppService.isStarted(idCpp);
+	}
+	
 	
 	
 	@Transactional(readOnly = false)
@@ -59,10 +75,39 @@ public class CppController {
 
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/p/getCppList", method=RequestMethod.GET)
-	public WSTableData  getCheckTimeList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
-		List<PCPp> pCpps =pCPpRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+	@RequestMapping(value="/p/getCppList", method=RequestMethod.POST)
+	public WSTableData  getCppList(@RequestParam(required=false,value="q") String q, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		//System.out.println("q: " + q);
 		List<String[]> lst = new ArrayList<String[]>();
+		List<PCPp> pCpps;
+		List<Long> woIds = new ArrayList<Long>();
+		if(q==null)
+		{
+			WSTableData t = new WSTableData();
+			t.setDraw(draw);
+			t.setRecordsTotal(0);
+			t.setRecordsFiltered(0);
+		    t.setData(lst);
+		    return t;
+		}
+		q= '%'+q+'%';
+		for(PWo pwo:pWoRepository.getByCompanyIdAndQuery(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), q))
+		{
+		//	System.out.println("wo: " + pwo.getWoNo());
+			woIds.add(pwo.getIdWo());
+		}
+	
+		if(!woIds.isEmpty())
+		{
+			pCpps =pCPpRepository.getByCompanyIdAndWoIds(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), woIds);	
+		}
+		else
+		{
+			pCpps = new ArrayList<PCPp>();
+		}
+		 	
+			
+		
 		int end=0;
 		if(pCpps.size()<start + length)
 			end =pCpps.size();
@@ -75,7 +120,10 @@ public class CppController {
 			{
 				routineDNo=w.getPRoutineD().getRouteNo();
 			}
-			String[] d = {""+w.getCPpCode(),w.getPWo().getWoNo(),routineDNo,w.getPWo().getSSo().getSMaterial().getPno(),w.getPWo().getSSo().getSMaterial().getRev(),""+w.getPWo().getQty(),w.getPShiftPlanD().getShift(),w.getPlanSt().toString(),w.getPlanFt().toString(),w.getMMachine().getCode()+""
+			String actSt = (w.getActSt()==null)?"":w.getActSt().toString();
+			String actFt = (w.getActFt()==null)?"":w.getActFt().toString();
+			String product =w.getPWo().getSSo().getSMaterial().getPno()+"_"+w.getPWo().getSSo().getSMaterial().getRev()+"_"+w.getPWo().getSSo().getSMaterial().getDes();
+			String[] d = {""+w.getCPpCode(),w.getPWo().getWoNo(),routineDNo,product,""+w.getPWo().getQty(),w.getPShiftPlanD().getShift(),w.getPlanSt().toString(),w.getPlanFt().toString(),actSt,actFt,w.getMMachine().getCode()+""
 					+ "-"+w.getMMachine().getSpec(),w.getUsers().getName(),""+w.getQty(),""+w.getIdCPp()};
 			lst.add(d);
 
@@ -97,5 +145,10 @@ public class CppController {
 	}
 	
 
-
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/hasCheckPlans", method=RequestMethod.GET)
+	public Valid hasCheckPlans(@RequestParam("cppId") Long cppId)  {
+		Valid v =  pCppService.hasCheckPlans(cppId);
+		return v;
+	}
 }

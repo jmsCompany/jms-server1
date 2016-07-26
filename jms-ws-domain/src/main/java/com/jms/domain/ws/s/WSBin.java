@@ -1,4 +1,4 @@
-package com.jms.domain.ws.store;
+package com.jms.domain.ws.s;
 
 
 public class WSBin {
@@ -11,6 +11,7 @@ public class WSBin {
     private String isReturnShelfName;
     private String stkName;
     private Long idStk;
+    private String des;
     
 	public Long getIdBin() {
 		return idBin;
@@ -59,6 +60,12 @@ public class WSBin {
 	}
 	public void setIdStk(Long idStk) {
 		this.idStk = idStk;
+	}
+	public String getDes() {
+		return des;
+	}
+	public void setDes(String des) {
+		this.des = des;
 	}
   
 

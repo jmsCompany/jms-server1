@@ -1,2 +1,4 @@
+A STOPs information be created, Reason: $!{reason}.
+Details as the following:
 WO:$!{woNo},P/No:$!{pNo}
 Location:WIP,Mach/No:$!{machine}

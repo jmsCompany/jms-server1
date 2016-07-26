@@ -1,4 +1,4 @@
-package com.jms.domain.ws.production;
+package com.jms.domain.ws.p;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +31,11 @@ public class WSPCppAndriod implements java.io.Serializable{
 	//private String drawId;//产品图纸
 	private Long st;//计划开始时间
 	private Long ft;//计划结束时间
+	
+	
+	private Long actSt;//开始时间
+	private Long actFt;//结束时间
+	
 	
 	private Long checkInterval; //
 	private Long checkIntervalType; //1分钟，2小时，3天
@@ -178,6 +183,18 @@ public class WSPCppAndriod implements java.io.Serializable{
 	}
 	public void setIdMachine(Long idMachine) {
 		this.idMachine = idMachine;
+	}
+	public Long getActSt() {
+		return actSt;
+	}
+	public void setActSt(Long actSt) {
+		this.actSt = actSt;
+	}
+	public Long getActFt() {
+		return actFt;
+	}
+	public void setActFt(Long actFt) {
+		this.actFt = actFt;
 	}
 	
    

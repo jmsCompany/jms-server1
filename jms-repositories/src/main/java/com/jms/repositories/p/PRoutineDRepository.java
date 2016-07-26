@@ -17,6 +17,6 @@ public interface PRoutineDRepository extends JpaRepository<PRoutineD, Long>{
 
 	
 	
-	@Query("select p from PRoutineD p where p.PRoutine.idRoutine=?1")
+	@Query("select p from PRoutineD p where p.PRoutine.idRoutine=?1 order by p.routeNo")
     public List<PRoutineD> findByRoutineId(Long routineId);
 }

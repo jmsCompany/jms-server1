@@ -12,8 +12,8 @@ import com.jms.domain.db.PCheckTime;
 import com.jms.domain.db.PLine;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.production.WSPCheckTime;
-import com.jms.domain.ws.production.WSPLine;
+import com.jms.domain.ws.p.WSPCheckTime;
+import com.jms.domain.ws.p.WSPLine;
 import com.jms.repositories.p.PCheckTimeRepository;
 import com.jms.repositories.p.PLineRepository;
 import com.jms.service.production.PCheckTimeService;
@@ -32,7 +32,7 @@ public class CheckTimeController {
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/p/saveCheckTime", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public WSPCheckTime saveCheckTime(@RequestBody WSPCheckTime wsPCheckTime) throws Exception {
+	public Valid saveCheckTime(@RequestBody WSPCheckTime wsPCheckTime) throws Exception {
 		return pCheckTimeService.saveWSPCheckTime(wsPCheckTime);
 	}
 	
@@ -55,7 +55,7 @@ public class CheckTimeController {
 
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/p/getCheckTimeList", method=RequestMethod.GET)
+	@RequestMapping(value="/p/getCheckTimeList", method=RequestMethod.POST)
 	public WSTableData  getCheckTimeList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		List<PCheckTime> pChenTimes =pCheckTimeRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 		List<String[]> lst = new ArrayList<String[]>();

@@ -25,7 +25,7 @@ import com.jms.domain.db.SMaterialTypeDic;
 import com.jms.domain.db.SStatusDic;
 import com.jms.domain.db.SysDic;
 import com.jms.domain.db.SysDicD;
-import com.jms.domain.ws.store.WSSStatus;
+import com.jms.domain.ws.s.WSSStatus;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.s.SMaterialTypeDicRepository;
 import com.jms.repositories.s.SStatusDicRepository;

@@ -1,4 +1,4 @@
-package com.jms.domain.ws.store;
+package com.jms.domain.ws.s;
 
 import java.util.Date;
 
@@ -24,6 +24,8 @@ public class WSSMtfMaterial {
     private Long qtyPo;
     private Date deliveryDate;
     private Long qtyReceived;
+    
+    private Long qtyChecked;
    
     
     private String status;
@@ -375,6 +377,12 @@ public class WSSMtfMaterial {
 	}
 	public void setInventoryId(Long inventoryId) {
 		this.inventoryId = inventoryId;
+	}
+	public Long getQtyChecked() {
+		return qtyChecked;
+	}
+	public void setQtyChecked(Long qtyChecked) {
+		this.qtyChecked = qtyChecked;
 	}
     
   

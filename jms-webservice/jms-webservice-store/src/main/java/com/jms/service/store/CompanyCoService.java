@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jms.domain.db.SCompanyCo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.store.WSCompanyCo;
+import com.jms.domain.ws.s.WSCompanyCo;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.s.SCompanyCoRepository;
 import com.jms.repositories.s.SCountryDicRepository;

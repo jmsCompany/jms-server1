@@ -16,9 +16,9 @@ import com.jms.domain.db.SPo;
 import com.jms.domain.db.SPoMaterial;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.store.WSSpo;
-import com.jms.domain.ws.store.WSSpoMaterial;
-import com.jms.domain.ws.store.WSSpoRemark;
+import com.jms.domain.ws.s.WSSpo;
+import com.jms.domain.ws.s.WSSpoMaterial;
+import com.jms.domain.ws.s.WSSpoRemark;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.s.SAttachmentRepository;
 import com.jms.repositories.s.SCompanyCoRepository;
@@ -109,14 +109,16 @@ public class SpoService {
 	
 
 	
-	
-	
 
 	public Valid saveSpoRemark(WSSpoRemark wsSpoRemark) {
 		
 		SPo spo = sSpoRepository.findOne(wsSpoRemark.getIdPo());	
 		spo.setRemark(wsSpoRemark.getRemark());
-		
+		if(wsSpoRemark.getStatusId()!=null)
+		{
+			spo.setSStatusDic(sStatusDicRepository.findOne(wsSpoRemark.getStatusId()));
+		}
+
 		sSpoRepository.save(spo);
 		
 		Valid valid = new Valid();
@@ -155,8 +157,11 @@ public class SpoService {
 		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
 		for(SPo s : sSpoRepository.findByCompanyIdAndCodeCo(companyId,codeCo))
 		{
-			WSSelectObj w = new WSSelectObj(s.getIdPo(),s.getCodePo());
-			ws.add(w);
+			if(s.getSStatusDic()!=null&&s.getSStatusDic().getId().equals(11l)){ //激活状态
+				WSSelectObj w = new WSSelectObj(s.getIdPo(),s.getCodePo());
+				ws.add(w);
+			}
+		
 		}
 		
 		return ws;
@@ -170,18 +175,16 @@ public class SpoService {
 		SPo dbSpo = (SPo)BeanUtil.shallowCopy(wsSpo, SPo.class, spo);
 		if(wsSpo.getIdPo()==null||wsSpo.getIdPo().equals(0l))
 		{
-		SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 10l);
-	    if(smtfNo==null)
-	    {
-	    	sMtfNoService.loadSmtfNosByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
-	    	smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 10l);
-	    }
-	    long currentVal =smtfNo.getCurrentVal()+1;
-	    smtfNo.setCurrentVal(currentVal);
-	    sMtfNoRepository.save(smtfNo);
-		
-	    String codePo = smtfNo.getPrefix()+String.format("%08d", currentVal);
-		dbSpo.setCodePo(codePo);
+			if(wsSpo.getCodePo()==null)
+			{
+				SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 10l);
+			    long currentVal =smtfNo.getCurrentVal()+1;
+			    smtfNo.setCurrentVal(currentVal);
+			    sMtfNoRepository.save(smtfNo);
+			    String codePo = smtfNo.getPrefix()+String.format("%08d", currentVal);
+				dbSpo.setCodePo(codePo);
+			}
+
 		}
 		
 		

@@ -3,22 +3,30 @@ package com.jms.service.production;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jms.domain.NotificationMethodEnum;
+import com.jms.domain.db.EventReceiver;
 import com.jms.domain.db.PCPp;
 import com.jms.domain.db.PUnplannedStops;
 import com.jms.domain.ws.Valid;
-import com.jms.domain.ws.production.WSPUnplannedStops;
+import com.jms.domain.ws.p.WSPUnplannedStops;
 import com.jms.domainadapter.BeanUtil;
+import com.jms.repositories.m.MMachineRepository;
 import com.jms.repositories.p.PCPpRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PSubCodeRepository;
 import com.jms.repositories.p.PUnplannedStopsRepository;
+import com.jms.repositories.system.EventReceiverRepository;
+import com.jms.system.INotificationService;
 import com.jms.web.security.SecurityUtils;
 
 @Service
@@ -37,6 +45,13 @@ public class PUnplannedStopsService {
 	private  PStatusDicRepository pStatusDicRepository;
 	@Autowired private SecurityUtils securityUtils;
 	
+	@Autowired
+	private  MMachineRepository mMachineRepository;
+	@Autowired
+	private EventReceiverRepository eventReceiverRepository;
+	@Autowired
+	private  INotificationService notificationService;
+	
 	@Transactional(readOnly=false)
 	public WSPUnplannedStops saveWSPStopsPlan(WSPUnplannedStops wsPUnplannedStops) throws Exception {
 		PUnplannedStops pUnplannedStops;
@@ -47,16 +62,30 @@ public class PUnplannedStopsService {
 		else
 		{
 			pUnplannedStops = new PUnplannedStops();
-			List<PUnplannedStops> ws = pUnplannedStopsRepository.getByMachineIdAndStatusId(wsPUnplannedStops.getIdMachine(), 18l);
-			if(ws!=null&&!ws.isEmpty())
+			List<PUnplannedStops> ws = pUnplannedStopsRepository.getByMachineIdAndStatusIdAndHasSubCode(wsPUnplannedStops.getIdMachine(), 18l);
+			if(wsPUnplannedStops.getpSubCodeId()!=null&&ws!=null&&!ws.isEmpty())
 				return wsPUnplannedStops;
-			
+		
 			pUnplannedStops.setOpSt(new Date());
 		}
+		
 		PUnplannedStops dbPUnplannedStops= toDBPUnplannedStops(wsPUnplannedStops,pUnplannedStops);
+		
 		dbPUnplannedStops.setIdCompany(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 		dbPUnplannedStops = pUnplannedStopsRepository.save(dbPUnplannedStops);
 		wsPUnplannedStops.setIdUnplannedStops(dbPUnplannedStops.getIdUnplannedStops());
+		
+		
+		//消息
+		Long eventId = wsPUnplannedStops.getEventId();
+		logger.debug("idCpp: " + wsPUnplannedStops.getIdCpp() +", eventId: " + eventId);
+		List<EventReceiver> eventReceivers = eventReceiverRepository.findByIdEventAndIdCompany(eventId,securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+		if(eventReceivers!=null)
+		{
+			notificationService.createNotificationToReceivers(securityUtils.getCurrentDBUser().getCompany(), eventId, wsPUnplannedStops.getIdUnplannedStops(), NotificationMethodEnum.sys, eventReceivers);
+		}
+		
+		
 		return wsPUnplannedStops;		
 		
 	}
@@ -67,14 +96,14 @@ public class PUnplannedStopsService {
 	@Transactional(readOnly=false)
 	public Valid updateWSPStopsPlan(Long machineId, Long type) {
 		
-		logger.debug("更改 停机状态： "+machineId+", type: " +type);
+		//logger.debug("更改 停机状态： "+machineId+", type: " +type);
 		Valid v = new Valid();
 		List<PUnplannedStops> pUnplannedStops =pUnplannedStopsRepository.getByMachineIdAndStatusId(machineId,18l);
 		if(pUnplannedStops!=null&&!pUnplannedStops.isEmpty())
 		{
 			PUnplannedStops p = pUnplannedStops.get(0);
 			
-			logger.debug("更改 停机状态： "+ p.getIdUnplannedStops() +",  " + p.getIdMachine() +" type: " +type);
+		//	logger.debug("更改 停机状态： "+ p.getIdUnplannedStops() +",  " + p.getIdMachine() +" type: " +type);
 		    if(type.equals(0l))
 		    {
 		    	p.setEqSt(new Date());
@@ -146,13 +175,18 @@ public class PUnplannedStopsService {
 		PUnplannedStops dbPUnplannedStops = (PUnplannedStops)BeanUtil.shallowCopy(wsPUnplannedStops, PUnplannedStops.class, pUnplannedStops);
 
 		dbPUnplannedStops.setPStatusDic(pStatusDicRepository.findOne(wsPUnplannedStops.getStatusId()));
-		dbPUnplannedStops.setPSubCode(pSubCodeRepository.findOne(wsPUnplannedStops.getpSubCodeId()));
+		if(wsPUnplannedStops.getpSubCodeId()!=null)
+		{
+			dbPUnplannedStops.setPSubCode(pSubCodeRepository.findOne(wsPUnplannedStops.getpSubCodeId()));
+		}
+		
 		
 		if(wsPUnplannedStops.getIdCpp()!=null)
 		{
 			dbPUnplannedStops.setIdMachine(pCPpRepository.findOne(wsPUnplannedStops.getIdCpp()).getMMachine().getIdMachine());
 			
 		}
+		dbPUnplannedStops.setIdMachine(wsPUnplannedStops.getIdMachine());
 		
 		return dbPUnplannedStops;
 	}
@@ -164,6 +198,7 @@ public class PUnplannedStopsService {
 	    pc.setpSubCodeId(pUnplannedStops.getPSubCode().getIdSubCode());
 	    pc.setStatus(pUnplannedStops.getPStatusDic().getName());
 	    pc.setStatusId(pUnplannedStops.getPStatusDic().getIdPstatus());
+	    pc.setMachine(mMachineRepository.findOne(pUnplannedStops.getIdMachine()).getCode());
 		
 		return pc;
 	}

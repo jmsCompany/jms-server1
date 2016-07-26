@@ -45,7 +45,7 @@ public class CostCenterController {
 
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/costCenterList", method=RequestMethod.GET)
+	@RequestMapping(value="/s/costCenterList", method=RequestMethod.POST)
 	public WSTableData  getCostCenterList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		List<WSFCostCenter> wsFCostCenters = costCenterService.getCostCenterList();
 		List<String[]> lst = new ArrayList<String[]>();

@@ -1,6 +1,7 @@
 package com.jms.service.store;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -9,9 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jms.domain.db.SBin;
 import com.jms.domain.db.SInventory;
-import com.jms.domain.ws.store.WSInventory;
-import com.jms.domain.ws.store.WSInventoryInfo;
+import com.jms.domain.ws.s.WSInventory;
+import com.jms.domain.ws.s.WSInventoryInfo;
 import com.jms.repositories.s.SBinRepository;
 import com.jms.repositories.s.SInventoryRepository;
 import com.jms.repositories.s.SStatusDicRepository;
@@ -107,7 +109,7 @@ public class SInventoryService {
 	    	
 	    	before = s;
 	    	num++;
-	    	if(num==ls.size())
+	    	if(num==ls.size()&&!currentQty.equals(0l))
 	    	{
 	    		WSInventoryInfo i = new WSInventoryInfo();
     			i.setDes(before.getSMaterial().getDes());
@@ -159,25 +161,48 @@ public class SInventoryService {
 	
 	    for(SInventory s: ls)
 	    {
+	    	if(!s.getQty().equals(0l))
+	    	{
+
+    			WSInventory i = new WSInventory();
+    			i.setInventoryId(s.getIdInv());
+    			i.setDes(s.getSMaterial().getDes());
+    			i.setPno(s.getSMaterial().getPno());
+    			i.setRev(s.getSMaterial().getRev());
+    			i.setIdMaterial(s.getSMaterial().getIdMaterial());
+    			i.setStkId(s.getSBin().getSStk().getId());
+    			i.setStkName(s.getSBin().getSStk().getStkName());
+    			i.setBinName(s.getSBin().getBin());
+    			i.setBinId(s.getSBin().getIdBin());
+    			i.setQty(s.getQty());
+    			i.setBox(s.getBox());
+    			i.setLotNo(s.getLotNo());
+    			infos.add(i);
+	    		
+	    	}
 	    	
-	    			WSInventory i = new WSInventory();
-	    			i.setInventoryId(s.getIdInv());
-	    			i.setDes(s.getSMaterial().getDes());
-	    			i.setPno(s.getSMaterial().getPno());
-	    			i.setRev(s.getSMaterial().getRev());
-	    			i.setIdMaterial(s.getSMaterial().getIdMaterial());
-	    			i.setStkId(s.getSBin().getSStk().getId());
-	    			i.setStkName(s.getSBin().getSStk().getStkName());
-	    			i.setBinName(s.getSBin().getBin());
-	    			i.setBinId(s.getSBin().getIdBin());
-	    			i.setQty(s.getQty());
-	    			i.setBox(s.getBox());
-	    			i.setLotNo(s.getLotNo());
-	    			infos.add(i);
+	    	
 	    	
 	    	
 	    }
 	    return infos;
 	}
+	
+	
+	
+	public void test()
+	{
+		SInventory	si = new SInventory();
+		si.setCreationTime(new Date());
+		si.setLotNo("10002");
+		si.setQty(30l);
+		si.setUQty(null);
+		SBin sbin =sBinRepository.findOne(29l);
+		si.setSBin(sbin);
+//		si.setSMaterial(spoMaterial.getSMaterial());
+		sInventoryRepository.save(si);
+	}
+	
+	
   
 }

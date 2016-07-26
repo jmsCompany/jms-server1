@@ -1,7 +1,9 @@
 package com.jms.service.store;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,14 +13,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jms.domain.Config;
 import com.jms.domain.db.SBin;
+import com.jms.domain.db.SInventory;
+import com.jms.domain.db.SMaterialBins;
 import com.jms.domain.db.SStk;
 import com.jms.domain.db.SStkTypeDic;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.store.WSBin;
-import com.jms.domain.ws.store.WSStk;
-import com.jms.domain.ws.store.WSStkType;
+import com.jms.domain.ws.s.WSBin;
+import com.jms.domain.ws.s.WSInventory;
+import com.jms.domain.ws.s.WSStk;
+import com.jms.domain.ws.s.WSStkType;
 import com.jms.repositories.s.SBinRepository;
+import com.jms.repositories.s.SInventoryRepository;
+import com.jms.repositories.s.SMaterialBinsRepository;
 import com.jms.repositories.s.SStatusDicRepository;
 import com.jms.repositories.s.SStkRepository;
 import com.jms.repositories.s.SStkTypeDicRepository;
@@ -45,6 +52,10 @@ public class SBinService {
 
 	@Autowired
 	private SBinRepository sBinRepository;
+	@Autowired
+	private  SMaterialBinsRepository sMaterialBinsRepository;
+	@Autowired
+	private  SInventoryRepository sInventoryRepository;
 
 	public Valid saveBin(WSBin wsBin) {
 
@@ -58,6 +69,7 @@ public class SBinService {
 			bin = sBinRepository.findOne(wsBin.getIdBin());
 		}
 		bin.setBin(wsBin.getBin());
+		bin.setDes(wsBin.getDes());
 		bin.setSStk(sStkRepository.findOne(wsBin.getIdStk()));
 		bin.setSYesOrNoDic(sYesOrNoDicRepository.findOne(wsBin.getIsReturnShelf()));
 		bin.setSStatusDic(sStatusDicRepository.findOne(wsBin.getStatus()));
@@ -74,6 +86,7 @@ public class SBinService {
 		for (SBin bin : sBinRepository.getByIdStk(idStk)) {
 			WSBin wsBin = new WSBin();
 			wsBin.setBin(bin.getBin());
+			wsBin.setDes(bin.getDes());
 			wsBin.setIdBin(bin.getIdBin());
 			wsBin.setIsReturnShelf(bin.getSYesOrNoDic().getId());
 			wsBin.setIsReturnShelfName(bin.getSYesOrNoDic().getName());
@@ -95,6 +108,109 @@ public class SBinService {
 
 		return wsBinList;
 	}
+	
+	@Transactional(readOnly = true)
+	public List<WSSelectObj> getBinsByStkIdAndMaterialIdAMethod(Long idStk,Long idMaterial) {
+		List<WSSelectObj> wsBinList = new ArrayList<WSSelectObj>();
+		List<SMaterialBins> sms =sMaterialBinsRepository.getByMaterialIdAndStkId(idMaterial, idStk);
+		if(sms==null||sms.isEmpty())
+		{
+			for (SBin bin : sBinRepository.getByIdStk(idStk)) {
+				WSSelectObj o = new WSSelectObj(bin.getIdBin(), bin.getBin());
+				wsBinList.add(o);
+			}
+		}
+		else
+		{
+			for(SMaterialBins s:sms)
+			{
+				Long binId = s.getId().getIdBin();
+				SBin sbin=sBinRepository.findOne(binId);
+				WSSelectObj o = new WSSelectObj(sbin.getIdBin(), sbin.getBin());
+				wsBinList.add(o);
+	
+			}
+			
+		}
+	
+		return wsBinList;
+	}
+	
+	
+	
+	
+	@Transactional(readOnly = true)
+	public List<WSSelectObj> getBinsByStkIdAndMaterialIdBMethod(Long idStk,Long idMaterial) {
+		
+		   // System.out.println("idStk: " + idStk +", idMat: " +idMaterial );
+	    List<WSSelectObj> wsBinList = new ArrayList<WSSelectObj>();
+		    SStk stk=sStkRepository.findOne(idStk);
+		    if(stk.getSStkTypeDic().getIdStkType().equals(8l)) //CCA帐号
+		    {
+		    	for(SBin sbin:sBinRepository.getByIdStk(idStk))
+		    	{
+		    		WSSelectObj w = new WSSelectObj(sbin.getIdBin(),sbin.getBin());
+		    		//System.out.println("idSBin: " + s.getSBin().getIdBin());
+			    	wsBinList.add(w);
+		    	}
+		    	return wsBinList;
+		    }
+	
+			Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+			List<SInventory> ls = sInventoryRepository.findInventoryByMaterialAndStk(idMaterial, companyId, idStk);
+			Map<Long,Long> binMap = new HashMap<Long,Long>();
+		    for(SInventory s: ls)
+		    {
+		    	if(!binMap.containsKey(s.getSBin().getIdBin()))
+		    	{
+		    		WSSelectObj w = new WSSelectObj(s.getSBin().getIdBin(),s.getSBin().getBin());
+		    		//System.out.println("idSBin: " + s.getSBin().getIdBin());
+			    	wsBinList.add(w);
+			    	binMap.put(s.getSBin().getIdBin(), s.getSBin().getIdBin());
+		    	}
+		    
+	
+		    }
+		return wsBinList;
+	}
+	
+	
+	@Transactional(readOnly = true)
+	public List<WSSelectObj> getBinsByStkIdAndMaterialIdCMethod(Long idStk,Long idMaterial) {
+		List<WSSelectObj> wsBinList = new ArrayList<WSSelectObj>();
+		List<SMaterialBins> sms =sMaterialBinsRepository.getByMaterialIdAndStkId(idMaterial, idStk);
+		if(sms==null||sms.isEmpty())
+		{
+//			logger.debug("get bins by stkId: " + idStk);
+			for (SBin bin : sBinRepository.getByIdStk(idStk)) {
+//				if(bin.getSYesOrNoDic().getId().equals(1l))
+//				{
+//			    	logger.debug("add bin: " + bin.getIdBin());
+					WSSelectObj o = new WSSelectObj(bin.getIdBin(), bin.getBin());
+					wsBinList.add(o);
+//				}
+			
+			}
+		}
+		else
+		{
+			for(SMaterialBins s:sms)
+			{
+				Long binId = s.getId().getIdBin();
+				SBin sbin=sBinRepository.findOne(binId);
+//				if(sbin.getSYesOrNoDic().getId().equals(1l))
+//				{
+					WSSelectObj o = new WSSelectObj(sbin.getIdBin(), sbin.getBin());
+					wsBinList.add(o);
+//				}
+	
+			}
+			
+		}
+	
+		return wsBinList;
+	}
+	
 
 	@Transactional(readOnly = true)
 	public WSBin findBin(Long binId) {
@@ -108,9 +224,70 @@ public class SBinService {
 		wsBin.setIsReturnShelfName(bin.getSYesOrNoDic().getName());
 		wsBin.setStatusName(bin.getSYesOrNoDic().getName());
 		wsBin.setStatus(bin.getSStatusDic().getId());
+		wsBin.setDes(bin.getDes());
 		return wsBin;
 	}
+	
+	
+//	@Transactional(readOnly = true)
+//	public SBin findSystemBinByStkTypeId(Long stkTypeId) {
+//		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+//		return sBinRepository.getByCompanyIdAndStkType(companyId, stkTypeId);
+//	}
 
+	
+	@Transactional(readOnly=true)
+	public Boolean checkBinName(String binName, Long idBin) {
+
+		//System.out.println("idBin: " + idBin);
+		String dbBinName = "";
+		// 已有修改
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		if (idBin != null) {
+
+			SBin bin =sBinRepository.findOne(idBin);
+			dbBinName= bin.getBin();
+			//System.out.println("dbBinName: " + dbBinName);
+			if (binName != null && !binName.isEmpty()) {
+				if (sBinRepository.getByCompanyIdAndBinName(companyId, binName) == null
+						|| binName.equals(dbBinName)) {
+					return true;
+				} else {
+					return false;
+				}
+			} else
+				return true;
+		} else {
+			if (binName == null || binName.isEmpty())
+				return false;
+			else {
+				if (sBinRepository.getByCompanyIdAndBinName(companyId, binName) == null) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+	}
+	
+	
+	
+	@Transactional(readOnly = true)
+	public WSBin getSystemBinByStkTypeIdAndBinName(Long stkTypeId,String binName) {
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		SBin bin = sBinRepository.getByCompanyIdAndStkTypeAndBinName(companyId, stkTypeId,binName);
+		WSBin wsBin = new WSBin();
+		if (bin == null)
+			return wsBin;
+		wsBin.setBin(bin.getBin());
+		wsBin.setIdBin(bin.getIdBin());
+		wsBin.setIsReturnShelf(bin.getSYesOrNoDic().getId());
+		wsBin.setIsReturnShelfName(bin.getSYesOrNoDic().getName());
+		wsBin.setStatusName(bin.getSYesOrNoDic().getName());
+		wsBin.setStatus(bin.getSStatusDic().getId());
+		return wsBin;
+	}
+	
 	/*
 	 * @Transactional(readOnly=false) public Valid invalidateBin(Long stkId) {
 	 * 
@@ -119,6 +296,7 @@ public class SBinService {
 	 * sStkRepository.save(stk); Valid valid = new Valid();
 	 * valid.setValid(true); return valid; }
 	 */
+	
 	@Transactional(readOnly = false)
 	public Valid deleteBin(Long binId) {
 		Valid valid = new Valid();

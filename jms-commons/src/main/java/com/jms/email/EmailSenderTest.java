@@ -24,7 +24,7 @@ public class EmailSenderTest {
 		model.put("pNo", "dd");
 		model.put("machine", "machine");
 		//emailSenderService.sendEmail(to, subject, model, files);
-		emailSenderService.sendEmail(to, subject, model, null);
+		emailSenderService.sendEmail(to, "mrTemplate.vm",subject, model, null);
 		
 	}
 }

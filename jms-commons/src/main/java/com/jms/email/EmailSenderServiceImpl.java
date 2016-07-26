@@ -26,13 +26,14 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 	private String from = "cloud.system@vqingyun.com";
 
 	@Override
-	public void sendEmail(final String[] toEmailAddresses, final String subject, final Map<String, Object> model,
+	public void sendEmail(final String[] toEmailAddresses, final String template,final String subject, final Map<String, Object> model,
 			final String[] files) {
 
 		MimeMessagePreparator preparator = new MimeMessagePreparator() {
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 				MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 				message.setTo(toEmailAddresses);
+			
 				message.setFrom(new InternetAddress(from));
 				message.setSubject(subject);
 				velocityEngine.addProperty("resource.loader", "class");

@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jms.domain.Config;
 import com.jms.domain.db.SMtfNo;
 import com.jms.domain.db.SStkTypeDic;
-import com.jms.domain.ws.store.WSStkType;
+import com.jms.domain.ws.s.WSStkType;
 import com.jms.repositories.s.SMtfNoRepository;
 import com.jms.repositories.s.SStkTypeDicRepository;
 

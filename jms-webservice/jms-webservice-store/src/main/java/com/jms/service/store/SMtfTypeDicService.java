@@ -12,7 +12,7 @@ import com.jms.domain.Config;
 import com.jms.domain.db.SLevelDic;
 import com.jms.domain.db.SMtfTypeDic;
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.store.WSStkType;
+import com.jms.domain.ws.s.WSStkType;
 import com.jms.repositories.s.SLevelDicRepository;
 import com.jms.repositories.s.SMtfTypeDicRepository;
 

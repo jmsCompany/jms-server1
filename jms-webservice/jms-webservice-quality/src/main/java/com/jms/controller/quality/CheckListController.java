@@ -12,7 +12,7 @@ import com.jms.domain.db.QTester;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.production.WSPRoutine;
+import com.jms.domain.ws.p.WSPRoutine;
 import com.jms.domain.ws.q.WSQCheckList;
 import com.jms.repositories.q.QCheckListRepository;
 import com.jms.repositories.q.QTesterRepository;
@@ -53,7 +53,7 @@ public class CheckListController {
 	
 
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/q/getCheckList", method=RequestMethod.GET)
+	@RequestMapping(value="/q/getCheckList", method=RequestMethod.POST)
 	public WSTableData  getCheckList(@RequestParam("routineDId") Long routineDId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
 		List<QCheckList> checkList =qCheckListRepository.getByRoutineDId(routineDId);

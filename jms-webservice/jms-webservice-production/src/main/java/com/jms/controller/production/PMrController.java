@@ -12,7 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import com.jms.domain.db.PMr;
 import com.jms.domain.ws.Valid;
-import com.jms.domain.ws.production.WSPMr;
+import com.jms.domain.ws.p.WSPMr;
+import com.jms.domain.ws.p.WSPmrRequest;
 import com.jms.repositories.p.PMrRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PWoRepository;
@@ -33,13 +34,22 @@ public class PMrController {
 	
 	private static final Logger logger = LogManager.getLogger(PMrController.class
 			.getCanonicalName());
+//	
+//	@Transactional(readOnly = false)
+//	@RequestMapping(value="/p/saveWSPMrs", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+//	public Valid saveWSPMrs(@RequestBody List<WSPMr> wsPMrs) throws Exception {
+//		return pMrService.saveWSPMrs(wsPMrs);
+//	}
+//	
 	
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/p/saveWSPMrs", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public Valid saveWSPMrs(@RequestBody List<WSPMr> wsPMrs) throws Exception {
-
-		return pMrService.saveWSPMrs(wsPMrs);
+	@RequestMapping(value="/p/saveWSPMrRequest", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public Valid saveWSPMrRequest(@RequestBody WSPmrRequest wsPmrRequest) throws Exception {
+		return pMrService.saveWSPMrRequest(wsPmrRequest);
 	}
+	
+	
+	
 	
 	
 	@Transactional(readOnly = false)

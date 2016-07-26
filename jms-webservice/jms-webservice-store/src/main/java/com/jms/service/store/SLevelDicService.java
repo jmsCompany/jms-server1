@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.jms.domain.Config;
 import com.jms.domain.db.SLevelDic;
-import com.jms.domain.ws.store.WSStkType;
+import com.jms.domain.ws.s.WSStkType;
 import com.jms.repositories.s.SLevelDicRepository;
 
 

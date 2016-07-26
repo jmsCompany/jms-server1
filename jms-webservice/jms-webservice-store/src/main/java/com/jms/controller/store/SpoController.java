@@ -15,9 +15,9 @@ import com.jms.domain.db.SPo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.store.WSSpo;
-import com.jms.domain.ws.store.WSSpoMaterial;
-import com.jms.domain.ws.store.WSSpoRemark;
+import com.jms.domain.ws.s.WSSpo;
+import com.jms.domain.ws.s.WSSpoMaterial;
+import com.jms.domain.ws.s.WSSpoRemark;
 import com.jms.file.FileMeta;
 import com.jms.file.FileUploadService;
 import com.jms.repositories.s.SAttachmentRepository;
@@ -42,7 +42,7 @@ public class SpoController {
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveSpo", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public WSSpo saveSpo(@RequestBody WSSpo wsSpo) throws Exception {
-		System.out.println("save Spo!");
+		//System.out.println("save Spo!");
 		return spoService.saveSpo(wsSpo);
 	}
 	
@@ -51,14 +51,14 @@ public class SpoController {
 	@RequestMapping(value = "/s/uploadSpoAttachment", method = RequestMethod.POST)
 	public FileMeta uploadSpoAttachment(@RequestParam(required=false, value="spoId") Long  spoId, MultipartHttpServletRequest request, HttpServletResponse response) {
 	
-		logger.debug("upload spo attachment: spo id: " +  spoId);
+		//logger.debug("upload spo attachment: spo id: " +  spoId);
 		FileMeta fileMeta = new FileMeta();
 		if (request.getFileNames().hasNext()) {
 			fileMeta = fileUploadService.upload(request, response,false);
 			SAttachment spic = new SAttachment();
 			spic.setOrgFilename(fileMeta.getOrgName());
 			spic.setFilename(fileMeta.getFileName());
-			logger.debug("orgin file name: " +  fileMeta.getOrgName() +", file name in server: " + fileMeta.getFileName());
+			//logger.debug("orgin file name: " +  fileMeta.getOrgName() +", file name in server: " + fileMeta.getFileName());
 			spic.setUsers(securityUtils.getCurrentDBUser());
 			spic = sAttachmentRepository.save(spic);
 			fileMeta.setFileId(spic.getId());
@@ -103,7 +103,7 @@ public class SpoController {
 
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/spoMaterialList", method=RequestMethod.GET)
+	@RequestMapping(value="/s/spoMaterialList", method=RequestMethod.POST)
 	public WSTableData  getSpoList( @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();

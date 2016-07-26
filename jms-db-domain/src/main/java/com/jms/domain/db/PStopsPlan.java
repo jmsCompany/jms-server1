@@ -112,8 +112,8 @@ public class PStopsPlan  implements java.io.Serializable {
     public void setStopsPlanNo(Long stopsPlanNo) {
         this.stopsPlanNo = stopsPlanNo;
     }
-    @Temporal(TemporalType.DATE)
-    @Column(name="plan_st", length=10)
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="plan_st", length=19)
     public Date getPlanSt() {
         return this.planSt;
     }
@@ -121,8 +121,8 @@ public class PStopsPlan  implements java.io.Serializable {
     public void setPlanSt(Date planSt) {
         this.planSt = planSt;
     }
-    @Temporal(TemporalType.DATE)
-    @Column(name="plan_ft", length=10)
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="plan_ft", length=19)
     public Date getPlanFt() {
         return this.planFt;
     }

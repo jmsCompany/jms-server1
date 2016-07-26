@@ -12,7 +12,7 @@ import com.jms.domain.db.PWorkCenter;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
-import com.jms.domain.ws.production.WSPWorkCenter;
+import com.jms.domain.ws.p.WSPWorkCenter;
 import com.jms.repositories.e.EWorkCategoryDicRepository;
 import com.jms.repositories.p.PWorkCenterRepository;
 import com.jms.service.production.EWorkCategoryDicService;
