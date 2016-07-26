@@ -1,0 +1,6 @@
+[2016-07-26 00:03:21.450] log4j2 - 4100 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-07-26 01:25:02.606] log4j2 - 4100 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-07-26 03:12:31.352] log4j2 - 4100 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-07-26 05:01:16.558] log4j2 - 4100 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-07-26 08:06:41.593] log4j2 - 4100 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-07-26 08:07:41.017] log4j2 - 4100 DEBUG [pool-4-thread-1] --- NotificationService: send email.
