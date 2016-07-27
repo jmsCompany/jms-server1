@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jms.domain.db.MMachineGroup;
 import com.jms.domain.db.PCPp;
 import com.jms.domain.db.PCheckPlan;
 import com.jms.domain.db.PCheckTime;
@@ -68,7 +69,18 @@ public class PCheckPlanService {
 		
 	@Transactional(readOnly=false)
 	public WSPCheckPlan saveWSPCheckPlan(WSPCheckPlan wsPCheckPlan) throws Exception {
-		PCheckPlan pCheckPlan = new PCheckPlan();
+		PCheckPlan pCheckPlan; 
+		
+		
+		if(wsPCheckPlan.getIdCheck()!=null&&!wsPCheckPlan.getIdCheck().equals(0l))
+		{
+			pCheckPlan = pCheckPlanRepository.findOne(wsPCheckPlan.getIdCheck());
+		}
+		else
+		{
+			pCheckPlan = new PCheckPlan();
+	
+		}
 		PCheckPlan dbPCheckPlan= toDBPCheckPlan(wsPCheckPlan,pCheckPlan);
 		dbPCheckPlan = pCheckPlanRepository.save(dbPCheckPlan);
 		PCPp cp = dbPCheckPlan.getPCPp();

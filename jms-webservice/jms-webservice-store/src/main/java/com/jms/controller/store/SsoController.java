@@ -19,6 +19,7 @@ import com.jms.domain.ws.s.WSMaterialDelivered;
 import com.jms.domain.ws.s.WSSSoRemark;
 import com.jms.domain.ws.s.WSSso;
 import com.jms.repositories.s.SSoRepository;
+import com.jms.repositories.s.SSoRepositoryCustom;
 import com.jms.service.store.SsoService;
 import com.jms.web.security.SecurityUtils;
 
@@ -31,6 +32,7 @@ public class SsoController {
 	@Autowired private SecurityUtils securityUtils;
 	@Autowired private SsoService ssoService;
 	@Autowired private SSoRepository sSoRepository;
+	@Autowired private SSoRepositoryCustom sSoRepositoryCustom;
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveSo", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -61,10 +63,14 @@ public class SsoController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/getSoList", method=RequestMethod.POST)
-	public WSTableData  getSoList( @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+	public WSTableData  getSoList( 
+			@RequestParam(required=false,value="q") String q,
+			@RequestParam(required=false,value="fromDay") String fromDay,
+			@RequestParam(required=false,value="toDay") String toDay,
+			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
-		List<SSo> ssos = sSoRepository.findByCompanyId(companyId);
+		List<SSo> ssos = sSoRepositoryCustom.getCustomSsos(companyId, q, fromDay, toDay);
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
 		if(ssos.size()<start + length)

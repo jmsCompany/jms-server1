@@ -125,7 +125,7 @@ public class CompanyCoController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/companyCoList", method=RequestMethod.POST)
 	public WSTableData  getCompanyCoList(@RequestParam(required=false, value="companyCoTypeId") Long companyCoTypeId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
-		System.out.println("co Type: " + companyCoTypeId);
+// 	System.out.println("co Type: " + companyCoTypeId);
 		List<WSCompanyCo> wsCompanyCos = companyCoService.getCoCompanies(companyCoTypeId,securityUtils.getCurrentDBUser().getCompany().getId());
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;

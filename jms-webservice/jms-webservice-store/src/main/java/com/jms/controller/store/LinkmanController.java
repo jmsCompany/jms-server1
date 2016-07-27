@@ -23,7 +23,7 @@ public class LinkmanController {
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveLinkman", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public WSLinkman saveLinkman(@RequestBody WSLinkman wsLinkman) throws Exception {
-		System.out.println("email from controller: " + wsLinkman.getEmail());
+	//	System.out.println("email from controller: " + wsLinkman.getEmail());
 		return linkmanService.saveWSLinkman(wsLinkman);
 	}
 	

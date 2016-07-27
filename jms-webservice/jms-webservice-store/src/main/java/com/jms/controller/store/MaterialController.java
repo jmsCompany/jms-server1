@@ -125,12 +125,16 @@ public class MaterialController {
 		if(types==null)
 		{
 			 wsMaterials = materialService.getMaterials(companyId, null, q);
-			// System.out.println("types is null");
+			 System.out.println("types is null");
 		}
 		else
 		{
 			 wsMaterials = materialService.getMaterialsByTypesAndQ(companyId, types, q);
-			// System.out.println("types is not null: " + types.get(0));
+			 for(Long t:types)
+			 {
+				 System.out.println("types is not null: " + t);
+			 }
+			
 		}
 		
 		

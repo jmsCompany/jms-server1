@@ -5,6 +5,9 @@ import java.util.Date;
 
 
 public class WSPCheckPlan {
+	
+	
+	private Long idCheck;
  
 	private Long pcppId; //日计划ID
     private Date planCheckTime; //计划检查时间
@@ -83,5 +86,13 @@ public class WSPCheckPlan {
 
 	public void setToBeQty(Long toBeQty) {
 		this.toBeQty = toBeQty;
+	}
+
+	public Long getIdCheck() {
+		return idCheck;
+	}
+
+	public void setIdCheck(Long idCheck) {
+		this.idCheck = idCheck;
 	}
 }

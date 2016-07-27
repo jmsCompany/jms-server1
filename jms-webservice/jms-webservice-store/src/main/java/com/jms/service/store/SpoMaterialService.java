@@ -102,6 +102,7 @@ public class SpoMaterialService {
 		
 		return ws;
 	}
+	
 	protected SPoMaterial toDBSpoMaterial(WSSpoMaterial wsSpoMaterial,SPoMaterial spoMaterial) throws Exception
 	{
 	

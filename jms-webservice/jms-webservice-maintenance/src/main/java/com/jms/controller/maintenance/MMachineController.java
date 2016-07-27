@@ -22,6 +22,7 @@ public class MMachineController {
 	@Autowired private SecurityUtils securityUtils;
 	private static final Logger logger = LogManager.getLogger(MMachineController.class
 			.getCanonicalName());
+	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/m/getMachinesObjs", method=RequestMethod.GET)
 	public List<WSSelectObj> getMachinesObjs() throws Exception {	

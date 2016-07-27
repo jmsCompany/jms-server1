@@ -314,7 +314,7 @@ public class DatabaseInit {
 	
 	
 
-	@Scheduled(fixedRate=1000*60)
+	@Scheduled(fixedRate=1000*60*3)
 	public void sendEmails() {
 		notificationService.sendEmails();
 		

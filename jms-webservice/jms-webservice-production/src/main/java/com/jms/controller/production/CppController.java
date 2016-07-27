@@ -81,21 +81,23 @@ public class CppController {
 		List<String[]> lst = new ArrayList<String[]>();
 		List<PCPp> pCpps;
 		List<Long> woIds = new ArrayList<Long>();
+
 		if(q==null)
 		{
-			WSTableData t = new WSTableData();
-			t.setDraw(draw);
-			t.setRecordsTotal(0);
-			t.setRecordsFiltered(0);
-		    t.setData(lst);
-		    return t;
+			for(PWo pwo:pWoRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
+			{
+				woIds.add(pwo.getIdWo());
+			}
 		}
-		q= '%'+q+'%';
-		for(PWo pwo:pWoRepository.getByCompanyIdAndQuery(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), q))
+		else
 		{
-		//	System.out.println("wo: " + pwo.getWoNo());
-			woIds.add(pwo.getIdWo());
+			q= '%'+q+'%';
+			for(PWo pwo:pWoRepository.getByCompanyIdAndQuery(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), q))
+			{
+				woIds.add(pwo.getIdWo());
+			}
 		}
+	
 	
 		if(!woIds.isEmpty())
 		{

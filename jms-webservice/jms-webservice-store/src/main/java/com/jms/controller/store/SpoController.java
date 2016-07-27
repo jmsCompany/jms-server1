@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.jms.domain.db.SAttachment;
+import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SPo;
+import com.jms.domain.db.SPoMaterial;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
@@ -21,6 +23,7 @@ import com.jms.domain.ws.s.WSSpoRemark;
 import com.jms.file.FileMeta;
 import com.jms.file.FileUploadService;
 import com.jms.repositories.s.SAttachmentRepository;
+import com.jms.repositories.s.SSpoMaterialRepositoryCustom;
 import com.jms.repositories.s.SSpoRepository;
 import com.jms.service.store.SpoMaterialService;
 import com.jms.service.store.SpoService;
@@ -37,6 +40,7 @@ public class SpoController {
 	@Autowired private SpoMaterialService spoMaterialService;
 	@Autowired private FileUploadService fileUploadService;
 	@Autowired private SAttachmentRepository sAttachmentRepository;
+	@Autowired private SSpoMaterialRepositoryCustom sSpoMaterialRepositoryCustom;
 	private static final Logger logger = LogManager.getLogger(SpoController.class
 			.getCanonicalName());
 	@Transactional(readOnly = false)
@@ -104,35 +108,68 @@ public class SpoController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/spoMaterialList", method=RequestMethod.POST)
-	public WSTableData  getSpoList( @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+	public WSTableData  getSpoList( 
+			@RequestParam(required=false,value="q") String q,
+			@RequestParam(required=false,value="fromDay") String fromDay,
+			@RequestParam(required=false,value="toDay") String toDay,
+			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
-		List<WSSpoMaterial> wsSpoMaterials = spoMaterialService.findWSSpos(companyId);
+		List<SPoMaterial> spoMaterials = sSpoMaterialRepositoryCustom.getCustomSpoMaterials(companyId, q, fromDay, toDay);
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
-		if(wsSpoMaterials.size()<start + length)
-			end =wsSpoMaterials.size();
+		if(spoMaterials.size()<start + length)
+			end =spoMaterials.size();
 		else
 			end =start + length;
 //		6、8、9、11
 		for (int i = start; i < end; i++) {
-			WSSpoMaterial w = wsSpoMaterials.get(i);
+			SPoMaterial w = spoMaterials.get(i);
 			String del = (w.getDeliveryDate()==null)?"":w.getDeliveryDate().toString();
-			String pno=(w.getsMaterial()==null)?"":w.getsMaterial();
-			String rev=(w.getRev()==null)?"":w.getRev();
-			String des=(w.getDes()==null)?"":w.getDes();
+			String pno="";
+			String rev="";
+			String des="";
+			SMaterial s = w.getSMaterial();
+			if(s!=null)
+			{
+				 pno=(s.getPno()==null)?"":s.getPno();
+				 rev=(s.getRev()==null)?"":s.getRev();
+				 des=(s.getDes()==null)?"":s.getDes();
+			}
+	
 			String qtyPo=(w.getQtyPo()==null)?"":""+w.getQtyPo();
 			String totalPrice =(w.getTotalPrice()==null)?"":""+w.getTotalPrice();
 			String qtyRev =(w.getQtyReceived()==null)?"":""+w.getQtyReceived();
+			String userName ="";
+			if(w.getSPo().getUsers()!=null)
+			{
+				if(w.getSPo().getUsers().getUsername()!=null)
+				userName =w.getSPo().getUsers().getUsername();
+			}
+			String coShortName= "";
+			if(w.getSPo().getSCompanyCo()!=null)
+			{
+				coShortName	=w.getSPo().getSCompanyCo().getShortName();
+			}
+			String status="";
+			if(w.getSStatusDic()!=null)
+			{
+				status= w.getSStatusDic().getName();
+			}
+			String unit="";
+			if(w.getSMaterial().getSUnitDicByUnitPur()!=null)
+			{
+				unit = w.getSMaterial().getSUnitDicByUnitPur().getName();
+			}
 			
-			String[] d = {w.getCodePo(),""+w.getDateOrder(),w.getUsername(),w.getCoShortName(),w.getsStatus(),pno+"_"+rev+"_"+des,w.getUnit(),qtyPo,totalPrice,del,qtyRev,""+w.getsPoId()};
+			String[] d = {w.getSPo().getCodePo(),""+w.getSPo().getDateOrder(),userName,coShortName,status,pno+"_"+rev+"_"+des,unit,qtyPo,totalPrice,del,qtyRev,""+w.getSPo().getIdPo()};
 			lst.add(d);
 
 		}
 		WSTableData t = new WSTableData();
 		t.setDraw(draw);
-		t.setRecordsTotal(wsSpoMaterials.size());
-		t.setRecordsFiltered(wsSpoMaterials.size());
+		t.setRecordsTotal(spoMaterials.size());
+		t.setRecordsFiltered(spoMaterials.size());
 	    t.setData(lst);
 	    return t;
 	}

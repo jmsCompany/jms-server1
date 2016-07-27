@@ -84,7 +84,7 @@ public class PlineController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/m/findWSPLines", method=RequestMethod.GET)
 	public List<WSSelectObj> findWSPLines() {
-		logger.debug("findWSPLines.....");
+		//logger.debug("findWSPLines.....");
 		return plineService.findWSPLines();
 		
 	}

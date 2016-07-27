@@ -26,6 +26,7 @@ public class MMachineGroup  implements java.io.Serializable {
 
      private Long idGroup;
      private String groupName;
+     private Long idCompany;
      private Set<MMachine> MMachines = new HashSet<MMachine>(0);
 
     public MMachineGroup() {
@@ -63,6 +64,14 @@ public class MMachineGroup  implements java.io.Serializable {
     public void setMMachines(Set<MMachine> MMachines) {
         this.MMachines = MMachines;
     }
+    @Column(name="id_company")
+	public Long getIdCompany() {
+		return idCompany;
+	}
+
+	public void setIdCompany(Long idCompany) {
+		this.idCompany = idCompany;
+	}
 
 
 

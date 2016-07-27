@@ -1,6 +1,7 @@
 package com.jms.controller.store;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,6 +17,7 @@ import com.jms.domain.ws.s.WSMaterialChecked;
 import com.jms.domain.ws.s.WSSMtf;
 import com.jms.domain.ws.s.WSSMtfMaterial;
 import com.jms.repositories.s.SMtfMaterialRepository;
+import com.jms.repositories.s.SMtfMaterialRepositoryCustom;
 import com.jms.repositories.s.SMtfRepository;
 import com.jms.service.store.MtfMaterialService;
 import com.jms.service.store.MtfService;
@@ -33,6 +35,7 @@ public class MtfController {
 	@Autowired private SMtfTypeDicService sMtfTypeDicService;
 	@Autowired private SMtfRepository sMtfRepository;
 	@Autowired private SMtfMaterialRepository sMtfMaterialRepository;
+	@Autowired private SMtfMaterialRepositoryCustom sMtfMaterialRepositoryCustom;
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveSmtf", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -199,7 +202,7 @@ public class MtfController {
 			end =wsSMtfMaterials.size();
 		else
 			end =start + length;
-		for(int i=0;i<end;i++)
+		for(int i=start;i<end;i++)
 		{
 			WSSMtfMaterial w = wsSMtfMaterials.get(i);
 			String mtNo = (w.getMtNo()==null)?"":w.getMtNo();
@@ -248,6 +251,81 @@ public class MtfController {
 	    return t;
 	}
 	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/getSmtfMaterialList", method=RequestMethod.POST)
+	public WSTableData  getSmtfMaterialList(
+			@RequestParam(required=false,value="typeId") Long typeId,
+			@RequestParam(required=false,value="q") String q,
+			@RequestParam(required=false,value="fromStkId") Long fromStkId,
+			@RequestParam(required=false,value="toStkId") Long toStkId,
+			@RequestParam(required=false,value="fromDay") String fromDay,
+			@RequestParam(required=false,value="toDay") String toDay,
+			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length)  {	   
+		
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+	
+		List<SMtfMaterial> sMtfMaterials = sMtfMaterialRepositoryCustom.getCustomSMtf(companyId, typeId,q,fromStkId,toStkId, fromDay, toDay);
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(sMtfMaterials.size()<start + length)
+			end =sMtfMaterials.size();
+		else
+			end =start + length;
+		for(int i=start;i<end;i++)
+		{
+			SMtfMaterial w = sMtfMaterials.get(i);
+			String mtNo = (w.getSMtf().getMtNo()==null)?"":w.getSMtf().getMtNo();
+			String material;
+			if(w.getSMaterial()!=null)
+			{
+				 material = (w.getSMaterial().getPno()+"_"+w.getSMaterial().getRev()+"_"+w.getSMaterial().getDes());
+			}
+			else
+			{
+				material="";
+			}
+			String lotNo = w.getLotNo();
+			
+			String fromBin;
+			if(w.getSBinByFromBin()!=null)
+			{
+				fromBin=w.getSBinByFromBin().getSStk().getStkName() +"_"+w.getSBinByFromBin().getBin();
+			}
+			else
+			{
+				fromBin="";
+			}
+			
+			String toBin;
+			if(w.getSBinByToBin()!=null)
+			{
+				toBin=w.getSBinByToBin().getSStk().getStkName() +"_"+w.getSBinByToBin().getBin();
+			}
+			else
+			{
+				toBin="";
+			}
+
+			String empUser =(w.getSMtf().getUsersByEmpMt()==null)?"":w.getSMtf().getUsersByEmpMt().getUsername();
+			if(empUser==null)
+				empUser="";
+			String rectUser =(w.getSMtf().getUsersByRecMt()==null)?"":w.getSMtf().getUsersByRecMt().getUsername();
+			if(rectUser==null)
+				rectUser="";
+			
+			String[] d = {mtNo,w.getSMtf().getSMtfTypeDic().getName(),material,lotNo,fromBin,toBin,""+w.getQty(),empUser,rectUser,w.getSMtf().getCreationTime().toString(),""+w.getSMtf().getIdMt()};
+			lst.add(d);
+		}
+
+	
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(sMtfMaterials.size());
+		t.setRecordsFiltered(sMtfMaterials.size());
+	    t.setData(lst);
+	    return t;
+	}
 	
 	
 	@Transactional(readOnly = true)

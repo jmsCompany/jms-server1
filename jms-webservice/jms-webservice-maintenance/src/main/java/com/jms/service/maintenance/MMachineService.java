@@ -44,8 +44,9 @@ import com.jms.web.security.SecurityUtils;
 @Transactional
 public class MMachineService {
 
-	private static final Logger logger = LogManager.getLogger(MMachineService.class
-			.getCanonicalName());
+	private static final Logger logger = LogManager.getLogger(MMachineService.class);
+
+
 	@Autowired
 	private MMachineRepository mMachineRepository;
 	@Autowired
@@ -64,7 +65,6 @@ public class MMachineService {
 	{
 		List<WSSelectObj> wss = new ArrayList<WSSelectObj>();
 		for(MMachine m :mMachineRepository.getActiveMachinesByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
-		//for(MMachine m :mMachineRepository.findAll())
 		{
 			WSSelectObj ws = new WSSelectObj();
 			ws.setId(m.getIdMachine());
@@ -105,7 +105,7 @@ public class MMachineService {
           {
         	  m.setTotalKwa(Long.parseLong(reader.get(2)));
           }
-          m.setMMachineGroup(mMachineGroupRepository.findByGroupName(reader.get(3)));
+          m.setMMachineGroup(mMachineGroupRepository.findByGroupNameAndIdCompany(reader.get(3),securityUtils.getCurrentDBUser().getCompany().getIdCompany()));
           m.setCompany(companyRepository.findOne(companyId));
 	
           m.setMStatusDic(mStatusDicRepository.getBySourceAndName("m_machine", reader.get(4)));
