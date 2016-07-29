@@ -1,5 +1,7 @@
 package com.jms.domain.ws.m;
 
+import java.util.Date;
+
 
 public class WSMachine {
 	
@@ -8,6 +10,27 @@ public class WSMachine {
     private String name;
     private String spec;
     private Long totalKwa;
+    private Date satCompletedDate;
+    
+    private Long idGroup;
+    private String group;
+    
+    private Long idLocation;
+    private String location;
+    
+    private Long idLine;
+    private String line;
+    
+    private Long idWip;
+    private String wip;
+    
+    private Long idWc;
+    private String wc;
+    
+    private Long idStatus;
+    private String status;
+    
+
 	public Long getIdMachine() {
 		return idMachine;
 	}
@@ -37,6 +60,84 @@ public class WSMachine {
 	}
 	public void setTotalKwa(Long totalKwa) {
 		this.totalKwa = totalKwa;
+	}
+	public Date getSatCompletedDate() {
+		return satCompletedDate;
+	}
+	public void setSatCompletedDate(Date satCompletedDate) {
+		this.satCompletedDate = satCompletedDate;
+	}
+	public Long getIdGroup() {
+		return idGroup;
+	}
+	public void setIdGroup(Long idGroup) {
+		this.idGroup = idGroup;
+	}
+	public String getGroup() {
+		return group;
+	}
+	public void setGroup(String group) {
+		this.group = group;
+	}
+	public Long getIdLocation() {
+		return idLocation;
+	}
+	public void setIdLocation(Long idLocation) {
+		this.idLocation = idLocation;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	public Long getIdLine() {
+		return idLine;
+	}
+	public void setIdLine(Long idLine) {
+		this.idLine = idLine;
+	}
+	public String getLine() {
+		return line;
+	}
+	public void setLine(String line) {
+		this.line = line;
+	}
+	public Long getIdWip() {
+		return idWip;
+	}
+	public void setIdWip(Long idWip) {
+		this.idWip = idWip;
+	}
+	public String getWip() {
+		return wip;
+	}
+	public void setWip(String wip) {
+		this.wip = wip;
+	}
+	public Long getIdWc() {
+		return idWc;
+	}
+	public void setIdWc(Long idWc) {
+		this.idWc = idWc;
+	}
+	public String getWc() {
+		return wc;
+	}
+	public void setWc(String wc) {
+		this.wc = wc;
+	}
+	public Long getIdStatus() {
+		return idStatus;
+	}
+	public void setIdStatus(Long idStatus) {
+		this.idStatus = idStatus;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

@@ -79,11 +79,21 @@ public class MMachineGroupService {
 	public Valid deleteWSMachineGroup(Long idMachineGroup)
 	{
 		Valid valid = new Valid();
-		
-		sMachineGroupRepository.delete(idMachineGroup);
-		valid.setValid(true);
-		
-		return valid;
+		MMachineGroup mMachineGroup = sMachineGroupRepository.findOne(idMachineGroup);
+		if(!mMachineGroup.getMMachines().isEmpty())
+		{
+			valid.setValid(false);
+			valid.setMsg("该机组有设备，故不能删除！");
+			
+			return valid;
+		}
+		else
+		{
+			sMachineGroupRepository.delete(idMachineGroup);
+			valid.setValid(true);
+			return valid;
+		}
+	
 	}
 
 	
