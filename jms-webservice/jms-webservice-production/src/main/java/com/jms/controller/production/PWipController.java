@@ -2,10 +2,12 @@ package com.jms.controller.production;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
 import com.jms.domain.db.PWip;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
@@ -44,6 +46,22 @@ public class PWipController {
 	@RequestMapping(value="/p/findWip", method=RequestMethod.GET)
 	public WSPWip findWip(@RequestParam("wipId") Long wipId) throws Exception {
 		return pWipService.findWSPWip(wipId);
+		
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/m/findWipObjs", method=RequestMethod.GET)
+	public List<WSSelectObj> findWipObjs() {
+	
+		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
+		
+		for(PWip w :pWipRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
+		{
+			WSSelectObj o = new WSSelectObj(w.getIdWip(),w.getWip());
+			ws.add(o);
+		}
+
+		return ws;
 		
 	}
 	

@@ -136,7 +136,7 @@ public class UserService extends IUserServiceImpl{
 		Valid v = new Valid();
 		Long userId = wsUserPassword.getIdUser();
 		Users u = usersRepository.findOne(userId);
-		if(new BCryptPasswordEncoder().matches(wsUserPassword.getNewPassword(), u.getPassword()))
+		if(new BCryptPasswordEncoder().matches(wsUserPassword.getPassword(), u.getPassword()))
     	{
 			u.setPassword(new BCryptPasswordEncoder().encode(wsUserPassword.getNewPassword()));
 			usersRepository.save(u);
@@ -145,7 +145,7 @@ public class UserService extends IUserServiceImpl{
     	}
 		else
 		{
-			v.setValid(true);
+			v.setValid(false);
 			v.setMsg("您输入的原密码不对！");
 			return v;
 		}
