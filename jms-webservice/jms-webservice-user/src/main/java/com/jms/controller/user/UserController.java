@@ -37,6 +37,7 @@ import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.WSUser;
 import com.jms.domain.ws.WSUserProfile;
 import com.jms.domain.ws.WSUserRoles;
+import com.jms.domain.ws.WSUserPassword;
 import com.jms.domain.ws.m.WSMachine;
 import com.jms.domain.ws.p.WSPCppAndriod;
 import com.jms.domain.ws.p.WSPWo;
@@ -119,8 +120,14 @@ public class UserController {
 		userProfile.setName(u.getName());
 		userProfile.setDepartment("");
 		Boolean isOP= false;
+		userProfile.setIsAdmin(false);
 		for(GroupMembers g:u.getGroupMemberses())
 		{
+			System.out.println("g: " + g.getGroups().getGroupName());
+			if(g.getGroups().getGroupName().equals("admin"))
+			{
+				userProfile.setIsAdmin(true);
+			}
 			
 //			g.getGroups().getGroupType().getIdGroupType().equals(5l)&&
 			if(g.getGroups().getGroupName().equals("OP"))
@@ -238,8 +245,6 @@ public class UserController {
 					cpps.add(m);
 				}
 				userProfile.setPcppList(cpps);
-
-				break;
 			}
 		}
 		
@@ -294,15 +299,19 @@ public class UserController {
 		return userService.updateInfo(wsUser);
 	}
 	
-	
-	
 	@Transactional(readOnly=false)
 	@RequestMapping(value="/user/updateUserPassword", method=RequestMethod.POST)
-	public Valid updateUserPassword(@RequestBody WSUser wsUser) throws Exception {
-		return userService.updateUserPassword(wsUser);
+	public Valid updateUserPassword(@RequestBody WSUserPassword wsUserPassword) throws Exception {
+		return userService.updateUserPassword(wsUserPassword);
 	}
 	
 	
+
+	@Transactional(readOnly=false)
+	@RequestMapping(value="/user/updateUserPasswordByAdmin", method=RequestMethod.POST)
+	public Valid updateUserPasswordByAdmin(@RequestBody WSUserPassword wsUserPassword) throws Exception {
+		return userService.updateUserPasswordByAdmin(wsUserPassword);
+	}
 	
 	
 	@Transactional(readOnly=true)

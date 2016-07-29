@@ -115,13 +115,12 @@ public class PCheckPlanService {
 	@Transactional(readOnly=true)
 	public List<WSPCheckPlan> findWSPCheckPlans(Long cppId) throws Exception {
 		List<WSPCheckPlan>  ws = new ArrayList<WSPCheckPlan>();
-		for(PCheckPlan p: pCheckPlanRepository.getByUserIdAndCppId(securityUtils.getCurrentDBUser().getIdUser(), cppId))
+		for(PCheckPlan p: pCheckPlanRepository.getByCppId(cppId))
 		{
 			ws.add(toWSPCheckPlan(p));
 		}
 		
-		return ws;		
-		
+		return ws;			
 	}
 	
 	protected PCheckPlan toDBPCheckPlan(WSPCheckPlan wsPCheckPlan,PCheckPlan pCheckPlan) throws Exception
@@ -134,7 +133,10 @@ public class PCheckPlanService {
         	dbPCheckPlan.setPCPp(pCPpRepository.findOne(wsPCheckPlan.getPcppId()));
         }
         dbPCheckPlan.setCreationTime(new Date());
-        dbPCheckPlan.setCheckTime(new Date());
+        if(wsPCheckPlan.getCheckTime()==null)
+        {
+            dbPCheckPlan.setCheckTime(new Date());
+        }
         dbPCheckPlan.setUsersByCreator(securityUtils.getCurrentDBUser());
         if(wsPCheckPlan.getFinQty()<wsPCheckPlan.getPlanQty())
         {

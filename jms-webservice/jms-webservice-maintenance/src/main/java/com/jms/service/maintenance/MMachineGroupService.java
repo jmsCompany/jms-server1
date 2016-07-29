@@ -18,6 +18,7 @@ import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.m.MMachineGroupRepository;
 import com.jms.repositories.s.SGenderDicRepository;
+import com.jms.web.security.SecurityUtils;
 
 
 @Service
@@ -31,7 +32,7 @@ public class MMachineGroupService {
 	@Autowired
 	private CompanyRepository companyRepository;
 	
-
+	@Autowired private SecurityUtils securityUtils;
 
 	public void loadMMachineGroupForSandVik() {
 		
@@ -58,6 +59,7 @@ public class MMachineGroupService {
 	
 		}
 		MMachineGroup dbMMachineGroup= toDBMMachineGroup(wsMachineGroup,mMachineGroup);
+		dbMMachineGroup.setIdCompany(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 		dbMMachineGroup = sMachineGroupRepository.save(dbMMachineGroup);
 		wsMachineGroup.setIdGroup(dbMMachineGroup.getIdGroup());
 		return wsMachineGroup;

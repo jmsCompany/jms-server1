@@ -51,7 +51,7 @@ public interface SMtfMaterialRepository  extends JpaRepository<SMtfMaterial, Lon
 	public List<SMtfMaterial> getByWoIdAndMaterialId(Long woId,Long materialId);
 	
 	
-	@Query("select s from SMtfMaterial s where s.SMtf.idMt=?1 and s.qty<>s.qty3417")
+	@Query("select s from SMtfMaterial s where s.SMtf.idMt=?1 and (s.qty3417 is null or s.qty<>s.qty3417)")
 	public List<SMtfMaterial> getNotReceivedBySmtfId(Long smtfId);
 	
 	@Query("select s from SMtfMaterial s where s.SMtf.idMt=?1")

@@ -136,6 +136,7 @@ public class MtfService {
 			sMtf = sMtfRepository.save(sMtf);
 			boolean toIQC = false;
 			boolean finishIQC=true;
+		
             int i=0;
             SMtf orgSmtf=null;
 			for (String k : wsSMtf.getSmtfItems().keySet()) {
@@ -757,10 +758,24 @@ public class MtfService {
 			}
 			
 			
-			if(smtfType.equals(8l)&&finishIQC)
+			if(smtfType.equals(8l))
 			{
-				orgSmtf.setSStatusDic(sStatusDicRepository.findOne(5l));//完成
-				sMtfRepository.save(orgSmtf);
+				for(SMtfMaterial s: sMtfMaterialRepository.getBySmtfId(orgSmtf.getIdMt()))
+				{
+					if(s.getQty3417()==null||s.getQty3417()<s.getQty())
+					{
+						finishIQC=false;
+						
+						break;
+					}
+				}
+				if(finishIQC)
+				{
+					orgSmtf.setSStatusDic(sStatusDicRepository.findOne(5l));//完成
+					sMtfRepository.save(orgSmtf);
+				}
+				
+			
 			}
 			
 			valid.setValid(true);
@@ -836,7 +851,7 @@ public class MtfService {
 		List<SMtf> smtfs = sMtfRepository.getSMtfByType(smtfType, securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 		for(SMtf smtf : smtfs)
 		{
-			     boolean active=false;
+			    boolean active=false;
 			    if(smtfType.equals(1l)) //来料入监
 			    {
 			    	

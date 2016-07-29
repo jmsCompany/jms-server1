@@ -39,6 +39,7 @@ import com.jms.domain.ws.MessageTypeEnum;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSRoles;
 import com.jms.domain.ws.WSUser;
+import com.jms.domain.ws.WSUserPassword;
 import com.jms.domain.ws.WSUserRoles;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.system.AppsRepository;
@@ -117,17 +118,39 @@ public class UserService extends IUserServiceImpl{
 	
 	
 	@Transactional(readOnly=false)
-	public Valid updateUserPassword(WSUser wsUser)
+	public Valid updateUserPasswordByAdmin(WSUserPassword wsUserPassword)
 	{
 		Valid v = new Valid();
-		Long userId = wsUser.getIdUser();
+		Long userId = wsUserPassword.getIdUser();
 		Users u = usersRepository.findOne(userId);
-		u.setPassword(new BCryptPasswordEncoder().encode(wsUser.getPassword()));
+		u.setPassword(new BCryptPasswordEncoder().encode(wsUserPassword.getNewPassword()));
 		usersRepository.save(u);
 		v.setValid(true);
 		return v;
 	}
 	
+	
+	@Transactional(readOnly=false)
+	public Valid updateUserPassword( WSUserPassword wsUserPassword) throws Exception
+	{
+		Valid v = new Valid();
+		Long userId = wsUserPassword.getIdUser();
+		Users u = usersRepository.findOne(userId);
+		if(new BCryptPasswordEncoder().matches(wsUserPassword.getNewPassword(), u.getPassword()))
+    	{
+			u.setPassword(new BCryptPasswordEncoder().encode(wsUserPassword.getNewPassword()));
+			usersRepository.save(u);
+			v.setValid(true);
+			return v;
+    	}
+		else
+		{
+			v.setValid(true);
+			v.setMsg("您输入的原密码不对！");
+			return v;
+		}
+	
+	}
 
 	@Transactional(readOnly=false)
 	public WSUser updateInfo(WSUser wsUser) throws Exception

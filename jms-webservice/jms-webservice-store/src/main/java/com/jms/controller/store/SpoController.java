@@ -129,12 +129,18 @@ public class SpoController {
 			String pno="";
 			String rev="";
 			String des="";
+			String unit="";
 			SMaterial s = w.getSMaterial();
 			if(s!=null)
 			{
 				 pno=(s.getPno()==null)?"":s.getPno();
 				 rev=(s.getRev()==null)?"":s.getRev();
 				 des=(s.getDes()==null)?"":s.getDes();
+				 if(s.getSUnitDicByUnitPur()!=null)
+				{
+					unit =s.getSUnitDicByUnitPur().getName();
+				}
+					
 			}
 	
 			String qtyPo=(w.getQtyPo()==null)?"":""+w.getQtyPo();
@@ -152,16 +158,12 @@ public class SpoController {
 				coShortName	=w.getSPo().getSCompanyCo().getShortName();
 			}
 			String status="";
-			if(w.getSStatusDic()!=null)
+			if(w.getSPo().getSStatusDic()!=null)
 			{
-				status= w.getSStatusDic().getName();
-			}
-			String unit="";
-			if(w.getSMaterial().getSUnitDicByUnitPur()!=null)
-			{
-				unit = w.getSMaterial().getSUnitDicByUnitPur().getName();
+				status= w.getSPo().getSStatusDic().getName();
 			}
 			
+		
 			String[] d = {w.getSPo().getCodePo(),""+w.getSPo().getDateOrder(),userName,coShortName,status,pno+"_"+rev+"_"+des,unit,qtyPo,totalPrice,del,qtyRev,""+w.getSPo().getIdPo()};
 			lst.add(d);
 
