@@ -31,6 +31,8 @@ public class PMr   extends AbstractSecuredEntity  implements java.io.Serializabl
      private PCPp PCPp;
      private PStatusDic PStatusDic;
      private Long qty;
+     
+     private Long qtyDelivered;
      private Date st;
      private Date ft;
      private String remark;
@@ -150,6 +152,15 @@ public Long getIdUnplannedStop() {
 
 public void setIdUnplannedStop(Long idUnplannedStop) {
 	this.idUnplannedStop = idUnplannedStop;
+}
+
+@Column(name="qty_delivered")
+public Long getQtyDelivered() {
+	return qtyDelivered;
+}
+
+public void setQtyDelivered(Long qtyDelivered) {
+	this.qtyDelivered = qtyDelivered;
 }
 
 }

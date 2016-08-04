@@ -190,19 +190,7 @@ public class SInventoryService {
 	
 	
 	
-	public void test()
-	{
-		SInventory	si = new SInventory();
-		si.setCreationTime(new Date());
-		si.setLotNo("10002");
-		si.setQty(30l);
-		si.setUQty(null);
-		SBin sbin =sBinRepository.findOne(29l);
-		si.setSBin(sbin);
-//		si.setSMaterial(spoMaterial.getSMaterial());
-		sInventoryRepository.save(si);
-	}
-	
+
 	
   
 }

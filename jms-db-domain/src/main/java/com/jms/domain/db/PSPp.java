@@ -1,7 +1,6 @@
 package com.jms.domain.db;
 // Generated 2016-3-31 16:15:17 by Hibernate Tools 3.2.2.GA
 
-
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;

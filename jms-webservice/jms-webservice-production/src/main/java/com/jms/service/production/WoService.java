@@ -137,7 +137,6 @@ public class WoService {
 		routineDMap.put("r1", "010");
 		routineDMap.put("r2", "020");
 		routineDMap.put("r3", "030");
-
 		routineDMap.put("r4", "050");
 		routineDMap.put("r5", "060");
 		routineDMap.put("r6", "080");
@@ -568,12 +567,7 @@ public class WoService {
 	}
 	
 	
-	private WSShiftPlanDStatus setS(String no,WSShiftPlanDStatus s)
-	{
-	
-		return s;
-	}
-	
+
 	
 	@Transactional(readOnly=true) 
 	public WSMaterialQty findWSMaterialQtyByWoId(Long woId) 

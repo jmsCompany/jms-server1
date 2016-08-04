@@ -32,7 +32,7 @@ public interface PCPpRepository extends JpaRepository<PCPp, Long>{
     @Query("select p from PCPp p where p.PRoutineD.idRoutineD=?1 and p.actFt is not null")
   	public List<PCPp> getFinishedCppByRoutineDId(Long routineDId);
     
-    @Query("select p from PCPp p where  p.company.idCompany=?1 and p.PShiftPlanD.idShiftD=?2 and p.planSt>?3 and p.planFt<?4")
-  	public List<PCPp> getByShiftDIdAndDate(Long companyId,Long shiftDId,Date st,Date ft);
+    @Query("select p from PCPp p where  p.company.idCompany=?1 and p.planSt>?2 and p.planFt<?3 order by p.PWo.idWo")
+  	public List<PCPp> getByFromDateToDate(Long companyId,Date st,Date ft);
     
 }

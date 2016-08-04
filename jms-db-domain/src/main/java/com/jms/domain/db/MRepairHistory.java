@@ -44,6 +44,8 @@ public class MRepairHistory  implements java.io.Serializable {
      private Date responseTime;
      private Date repairingTime;
      private Date recoverTime;
+     
+     private Long idUnplannedStop;
      private Set<MHistoryPart> MHistoryParts = new HashSet<MHistoryPart>(0);
 
     public MRepairHistory() {
@@ -211,6 +213,14 @@ public class MRepairHistory  implements java.io.Serializable {
     public void setMHistoryParts(Set<MHistoryPart> MHistoryParts) {
         this.MHistoryParts = MHistoryParts;
     }
+    @Column(name="id_unplanned_stop")
+	public Long getIdUnplannedStop() {
+		return idUnplannedStop;
+	}
+
+	public void setIdUnplannedStop(Long idUnplannedStop) {
+		this.idUnplannedStop = idUnplannedStop;
+	}
 
 
 

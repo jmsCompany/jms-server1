@@ -39,7 +39,7 @@ public class MtfController {
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveSmtf", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public Valid saveSMtf(@RequestBody WSSMtf wsSMtf) {
+	public Valid saveSMtf(@RequestBody WSSMtf wsSMtf) throws Exception {
 		return mtfService.saveMtf(wsSMtf);
 	}
 

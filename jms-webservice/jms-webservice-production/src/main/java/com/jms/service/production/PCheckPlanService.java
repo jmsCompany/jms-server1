@@ -170,6 +170,7 @@ public class PCheckPlanService {
 		    
 		    DateFormat fmtDate = new SimpleDateFormat("yyyy-MM-dd");
 		    String s = fmtDate.format(today);
+		   
 		    Date date = fmtDateTime.parse(s+" "+d.toString());  
 		  //  logger.debug("new plan time: " + date);
 		    pc.setPlanCheckTime(date);

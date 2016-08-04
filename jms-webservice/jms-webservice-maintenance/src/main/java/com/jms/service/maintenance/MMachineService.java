@@ -176,6 +176,7 @@ public class MMachineService {
 		{
 			dbMMachine.setPWorkCenter(pWorkCenterRepository.findOne(wsMachine.getIdWc()));
 		}
+		dbMMachine.setCompany(securityUtils.getCurrentDBUser().getCompany());
 	    return dbMMachine;
 	}
 	protected WSMachine toWSMachine(MMachine mMachine) throws Exception
@@ -210,6 +211,7 @@ public class MMachineService {
 		{
 			pc.setIdLocation(mMachine.getSBin().getIdBin());
 			pc.setLocation(mMachine.getSBin().getBin());
+			pc.setIdStk(mMachine.getSBin().getSStk().getId());
 		}
 		
 	    return pc;

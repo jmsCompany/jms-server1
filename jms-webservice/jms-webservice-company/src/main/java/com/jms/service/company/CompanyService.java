@@ -372,8 +372,6 @@ public class CompanyService {
 	{
 		List<Apps> appList = appsRepository.findAll();
 		Users admin = securityUtils.getCurrentDBUser();
-
-
 		PrincipalSid pid = new PrincipalSid("" + admin.getIdUser());
 		// logger.debug("creator id: " + creator.getIdUser());
 		for (Apps a : appList) {

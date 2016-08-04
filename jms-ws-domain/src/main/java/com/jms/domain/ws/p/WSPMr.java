@@ -189,4 +189,12 @@ public class WSPMr {
 		this.qtyDelivered = qtyDelivered;
 	}
 
+	public Long getQtyStored() {
+		return qtyStored;
+	}
+
+	public void setQtyStored(Long qtyStored) {
+		this.qtyStored = qtyStored;
+	}
+
 }

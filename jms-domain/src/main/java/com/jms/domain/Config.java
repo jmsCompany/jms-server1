@@ -85,5 +85,8 @@ public class Config {
      
      //Item type
      public static final String[] itemTypes = {"作业","检查"};
+     
+     //设备保养
+     public static final String[] mainCycles = {"日保养","月"};
 
 }

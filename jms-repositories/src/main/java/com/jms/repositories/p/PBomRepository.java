@@ -30,6 +30,8 @@ public interface PBomRepository extends JpaRepository<PBom, Long>{
 	public List<PBom> findProductsByMaterialId(Long materialId);
 	
 	
+	@Query("select p from PBom p where p.PBom.idBom=?1 order by p.idBom")
+	public List<PBom> findMaterialsByProductId(Long producId);
 	
 	@Query("select p from PBom p where p.PBomLabel.idBomLabel=?1 ")
 	public List<PBom> findByBomLabelId(Long bomLabelId);

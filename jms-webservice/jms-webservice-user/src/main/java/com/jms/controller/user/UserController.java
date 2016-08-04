@@ -123,7 +123,7 @@ public class UserController {
 		userProfile.setIsAdmin(false);
 		for(GroupMembers g:u.getGroupMemberses())
 		{
-			System.out.println("g: " + g.getGroups().getGroupName());
+			//System.out.println("g: " + g.getGroups().getGroupName());
 			if(g.getGroups().getGroupName().equals("admin"))
 			{
 				userProfile.setIsAdmin(true);
@@ -138,10 +138,12 @@ public class UserController {
 			
 				List<WSPCppAndriod> cpps = new ArrayList<WSPCppAndriod>();
 			//	System.out.println("取得日计划。。。。");
-				
+
+				int num=0;
 				for( PCPp cpp:pCPpRepository.getByCompanyIdAndUserId(companyId, userId))
 				{
-					if(cpp.getPlanSt().getTime()>(new Date().getTime())+86400000) //忽略大于明天的cpp
+					num++;
+					if(num>1&&cpp.getPlanSt().getTime()>(new Date().getTime())+86400000) //忽略大于明天的cpp
 					{
 						continue;
 					}
@@ -203,24 +205,30 @@ public class UserController {
 					m.setOp(cpp.getUsers().getName());
 					m.setpNo(cpp.getPWo().getSSo().getSMaterial().getPno());
 					m.setQty(cpp.getQty());
-					m.setRoute(cpp.getPRoutineD().getRouteNo());
-					//m.setRouteId(cpp.getPRoutineD().get);//图纸
 					
-					//附件
-					for(PRoutineDAtt pa:cpp.getPRoutineD().getPRoutineDAtts())
+					if(cpp.getPRoutineD()!=null)
 					{
-						WSFileMeta f = new WSFileMeta();
-						f.setDescription(pa.getPAttDraw().getName());
-						f.setName(pa.getPAttDraw().getFilename());
-						m.getFiles().add(f);
+						m.setRoute(cpp.getPRoutineD().getRouteNo());
+						//m.setRouteId(cpp.getPRoutineD().get);//图纸
+						
+						//附件
+						for(PRoutineDAtt pa:cpp.getPRoutineD().getPRoutineDAtts())
+						{
+							WSFileMeta f = new WSFileMeta();
+							f.setDescription(pa.getPAttDraw().getName());
+							f.setName(pa.getPAttDraw().getFilename());
+							m.getFiles().add(f);
+						}
+						m.setStdWtLabor(cpp.getPRoutineD().getStdWtLabor());
+						m.setStdWtMachine(cpp.getPRoutineD().getStdWtMachine());
+						m.setStdWtSetup(cpp.getPRoutineD().getStdWtSetup());
 					}
+				
 					m.setWoNo(cpp.getPWo().getWoNo());
 					m.setShift(cpp.getPShiftPlanD().getShift());
 					m.setSt(cpp.getPlanSt().getTime());
 				
-					m.setStdWtLabor(cpp.getPRoutineD().getStdWtLabor());
-					m.setStdWtMachine(cpp.getPRoutineD().getStdWtMachine());
-					m.setStdWtSetup(cpp.getPRoutineD().getStdWtSetup());
+				
 					
 					int i=0;
 					for(PCheckTime pc :cpp.getMMachine().getPCheckTimes())
@@ -352,9 +360,9 @@ public class UserController {
 			if(equipmentGroup!=null&&g.getAuthority().equals(""+equipmentGroup.getIdGroup()))
 			{
 				//System.out.println(" get equipment: ");
-				WSAndriodMenuItem i1 = new WSAndriodMenuItem("equipment","设备","Unplanned_equipment","Unplanned_equipment","计划外的设备原因导致停机");
-				WSAndriodMenuItem i2 = new WSAndriodMenuItem("equipment","设备","Eqstopforeq","Eqstopforeq","由设备部员工填写设备故障原因");
-				WSAndriodMenuItem i3 = new WSAndriodMenuItem("equipment","设备","Maintainance","Maintainance","设备保养计划");
+				WSAndriodMenuItem i1 = new WSAndriodMenuItem("equipment","设备","Unplanned_equipment","Unplanned_equipment","设备停机");
+				WSAndriodMenuItem i2 = new WSAndriodMenuItem("equipment","设备","Eqstopforeq","Eqstopforeq","设备维修");
+				WSAndriodMenuItem i3 = new WSAndriodMenuItem("equipment","设备","Maintainance","Maintainance","设备保养");
 				
 				items.add(i1);
 				items.add(i2);
@@ -367,8 +375,8 @@ public class UserController {
 			if(qualityGroup!=null&&g.getAuthority().equals(""+qualityGroup.getIdGroup()))
 			{
 				//System.out.println(" get quality: ");
-				WSAndriodMenuItem i1 = new WSAndriodMenuItem("quality","质量","Unplanned_quality","Unplanned_quality","计划外的质量原因导致停机");
-				WSAndriodMenuItem i2 = new WSAndriodMenuItem("quality","质量","Problem_des","Problem_des","质量问题描述");
+				WSAndriodMenuItem i1 = new WSAndriodMenuItem("quality","质量","Unplanned_quality","Unplanned_quality","质量停机");
+				WSAndriodMenuItem i2 = new WSAndriodMenuItem("quality","质量","Problem_des","Problem_des","质量管理");
 				items.add(i1);
 				items.add(i2);
 				break;
@@ -446,6 +454,30 @@ public class UserController {
 		return ws;
 	}
 	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/u/getUsersByQ", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<WSSelectObj> getUsersByQ(@RequestParam(value="q",required=false) String q)
+	{
+	    
+		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
+		List<Users> users;
+		if(q==null)
+		{
+			users= usersRepository.findUsersByIdCompany(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+		}
+		else
+		{
+			q = "%" +q+"%";
+			users=usersRepository.findUsersByIdCompanyAndQ(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), q);
+		}
+		for(Users u : users)
+		{
+			WSSelectObj w = new WSSelectObj(u.getIdUser(),u.getName());
+			ws.add(w);
+		}
+		return ws;
+	}
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/u/userList", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)

@@ -2,6 +2,7 @@ package com.jms.controller.production;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,6 +14,7 @@ import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.p.WSPCpp;
 import com.jms.domain.ws.p.WSPMr;
+import com.jms.domain.ws.p.WSPlannedMaterialSending;
 import com.jms.repositories.p.PCPpRepository;
 import com.jms.repositories.p.PWoRepository;
 import com.jms.service.production.PCppService;
@@ -145,6 +147,21 @@ public class CppController {
 		return pCppService.findWSPMrsByCppId(cppId);
 		
 	}
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findWSPlannedMaterialSending", method=RequestMethod.GET)
+	public WSPlannedMaterialSending findWSPlannedMaterialSending(
+			@RequestParam("fromDate") Long fromDate,
+			@RequestParam("toDate") Long toDate,
+			@RequestParam("fromStkId") Long fromStkId,
+			@RequestParam("toStkId") Long toStkId)  {
+       System.out.println("find planned materials sending");
+		return pCppService.findWSPlannedMaterialSending(fromDate, toDate, fromStkId, toStkId);		
+		
+	}
+	
+	
 	
 
 	@Transactional(readOnly = true)

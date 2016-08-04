@@ -52,30 +52,61 @@ public class PMrController {
 	
 	
 	
+//	@Transactional(readOnly = false)
+//	@RequestMapping(value="/p/updateWSPMrStatus", method=RequestMethod.GET)
+//	public Valid updateWSPMrStatus(@RequestParam("idPmr") Long idPmr) throws Exception {
+//		Valid v = new Valid();
+//		PMr pmr = pMrRepository.findOne(idPmr);
+//		if(pmr==null)
+//		{
+//			v.setValid(false);
+//			v.setMsg("没有此需料");
+//			return v;
+//		}
+//	    
+//		pmr.setFt(new Date());
+//		//pmr.setPStatusDic(pStatusDicRepository.findOne(statusId));
+//		pMrRepository.save(pmr);
+//		v.setValid(true);
+//		return v;
+//	}
+	
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/p/updateWSPMrStatus", method=RequestMethod.GET)
-	public Valid updateWSPMrStatus(@RequestParam("idPmr") Long idPmr,@RequestParam("statusId") Long statusId) throws Exception {
+	@RequestMapping(value="/p/updateWSPMrQty", method=RequestMethod.GET)
+	public Valid updateWSPMrQty(@RequestParam("idPmr") Long idPmr,@RequestParam("qty") Long qty) throws Exception {
+		
+		logger.debug("idPmr :" + idPmr + ", qty: " + qty);
 		Valid v = new Valid();
 		PMr pmr = pMrRepository.findOne(idPmr);
 		if(pmr==null)
 		{
 			v.setValid(false);
+			logger.debug("没有此需料");
 			v.setMsg("没有此需料");
 			return v;
 		}
-	    
-		pmr.setFt(new Date());
-		pmr.setPStatusDic(pStatusDicRepository.findOne(statusId));
+		
+		Long qty_request = pmr.getQty();
+		Long qty_delivered = 0l;
+		if(pmr.getQtyDelivered()!=null)
+		{
+			qty_delivered = pmr.getQtyDelivered();
+		}
+		qty_delivered = qty_delivered +qty;
+		
+		if(qty_request<=qty_delivered)
+		{
+			pmr.setPStatusDic(pStatusDicRepository.findOne(10l)); //结束
+		}
+		pmr.setQtyDelivered(qty_delivered);
 		pMrRepository.save(pmr);
 		v.setValid(true);
 		return v;
 	}
 	
-	
-	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/p/updateWSPMrStatusByCppId", method=RequestMethod.GET)
-	public Valid updateWSPMrStatusByCppId(@RequestParam("cppId") Long cppId,@RequestParam("type") Long type, @RequestParam("statusId") Long statusId) throws Exception {
+	public Valid updateWSPMrStatusByCppId(@RequestParam("cppId") Long cppId,@RequestParam("type") Long type) throws Exception {
 		Valid v = new Valid();
 		List<PMr> pmrs = pMrRepository.getByTypeAndCppId(type, cppId);
 	 
@@ -83,7 +114,6 @@ public class PMrController {
 		for(PMr pmr:pmrs)
 		{
 			pmr.setFt(new Date());
-			pmr.setPStatusDic(pStatusDicRepository.findOne(statusId));
 			pMrRepository.save(pmr);
 		}
 				

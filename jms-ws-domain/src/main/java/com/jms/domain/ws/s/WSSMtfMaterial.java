@@ -77,6 +77,9 @@ public class WSSMtfMaterial {
     
     private Long inventoryId;
     
+    
+    private Long cppId;
+    
 	public Long getIdMtfMaterial() {
 		return idMtfMaterial;
 	}
@@ -383,6 +386,12 @@ public class WSSMtfMaterial {
 	}
 	public void setQtyChecked(Long qtyChecked) {
 		this.qtyChecked = qtyChecked;
+	}
+	public Long getCppId() {
+		return cppId;
+	}
+	public void setCppId(Long cppId) {
+		this.cppId = cppId;
 	}
     
   

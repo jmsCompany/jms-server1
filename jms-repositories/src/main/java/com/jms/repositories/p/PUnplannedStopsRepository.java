@@ -14,7 +14,7 @@ public interface PUnplannedStopsRepository extends JpaRepository<PUnplannedStops
 	@Query("select p from PUnplannedStops p where p.idMachine=?1")
 	public List<PUnplannedStops> getByMachineId(Long machineId);
 	
-	@Query("select p from PUnplannedStops p, MMachine m where p.idMachine=m.idMachine and m.company.idCompany=?1 and p.PStopsCode is not null")
+	@Query("select p from PUnplannedStops p, MMachine m where p.idMachine=m.idMachine and m.company.idCompany=?1  and p.PSubCode is not null")
 	public List<PUnplannedStops> getByCompanyId(Long companyId);
 	
 	

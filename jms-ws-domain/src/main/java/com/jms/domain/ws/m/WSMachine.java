@@ -30,7 +30,9 @@ public class WSMachine {
     private Long idStatus;
     private String status;
     
-
+    private Long idStk;
+    private String stk;
+    
 	public Long getIdMachine() {
 		return idMachine;
 	}
@@ -138,6 +140,18 @@ public class WSMachine {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getStk() {
+		return stk;
+	}
+	public void setStk(String stk) {
+		this.stk = stk;
+	}
+	public Long getIdStk() {
+		return idStk;
+	}
+	public void setIdStk(Long idStk) {
+		this.idStk = idStk;
 	}
 
 }

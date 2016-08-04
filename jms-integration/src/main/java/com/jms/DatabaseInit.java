@@ -21,6 +21,7 @@ import com.jms.repositories.user.UsersRepository;
 import com.jms.service.company.CompanyService;
 import com.jms.service.maintenance.MMachineGroupService;
 import com.jms.service.maintenance.MMachineService;
+import com.jms.service.maintenance.MMainCycleService;
 import com.jms.service.maintenance.MStatusDicService;
 import com.jms.service.production.EWorkCategoryDicService;
 import com.jms.service.production.PPUTimeService;
@@ -166,6 +167,8 @@ public class DatabaseInit {
 	private SInventoryService sInventoryService;
 	@Autowired
 	private INotificationService notificationService;
+	@Autowired
+	private  MMainCycleService mMainCycleService;
 	
 	// 在系统初装的执行切只能执行一次，读取csv文件的数据到数据库中。
 	// todo:详细说明系统预设的所有信息这些信息的用途
@@ -310,6 +313,7 @@ public class DatabaseInit {
 //	sInventoryService.test();
 		
 	//	companyService.addAppsPerms();
+		//mMainCycleService.loadMainCycles();
 	}
 	
 	

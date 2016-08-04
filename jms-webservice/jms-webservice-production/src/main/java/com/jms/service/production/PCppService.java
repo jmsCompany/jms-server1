@@ -9,6 +9,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jms.domain.db.PBom;
 import com.jms.domain.db.PCPp;
@@ -18,6 +21,7 @@ import com.jms.domain.db.PMr;
 import com.jms.domain.db.PRoutineD;
 import com.jms.domain.db.PWip;
 import com.jms.domain.db.PWo;
+import com.jms.domain.db.SInventory;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMtfNo;
 import com.jms.domain.ws.Valid;
@@ -27,6 +31,8 @@ import com.jms.domain.ws.p.WSPCpp;
 import com.jms.domain.ws.p.WSPMr;
 import com.jms.domain.ws.p.WSPRoutineD;
 import com.jms.domain.ws.p.WSPWip;
+import com.jms.domain.ws.p.WSPlannedMaterialSending;
+import com.jms.domain.ws.p.WSPlannedMaterialSendingItem;
 import com.jms.domain.ws.s.WSMaterialQty;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
@@ -41,6 +47,7 @@ import com.jms.repositories.p.PShiftPlanDRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PWipRepository;
 import com.jms.repositories.p.PWoRepository;
+import com.jms.repositories.s.SInventoryRepository;
 import com.jms.repositories.s.SMtfNoRepository;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.web.security.SecurityUtils;
@@ -49,7 +56,7 @@ import com.jms.web.security.SecurityUtils;
 @Transactional
 public class PCppService {
 
-	private static final Logger logger = LogManager.getLogger(PCheckTimeService.class
+	private static final Logger logger = LogManager.getLogger(PCppService.class
 			.getCanonicalName());
 	@Autowired
 	private PCPpRepository pCPpRepository;
@@ -85,7 +92,9 @@ public class PCppService {
 	@Autowired
 	private SMtfNoRepository sMtfNoRepository;
 	
-		
+	@Autowired
+	private SInventoryRepository sInventoryRepository;
+
 		
 	@Transactional(readOnly=false)
 	public WSPCpp saveWSPCPp(WSPCpp wsPCpp) throws Exception {
@@ -106,29 +115,29 @@ public class PCppService {
 		
 		//生成需料报告
 		
-         SMaterial material =  pCPp.getPWo().getSSo().getSMaterial();
-		 
-		 PBom pBom = pBomRepository.findProductByMaterialId(material.getIdMaterial());
-			
-			
-			if(pBom!=null)
-			{
-				for(PBom p: pBom.getPBoms())
-				{
-					
-					PMr pmr = new PMr();
-					pmr.setPBom(p);
-					pmr.setPCPp(dbPCPp);
-					pmr.setPStatusDic(pStatusDicRepository.findOne(9l));
-					pmr.setQty(p.getQpu()*dbPCPp.getQty());
-					pmr.setSt(dbPCPp.getPlanSt());
-					pmr.setType(2l); //自动生成需料
-					pMrRepository.save(pmr);
-				   
-				}
-				
-			}
-		
+//         SMaterial material =  pCPp.getPWo().getSSo().getSMaterial();
+//		 
+//		 PBom pBom = pBomRepository.findProductByMaterialId(material.getIdMaterial());
+//			
+//			
+//			if(pBom!=null)
+//			{
+//				for(PBom p: pBom.getPBoms())
+//				{
+//					
+//					PMr pmr = new PMr();
+//					pmr.setPBom(p);
+//					pmr.setPCPp(dbPCPp);
+//					pmr.setPStatusDic(pStatusDicRepository.findOne(9l));
+//					pmr.setQty(p.getQpu()*dbPCPp.getQty());
+//					pmr.setSt(dbPCPp.getPlanSt());
+//					pmr.setType(2l); //自动生成需料
+//					pMrRepository.save(pmr);
+//				   
+//				}
+//				
+//			}
+//		
 		
 		return wsPCpp;		
 		
@@ -324,22 +333,119 @@ public class PCppService {
 		return pc;
 	}
 	
+	
+	@Transactional(readOnly = true)
+	public WSPlannedMaterialSending findWSPlannedMaterialSending(Long fromDate,
+			 Long toDate,
+			 Long fromStkId,
+			 Long toStkId)  {
+	   logger.debug("fromDate: " + fromDate  +", toDate: " + toDate +", fromStkId: " + fromStkId +", toStkId: " + toStkId);
+		WSPlannedMaterialSending ws = new WSPlannedMaterialSending();
+		ws.setFromStkId(fromStkId);
+		ws.setToStkId(toStkId);
+		List<WSPlannedMaterialSendingItem> items = new ArrayList<WSPlannedMaterialSendingItem>();
+		Long companyId =securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		Date from = new Date(fromDate);
+		Date to = new Date(toDate);
+		List<PCPp> cpps = pCPpRepository.getByFromDateToDate(companyId, from, to);
+		for(PCPp cpp:cpps)
+		{
+			 logger.debug("cppId: " + cpp.getIdCPp()  +", code: " + cpp.getCPpCode());
+			 PWo pwo =cpp.getPWo();
+//			 logger.debug("woNo: " + pwo.getWoNo());
+			 SMaterial product =  pwo.getSSo().getSMaterial();	
+//			 logger.debug("product: " + product);
+			 Long idMachine = cpp.getMMachine().getIdMachine();
+			 String machine = cpp.getMMachine().getCode();
+//			 logger.debug("idMachine: " + idMachine +", machine: " + machine);
+			 if(cpp.getMMachine().getSBin()==null)
+			 {
+				 logger.debug("此机台无位置设定，不能发料！" +"idMachine: " + idMachine +", machine: " + machine);
+				 continue;
+			 }
+			 if(!cpp.getMMachine().getSBin().getSStk().getId().equals(toStkId))
+			 {
+				 logger.debug("skip this machine, " +"idMachine: " + idMachine +", machine: " + machine);
+				 continue;
+			 }
+			 PBom pBom = pBomRepository.findProductByMaterialId(product.getIdMaterial());
+				if(pBom!=null)
+				{
+					for(PBom p: pBomRepository.findMaterialsByProductId(pBom.getIdBom()))
+					{	
+						SMaterial material =p.getSMaterial();
+//						logger.debug("bomId: " + p.getIdBom() + ", material id: " +material.getIdMaterial() + ", material: " + material.getPno());
+						for(SInventory inv:sInventoryRepository.findInventoryByMaterialAndStk(material.getIdMaterial(), companyId, fromStkId))
+						{
+							if(inv.getQty()!=null&&inv.getQty().intValue()<=0)
+							{
+								continue;
+							}
+							String lotNo = (inv.getLotNo()==null)?"":inv.getLotNo();
+//							logger.debug("inv qty: " + inv.getQty() + ", lotNo: " + lotNo);
+							WSPlannedMaterialSendingItem w = new WSPlannedMaterialSendingItem();
+							w.setBomId(p.getIdBom());
+							w.setBin(inv.getSBin().getBin());
+							w.setCppId(cpp.getIdCPp());
+							w.setFromBinId(inv.getSBin().getIdBin());
+							w.setIdMachine(idMachine);
+							w.setIdMaterial(material.getIdMaterial());
+							w.setInvId(inv.getIdInv());
+							w.setLotNo(lotNo);
+							w.setMachine(machine);
+							w.setMaterial(material.getPno()+"_"+material.getRev()+"_"+material.getDes());
+							w.setPlannedQty(cpp.getQty());
+							w.setPlannedSt(cpp.getPlanSt());
+							w.setProduction(product.getPno()+"_"+product.getRev()+"_" + product.getDes());
+							w.setQty(0l);
+							Long qtyDelivered=0l;
+							for(PMr pmr: pMrRepository.getByBomIdAndCppId(p.getIdBom(), cpp.getIdCPp()))
+							{
+								Long d = (pmr.getQtyDelivered()==null)?0l:pmr.getQtyDelivered();
+								qtyDelivered =qtyDelivered+d;
+							}
+							w.setQtyDelivered(qtyDelivered);
+							w.setQtyStored(inv.getQty());
+							w.setShiftD(cpp.getPShiftPlanD().getShift());
+							w.setToBinId(cpp.getMMachine().getSBin().getIdBin());
+							Long shouldQty = 0l;
+							if(p.getQpu()!=null)
+							{
+								shouldQty = p.getQpu()*cpp.getQty();
+							}
+							w.setShouldQty(shouldQty);
+							w.setWip(cpp.getMMachine().getSBin().getSStk().getStkName());
+							w.setWoId(pwo.getIdWo());
+							w.setWoNo(pwo.getWoNo());
+							items.add(w);
+			
+						}
+					}
+				}
+		}
+		
+		
+		ws.setItems(items);
+		return ws;
+		
+		
+	}
+	
+	
 
 	@Transactional(readOnly=true)
 	public List<WSPMr>  findWSPMrsByCppId(Long cppId)
 	{
 		 List<WSPMr> ws = new ArrayList<WSPMr>();
-		 
 		 PCPp pCPp = pCPpRepository.findOne(cppId);
-		 SMaterial material =  pCPp.getPWo().getSSo().getSMaterial();
-		 
+		 SMaterial material =  pCPp.getPWo().getSSo().getSMaterial();	 
 		 PBom pBom = pBomRepository.findProductByMaterialId(material.getIdMaterial());
-			
-			
+
 			if(pBom!=null)
 			{
 				for(PBom p: pBom.getPBoms())
 				{
+				//	PMr pmr = pMrRepository.getByBomIdAndCppId(p.getIdBom(), cppId);
 					SMaterial s =p.getSMaterial();
 					WSPMr w = new WSPMr();
 					w.setDes(s.getDes());
@@ -349,6 +455,15 @@ public class PCppService {
 					w.setCppId(cppId);
 					w.setRev(s.getRev());
 					w.setBomId(p.getIdBom());
+//					if(pmr!=null)
+//					{
+//						if(pmr.getQtyDelivered()!=null)
+//						{
+//							w.setQtyDelivered(pmr.getQtyDelivered());
+//						}
+//						
+//					}
+				//	w.setQtyDelivered(p.getq);
 				    ws.add(w);
 				   
 				}

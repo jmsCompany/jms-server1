@@ -26,5 +26,9 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
 	public List<Users> findUsersByIdCompany(Long companyId);
 	
 	
+	@Query("select u from Users u where u.company.idCompany=?1 and (u.username like ?2 or u.name like ?2 or u.email like 2 or u.mobile like ?2)")	
+	public List<Users> findUsersByIdCompanyAndQ(Long companyId,String q);
+	
+	
 }
 

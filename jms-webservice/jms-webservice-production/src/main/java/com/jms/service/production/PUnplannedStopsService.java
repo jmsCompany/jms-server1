@@ -3,9 +3,7 @@ package com.jms.service.production;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,12 +13,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jms.domain.NotificationMethodEnum;
 import com.jms.domain.db.EventReceiver;
+import com.jms.domain.db.MRepairHistory;
 import com.jms.domain.db.PCPp;
 import com.jms.domain.db.PUnplannedStops;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.p.WSPUnplannedStops;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.m.MMachineRepository;
+import com.jms.repositories.m.MRepairHistoryRepository;
+import com.jms.repositories.m.MStatusDicRepository;
 import com.jms.repositories.p.PCPpRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PSubCodeRepository;
@@ -51,6 +52,10 @@ public class PUnplannedStopsService {
 	private EventReceiverRepository eventReceiverRepository;
 	@Autowired
 	private  INotificationService notificationService;
+	@Autowired
+	private MRepairHistoryRepository mRepairHistoryRepository;
+	@Autowired
+	private MStatusDicRepository mStatusDicRepository;
 	
 	@Transactional(readOnly=false)
 	public WSPUnplannedStops saveWSPStopsPlan(WSPUnplannedStops wsPUnplannedStops) throws Exception {
@@ -75,10 +80,25 @@ public class PUnplannedStopsService {
 		dbPUnplannedStops = pUnplannedStopsRepository.save(dbPUnplannedStops);
 		wsPUnplannedStops.setIdUnplannedStops(dbPUnplannedStops.getIdUnplannedStops());
 		
+		//设备质量停机，列入维修历史
 		
+		if(wsPUnplannedStops.getpSubCodeId()!=null&&(wsPUnplannedStops.getpSubCodeId().equals(1l)||wsPUnplannedStops.getpSubCodeId().equals(4l)))
+		{
+			MRepairHistory m = new MRepairHistory();
+			m.setMStatusDic(mStatusDicRepository.findOne(7l)); //发起状态
+			if(wsPUnplannedStops.getIdCpp()!=null)
+			{
+			    m.setMMachine(pCPpRepository.findOne(wsPUnplannedStops.getIdCpp()).getMMachine());
+			}
+			m.setUsersByOp(securityUtils.getCurrentDBUser());
+			m.setRepairTime(new Date());
+			m.setIssueDes(wsPUnplannedStops.getOpDes());
+			m.setIdUnplannedStop(dbPUnplannedStops.getIdUnplannedStops());
+			mRepairHistoryRepository.save(m);
+		}
 		//消息
 		Long eventId = wsPUnplannedStops.getEventId();
-		logger.debug("idCpp: " + wsPUnplannedStops.getIdCpp() +", eventId: " + eventId);
+		//logger.debug("idCpp: " + wsPUnplannedStops.getIdCpp() +", eventId: " + eventId);
 		List<EventReceiver> eventReceivers = eventReceiverRepository.findByIdEventAndIdCompany(eventId,securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 		if(eventReceivers!=null)
 		{

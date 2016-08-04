@@ -46,10 +46,18 @@ public class SStatusDicService {
 		List<WSSStatus> wss = new ArrayList<WSSStatus>();
 		for(SStatusDic s :sStatusDicRepository.getBySource(source))
 		{
-			WSSStatus ws = new WSSStatus();
-			ws.setId(s.getId());
-			ws.setName(s.getName());
-			wss.add(ws);
+			if((source.equals("s_po")||source.equals("s_so"))&&s.getName().equals("编辑"))
+			{
+				
+			}
+			else
+			{
+				WSSStatus ws = new WSSStatus();
+				ws.setId(s.getId());
+				ws.setName(s.getName());
+				wss.add(ws);
+			}
+		
 		}
 		return wss;
 	}

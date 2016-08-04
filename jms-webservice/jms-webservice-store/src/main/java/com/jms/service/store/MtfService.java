@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jms.domain.NotificationMethodEnum;
 import com.jms.domain.db.EventReceiver;
+import com.jms.domain.db.PMr;
 import com.jms.domain.db.SBin;
 import com.jms.domain.db.SInventory;
 import com.jms.domain.db.SMaterialBins;
@@ -29,6 +30,10 @@ import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.s.WSSMtf;
 import com.jms.domain.ws.s.WSSMtfMaterial;
 import com.jms.domainadapter.BeanUtil;
+import com.jms.repositories.p.PBomRepository;
+import com.jms.repositories.p.PCPpRepository;
+import com.jms.repositories.p.PMrRepository;
+import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.s.SBinRepository;
 import com.jms.repositories.s.SInventoryRepository;
 import com.jms.repositories.s.SMaterialBinsRepository;
@@ -89,7 +94,8 @@ public class MtfService {
 	@Autowired
 	private SMaterialBinsRepository sMaterialBinsRepository;
 	
-	
+	@Autowired
+	private PBomRepository pBomRepository;
 	@Autowired
 	private SSpoRepository sSpoRepository;
 	
@@ -97,6 +103,14 @@ public class MtfService {
 	private INotificationService notificationService;
 	@Autowired
 	private EventReceiverRepository eventReceiverRepository;
+	
+	@Autowired
+	private  PCPpRepository pCPpRepository;
+	@Autowired
+	private PStatusDicRepository pStatusDicRepository;
+	
+	@Autowired
+	private PMrRepository pMrRepository;
 	
 	
 	//校验
@@ -124,9 +138,9 @@ public class MtfService {
 	}
 
 
-	public Valid saveMtf(WSSMtf wsSMtf) {
+	public Valid saveMtf(WSSMtf wsSMtf) throws Exception {
 		Valid valid = new Valid();
-		try {
+	
 			Long smtfType = wsSMtf.getTypeId();
 			SMtf sMtf = new SMtf();
 		//	if(wsSMtf.getTypeId())
@@ -136,6 +150,7 @@ public class MtfService {
 			sMtf = sMtfRepository.save(sMtf);
 			boolean toIQC = false;
 			boolean finishIQC=true;
+			boolean savePmr = wsSMtf.isSavePmr();
 		
             int i=0;
             SMtf orgSmtf=null;
@@ -594,7 +609,14 @@ public class MtfService {
 				
 				case 7: // 发料
 				{
-					
+//					if(wm.getQty()==null)
+//					{
+//						continue;
+//					}
+					if(wm.getQty().equals(0l))
+					{
+						continue;
+					}
 				//	logger.debug(msg);
 					updateMaterialBins(wm.getMaterialId(),wm.getFromBinId(),wsSMtf.getFromStkId());
 				//	updateMaterialBins(wm.getMaterialId(),wm.getFromBinId(),wsSMtf.getFromStkId());
@@ -602,7 +624,20 @@ public class MtfService {
 					mtfMaterialService.saveMtfMaterial(wm);
                     logger.debug(" case 7:  to:  wm.getToBinId(): " +  wm.getToBinId() +", from :" + wm.getFromBinId() +", material id: " + wm.getMaterialId() +", qty: " +wm.getQty());
 					SInventory to=null;
-					
+					if(savePmr)
+					{
+						PMr pmr = new PMr();
+						pmr.setFt(new Date());
+						pmr.setSt(new Date());
+						pmr.setPBom(pBomRepository.findOne(wm.getPwoBomId()));
+						pmr.setPCPp(pCPpRepository.findOne(wm.getCppId()));
+						pmr.setPStatusDic(pStatusDicRepository.findOne(10l));
+						pmr.setQty(wm.getQty());
+						pmr.setQtyDelivered(wm.getQty());
+						pmr.setType(2l);
+						pmr.setUser(securityUtils.getCurrentDBUser());
+						pMrRepository.save(pmr);
+					}
 					List<SInventory> sInventorys= sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
 			        if(sInventorys!=null&&!sInventorys.isEmpty())
 			        {
@@ -780,12 +815,7 @@ public class MtfService {
 			
 			valid.setValid(true);
 			return valid;
-		} catch (Exception e) {
 
-			valid.setValid(false);
-			e.printStackTrace();
-			return valid;
-		}
 
 	}
 

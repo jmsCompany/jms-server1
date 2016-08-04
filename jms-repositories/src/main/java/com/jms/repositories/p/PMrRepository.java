@@ -25,5 +25,9 @@ public interface PMrRepository extends JpaRepository<PMr, Long>{
    
    public List<PMr> getByIdUnplannedStop(Long idUnplannedStop);
    
+   
+   @Query("select p from PMr p where p.PBom.idBom=?1 and p.PCPp.idCPp=?2")
+   public List<PMr> getByBomIdAndCppId(Long bomId,Long cppId);
+   
 
 }

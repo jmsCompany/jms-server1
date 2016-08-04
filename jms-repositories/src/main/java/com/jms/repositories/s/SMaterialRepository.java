@@ -20,8 +20,7 @@ public interface SMaterialRepository  extends JpaRepository<SMaterial, Long>{
   
   @Query("select s from SMaterial s where s.company.idCompany=?1 and s.SMaterialTypeDic.id in ?2")
   public List<SMaterial> getByCompanyIdAndMaterialTypes(Long companyId,List<Long> types);
-  
-  
+
   @Query("select s from SMaterial s where s.company.idCompany=?1 and s.SMaterialTypeDic.id=?2 and (s.pno like ?3 or s.rev like ?3 or s.des like ?3)")
   public List<SMaterial> getByCompanyIdAndMaterialTypeAndQuery(Long companyId,Long materialTypeId,String q);
   
@@ -33,5 +32,9 @@ public interface SMaterialRepository  extends JpaRepository<SMaterial, Long>{
   
   @Query("select s from SMaterial s where s.company.idCompany=?1 and s.pno=?2")
   public SMaterial getByCompanyIdAndPno(Long companyId,String pno);
+  
+  
+  @Query("select s from SMaterial s where s.safetyInv is not null and s.SMaterialTypeDic.id=4 and s.idMaterial not in (select i.SMaterial.idMaterial from SInventory i where i.SBin.idBin in (select b.idBin from SBin b where b.SStk.stkName='IDI') group by i.SMaterial.idMaterial having sum(i.qty)>=s.safetyInv) order by s.company.idCompany") 
+  public List<SMaterial> getUnsaftyMaterials();
 		
 }

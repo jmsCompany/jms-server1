@@ -148,6 +148,15 @@ public class PMrService {
 			w.setType(p.getType());
 			w.setBinId(p.getPCPp().getMMachine().getSBin().getIdBin());
 			
+			if(p.getQtyDelivered()!=null)
+			{
+				w.setQtyDelivered(p.getQtyDelivered());
+			}
+			else
+			{
+				w.setQtyDelivered(0l);
+			}
+			
 			wsPMrs.add(w);
 		}
 		
@@ -179,6 +188,15 @@ public class PMrService {
 			w.setStatus(p.getPStatusDic().getName());
 			w.setStatusId(p.getPStatusDic().getIdPstatus());
 			w.setType(p.getType());
+			if(p.getQtyDelivered()!=null)
+			{
+				w.setQtyDelivered(p.getQtyDelivered());
+			}
+			else
+			{
+				w.setQtyDelivered(0l);
+			}
+			
 			
 			if(machine.getSBin()!=null)
 			{

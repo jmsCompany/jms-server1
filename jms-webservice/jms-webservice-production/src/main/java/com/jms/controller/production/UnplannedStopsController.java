@@ -102,9 +102,9 @@ public class UnplannedStopsController {
 			String subCode="";
 			if(w.getPSubCode()!=null)
 			{
-				subCode =w.getPSubCode().getSubCode()+"_"+w.getPSubCode().getSubDes();
+				subCode =w.getPSubCode().getSubCode();
 			}
-			String[] d = {""+m.getCode()+"_"+m.getName(),subCode,opSt,eqSt,eqFt,opFt};
+			String[] d = {""+m.getCode(),subCode,opSt,eqSt,eqFt,opFt};
 			lst.add(d);
 
 		}

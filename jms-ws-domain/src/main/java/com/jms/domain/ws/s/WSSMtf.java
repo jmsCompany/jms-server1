@@ -33,6 +33,9 @@ public class WSSMtf {
 	     
 	     private String coOrderNo;
 	     
+	     
+	     private boolean savePmr=false;
+	     
 	     private Map<String,WSSMtfMaterial> smtfItems = new LinkedHashMap<String,WSSMtfMaterial>(0);
 		public Long getIdMt() {
 			return idMt;
@@ -173,6 +176,12 @@ public class WSSMtf {
 		}
 		public void setCoOrderNo(String coOrderNo) {
 			this.coOrderNo = coOrderNo;
+		}
+		public boolean isSavePmr() {
+			return savePmr;
+		}
+		public void setSavePmr(boolean savePmr) {
+			this.savePmr = savePmr;
 		}
    
 }
