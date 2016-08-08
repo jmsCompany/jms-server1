@@ -13,6 +13,7 @@ import com.jms.domain.db.PWo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.p.WSPBom;
+import com.jms.domain.ws.p.WSPBomItem;
 import com.jms.domain.ws.p.WSPWo;
 import com.jms.repositories.p.PBomLabelRepository;
 import com.jms.repositories.p.PWoRepository;
@@ -55,7 +56,19 @@ public class BomController {
 		
 	}
 	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findBomItem", method=RequestMethod.GET)
+	public WSPBomItem findBomItem(@RequestParam("bomId") Long bomId) throws Exception {
+		return bomService.findWSPBomItem(bomId);
+		
+	}
 
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/p/saveBomItem", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSPBomItem saveWSPBomItem(@RequestBody WSPBomItem wsPBomItem) throws Exception {
+		return bomService.saveWSPBomItem(wsPBomItem);
+	}
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/getBomList", method=RequestMethod.POST)

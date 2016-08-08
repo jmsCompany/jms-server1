@@ -6538,3 +6538,8 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 [2016-08-08 17:44:54.423] log4j2 - 15037 DEBUG [http-nio-9999-exec-3] --- MtfService:  case 7:  to:  wm.getToBinId(): 61, from :8, material id: 17, qty: 1
 [2016-08-08 17:44:54.448] log4j2 - 15037 DEBUG [http-nio-9999-exec-5] --- PMrController: idPmr :1473, qty: 1
 [2016-08-08 17:45:24.093] log4j2 - 15037 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 17:46:25.056] log4j2 - 15037 DEBUG [http-nio-9999-exec-9] --- MtfService:  case 7:  to:  wm.getToBinId(): 61, from :5, material id: 16, qty: 10
+[2016-08-08 17:46:25.077] log4j2 - 15037 DEBUG [http-nio-9999-exec-5] --- PMrController: idPmr :1474, qty: 10
+[2016-08-08 17:48:24.099] log4j2 - 15037 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 17:51:24.100] log4j2 - 15037 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 17:54:24.104] log4j2 - 15037 DEBUG [pool-4-thread-1] --- NotificationService: send email.
