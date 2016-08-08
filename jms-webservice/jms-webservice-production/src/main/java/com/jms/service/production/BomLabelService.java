@@ -97,7 +97,7 @@ public class BomLabelService {
 		}
 		PBomLabel dbPBomLabel= toDBPBomLabel(wsPBom,pBomLabel);
 		
-		logger.debug(" bomlabel: " + dbPBomLabel.getIdBomLabel());
+		//logger.debug(" bomlabel: " + dbPBomLabel.getIdBomLabel());
 		dbPBomLabel = pBomLabelRepository.save(dbPBomLabel);
 	
 	

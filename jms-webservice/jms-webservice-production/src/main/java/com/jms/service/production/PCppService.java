@@ -481,7 +481,7 @@ public class PCppService {
 			 PBom pBom = pBomRepository.findProductByMaterialId(product.getIdMaterial());
 				if(pBom!=null)
 				{
-					for(PBom p: pBomRepository.findMaterialsByProductId(pBom.getIdBom()))
+					for(PBom p: pBomRepository.findMaterialsByRoutineDId(cpp.getPRoutineD().getIdRoutineD()))
 					{	
 						SMaterial material =p.getSMaterial();
 //						logger.debug("bomId: " + p.getIdBom() + ", material id: " +material.getIdMaterial() + ", material: " + material.getPno());

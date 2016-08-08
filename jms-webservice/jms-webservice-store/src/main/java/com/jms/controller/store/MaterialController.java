@@ -219,8 +219,14 @@ public class MaterialController {
 	public List<WSPOMaterialObj> findPoMaterialsBySpoId(@RequestParam("spoId") Long spoId) {
 		List<WSPOMaterialObj> wso = new ArrayList<WSPOMaterialObj>();
 		for (SPoMaterial s : sSpoMaterialRepository.getBySpoId(spoId)) {
-			wso.add(new WSPOMaterialObj(s.getIdPoMaterial()+"_"+s.getSMaterial().getIdMaterial(),
-					s.getSMaterial().getPno() + "-" + s.getSMaterial().getDes() + "-" + s.getSMaterial().getRev()));
+			Long qtyreceived = (s.getQtyReceived()==null)?0l:s.getQtyReceived();
+			
+			if(s.getQtyPo()>qtyreceived)
+			{
+				wso.add(new WSPOMaterialObj(s.getIdPoMaterial()+"_"+s.getSMaterial().getIdMaterial(),
+						s.getSMaterial().getPno() + "-" + s.getSMaterial().getDes() + "-" + s.getSMaterial().getRev()));
+			}
+			
 		}
 		return wso;
 	}

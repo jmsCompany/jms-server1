@@ -45,6 +45,7 @@ import com.jms.repositories.p.PShiftPlanDRepository;
 import com.jms.repositories.p.PShiftPlanRepository;
 import com.jms.repositories.p.PWoRepository;
 import com.jms.repositories.p.PWorkCenterRepository;
+import com.jms.repositories.s.SMaterialRepository;
 import com.jms.service.production.BomLabelService;
 import com.jms.service.production.BomService;
 import com.jms.service.production.RoutineDService;
@@ -85,6 +86,8 @@ public class RoutineController {
 	
 	@Autowired
 	private PWoRepository pWoRepository;
+	@Autowired
+	private SMaterialRepository sMaterialRepository;
 	@Autowired
 	private FileUploadService fileUploadService;
 
@@ -144,7 +147,23 @@ public class RoutineController {
 		
 	}
 	
-	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findRoutineDObjsByMaterialId", method=RequestMethod.GET)
+	public List<WSSelectObj> findRoutineDObjsByMaterialId(@RequestParam("materialId") Long materialId) throws Exception {
+		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
+		SMaterial s = sMaterialRepository.findOne(materialId);
+		if(s!=null)
+		{
+			for(PRoutineD r: pRoutineDRepository.findByMaterialId(s.getIdMaterial()))
+			{
+				WSSelectObj w = new WSSelectObj(r.getIdRoutineD(),r.getRouteNo());
+				ws.add(w);
+			}
+			
+		}
+		return ws;
+		
+	}
 	
 	
 	@Transactional(readOnly = true)

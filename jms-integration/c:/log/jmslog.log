@@ -6481,3 +6481,60 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 [2016-08-08 16:16:39.450] log4j2 - 14404 DEBUG [pool-4-thread-1] --- NotificationService: send email.
 [2016-08-08 16:19:39.452] log4j2 - 14404 DEBUG [pool-4-thread-1] --- NotificationService: send email.
 [2016-08-08 16:22:39.454] log4j2 - 14404 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 16:25:39.463] log4j2 - 14404 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 16:28:39.467] log4j2 - 14404 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 16:31:39.469] log4j2 - 14404 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 16:33:22.519] log4j2 - 14520  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 14520 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-08-08 16:33:22.533] log4j2 - 14520 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-08-08 16:33:48.777] log4j2 - 14520 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-08-08 16:33:48.780] log4j2 - 14520 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-08-08 16:33:56.040] log4j2 - 14520 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 16:33:56.223] log4j2 - 14520  INFO [main] --- Application: Started Application in 34.265 seconds (JVM running for 36.567)
+[2016-08-08 16:36:56.013] log4j2 - 14520 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 16:39:56.013] log4j2 - 14520 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 16:42:56.022] log4j2 - 14520 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 16:45:56.021] log4j2 - 14520 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 16:48:56.028] log4j2 - 14520 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 16:51:56.032] log4j2 - 14520 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 16:54:56.038] log4j2 - 14520 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 16:57:56.041] log4j2 - 14520 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 16:59:20.106] log4j2 - 14520 DEBUG [http-nio-9999-exec-10] --- MtfService:  case 7:  to:  wm.getToBinId(): 61, from :7, material id: 16, qty: 5
+[2016-08-08 17:00:56.044] log4j2 - 14520 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 17:01:01.673] log4j2 - 14520 DEBUG [http-nio-9999-exec-1] --- MtfService:  save to new bin: IQC, qty:4
+[2016-08-08 17:03:19.967] log4j2 - 14520 DEBUG [http-nio-9999-exec-7] --- MtfService:  save to new bin: IQC, qty:5
+[2016-08-08 17:03:19.981] log4j2 - 14520 DEBUG [http-nio-9999-exec-7] --- MtfService:  save to new bin: IQC, qty:12
+[2016-08-08 17:03:56.048] log4j2 - 14520 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 17:04:37.475] log4j2 - 14520 DEBUG [http-nio-9999-exec-4] --- MtfService:  save to new bin: A-a001, qty:1000
+[2016-08-08 17:04:37.492] log4j2 - 14520 DEBUG [http-nio-9999-exec-4] --- MtfService:  save to  bin: A-a001, qty:200
+[2016-08-08 17:06:56.056] log4j2 - 14520 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 17:09:56.062] log4j2 - 14520 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 17:12:56.066] log4j2 - 14520 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 17:15:56.065] log4j2 - 14520 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 17:18:56.071] log4j2 - 14520 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 17:21:33.381] log4j2 - 14861  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 14861 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-08-08 17:21:33.385] log4j2 - 14861 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-08-08 17:21:57.391] log4j2 - 14861 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-08-08 17:21:57.394] log4j2 - 14861 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-08-08 17:22:03.936] log4j2 - 14861 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 17:22:04.071] log4j2 - 14861  INFO [main] --- Application: Started Application in 31.109 seconds (JVM running for 32.965)
+[2016-08-08 17:23:21.557] log4j2 - 14861 DEBUG [http-nio-9999-exec-2] --- MtfService:  save to new bin: B001, qty:5
+[2016-08-08 17:25:03.917] log4j2 - 14861 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 17:26:35.354] log4j2 - 14861 DEBUG [http-nio-9999-exec-10] --- MtfService:  save to new bin: IQC, qty:900
+[2016-08-08 17:26:35.379] log4j2 - 14861 DEBUG [http-nio-9999-exec-10] --- MtfService:  save to new bin: IQC, qty:300
+[2016-08-08 17:27:18.436] log4j2 - 14861 DEBUG [http-nio-9999-exec-8] --- MtfService:  save to new bin: IQC, qty:18
+[2016-08-08 17:28:03.922] log4j2 - 14861 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 17:31:03.926] log4j2 - 14861 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 17:34:03.930] log4j2 - 14861 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 17:37:03.933] log4j2 - 14861 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 17:39:01.352] log4j2 - 15037  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 15037 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-08-08 17:39:01.354] log4j2 - 15037 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-08-08 17:39:19.062] log4j2 - 15037 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-08-08 17:39:19.066] log4j2 - 15037 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-08-08 17:39:24.109] log4j2 - 15037 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 17:39:24.180] log4j2 - 15037  INFO [main] --- Application: Started Application in 23.144 seconds (JVM running for 24.137)
+[2016-08-08 17:42:24.089] log4j2 - 15037 DEBUG [pool-4-thread-1] --- NotificationService: send email.
+[2016-08-08 17:43:41.531] log4j2 - 15037 DEBUG [http-nio-9999-exec-2] --- MtfService:  case 7:  to:  wm.getToBinId(): 61, from :5, material id: 16, qty: 10
+[2016-08-08 17:43:41.557] log4j2 - 15037 DEBUG [http-nio-9999-exec-9] --- PMrController: idPmr :1472, qty: 10
+[2016-08-08 17:44:54.423] log4j2 - 15037 DEBUG [http-nio-9999-exec-3] --- MtfService:  case 7:  to:  wm.getToBinId(): 61, from :8, material id: 17, qty: 1
+[2016-08-08 17:44:54.448] log4j2 - 15037 DEBUG [http-nio-9999-exec-5] --- PMrController: idPmr :1473, qty: 1
+[2016-08-08 17:45:24.093] log4j2 - 15037 DEBUG [pool-4-thread-1] --- NotificationService: send email.

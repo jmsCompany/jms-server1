@@ -35,6 +35,8 @@ public class PBom  implements java.io.Serializable {
      private Long orderBy;
      private Long lvl;
      private Long wastage;
+     
+     private Long idRoutineD;
      private Set<PMr> PMrs = new HashSet<PMr>(0);
      private Set<PWoBom> PWoBoms = new HashSet<PWoBom>(0);
      private Set<PBom> PBoms = new HashSet<PBom>(0);
@@ -162,6 +164,15 @@ public class PBom  implements java.io.Serializable {
     public void setPBoms(Set<PBom> PBoms) {
         this.PBoms = PBoms;
     }
+
+    @Column(name="id_routine_d")
+	public Long getIdRoutineD() {
+		return idRoutineD;
+	}
+
+	public void setIdRoutineD(Long idRoutineD) {
+		this.idRoutineD = idRoutineD;
+	}
 
 
 

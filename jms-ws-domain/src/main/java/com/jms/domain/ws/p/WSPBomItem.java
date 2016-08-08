@@ -26,6 +26,8 @@ public class WSPBomItem {
     
     private Long idParentBom;
     
+    private Long idRoutineD;
+    
 	public Long getIdBom() {
 		return idBom;
 	}
@@ -127,6 +129,12 @@ public class WSPBomItem {
 	}
 	public void setsUnitDicByUnitInf(String sUnitDicByUnitInf) {
 		this.sUnitDicByUnitInf = sUnitDicByUnitInf;
+	}
+	public Long getIdRoutineD() {
+		return idRoutineD;
+	}
+	public void setIdRoutineD(Long idRoutineD) {
+		this.idRoutineD = idRoutineD;
 	}
 
 }

@@ -74,7 +74,7 @@ public class MtfController {
 	public List<WSMaterialChecked> findSmtfMaterialChecked(@RequestParam("smtfId") Long smtfId) throws Exception {
 		List<WSMaterialChecked> ws =new ArrayList<WSMaterialChecked>();
 		SMtf sMtf = sMtfRepository.findOne(smtfId);
-		for(SMtfMaterial sm: sMtf.getSMtfMaterials())
+		for(SMtfMaterial sm: sMtfMaterialRepository.getNotReceivedBySmtfId(sMtf.getIdMt()))
 		{
 			Long qty = (sm.getQty()==null)?0:sm.getQty();
 			Long qtyChecked = (sm.getQty3417()==null)?0:sm.getQty3417();
