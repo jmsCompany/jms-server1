@@ -8,6 +8,7 @@ public class WSShiftPlanDStatus {
     private String shiftNo;
     private String delay;
     private String status;
+    private String delayStart;
 	
     public Long getIdShiftD() {
 		return idShiftD;
@@ -38,6 +39,12 @@ public class WSShiftPlanDStatus {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getDelayStart() {
+		return delayStart;
+	}
+	public void setDelayStart(String delayStart) {
+		this.delayStart = delayStart;
 	}
 
 

@@ -41,12 +41,13 @@ public class SStatusDicService {
 	
 	
 	@Transactional(readOnly=true)
-	public List<WSSStatus> getSStatus(String source)
+	public List<WSSStatus> getSStatus(String source, Boolean removeEdit)
 	{
 		List<WSSStatus> wss = new ArrayList<WSSStatus>();
 		for(SStatusDic s :sStatusDicRepository.getBySource(source))
 		{
-			if((source.equals("s_po")||source.equals("s_so"))&&s.getName().equals("编辑"))
+		
+			if(removeEdit&&(source.equals("s_po")||source.equals("s_so"))&&s.getName().equals("编辑"))
 			{
 				
 			}

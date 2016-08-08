@@ -29,6 +29,7 @@ import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.p.WSPBom;
 import com.jms.domain.ws.p.WSPRoutine;
+import com.jms.domain.ws.p.WSPRoutineD;
 import com.jms.domain.ws.p.WSPWo;
 import com.jms.domain.ws.p.WSShiftPlan;
 import com.jms.file.FileMeta;
@@ -110,7 +111,20 @@ public class RoutineController {
 		
 	}
 	
-
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findPRoutineD", method=RequestMethod.GET)
+	public WSPRoutineD findPRoutineD(@RequestParam("idPRoutineD") Long idPRoutineD) throws Exception {
+		return routineDService.findWSPRoutineD(idPRoutineD);
+		
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/savePRoutineD", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSPRoutineD savePRoutineD(@RequestBody WSPRoutineD wsPRoutineD) throws Exception {
+		return routineDService.saveWSPRoutineD(wsPRoutineD);
+		
+	}
+	
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/findRoutineDObjsByWoId", method=RequestMethod.GET)

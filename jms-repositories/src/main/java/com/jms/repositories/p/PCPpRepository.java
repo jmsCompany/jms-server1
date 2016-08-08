@@ -35,4 +35,8 @@ public interface PCPpRepository extends JpaRepository<PCPp, Long>{
     @Query("select p from PCPp p where  p.company.idCompany=?1 and p.planSt>?2 and p.planFt<?3 order by p.PWo.idWo")
   	public List<PCPp> getByFromDateToDate(Long companyId,Date st,Date ft);
     
+    @Query("select p from PCPp p where p.company.idCompany=?1 and p.planSt>?2 and p.planFt<?3 and  p.MMachine.idMachine=?4 and p.PWo.SSo.SMaterial.idMaterial=?5")
+  	public List<PCPp> getByFromDateToDateAndMachineIdAndMaterialId(Long companyId,Date st,Date ft,Long machineId,Long materialId);
+    
+    
 }

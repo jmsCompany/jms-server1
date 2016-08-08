@@ -1,5 +1,6 @@
 package com.jms.repositories.p;
 
+import java.util.Date;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,5 +30,9 @@ public interface PUnplannedStopsRepository extends JpaRepository<PUnplannedStops
 	
 	@Query("select p from PUnplannedStops p where p.PSubCode.idSubCode=?1 and p.idCompany=?2 and p.PStatusDic.idPstatus=18")
 	public List<PUnplannedStops> getByPSubCodeId(Long pSubCodeId, Long companyId);
+	
+	
+	@Query("select p from PUnplannedStops p where p.idMachine=?1 and p.opSt>=?2 and p.opSt<=?3")
+	public List<PUnplannedStops> getByMachineIdAndDuration(Long machineId,Date start,Date end);
 	
 }

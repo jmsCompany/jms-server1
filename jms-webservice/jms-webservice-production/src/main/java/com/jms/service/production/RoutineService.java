@@ -207,15 +207,22 @@ public class RoutineService {
 	    	pc.setMaterialId(pRoutine.getSMaterial().getIdMaterial());
 	    	pc.setMaterialRev(pRoutine.getSMaterial().getRev());
 	    	pc.setpNo(pRoutine.getSMaterial().getPno());
+	    	
 	    }
 	    int i=0;
+	    Boolean edit = true;
 	    
 	    for(PRoutineD p: pRoutineDRepository.findByRoutineId(pRoutine.getIdRoutine()))
 	    {
 	    	pc.getWsRoutineDs().put("item"+i, routineDService.toWSPRoutineD(p));
+	    	if(edit&&p.getPCPps()!=null&&!p.getPCPps().isEmpty())
+	    	{
+	    		edit =false;
+	    	}
 	    	i++;
 	    }
 	  
+	    pc.setEdit(edit);
 		return pc;
 	}
 

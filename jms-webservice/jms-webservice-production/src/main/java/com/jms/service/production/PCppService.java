@@ -13,12 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.jms.domain.db.PActualSetup;
 import com.jms.domain.db.PBom;
 import com.jms.domain.db.PCPp;
 import com.jms.domain.db.PCheckTime;
 import com.jms.domain.db.PDraw;
 import com.jms.domain.db.PMr;
 import com.jms.domain.db.PRoutineD;
+import com.jms.domain.db.PStopsPlan;
+import com.jms.domain.db.PUnplannedStops;
 import com.jms.domain.db.PWip;
 import com.jms.domain.db.PWo;
 import com.jms.domain.db.SInventory;
@@ -26,6 +29,7 @@ import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMtfNo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
+import com.jms.domain.ws.p.WSOEE;
 import com.jms.domain.ws.p.WSPCheckTime;
 import com.jms.domain.ws.p.WSPCpp;
 import com.jms.domain.ws.p.WSPMr;
@@ -37,6 +41,7 @@ import com.jms.domain.ws.s.WSMaterialQty;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.m.MMachineRepository;
+import com.jms.repositories.p.PActualSetupRepository;
 import com.jms.repositories.p.PBomRepository;
 import com.jms.repositories.p.PCPpRepository;
 import com.jms.repositories.p.PCheckTimeRepository;
@@ -45,6 +50,8 @@ import com.jms.repositories.p.PPUTimeRepository;
 import com.jms.repositories.p.PRoutineDRepository;
 import com.jms.repositories.p.PShiftPlanDRepository;
 import com.jms.repositories.p.PStatusDicRepository;
+import com.jms.repositories.p.PStopsPlanRepository;
+import com.jms.repositories.p.PUnplannedStopsRepository;
 import com.jms.repositories.p.PWipRepository;
 import com.jms.repositories.p.PWoRepository;
 import com.jms.repositories.s.SInventoryRepository;
@@ -94,6 +101,11 @@ public class PCppService {
 	
 	@Autowired
 	private SInventoryRepository sInventoryRepository;
+	@Autowired private PActualSetupRepository pActualSetupRepository;
+	
+	@Autowired private  PStopsPlanRepository pStopsPlanRepository;
+	
+	@Autowired private  PUnplannedStopsRepository pUnplannedStopsRepository;
 
 		
 	@Transactional(readOnly=false)
@@ -332,14 +344,112 @@ public class PCppService {
 	    pc.setCppCode(pCPp.getCPpCode());
 		return pc;
 	}
+	@Transactional(readOnly = true)
+	public List<WSOEE> findWSOEE(Long fromDate,
+			 Long toDate,Long machineId,Long materialId)
+	{
+		List<WSOEE> ws = new ArrayList<WSOEE>();
+		Long companyId =securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		Date from = new Date(fromDate);
+		Date to = new Date(toDate);
+		List<PCPp> cpps = pCPpRepository.getByFromDateToDateAndMachineIdAndMaterialId(companyId, from, to, machineId,materialId);
+		for(PCPp cpp:cpps)
+		{
+			if(cpp.getPlanSt()==null||cpp.getPlanFt()==null||cpp.getActSt()==null||cpp.getActFt()==null)
+			{
+				continue;
+			}
+			WSOEE w = new WSOEE();
+			long actQty = (cpp.getActQty()==null)?0l:cpp.getActQty();
+			w.setActQty(actQty);
+			w.setActTime(cpp.getActFt().getTime()-cpp.getActSt().getTime());
+			w.setCppSt(cpp.getPlanFt());
+			
+			long loadingTime = 0l;
 	
+			for(PActualSetup p: pActualSetupRepository.findByCppId(cpp.getIdCPp()))
+			{
+				if(p.getActFt()==null||p.getActSt()==null)
+				{
+					continue;
+				}
+				loadingTime = loadingTime + p.getActFt().getTime()-p.getActSt().getTime();
+			}
+			if(loadingTime==0l)
+			{
+				loadingTime = (long)(cpp.getPRoutineD().getStdWtSetup()*60*60*1000);
+			}
+			w.setLoadingTime(loadingTime);
+			w.setMachine(cpp.getMMachine().getCode());
+			w.setMachineId(cpp.getMMachine().getIdMachine());
+	long machineTime =(long)(cpp.getPRoutineD().getStdWtMachine()*60*60*1000);
+			w.setMachineTime(machineTime);  //理论加工时长.设备公司
+
+			w.setPassedQty(actQty); //to be modified
+			w.setPlanQty(cpp.getQty());
+			Long planStopTime =0l;
+			for(PStopsPlan p:pStopsPlanRepository.getPStopsPlansByMachineIdAndDuration(cpp.getMMachine().getIdMachine(), cpp.getActSt(), cpp.getActFt()))
+			{
+				if(p.getActFt()!=null)
+				{
+					planStopTime = planStopTime + p.getPlanFt().getTime()-p.getActSt().getTime();
+				}
+				else
+				{
+					planStopTime = planStopTime + cpp.getPlanFt().getTime()-p.getActSt().getTime();
+				}
+				
+			}
+			w.setPlanStopTime(planStopTime);
+			
+			w.setPlanTime(cpp.getPlanFt().getTime()-cpp.getPlanSt().getTime());
+			
+			w.setRoutineD(cpp.getPRoutineD().getRouteNo());
+			w.setRoutineDId(cpp.getPRoutineD().getIdRoutineD());
+			w.setShiftD(cpp.getPShiftPlanD().getShift());
+			Long unplannnedStopTime =0l;
+			for(PUnplannedStops p:pUnplannedStopsRepository.getByMachineIdAndDuration(machineId, cpp.getActSt(), cpp.getActFt()))
+			{
+				if(p.getEqFt()!=null)
+				{
+					unplannnedStopTime = unplannnedStopTime + p.getEqFt().getTime()-p.getOpSt().getTime();
+				}
+				else
+				{
+					unplannnedStopTime = unplannnedStopTime + cpp.getActFt().getTime()-p.getOpSt().getTime();
+				}
+			}
+			w.setUnPlannedStopTime(unplannnedStopTime);
+            w.setWo(cpp.getPWo().getWoNo());
+            w.setWoId(cpp.getPWo().getIdWo());
+            
+ 
+            float passedEff =1f;
+            w.setPassedEff(passedEff);
+            
+            long pt = cpp.getPlanFt().getTime()-cpp.getPlanSt().getTime()-planStopTime;//计划负荷时间
+            long at = cpp.getActFt().getTime()-cpp.getActSt().getTime()-planStopTime-unplannnedStopTime;//实际负荷时间
+            float timeEff = (float)pt/(float)at;
+            w.setTimeEff(timeEff);
+           	
+            
+            float machineEff =(float)(actQty*machineTime)/(float)at; //性能开动率
+            w.setMachineEff(machineEff);
+		
+            float oee = timeEff*machineEff*passedEff;
+			w.setOee(oee);
+       
+			ws.add(w);
+		}
+		return ws;
+	}
 	
 	@Transactional(readOnly = true)
 	public WSPlannedMaterialSending findWSPlannedMaterialSending(Long fromDate,
 			 Long toDate,
 			 Long fromStkId,
 			 Long toStkId)  {
-	   logger.debug("fromDate: " + fromDate  +", toDate: " + toDate +", fromStkId: " + fromStkId +", toStkId: " + toStkId);
+	 //  logger.debug("fromDate: " + fromDate  +", toDate: " + toDate +", fromStkId: " + fromStkId +", toStkId: " + toStkId);
 		WSPlannedMaterialSending ws = new WSPlannedMaterialSending();
 		ws.setFromStkId(fromStkId);
 		ws.setToStkId(toStkId);
@@ -350,7 +460,7 @@ public class PCppService {
 		List<PCPp> cpps = pCPpRepository.getByFromDateToDate(companyId, from, to);
 		for(PCPp cpp:cpps)
 		{
-			 logger.debug("cppId: " + cpp.getIdCPp()  +", code: " + cpp.getCPpCode());
+	//		 logger.debug("cppId: " + cpp.getIdCPp()  +", code: " + cpp.getCPpCode());
 			 PWo pwo =cpp.getPWo();
 //			 logger.debug("woNo: " + pwo.getWoNo());
 			 SMaterial product =  pwo.getSSo().getSMaterial();	

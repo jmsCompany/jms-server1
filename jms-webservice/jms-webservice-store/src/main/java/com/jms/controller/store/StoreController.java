@@ -75,8 +75,11 @@ public class StoreController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/getSStatusList", method=RequestMethod.GET)
-	public List<WSSStatus> getSStatusList(@RequestParam("source") String source) {
-		return sStatusDicService.getSStatus(source);
+	public List<WSSStatus> getSStatusList(@RequestParam("source") String source,@RequestParam(value="removeEdit",required=false) Boolean removeEdit) {
+		if(removeEdit==null){
+			removeEdit=false;
+		}
+		return sStatusDicService.getSStatus(source,removeEdit);
 	}
 	
 	

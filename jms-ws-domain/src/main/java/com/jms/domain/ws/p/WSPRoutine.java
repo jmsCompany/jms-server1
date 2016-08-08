@@ -21,6 +21,9 @@ public class WSPRoutine {
 	private String line;
 	private String status;
 	private Long statusId;
+	
+	private Boolean edit;
+	
 	private Map<String, WSPRoutineD> wsRoutineDs = new LinkedHashMap<String, WSPRoutineD>(0);
 
 	public Long getIdRoutine() {
@@ -149,6 +152,14 @@ public class WSPRoutine {
 
 	public void setDrawAtt(String drawAtt) {
 		this.drawAtt = drawAtt;
+	}
+
+	public Boolean getEdit() {
+		return edit;
+	}
+
+	public void setEdit(Boolean edit) {
+		this.edit = edit;
 	}
 
 }

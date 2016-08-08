@@ -12,6 +12,7 @@ import com.jms.domain.db.PCPp;
 import com.jms.domain.db.PWo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSTableData;
+import com.jms.domain.ws.p.WSOEE;
 import com.jms.domain.ws.p.WSPCpp;
 import com.jms.domain.ws.p.WSPMr;
 import com.jms.domain.ws.p.WSPlannedMaterialSending;
@@ -156,12 +157,24 @@ public class CppController {
 			@RequestParam("toDate") Long toDate,
 			@RequestParam("fromStkId") Long fromStkId,
 			@RequestParam("toStkId") Long toStkId)  {
-       System.out.println("find planned materials sending");
+      // System.out.println("find planned materials sending");
 		return pCppService.findWSPlannedMaterialSending(fromDate, toDate, fromStkId, toStkId);		
 		
 	}
 	
 	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findWSOEE", method=RequestMethod.GET)
+	public List<WSOEE> findWSOEE(
+			@RequestParam("fromDate") Long fromDate,
+			@RequestParam("toDate") Long toDate,
+			@RequestParam("machineId") Long machineId,
+			@RequestParam("materialId") Long materialId)
+    {
+		return pCppService.findWSOEE(fromDate, toDate, machineId,materialId);
+		
+	}
 	
 
 	@Transactional(readOnly = true)

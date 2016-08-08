@@ -157,7 +157,7 @@ public class WoService {
 		long i=1;
 		for(PWo p:pWos)
 		{
-			logger.debug("woNo: " + p.getWoNo());
+			//logger.debug("woNo: " + p.getWoNo());
 			SMaterial s = p.getSSo().getSMaterial();
 			PRoutine routine = pRoutineRepository.getByMaterialIdAndPline(s.getIdMaterial(), "PULLEY");
 			if(routine==null)
@@ -169,7 +169,7 @@ public class WoService {
 			
 			if(routine!=null&&cpps!=null&&!cpps.isEmpty())
 			{
-				logger.debug("has cpps: " + cpps.size());
+				//logger.debug("has cpps: " + cpps.size());
 				List<PRoutineD> routineDList = pRoutineDRepository.findByRoutineId(routine.getIdRoutine());
 				WSWoStatus w = new WSWoStatus();
 				w.setId(i);
@@ -248,28 +248,35 @@ public class WoService {
 					List<PCPp> dcpps = pCPpRepository.getFinishedCppByRoutineDId(rd.getIdRoutineD());
 					if(dcpps!=null&&!dcpps.isEmpty())
 					{
-						logger.debug("cppsize for rd: " + rd.getRouteNo() +", cpps size: " + dcpps.size());
+			//			logger.debug("cppsize for rd: " + rd.getRouteNo() +", cpps size: " + dcpps.size());
 						long dev =0; //延迟，小时
+						long devStart = 0;
 						for(PCPp c:dcpps)
 						{
 							if(c.getPlanSt()!=null&&c.getPlanFt()!=null&&c.getActSt()!=null&&c.getActFt()!=null)
 							{
-								logger.debug("ps: " + c.getPlanSt().getTime());
-								logger.debug("pf: " + c.getPlanFt().getTime());
-								logger.debug("as: " + c.getActSt().getTime());
-								logger.debug("af: " + c.getActFt().getTime());
+//								logger.debug("ps: " + c.getPlanSt().getTime());
+//								logger.debug("pf: " + c.getPlanFt().getTime());
+//								logger.debug("as: " + c.getActSt().getTime());
+//								logger.debug("af: " + c.getActFt().getTime());
+								if(devStart<(c.getActSt().getTime()-c.getPlanSt().getTime()))
+								{
+									devStart = c.getActSt().getTime()-c.getPlanSt().getTime();
+								}
 								
 								dev =dev + ((c.getActFt().getTime()-c.getActSt().getTime())-(c.getPlanFt().getTime()-c.getPlanSt().getTime()))/(1000*60*60);
 							}
 						}
-						
+						devStart = devStart/(1000*60*60);
 						if(rd.getRouteNo().equals("010"))
 						{
 							
+							r1.setDelayStart(""+devStart);
 							if(dev>=delay)
 							{
 								r1.setDelay(""+dev);
 								r1.setStatus("3.png");
+								
 							}else if(dev<delay&&dev>=0)
 							{
 								r1.setStatus("2.png");
@@ -284,8 +291,10 @@ public class WoService {
 						
 						if(rd.getRouteNo().equals("020"))
 						{
+							r2.setDelayStart(""+devStart);
 							if(dev>=delay)
 							{
+								
 								r2.setDelay(""+dev);
 								r2.setStatus("3.png");
 							}else if(dev<delay&&dev>=0)
@@ -303,8 +312,10 @@ public class WoService {
 
 						if(rd.getRouteNo().equals("030"))
 						{
+							r3.setDelayStart(""+devStart);
 							if(dev>=delay)
 							{
+								
 								r3.setDelay(""+dev);
 								r3.setStatus("3.png");
 							}else if(dev<delay&&dev>=0)
@@ -321,8 +332,10 @@ public class WoService {
 
 						if(rd.getRouteNo().equals("050"))
 						{
+							r4.setDelayStart(""+devStart);
 							if(dev>=delay)
 							{
+								
 								r4.setDelay(""+dev);
 								r4.setStatus("3.png");
 							}else if(dev<delay&&dev>=0)
@@ -340,8 +353,10 @@ public class WoService {
 						
 						if(rd.getRouteNo().equals("060"))
 						{
+							r5.setDelayStart(""+devStart);
 							if(dev>=delay)
 							{
+								
 								r5.setDelay(""+dev);
 								r5.setStatus("3.png");
 							}else if(dev<delay&&dev>=0)
@@ -358,8 +373,10 @@ public class WoService {
 						
 						if(rd.getRouteNo().equals("080"))
 						{
+							r6.setDelayStart(""+devStart);
 							if(dev>=delay)
 							{
+								
 								r6.setDelay(""+dev);
 								r6.setStatus("3.png");
 							}else if(dev<delay&&dev>=0)
@@ -375,8 +392,10 @@ public class WoService {
 						
 						if(rd.getRouteNo().equals("090"))
 						{
+							r7.setDelayStart(""+devStart);
 							if(dev>=delay)
 							{
+								
 								r7.setDelay(""+dev);
 								r7.setStatus("3.png");
 							}else if(dev<delay&&dev>=0)
@@ -393,8 +412,10 @@ public class WoService {
 						
 						if(rd.getRouteNo().equals("100"))
 						{
+							r8.setDelayStart(""+devStart);
 							if(dev>=delay)
 							{
+								
 								r8.setDelay(""+dev);
 								r8.setStatus("3.png");
 							}else if(dev<delay&&dev>=0)
@@ -411,8 +432,10 @@ public class WoService {
 						
 						if(rd.getRouteNo().equals("105"))
 						{
+							r9.setDelayStart(""+devStart);
 							if(dev>=delay)
 							{
+								
 								r9.setDelay(""+dev);
 								r9.setStatus("3.png");
 							}else if(dev<delay&&dev>=0)
@@ -429,8 +452,10 @@ public class WoService {
 						
 						if(rd.getRouteNo().equals("110"))
 						{
+							r10.setDelayStart(""+devStart);
 							if(dev>=delay)
 							{
+								
 								r10.setDelay(""+dev);
 								r10.setStatus("3.png");
 							}else if(dev<delay&&dev>=0)
@@ -447,8 +472,10 @@ public class WoService {
 						
 						if(rd.getRouteNo().equals("120"))
 						{
+							r11.setDelayStart(""+devStart);
 							if(dev>=delay)
 							{
+								
 								r11.setDelay(""+dev);
 								r11.setStatus("3.png");
 							}else if(dev<delay&&dev>=0)
@@ -465,8 +492,10 @@ public class WoService {
 						
 						if(rd.getRouteNo().equals("130"))
 						{
+							r12.setDelayStart(""+devStart);
 							if(dev>=delay)
 							{
+							
 								r12.setDelay(""+dev);
 								r12.setStatus("3.png");
 							}else if(dev<delay&&dev>=0)
@@ -483,8 +512,10 @@ public class WoService {
 						
 						if(rd.getRouteNo().equals("140"))
 						{
+							r13.setDelayStart(""+devStart);
 							if(dev>=delay)
 							{
+								
 								r13.setDelay(""+dev);
 								r13.setStatus("3.png");
 							}else if(dev<delay&&dev>=0)
@@ -501,8 +532,10 @@ public class WoService {
 						
 						if(rd.getRouteNo().equals("150"))
 						{
+							r14.setDelayStart(""+devStart);
 							if(dev>=delay)
 							{
+								
 								r14.setDelay(""+dev);
 								r14.setStatus("3.png");
 							}else if(dev<delay&&dev>=0)
@@ -516,9 +549,9 @@ public class WoService {
 							
 						}
 						
-						
 						if(rd.getRouteNo().equals("160"))
 						{
+							r15.setDelayStart(""+devStart);
 							if(dev>=delay)
 							{
 								r15.setDelay(""+dev);
@@ -539,6 +572,7 @@ public class WoService {
 						{
 							if(dev>=delay)
 							{
+								r16.setDelayStart(""+devStart);
 								r16.setDelay(""+dev);
 								r16.setStatus("3.png");
 							}else if(dev<delay&&dev>=0)
