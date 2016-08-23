@@ -6912,3 +6912,9 @@ Caused by: org.hibernate.QueryException: Unable to resolve path [p.id], unexpect
 [2016-08-23 14:16:48.114] log4j2 - 6957 DEBUG [http-nio-9999-exec-6] --- MMainRecordService: type: 2, day: 236, week: 35, month: 8, season: 3, halfYear: 2, year: 2016, timeValue: 35
 [2016-08-23 14:16:48.115] log4j2 - 6957 DEBUG [http-nio-9999-exec-6] --- MMainRecordService: type: 2, day: 236, week: 35, month: 8, season: 3, halfYear: 2, year: 2016, timeValue: 35
 [2016-08-23 14:16:48.117] log4j2 - 6957 DEBUG [http-nio-9999-exec-6] --- MMainRecordService: type: 3, day: 236, week: 35, month: 8, season: 3, halfYear: 2, year: 2016, timeValue: 8
+[2016-08-23 14:21:55.716] log4j2 - 6957 DEBUG [http-nio-9999-exec-6] --- MtfService:  save to new bin: IQC, qty:100
+[2016-08-23 15:01:49.030] log4j2 - 7145  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7145 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-08-23 15:01:49.032] log4j2 - 7145 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-08-23 15:02:10.322] log4j2 - 7145 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-08-23 15:02:10.326] log4j2 - 7145 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-08-23 15:02:16.521] log4j2 - 7145  INFO [main] --- Application: Started Application in 27.763 seconds (JVM running for 28.789)
