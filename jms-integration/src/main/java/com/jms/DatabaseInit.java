@@ -19,14 +19,17 @@ import com.jms.email.EmailSenderTest;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.service.company.CompanyService;
+import com.jms.service.maintenance.MDeptService;
 import com.jms.service.maintenance.MMachineGroupService;
 import com.jms.service.maintenance.MMachineService;
 import com.jms.service.maintenance.MMainCycleService;
+import com.jms.service.maintenance.MResultService;
 import com.jms.service.maintenance.MStatusDicService;
 import com.jms.service.production.EWorkCategoryDicService;
 import com.jms.service.production.PPUTimeService;
 import com.jms.service.production.PStatusDicService;
 import com.jms.service.production.PStopsCodeService;
+import com.jms.service.production.PStopsPlanService;
 import com.jms.service.quality.ItemTypeService;
 import com.jms.service.quality.TesterService;
 import com.jms.service.store.CurrencyTypeService;
@@ -156,7 +159,7 @@ public class DatabaseInit {
 	
 	@Autowired
 	private SMtfNoService sMtfNoService;
-	
+	@Autowired private MResultService mResultService;
 	
 	@Autowired
 	private EventReceiverService eventReceiverService;
@@ -170,6 +173,12 @@ public class DatabaseInit {
 	@Autowired
 	private  MMainCycleService mMainCycleService;
 	
+	@Autowired
+	private MDeptService mDeptService;
+	
+	
+	@Autowired
+	private PStopsPlanService pStopsPlanService;
 	// 在系统初装的执行切只能执行一次，读取csv文件的数据到数据库中。
 	// todo:详细说明系统预设的所有信息这些信息的用途
 	public void init(ConfigurableApplicationContext ctx) throws IOException {
@@ -314,6 +323,12 @@ public class DatabaseInit {
 		
 	//	companyService.addAppsPerms();
 		//mMainCycleService.loadMainCycles();
+		
+//		mDeptService.loadDepts();
+		
+//		sMtfNoService.loadSmtfNosByCompanyId(11l);
+//		sMtfNoService.loadSmtfNosByCompanyId(12l);
+//		mResultService.loadMResults();
 	}
 	
 	
@@ -324,4 +339,12 @@ public class DatabaseInit {
 		
 	}
 
+	@Scheduled(fixedRate=1000*60*5)
+	public void remind() {
+		//System.out.println("remind");
+		pStopsPlanService.remind();
+		
+	}
+
+	
 }

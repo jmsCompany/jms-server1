@@ -13,14 +13,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.csvreader.CsvReader;
 import com.jms.domain.db.MMachine;
+import com.jms.domain.db.MMainItem;
 import com.jms.domain.db.MSparePart;
 import com.jms.domain.db.SInventory;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.m.WSMSparePart;
 import com.jms.domain.ws.m.WSMachine;
+import com.jms.domain.ws.m.WSMainItem;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
+import com.jms.repositories.m.MDeptRepository;
 import com.jms.repositories.m.MMachineGroupRepository;
 import com.jms.repositories.m.MMachineRepository;
 import com.jms.repositories.m.MMainCycleRepository;
@@ -63,114 +66,84 @@ public class MMainItemService {
 
 	@Autowired private SInventoryRepository sInventoryRepository;
 	
+	@Autowired private  MDeptRepository mDeptRepository;
+	
 
 	
 	
-//	
-//	@Transactional(readOnly=true)
-//	public WSMSparePart findWSMSparePart(Long idPart) throws Exception{	
-//		MSparePart mSparePart = mSparePartRepository.findOne(idPart);
-//		return toWSMSparePart(mSparePart);
-//	}
-//	public Valid saveWSMSparePart(WSMSparePart wsMSparePart) throws Exception
-//	{
-//		Valid  v = new Valid();
-//		MSparePart mSparePart;
-//		if(wsMSparePart.getIdPart()!=null&&!wsMSparePart.getIdPart().equals(0l))
-//		{
-//			mSparePart = mSparePartRepository.findOne(wsMSparePart.getIdPart());
-//			MSparePart m = mSparePartRepository.findByMaterialIdAndMachineId(wsMSparePart.getIdMaterial(), wsMSparePart.getIdMachine());
-//			if(m!=null&&!m.getIdPart().equals(wsMSparePart.getIdPart()))
-//			{
-//				v.setValid(false);
-//				v.setMsg("该配件已经存在！");
-//				return v;
-//			}
-//			
-//		}
-//		else
-//		{
-//			mSparePart = new MSparePart();
-//			MSparePart m = mSparePartRepository.findByMaterialIdAndMachineId(wsMSparePart.getIdMaterial(), wsMSparePart.getIdMachine());
-//			if(m!=null)
-//			{
-//				v.setValid(false);
-//				v.setMsg("该配件已经存在！");
-//				return v;
-//			}
-//	
-//		}
-//		MSparePart dbMSparePart = toDBMSparePart( wsMSparePart, mSparePart);
-//		dbMSparePart = mSparePartRepository.save(dbMSparePart);
-//		v.setValid(true);
-//		return v;
-//		
-//	}
-//	
-//	
-//	@Transactional(readOnly=false)
-//	public Valid deleteMSparePart(Long idPart)
-//	{
-//		Valid valid = new Valid();
-//		mSparePartRepository.delete(idPart);
-//		valid.setValid(true);
-//		return valid;
-//	}
-//	
-//	protected MSparePart toDBMSparePart(WSMSparePart wsMSparePart,MSparePart mSparePart) throws Exception
-//	{
-//		MSparePart dbMSparePart= (MSparePart)BeanUtil.shallowCopy(wsMSparePart, MSparePart.class, mSparePart);
-//		if(wsMSparePart.getIdMachine()!=null)
-//		{
-//			mSparePart.setMMachine(mMachineRepository.findOne(wsMSparePart.getIdMachine()));
-//		}
-//		if(wsMSparePart.getIdMaterial()!=null)
-//		{
-//			mSparePart.setSMaterial(sMaterialRepository.findOne(wsMSparePart.getIdMaterial()));
-//		}
-//		if(wsMSparePart.getIdStatus()!=null)
-//		{
-//			mSparePart.setMStatusDic(mStatusDicRepository.findOne(wsMSparePart.getIdStatus()));
-//		}
-//	    return dbMSparePart;
-//	}
-//	public WSMSparePart toWSMSparePart(MSparePart mSparePart) throws Exception
-//	{
-//		WSMSparePart pc = (WSMSparePart)BeanUtil.shallowCopy(mSparePart, WSMSparePart.class, null);
-//		if(mSparePart.getMMachine()!=null)
-//		{
-//			pc.setIdMachine(mSparePart.getMMachine().getIdMachine());
-//			pc.setMachine(mSparePart.getMMachine().getCode());
-//		}
-//		if(mSparePart.getMStatusDic()!=null)
-//		{
-//			pc.setStatus(mSparePart.getMStatusDic().getName());
-//			pc.setIdStatus(mSparePart.getMStatusDic().getIdMstatusDic());
-//		}
-//		if(mSparePart.getSMaterial()!=null)
-//		{
-//			pc.setIdMaterial(mSparePart.getSMaterial().getIdMaterial());
-//			pc.setMaterial(mSparePart.getSMaterial().getPno()+"_"+mSparePart.getSMaterial().getRev()+"_"+mSparePart.getSMaterial().getDes());
-//			if(mSparePart.getSMaterial().getSafetyInv()!=null)
-//			{
-//				pc.setSafetyQty(mSparePart.getSMaterial().getSafetyInv());
-//			}
-//			pc.setRemark(mSparePart.getSMaterial().getRemark());
-//			long qty=0;
-//			for(SInventory s:sInventoryRepository.findByMaterialId(mSparePart.getSMaterial().getIdMaterial()))
-//			{
-//				if(s.getQty()>0)
-//				{
-//					qty = qty + s.getQty();
-//				}
-//						
-//			}
-//			pc.setQty(qty);
-//			
-//			pc.setOutgoing(0l);
-//			pc.setIncoming(0l);
-//			
-//		}
-//	    return pc;
-//	}
+	
+	@Transactional(readOnly=true)
+	public WSMainItem findWSMainItem(Long idMainItem) throws Exception{	
+		MMainItem mMainItem = mMainItemRepository.findOne(idMainItem);
+		return toWSMainItem(mMainItem);
+	}
+	public Valid saveWSMainItem(WSMainItem wsMainItem) throws Exception
+	{
+		Valid  v = new Valid();
+		MMainItem mMainItem;
+		if(wsMainItem.getIdMainItem()!=null&&!wsMainItem.getIdMainItem().equals(0l))
+		{
+			mMainItem = mMainItemRepository.findOne(wsMainItem.getIdMainItem());
+			
+		}
+		else
+		{
+			mMainItem = new MMainItem();
+	
+		}
+		MMainItem dbMMainItem = toDBMMainItem( wsMainItem, mMainItem);
+		mMainItemRepository.save(dbMMainItem);
+		v.setValid(true);
+		return v;
+		
+	}
+	
+	
+	@Transactional(readOnly=false)
+	public Valid deleteWSMainItem(Long idMainItem)
+	{
+		Valid valid = new Valid();
+		mMainItemRepository.delete(idMainItem);
+		valid.setValid(true);
+		return valid;
+	}
+	
+	protected MMainItem toDBMMainItem(WSMainItem wsMainItem,MMainItem mMainItem) throws Exception
+	{
+		MMainItem dbMMainItem= (MMainItem)BeanUtil.shallowCopy(wsMainItem, MMainItem.class, mMainItem);
+		if(wsMainItem.getIdMachine()!=null)
+		{
+			dbMMainItem.setMMachine(mMachineRepository.findOne(wsMainItem.getIdMachine()));
+		}
+		if(wsMainItem.getIdMainCycle()!=null)
+		{
+			dbMMainItem.setMMainCycle(mMainCycleRepository.findOne(wsMainItem.getIdMainCycle()));
+		}
+		if(wsMainItem.getIdMDept()!=null)
+		{
+			dbMMainItem.setMDept(mDeptRepository.findOne(wsMainItem.getIdMDept()));
+		}
+	    return dbMMainItem;
+	}
+	public WSMainItem toWSMainItem(MMainItem mMainItem) throws Exception
+	{
+		WSMainItem pc = (WSMainItem)BeanUtil.shallowCopy(mMainItem, WSMainItem.class, null);
+		if(mMainItem.getMMachine()!=null)
+		{
+			pc.setIdMachine(mMainItem.getMMachine().getIdMachine());
+			pc.setMachine(mMainItem.getMMachine().getCode());
+		}
+		if(mMainItem.getMDept()!=null)
+		{
+			pc.setIdMDept(mMainItem.getMDept().getIdDept());
+			pc.setmDept(mMainItem.getMDept().getDes());
+		}
+		if(mMainItem.getMMainCycle()!=null)
+		{
+			pc.setIdMainCycle(mMainItem.getMMainCycle().getIdMainCycle());
+			pc.setMainCycle(mMainItem.getMMainCycle().getMainCycle());
+			
+		}
+	    return pc;
+	}
 }

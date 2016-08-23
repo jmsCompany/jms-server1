@@ -1,5 +1,7 @@
 package com.jms.domain.ws.m;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class WSMainItem {
 	
@@ -8,7 +10,12 @@ public class WSMainItem {
     private String machine;
     private Long idMainCycle;
     private String mainCycle;
+    
+    private Long idMDept;
+    private String mDept;
     private String item;
+    
+    private List<WSMainItemResult> itemValues = new ArrayList<WSMainItemResult>();
 	
     public Long getIdMainItem() {
 		return idMainItem;
@@ -45,6 +52,24 @@ public class WSMainItem {
 	}
 	public void setItem(String item) {
 		this.item = item;
+	}
+	public Long getIdMDept() {
+		return idMDept;
+	}
+	public void setIdMDept(Long idMDept) {
+		this.idMDept = idMDept;
+	}
+	public String getmDept() {
+		return mDept;
+	}
+	public void setmDept(String mDept) {
+		this.mDept = mDept;
+	}
+	public List<WSMainItemResult> getItemValues() {
+		return itemValues;
+	}
+	public void setItemValues(List<WSMainItemResult> itemValues) {
+		this.itemValues = itemValues;
 	}
    
 }

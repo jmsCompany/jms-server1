@@ -7,6 +7,9 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import com.jms.domain.db.Groups;
@@ -14,6 +17,7 @@ import com.jms.domain.db.Notification;
 import com.jms.domain.db.Receiver;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSNotification;
+import com.jms.domain.ws.WSPageRequest;
 import com.jms.repositories.system.ReceiverRepository;
 import com.jms.repositories.user.GroupRepository;
 import com.jms.system.INotificationService;
@@ -37,7 +41,7 @@ public class NotificationController {
 //		Pageable pageable = new PageRequest(wsPageRequest.getPage(),wsPageRequest.getSize());
 //		return notificationService.loadNotifactions(pageable);
 //	}
-//	
+	
 
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/notifations")

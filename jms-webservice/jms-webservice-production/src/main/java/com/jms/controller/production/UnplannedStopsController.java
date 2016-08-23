@@ -56,6 +56,13 @@ public class UnplannedStopsController {
 	}
 	
 	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findWSUnPlannedStop", method=RequestMethod.GET)
+	public WSPUnplannedStops findWSUnPlannedStop(@RequestParam("idUnplannedStops") Long idUnplannedStops) throws Exception {
+		return pUnplannedStopsService.findWSPUnplannedStopsById(idUnplannedStops);
+		
+	}
+	
 	
 	/**type: 0 处理开始，1 处理结束， 2 结束确认*/
 	@Transactional(readOnly = false)
@@ -68,10 +75,9 @@ public class UnplannedStopsController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/findWSPUnplannedStopsByCppId", method=RequestMethod.GET)
 	public List<WSPUnplannedStops> findWSPUnplannedStopsByCppId(@RequestParam("cppId") Long cppId) throws Exception {
-
 		return pUnplannedStopsService.findWSPUnplannedStopsByCppId(cppId);
-	
 	}
+	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/findWSPUnplannedStopsBySubCodeId", method=RequestMethod.GET)
 	public List<WSPUnplannedStops> findWSPUnplannedStopsBySubCodeId(@RequestParam("subCodeId") Long subCodeId) throws Exception {
@@ -104,7 +110,7 @@ public class UnplannedStopsController {
 			{
 				subCode =w.getPSubCode().getSubCode();
 			}
-			String[] d = {""+m.getCode(),subCode,opSt,eqSt,eqFt,opFt};
+			String[] d = {""+m.getCode(),subCode,opSt,eqSt,eqFt,opFt,""+w.getIdUnplannedStops()};
 			lst.add(d);
 
 		}

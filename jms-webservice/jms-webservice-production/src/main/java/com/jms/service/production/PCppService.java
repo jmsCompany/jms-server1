@@ -3,7 +3,10 @@ package com.jms.service.production;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -344,6 +347,7 @@ public class PCppService {
 	    pc.setCppCode(pCPp.getCPpCode());
 		return pc;
 	}
+	
 	@Transactional(readOnly = true)
 	public List<WSOEE> findWSOEE(Long fromDate,
 			 Long toDate,Long machineId,Long materialId)
@@ -352,7 +356,16 @@ public class PCppService {
 		Long companyId =securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		Date from = new Date(fromDate);
 		Date to = new Date(toDate);
-		List<PCPp> cpps = pCPpRepository.getByFromDateToDateAndMachineIdAndMaterialId(companyId, from, to, machineId,materialId);
+		List<PCPp> cpps;
+		if(materialId!=null)
+		{
+			cpps = pCPpRepository.getByFromDateToDateAndMachineIdAndMaterialId(companyId, from, to, machineId,materialId);
+		}
+		else
+		{
+			cpps = pCPpRepository.getByFromDateToDateAndMachineId(companyId, from, to, machineId);
+		}
+
 		for(PCPp cpp:cpps)
 		{
 			if(cpp.getPlanSt()==null||cpp.getPlanFt()==null||cpp.getActSt()==null||cpp.getActFt()==null)
@@ -382,7 +395,7 @@ public class PCppService {
 			w.setLoadingTime(loadingTime);
 			w.setMachine(cpp.getMMachine().getCode());
 			w.setMachineId(cpp.getMMachine().getIdMachine());
-	long machineTime =(long)(cpp.getPRoutineD().getStdWtMachine()*60*60*1000);
+	        long machineTime =(long)(cpp.getPRoutineD().getStdWtMachine()*60*60*1000);
 			w.setMachineTime(machineTime);  //理论加工时长.设备公司
 
 			w.setPassedQty(actQty); //to be modified
@@ -404,10 +417,12 @@ public class PCppService {
 			
 			w.setPlanTime(cpp.getPlanFt().getTime()-cpp.getPlanSt().getTime());
 			
-			w.setRoutineD(cpp.getPRoutineD().getRouteNo());
+			w.setRoutineD(cpp.getPRoutineD().getRouteNo() +"_" +cpp.getPRoutineD().getDes());
 			w.setRoutineDId(cpp.getPRoutineD().getIdRoutineD());
 			w.setShiftD(cpp.getPShiftPlanD().getShift());
+			
 			Long unplannnedStopTime =0l;
+		
 			for(PUnplannedStops p:pUnplannedStopsRepository.getByMachineIdAndDuration(machineId, cpp.getActSt(), cpp.getActFt()))
 			{
 				if(p.getEqFt()!=null)
@@ -419,6 +434,7 @@ public class PCppService {
 					unplannnedStopTime = unplannnedStopTime + cpp.getActFt().getTime()-p.getOpSt().getTime();
 				}
 			}
+			
 			w.setUnPlannedStopTime(unplannnedStopTime);
             w.setWo(cpp.getPWo().getWoNo());
             w.setWoId(cpp.getPWo().getIdWo());
@@ -443,6 +459,77 @@ public class PCppService {
 		}
 		return ws;
 	}
+	
+	
+	
+	
+	@Transactional(readOnly = true)
+	public List<WSOEE> findLongWSOEE(Long fromDate,
+			 Long toDate,Long machineId,Long materialId)
+	{
+		List<WSOEE> ws = new ArrayList<WSOEE>();
+		Long companyId =securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		Date from = new Date(fromDate);
+		Date to = new Date(toDate);
+		
+		//key 工单 ＋工序
+		Map<String,WSOEE> oeeMap = new LinkedHashMap<String,WSOEE>();
+		
+		List<PCPp> cpps;
+		if(materialId!=null)
+		{
+			cpps = pCPpRepository.getByFromDateToDateAndMachineIdAndMaterialId(companyId, from, to, machineId,materialId);
+		}
+		else
+		{
+			cpps = pCPpRepository.getByFromDateToDateAndMachineId(companyId, from, to, machineId);
+		}
+		
+		for(PCPp cpp:cpps)
+		{
+			if(cpp.getPlanSt()==null||cpp.getPlanFt()==null||cpp.getActSt()==null||cpp.getActFt()==null)
+			{
+				continue;
+			}
+			Long woId = cpp.getPWo().getIdWo();
+			Long routineDId = cpp.getPRoutineD().getIdRoutineD();
+			WSOEE w;
+			if(oeeMap.containsKey(woId+"_"+routineDId))
+			{
+				w = oeeMap.get(woId+"_"+routineDId);
+			}
+			else
+			{
+				w = new WSOEE();
+				w.setWo(cpp.getPWo().getWoNo());
+				w.setRoutineD(cpp.getPRoutineD().getRouteNo() +"_" +cpp.getPRoutineD().getDes());
+				w.setPlanTime(0l);
+				w.setActTime(0l);
+				w.setMachine(cpp.getMMachine().getCode());
+				w.setMachineId(cpp.getMMachine().getIdMachine());
+				oeeMap.put(woId+"_"+routineDId, w);
+				ws.add(w);
+			}
+			
+			//计划时长
+			long plant = w.getPlanTime()+cpp.getPlanFt().getTime()-cpp.getPlanSt().getTime();
+		    w.setPlanTime(plant);
+			
+		    //实际时长
+			long actT = w.getActTime() + cpp.getActFt().getTime()-cpp.getActSt().getTime();
+			w.setActTime(actT);
+			
+
+            float oee = (float)plant/(float)actT;
+			w.setOee(oee);
+       
+		
+		}
+		return ws;
+	}
+	
+	
+	
 	
 	@Transactional(readOnly = true)
 	public WSPlannedMaterialSending findWSPlannedMaterialSending(Long fromDate,

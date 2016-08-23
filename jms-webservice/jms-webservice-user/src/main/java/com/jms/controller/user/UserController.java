@@ -3,6 +3,7 @@ package com.jms.controller.user;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,8 @@ import com.jms.domain.db.GroupMembers;
 import com.jms.domain.db.Groups;
 import com.jms.domain.db.PCPp;
 import com.jms.domain.db.PCheckTime;
+import com.jms.domain.db.PCppOp;
+import com.jms.domain.db.PCppOpId;
 import com.jms.domain.db.PRoutineDAtt;
 import com.jms.domain.db.PRoutineDCategory;
 import com.jms.domain.db.Roles;
@@ -40,9 +43,11 @@ import com.jms.domain.ws.WSUserRoles;
 import com.jms.domain.ws.WSUserPassword;
 import com.jms.domain.ws.m.WSMachine;
 import com.jms.domain.ws.p.WSPCppAndriod;
+import com.jms.domain.ws.p.WSPCppOP;
 import com.jms.domain.ws.p.WSPWo;
 import com.jms.domainadapter.UserAdapter;
 import com.jms.repositories.p.PCPpRepository;
+import com.jms.repositories.p.PCppOpRepository;
 import com.jms.repositories.system.AppsRepository;
 import com.jms.repositories.user.GroupMemberRepository;
 import com.jms.repositories.user.GroupRepository;
@@ -80,6 +85,8 @@ public class UserController {
 	private SecurityUtils securityUtils;
 	@Autowired
 	private PCPpRepository pCPpRepository;
+	@Autowired
+	private PCppOpRepository pCppOpRepository;
 	
 	
 	@Autowired
@@ -100,6 +107,420 @@ public class UserController {
 		binder.addValidators(wsUsersValidator);
 	}
 	*/
+
+	@Transactional(readOnly=false)
+	@RequestMapping(value="/u/saveSelectedCppList", method=RequestMethod.POST)
+	public WSUserProfile saveSelectedCppList(@RequestBody List<WSPCppOP> cppsOps) throws Exception {
+	{
+
+		List<PCPp> cppList = new ArrayList<PCPp>();
+		for(WSPCppOP w :cppsOps)
+		{
+			PCppOpId id = new PCppOpId(); 
+			id.setIdCpp(w.getIdCpp());
+			id.setIdUser(securityUtils.getCurrentDBUser().getIdUser());
+			PCppOp co = pCppOpRepository.findOne(id);
+			if(w.isChecked())
+			{
+				if(co==null)
+				{
+					co = new PCppOp(id);
+					pCppOpRepository.save(co);
+				}
+				cppList.add(pCPpRepository.findOne(w.getIdCpp()));
+			}
+			else
+			{
+				if(co!=null)
+				{
+					pCppOpRepository.delete(co);
+				}
+			}
+			
+
+		}
+
+
+		WSUserProfile userProfile = new WSUserProfile();
+	
+		Users u =securityUtils.getCurrentDBUser();
+		userProfile.setLogin(u.getUsername());
+		userProfile.setToken(u.getToken());
+		userProfile.setIdUser(u.getIdUser());
+		//userProfile.setLogoURL("www.sandvik.com");
+		userProfile.setIdCompany(u.getCompany().getIdCompany());
+		userProfile.setName(u.getName());
+		userProfile.setDepartment("");
+		Boolean isOP= false;
+		userProfile.setIsAdmin(false);
+		for(GroupMembers g:u.getGroupMemberses())
+		{
+			//System.out.println("g: " + g.getGroups().getGroupName());
+			if(g.getGroups().getGroupName().equals("admin"))
+			{
+				userProfile.setIsAdmin(true);
+			}
+			
+//			g.getGroups().getGroupType().getIdGroupType().equals(5l)&&
+			if(g.getGroups().getGroupName().equals("OP"))
+			{
+				isOP=true;
+				Long companyId= u.getCompany().getIdCompany();
+				Long userId = u.getIdUser();
+				
+			
+				List<WSPCppAndriod> cpps = new ArrayList<WSPCppAndriod>();
+		
+				
+				List<PCppOp> cops = pCppOpRepository.getByUserId(securityUtils.getCurrentDBUser().getIdUser());
+				List<PCPp> allCpps = new ArrayList<PCPp>();
+               for(PCppOp o :cops)
+               {
+            	   PCPp c = pCPpRepository.getOne(o.getId().getIdCpp());
+            	   if(c.getActFt()==null)
+            	   {
+            		   allCpps.add(c);
+            	   }
+               }
+				
+				
+				for( PCPp cpp:allCpps)
+				{
+					
+					WSPCppAndriod m = new WSPCppAndriod();
+					m.setChecklistId("001"); //需要修改
+					m.setCppId(cpp.getIdCPp());
+					if(cpp.getActFt()!=null)
+					m.setActFt(cpp.getActFt().getTime());
+					if(cpp.getActSt()!=null)
+						m.setActSt(cpp.getActSt().getTime());
+					
+					//产品图纸
+					if(cpp.getPRoutineD()!=null)
+					{
+						if(cpp.getPRoutineD().getPRoutine()!=null)
+						{
+							if(cpp.getPRoutineD().getPRoutine().getPDraw()!=null)
+							{
+								if(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawAtt()!=null)
+								{
+									WSFileMeta f = new WSFileMeta();
+									f.setName(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawAtt());
+									f.setDescription("产品图纸");
+									m.getFiles().add(f);
+									m.setDrawNo(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawNo());
+									m.setDrawVer(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawVer());
+								}
+							}
+							
+						}
+						
+						
+						//工种
+						for(PRoutineDCategory pr:cpp.getPRoutineD().getPRoutineDCategories())
+						{
+							m.getCategories().add(pr.getClass().getSimpleName());
+						}
+					}
+					
+				
+				 
+					m.setFt(cpp.getPlanFt().getTime());
+					m.setSt(cpp.getPlanSt().getTime());
+					
+				//	System.out.println("plan st: " + cpp.getPlanFt().getTime() +", plan ft: " + cpp.getPlanFt().getTime());
+					
+					if(cpp.getMMachine()!=null)
+					{
+						if(cpp.getMMachine().getPLine()!=null)
+						{
+							m.setLine(cpp.getMMachine().getPLine().getPline());
+						}
+						m.setmNo(cpp.getMMachine().getCode());
+						m.setIdMachine(cpp.getMMachine().getIdMachine());
+					}
+				
+				
+		
+					m.setOp(cpp.getUsers().getName());
+					m.setpNo(cpp.getPWo().getSSo().getSMaterial().getPno());
+					m.setQty(cpp.getQty());
+					
+					if(cpp.getPRoutineD()!=null)
+					{
+						m.setRoute(cpp.getPRoutineD().getRouteNo());
+						//m.setRouteId(cpp.getPRoutineD().get);//图纸
+						
+						//附件
+						for(PRoutineDAtt pa:cpp.getPRoutineD().getPRoutineDAtts())
+						{
+							WSFileMeta f = new WSFileMeta();
+							f.setDescription(pa.getPAttDraw().getName());
+							f.setName(pa.getPAttDraw().getFilename());
+							m.getFiles().add(f);
+						}
+						m.setStdWtLabor(cpp.getPRoutineD().getStdWtLabor());
+						m.setStdWtMachine(cpp.getPRoutineD().getStdWtMachine());
+						m.setStdWtSetup(cpp.getPRoutineD().getStdWtSetup());
+					}
+				
+					m.setWoNo(cpp.getPWo().getWoNo());
+					m.setShift(cpp.getPShiftPlanD().getShift());
+					m.setSt(cpp.getPlanSt().getTime());
+				
+				
+					
+					int i=0;
+					for(PCheckTime pc :cpp.getMMachine().getPCheckTimes())
+					{
+						if(i>0)
+							break;
+						Long checkInterval = pc.getInterval1();
+						Long  intervalType = pc.getPUTime().getIdUTime(); //1分钟，2小时， 3天
+						if(intervalType.equals(2l))
+						{
+							checkInterval=checkInterval*60;
+						}
+						else if(intervalType.equals(3l))
+						{
+							checkInterval=checkInterval*((cpp.getPlanFt().getTime()-cpp.getPlanSt().getTime())/1000*60);
+						}
+						m.setCheckInterval(checkInterval);
+						m.setCheckIntervalType(intervalType);
+						i++;
+					}
+			
+					cpps.add(m);
+				}
+				userProfile.setPcppList(cpps);
+			}
+		}
+		
+		userProfile.setIsOP(isOP);
+		List<Apps> appList =appsRepository.findAll();
+		Map<Apps, String> smap= securedObjectService.getSecuredObjectsWithPermissions(u, appList);
+		List<WSMenu> WSMenuList = new ArrayList<WSMenu>();
+		for(Apps a : smap.keySet())
+		{
+			WSMenu item = new WSMenu();
+			item.setGroup(a.getGroups());
+			item.setName(a.getAppName());
+			item.setId(a.getIdApp());
+			item.setUrl(a.getUrl());
+			item.setPermission(smap.get(a));
+			WSMenuList.add(item);
+		}
+		userProfile.setWSMenuList(WSMenuList);
+		return userProfile;
+	}
+	
+	}
+	
+
+	@RequestMapping(value="/u/updateUserProfile", method=RequestMethod.GET)
+	public WSUserProfile updateUserProfile() throws Exception {
+		
+
+		WSUserProfile userProfile = new WSUserProfile();
+	
+		Users u =securityUtils.getCurrentDBUser();
+		userProfile.setLogin(u.getUsername());
+		userProfile.setToken(u.getToken());
+		userProfile.setIdUser(u.getIdUser());
+		//userProfile.setLogoURL("www.sandvik.com");
+		userProfile.setIdCompany(u.getCompany().getIdCompany());
+		userProfile.setName(u.getName());
+		userProfile.setDepartment("");
+		Boolean isOP= false;
+		userProfile.setIsAdmin(false);
+		for(GroupMembers g:u.getGroupMemberses())
+		{
+			//System.out.println("g: " + g.getGroups().getGroupName());
+			if(g.getGroups().getGroupName().equals("admin"))
+			{
+				userProfile.setIsAdmin(true);
+			}
+			
+//			g.getGroups().getGroupType().getIdGroupType().equals(5l)&&
+			if(g.getGroups().getGroupName().equals("OP"))
+			{
+				isOP=true;
+				Long companyId= u.getCompany().getIdCompany();
+				Long userId = u.getIdUser();
+			
+				List<WSPCppAndriod> cpps = new ArrayList<WSPCppAndriod>();
+			//	System.out.println("取得日计划。。。。");
+
+		int num=0;
+				
+				Map<Long,PCPp> cppFinalMap = new LinkedHashMap<Long,PCPp>();
+				
+				List<PCPp> cppList = pCPpRepository.getByCompanyIdAndUserId(companyId, userId);
+				
+				for(PCPp cpp:cppList)
+				{
+					num++;
+					if(num>1&&cpp.getPlanSt().getTime()>(new Date().getTime())+86400000) //忽略大于明天的cpp
+					{
+						continue;
+					}
+					Long machineId =  cpp.getMMachine().getIdMachine();
+					cppFinalMap.put(cpp.getIdCPp(), cpp);
+					List<PCPp> others = pCPpRepository.getStartedCppBymachineId(machineId);
+					for(PCPp o: others)
+					{
+						cppFinalMap.put(o.getIdCPp(), o);
+					}
+					
+				}
+				
+				for(PCPp cpp:cppFinalMap.values())
+				{
+				
+					Long machineId =  cpp.getMMachine().getIdMachine();
+					cppFinalMap.put(cpp.getIdCPp(), cpp);
+					List<PCPp> others = pCPpRepository.getStartedCppBymachineId(machineId);
+					for(PCPp o: others)
+					{
+						cppFinalMap.put(o.getIdCPp(), o);
+					}
+					
+				}
+				
+				
+				for( PCPp cpp:cppFinalMap.values())
+				{
+					
+					WSPCppAndriod m = new WSPCppAndriod();
+					m.setChecklistId("001"); //需要修改
+					m.setCppId(cpp.getIdCPp());
+					if(cpp.getActFt()!=null)
+					m.setActFt(cpp.getActFt().getTime());
+					if(cpp.getActSt()!=null)
+						m.setActSt(cpp.getActSt().getTime());
+					
+					//产品图纸
+					if(cpp.getPRoutineD()!=null)
+					{
+						if(cpp.getPRoutineD().getPRoutine()!=null)
+						{
+							if(cpp.getPRoutineD().getPRoutine().getPDraw()!=null)
+							{
+								if(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawAtt()!=null)
+								{
+									WSFileMeta f = new WSFileMeta();
+									f.setName(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawAtt());
+									f.setDescription("产品图纸");
+									m.getFiles().add(f);
+									m.setDrawNo(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawNo());
+									m.setDrawVer(cpp.getPRoutineD().getPRoutine().getPDraw().getDrawVer());
+								}
+							}
+							
+						}
+						
+						
+						//工种
+						for(PRoutineDCategory pr:cpp.getPRoutineD().getPRoutineDCategories())
+						{
+							m.getCategories().add(pr.getClass().getSimpleName());
+						}
+					}
+					
+				
+				 
+					m.setFt(cpp.getPlanFt().getTime());
+					m.setSt(cpp.getPlanSt().getTime());
+					
+				//	System.out.println("plan st: " + cpp.getPlanFt().getTime() +", plan ft: " + cpp.getPlanFt().getTime());
+					
+					if(cpp.getMMachine()!=null)
+					{
+						if(cpp.getMMachine().getPLine()!=null)
+						{
+							m.setLine(cpp.getMMachine().getPLine().getPline());
+						}
+						m.setmNo(cpp.getMMachine().getCode());
+						m.setIdMachine(cpp.getMMachine().getIdMachine());
+					}
+				
+				
+		
+					m.setOp(cpp.getUsers().getName());
+					m.setpNo(cpp.getPWo().getSSo().getSMaterial().getPno());
+					m.setQty(cpp.getQty());
+					
+					if(cpp.getPRoutineD()!=null)
+					{
+						m.setRoute(cpp.getPRoutineD().getRouteNo());
+						//m.setRouteId(cpp.getPRoutineD().get);//图纸
+						
+						//附件
+						for(PRoutineDAtt pa:cpp.getPRoutineD().getPRoutineDAtts())
+						{
+							WSFileMeta f = new WSFileMeta();
+							f.setDescription(pa.getPAttDraw().getName());
+							f.setName(pa.getPAttDraw().getFilename());
+							m.getFiles().add(f);
+						}
+						m.setStdWtLabor(cpp.getPRoutineD().getStdWtLabor());
+						m.setStdWtMachine(cpp.getPRoutineD().getStdWtMachine());
+						m.setStdWtSetup(cpp.getPRoutineD().getStdWtSetup());
+					}
+				
+					m.setWoNo(cpp.getPWo().getWoNo());
+					m.setShift(cpp.getPShiftPlanD().getShift());
+					m.setSt(cpp.getPlanSt().getTime());
+				
+				
+					
+					int i=0;
+					for(PCheckTime pc :cpp.getMMachine().getPCheckTimes())
+					{
+						if(i>0)
+							break;
+						Long checkInterval = pc.getInterval1();
+						Long  intervalType = pc.getPUTime().getIdUTime(); //1分钟，2小时， 3天
+						if(intervalType.equals(2l))
+						{
+							checkInterval=checkInterval*60;
+						}
+						else if(intervalType.equals(3l))
+						{
+							checkInterval=checkInterval*((cpp.getPlanFt().getTime()-cpp.getPlanSt().getTime())/1000*60);
+						}
+						m.setCheckInterval(checkInterval);
+						m.setCheckIntervalType(intervalType);
+						i++;
+					}
+			
+					cpps.add(m);
+				}
+				userProfile.setPcppList(cpps);
+			}
+		}
+		
+		userProfile.setIsOP(isOP);
+		List<Apps> appList =appsRepository.findAll();
+		Map<Apps, String> smap= securedObjectService.getSecuredObjectsWithPermissions(u, appList);
+		List<WSMenu> WSMenuList = new ArrayList<WSMenu>();
+		for(Apps a : smap.keySet())
+		{
+			WSMenu item = new WSMenu();
+			item.setGroup(a.getGroups());
+			item.setName(a.getAppName());
+			item.setId(a.getIdApp());
+			item.setUrl(a.getUrl());
+			item.setPermission(smap.get(a));
+			WSMenuList.add(item);
+		}
+		userProfile.setWSMenuList(WSMenuList);
+		return userProfile;
+	
+		
+	}
+	
+	
 	@Transactional(readOnly=false)
 	@RequestMapping(value="/login", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public WSUserProfile login(@RequestBody WSUser wsUser) throws Exception {
@@ -322,6 +743,13 @@ public class UserController {
 	}
 	
 	
+	@Transactional(readOnly=false)
+	@RequestMapping(value="/getWSCppOPs", method=RequestMethod.GET)
+	public List<WSPCppOP> getWSCppOPs(@RequestParam Long machineId) throws Exception
+	{
+		return userService.getWSCppOPs(machineId);
+	}
+	
 	@Transactional(readOnly=true)
 	@RequestMapping(value="/getAndroidMenu", method=RequestMethod.GET)
 	public List<WSAndriodMenuItem> getAndroidMenu() throws Exception {
@@ -336,6 +764,8 @@ public class UserController {
 			
 			if(opGroup!=null&&g.getAuthority().equals(""+opGroup.getIdGroup()))
 			{
+				
+			
 				WSAndriodMenuItem i1 = new WSAndriodMenuItem("OP","操作员","MRstopforOP","MRstopforOP","需料停机");
 				WSAndriodMenuItem i2 = new WSAndriodMenuItem("OP","操作员","Qtycheck","Qtycheck","到点检查");
 				WSAndriodMenuItem i3 = new WSAndriodMenuItem("OP","操作员","Stopbyplan","Stopbyplan","计划停机");
@@ -344,6 +774,7 @@ public class UserController {
 				WSAndriodMenuItem i6 = new WSAndriodMenuItem("OP","操作员","Eqstopforop","Eqstopforop","设备故障");
 				//WSAndriodMenuItem i7 = new WSAndriodMenuItem("OP","操作员","Ehslogin","Ehslogin","EHS登录");
 				WSAndriodMenuItem i8 = new WSAndriodMenuItem("OP","操作员","Thinkthroughthetask","Thinkthroughthetask","安全检查");
+				WSAndriodMenuItem i9 = new WSAndriodMenuItem("OP","操作员","Maintenanceforop","Maintenanceforop","日常保养");
 				items.add(i1);
 				items.add(i2);
 				items.add(i3);
@@ -352,6 +783,7 @@ public class UserController {
 				items.add(i6);
 				//items.add(i7);
 				items.add(i8);
+				items.add(i9);
 				break;
 			}
 			Groups equipmentGroup = groupRepository.findGroupByGroupNameAndCompany(SandVikRoleEnum.equipment.name(), securityUtils.getCurrentDBUser().getCompany().getIdCompany(),GroupTypeEnum.Role.name());

@@ -80,6 +80,19 @@ public class BomService {
 		return wsPBomItem;		
 		
 	}
+	
+	@Transactional(readOnly=false)
+	public WSPBomItem updateWSPBomItem(WSPBomItem wsPBomItem) throws Exception {
+		PBom pBom = pBomRepository.findOne(wsPBomItem.getIdBom());
+		
+		pBom.setQpu(wsPBomItem.getQpu());
+		pBom.setIdRoutineD(wsPBomItem.getIdRoutineD());
+		pBom.setWastage(wsPBomItem.getWastage());
+	    pBomRepository.save(pBom);
+		
+		return wsPBomItem;		
+		
+	}
 
 	@Transactional(readOnly=false)
 	public Valid deletePBom(Long bomId)

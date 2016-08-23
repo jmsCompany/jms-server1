@@ -91,6 +91,7 @@ public class RoutineDService {
 	
 		}
 		PRoutineD dbPRoutineD= toDBPRoutineD(wsPRoutineD,pRoutineD);
+		//logger.debug("db labor: " + dbPRoutineD.getStdWtLabor());
 		dbPRoutineD = pRoutineDRepository.save(dbPRoutineD);
 		wsPRoutineD.setIdRoutineD(dbPRoutineD.getIdRoutineD());
 		return wsPRoutineD;		
@@ -125,6 +126,7 @@ public class RoutineDService {
 		dbPRoutineD.setStdWtMachine(wsPRoutineD.getStdWtMachine());
 		dbPRoutineD.setStdWtSetup(wsPRoutineD.getStdWtSetup());
 
+		
         if(wsPRoutineD.getRoutineId()!=null)
         {
         	dbPRoutineD.setPRoutine(pRoutineRepository.findOne(wsPRoutineD.getRoutineId()));

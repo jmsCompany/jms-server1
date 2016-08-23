@@ -1,6 +1,5 @@
 package com.jms.service.production;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,111 +43,124 @@ import com.jms.web.security.SecurityUtils;
 @Transactional
 public class ActualSetupService {
 
-	private static final Logger logger = LogManager.getLogger(ActualSetupService.class
-			.getCanonicalName());
+	private static final Logger logger = LogManager.getLogger(ActualSetupService.class.getCanonicalName());
 	@Autowired
 	private PActualSetupRepository pActualSetupRepository;
-	
+
 	@Autowired
 	private PCPpRepository pCPpRepository;
-	
+
 	@Autowired
 	private SMaterialRepository sMaterialRepository;
-	@Autowired 
+	@Autowired
 	private CompanyRepository companyRepository;
-	@Autowired 
+	@Autowired
 	private PStatusDicRepository pStatusDicRepository;
-	
 
 	@Autowired
 	private SecurityUtils securityUtils;
-	
 
-	
-	@Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public WSPActualSetup saveWSPActualSetup(WSPActualSetup wsPActualSetup) {
 
 		PActualSetup pActualSetup;
-		if(wsPActualSetup.getIdActualSetup()!=null&&!wsPActualSetup.getIdActualSetup().equals(0l))
-		{
-			 pActualSetup = pActualSetupRepository.findOne(wsPActualSetup.getIdActualSetup());
+		if (wsPActualSetup.getIdActualSetup() != null && !wsPActualSetup.getIdActualSetup().equals(0l)) {
+			pActualSetup = pActualSetupRepository.findOne(wsPActualSetup.getIdActualSetup());
+		} else {
+			pActualSetup = new PActualSetup();
+
 		}
-		else
-		{
-			 pActualSetup = new PActualSetup();
-	
-		}
-		
-		
-		if(wsPActualSetup.getActFt()==null)
-		{
+
+		if (wsPActualSetup.getActFt() == null) {
 			pActualSetup.setActSt(new Date());
+		} else {
+			pActualSetup.setActFt(wsPActualSetup.getActFt());
 		}
-		else
-		{
-			pActualSetup.setActFt(new Date());
-		}
+		pActualSetup.setActSt(wsPActualSetup.getActSt());
 		pActualSetup.setPCPp(pCPpRepository.findOne(wsPActualSetup.getCppId()));
 		pActualSetup = pActualSetupRepository.save(pActualSetup);
 		wsPActualSetup.setIdActualSetup(pActualSetup.getIdActualSetup());
 		wsPActualSetup.setActFt(pActualSetup.getActFt());
 		wsPActualSetup.setActSt(pActualSetup.getActSt());
-		return wsPActualSetup;		
-		
+		return wsPActualSetup;
+
 	}
 
-
-	
-	@Transactional(readOnly=true) 
-	public List<WSPActualSetup> findWSPActualSetups(Long cppId) 
-	{	
+	@Transactional(readOnly = true)
+	public List<WSPActualSetup> findWSPActualSetups(Long cppId) {
 		List<WSPActualSetup> ws = new ArrayList<WSPActualSetup>(0);
 		List<PActualSetup> ps = pActualSetupRepository.findByCppId(cppId);
 
-			PCPp cpp =pCPpRepository.findOne(cppId);
+		PCPp cpp = pCPpRepository.findOne(cppId);
 
-			PWo wo = cpp.getPWo();
-			SMaterial material = wo.getSSo().getSMaterial();
-			WSPActualSetup w = new WSPActualSetup();
-	         w.setWoNo(wo.getWoNo());
-			
-			w.setDes(material.getDes());
-			w.setPno(material.getPno());
-			w.setRev(material.getRev());
-			
-			w.setMachine(cpp.getMMachine().getCode());
-			
-			w.setShift(cpp.getPShiftPlanD().getShift());
-			w.setCppId(cpp.getIdCPp());
-			ws.add(w);
-	
-			for(PActualSetup p: ps)
-			{
-				WSPActualSetup w1 = new WSPActualSetup();
-				w1.setIdActualSetup(p.getIdActualSetup());
-				w1.setActFt(p.getActFt());
-				w1.setActSt(p.getActSt());
-			
-			
-				w1.setWoNo(wo.getWoNo());
+		PWo wo = cpp.getPWo();
+		SMaterial material = wo.getSSo().getSMaterial();
+		WSPActualSetup w = new WSPActualSetup();
+		w.setWoNo(wo.getWoNo());
 
-				w1.setDes(material.getDes());
-				w1.setPno(material.getPno());
-				w1.setRev(material.getRev());
-				
-				w1.setMachine(cpp.getMMachine().getCode());
-				
-				w1.setShift(cpp.getPShiftPlanD().getShift());
-				w1.setCppId(cpp.getIdCPp());
-				ws.add(w1);
-			}
-			
-		
+		w.setDes(material.getDes());
+		w.setPno(material.getPno());
+		w.setRev(material.getRev());
+
+		w.setMachine(cpp.getMMachine().getCode());
+
+		w.setShift(cpp.getPShiftPlanD().getShift());
+		w.setCppId(cpp.getIdCPp());
+		ws.add(w);
+
+		for (PActualSetup p : ps) {
+			WSPActualSetup w1 = new WSPActualSetup();
+			w1.setIdActualSetup(p.getIdActualSetup());
+			w1.setActFt(p.getActFt());
+			w1.setActSt(p.getActSt());
+
+			w1.setWoNo(wo.getWoNo());
+
+			w1.setDes(material.getDes());
+			w1.setPno(material.getPno());
+			w1.setRev(material.getRev());
+
+			w1.setMachine(cpp.getMMachine().getCode());
+
+			w1.setShift(cpp.getPShiftPlanD().getShift());
+			w1.setCppId(cpp.getIdCPp());
+			ws.add(w1);
+		}
+
 		return ws;
-		
+
 	}
 
-	
+	@Transactional(readOnly = true)
+	public WSPActualSetup findWSPActualSetupById(Long actSetupId) {
 
+		PActualSetup ps = pActualSetupRepository.findOne(actSetupId);
+
+		PWo wo = ps.getPCPp().getPWo();
+		SMaterial material = wo.getSSo().getSMaterial();
+		WSPActualSetup w = new WSPActualSetup();
+		w.setWoNo(wo.getWoNo());
+
+		w.setDes(material.getDes());
+		w.setPno(material.getPno());
+		w.setRev(material.getRev());
+
+		w.setMachine(ps.getPCPp().getMMachine().getCode());
+
+		w.setShift(ps.getPCPp().getPShiftPlanD().getShift());
+		w.setCppId(ps.getPCPp().getIdCPp());
+
+		w.setActFt(ps.getActFt());
+		w.setActSt(ps.getActSt());
+
+		w.setShift(ps.getPCPp().getPShiftPlanD().getShift());
+		w.setCppId(ps.getPCPp().getIdCPp());
+		w.setCpp(ps.getPCPp().getCPpCode()+"_"+ps.getPCPp().getPlanSt().toString());
+
+		
+		w.setIdActualSetup(ps.getIdActualSetup());
+		return w;
+
+	}
 
 }

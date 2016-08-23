@@ -21,6 +21,8 @@ public class WSPStopsPlan {
     private Long statusId;
     private String status;
     
+    private Long remind;
+    
 	public Long getIdStopsPlan() {
 		return idStopsPlan;
 	}
@@ -104,6 +106,12 @@ public class WSPStopsPlan {
 	}
 	public void setStatusId(Long statusId) {
 		this.statusId = statusId;
+	}
+	public Long getRemind() {
+		return remind;
+	}
+	public void setRemind(Long remind) {
+		this.remind = remind;
 	}
 
 }

@@ -87,6 +87,15 @@ public class Config {
      public static final String[] itemTypes = {"作业","检查"};
      
      //设备保养
-     public static final String[] mainCycles = {"日保养","月"};
+     public static final String[] mainCycles = {"日保养","周保养", "月保养", "季度保养","半年保养", "年度保养"};
+     
+     //保养类型
+     public static final String[] depts = {"生产部","设备部"};
+     
+     
+     
+     //保养类型
+     public static final String[] mresults = {"是","否"};
+
 
 }

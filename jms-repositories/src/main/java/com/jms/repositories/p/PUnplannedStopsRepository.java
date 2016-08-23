@@ -24,7 +24,7 @@ public interface PUnplannedStopsRepository extends JpaRepository<PUnplannedStops
 	public List<PUnplannedStops> getByMachineIdAndStatusId(Long machineId,Long statusId);
 	
 	
-	@Query("select p from PUnplannedStops p where p.idMachine=?1 and p.PStatusDic.idPstatus=?2 and p.PStopsCode is not null")
+	@Query("select p from PUnplannedStops p where p.idMachine=?1 and p.PStatusDic.idPstatus=?2 and p.PSubCode is not null")
 	public List<PUnplannedStops> getByMachineIdAndStatusIdAndHasSubCode(Long machineId,Long statusId);
 	
 	

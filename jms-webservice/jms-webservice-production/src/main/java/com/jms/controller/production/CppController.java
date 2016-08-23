@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.jms.domain.db.PCPp;
 import com.jms.domain.db.PWo;
 import com.jms.domain.ws.Valid;
+import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.p.WSOEE;
 import com.jms.domain.ws.p.WSPCpp;
@@ -170,12 +171,45 @@ public class CppController {
 			@RequestParam("fromDate") Long fromDate,
 			@RequestParam("toDate") Long toDate,
 			@RequestParam("machineId") Long machineId,
-			@RequestParam("materialId") Long materialId)
+			@RequestParam(required=false,value="materialId") Long materialId)
     {
 		return pCppService.findWSOEE(fromDate, toDate, machineId,materialId);
 		
 	}
 	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findLongWSOEE", method=RequestMethod.GET)
+	public List<WSOEE> findLongWSOEE(
+			@RequestParam("fromDate") Long fromDate,
+			@RequestParam("toDate") Long toDate,
+			@RequestParam("machineId") Long machineId,
+			@RequestParam(required=false,value="materialId") Long materialId)
+    {
+		return pCppService.findLongWSOEE(fromDate, toDate, machineId,materialId);
+		
+	}
+	
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/getCppListByMachineIdAndDate", method=RequestMethod.GET)
+	public List<WSSelectObj>  getCppListByMachineIdAndDate(@RequestParam("machineId") Long machineId,@RequestParam("reportTime") Long reportTime) {	   
+		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
+		
+		Date st = new Date(reportTime-86400000*7);
+		Date ft = new Date(reportTime+86400000*7);
+		for(PCPp p:pCPpRepository.getByMachineIdAndDate(securityUtils.getCurrentDBUser().getCompany().getIdCompany(),machineId,st,ft))
+		 {
+			String s = (p.getCPpCode()==null)?"":p.getCPpCode();
+			s = s+ "_" +p.getPlanSt().toString() +"_"+p.getUsers().getName(); 
+			WSSelectObj w = new WSSelectObj(p.getIdCPp(),s);
+			ws.add(w);
+		 }
+		
+	    return ws;
+	}
+
 
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/hasCheckPlans", method=RequestMethod.GET)

@@ -100,6 +100,14 @@ public class RoutineController {
 	
 	
 	@Transactional(readOnly = false)
+	@RequestMapping(value="/p/updateWSPRoutineInfo", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSPRoutine updateWSPRoutineInfo(@RequestBody WSPRoutine wsPRoutine) throws Exception {
+		return routineService.updateWSPRoutineInfo(wsPRoutine);
+	}
+	
+
+	
+	@Transactional(readOnly = false)
 	@RequestMapping(value="/p/deletePRoutine", method=RequestMethod.GET)
 	public Valid deletePRoutine(@RequestParam("idPRoutine") Long idPRoutine) {
 		return routineService.deletePRoutine(idPRoutine);
@@ -121,7 +129,7 @@ public class RoutineController {
 		
 	}
 	
-	@Transactional(readOnly = true)
+	@Transactional(readOnly = false)
 	@RequestMapping(value="/p/savePRoutineD", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public WSPRoutineD savePRoutineD(@RequestBody WSPRoutineD wsPRoutineD) throws Exception {
 		return routineDService.saveWSPRoutineD(wsPRoutineD);

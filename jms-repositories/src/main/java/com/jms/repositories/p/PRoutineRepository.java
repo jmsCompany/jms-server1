@@ -18,4 +18,9 @@ public List<PRoutine> getByCompanyId(Long companyId);
 
 @Query("select p from PRoutine p where p.SMaterial.idMaterial=?1 and p.PLine.pline=?2")
 public PRoutine getByMaterialIdAndPline(Long materialId,String pline);
+
+@Query("select p from PRoutine p where p.SMaterial.idMaterial=?1 ")
+public PRoutine getByMaterialId(Long materialId);
+
+
 }

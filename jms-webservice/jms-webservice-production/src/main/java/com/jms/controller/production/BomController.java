@@ -7,19 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import com.jms.domain.db.PBomLabel;
-import com.jms.domain.db.PWo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.p.WSPBom;
 import com.jms.domain.ws.p.WSPBomItem;
-import com.jms.domain.ws.p.WSPWo;
 import com.jms.repositories.p.PBomLabelRepository;
 import com.jms.repositories.p.PWoRepository;
 import com.jms.service.production.BomLabelService;
 import com.jms.service.production.BomService;
-import com.jms.service.production.WoService;
 import com.jms.web.security.SecurityUtils;
 
 
@@ -39,6 +34,21 @@ public class BomController {
 	public WSPBom saveWSPBom(@RequestBody WSPBom wsPBom) throws Exception {
 		return bomLabelService.savePBomLabel(wsPBom);
 	}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/p/updateBomStatus", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSPBom updateBomStatus(@RequestBody WSPBom wsPBom) throws Exception {
+		return bomLabelService.updateBomStatus(wsPBom);
+	}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/p/updateBomItem", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSPBomItem updateBomItem(@RequestBody WSPBomItem wsPBomItem) throws Exception {
+		return bomService.updateWSPBomItem(wsPBomItem);
+	}
+	
 	
 	
 	@Transactional(readOnly = false)

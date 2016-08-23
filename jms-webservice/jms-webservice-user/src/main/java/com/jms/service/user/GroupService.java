@@ -50,6 +50,9 @@ public class GroupService {
 	private CompanyRepository companyRepository;
 	@Autowired
 	private UsersRepository usersRepository;
+	
+	
+	
 
 	public void createDefaultGroups(Company company) {
 		Users dbUser = securityUtils.getCurrentDBUser();

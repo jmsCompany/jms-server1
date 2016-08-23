@@ -31,7 +31,10 @@ import com.jms.domain.SystemRoleEnum;
 import com.jms.domain.db.Apps;
 import com.jms.domain.db.Company;
 import com.jms.domain.db.GroupMembers;
+import com.jms.domain.db.GroupMembersId;
 import com.jms.domain.db.Groups;
+import com.jms.domain.db.PCPp;
+import com.jms.domain.db.PCppOpId;
 import com.jms.domain.db.Roles;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
@@ -41,7 +44,10 @@ import com.jms.domain.ws.WSRoles;
 import com.jms.domain.ws.WSUser;
 import com.jms.domain.ws.WSUserPassword;
 import com.jms.domain.ws.WSUserRoles;
+import com.jms.domain.ws.p.WSPCppOP;
 import com.jms.repositories.company.CompanyRepository;
+import com.jms.repositories.p.PCPpRepository;
+import com.jms.repositories.p.PCppOpRepository;
 import com.jms.repositories.system.AppsRepository;
 import com.jms.repositories.system.SysDicDRepository;
 import com.jms.repositories.user.GroupMemberRepository;
@@ -81,6 +87,13 @@ public class UserService extends IUserServiceImpl{
 	
 	@Autowired
 	private  GroupTypeRepository groupTypeRepository;
+	
+	@Autowired
+	private  PCPpRepository pCPpRepository;
+	
+	@Autowired
+	private  PCppOpRepository pCppOpRepository;
+	
 	
 	@Autowired
 	private GroupMemberRepository groupMemberRepository;
@@ -152,6 +165,35 @@ public class UserService extends IUserServiceImpl{
 	
 	}
 
+	
+	@Transactional(readOnly=false)
+	public List<WSPCppOP> getWSCppOPs(Long machineId) throws Exception
+	{
+		List<WSPCppOP> ws = new ArrayList<WSPCppOP>();
+		for(PCPp cpp:pCPpRepository.getNotFinishedCppsByMachineId(machineId))
+		{
+			WSPCppOP w  = new WSPCppOP();
+			w.setIdCpp(cpp.getIdCPp());
+			w.setCpp(cpp.getPWo().getWoNo()+"_"+cpp.getMMachine().getCode());
+			PCppOpId id =new PCppOpId();
+			id.setIdCpp(cpp.getIdCPp());
+			id.setIdUser(securityUtils.getCurrentDBUser().getIdUser());
+			if(pCppOpRepository.findOne(id)==null)
+			{
+				w.setChecked(false);
+			}
+			else
+			{
+				w.setChecked(true);
+			}
+			
+			ws.add(w);
+		}
+		
+		return ws;
+	}
+	
+	
 	@Transactional(readOnly=false)
 	public WSUser updateInfo(WSUser wsUser) throws Exception
 	{
@@ -576,6 +618,7 @@ public class UserService extends IUserServiceImpl{
 		return v;
 	}
 	
-	
+
+
 	
 }

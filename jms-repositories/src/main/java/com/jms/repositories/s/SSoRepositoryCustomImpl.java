@@ -1,15 +1,9 @@
 package com.jms.repositories.s;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
-import com.jms.domain.db.SMtfMaterial;
-import com.jms.domain.db.SPoMaterial;
 import com.jms.domain.db.SSo;
 
 
@@ -36,7 +30,7 @@ public class SSoRepositoryCustomImpl implements SSoRepositoryCustom {
 		 {
 			 query=query + " and DATE(s.dateOrder)<='" + toDay +"'";
 		 }
-//		 System.out.println(query);
+
 		  return em.createQuery(query, SSo.class).getResultList();
 	}
 

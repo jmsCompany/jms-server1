@@ -29,6 +29,7 @@ import com.jms.domain.db.NotiMethod;
 import com.jms.domain.db.Notification;
 import com.jms.domain.db.PCPp;
 import com.jms.domain.db.PMr;
+import com.jms.domain.db.PStopsPlan;
 import com.jms.domain.db.PUnplannedStops;
 import com.jms.domain.db.Receiver;
 import com.jms.domain.db.SMtf;
@@ -38,6 +39,7 @@ import com.jms.email.EmailSenderService;
 import com.jms.repositories.m.MMachineRepository;
 import com.jms.repositories.p.PCPpRepository;
 import com.jms.repositories.p.PMrRepository;
+import com.jms.repositories.p.PStopsPlanRepository;
 import com.jms.repositories.p.PUnplannedStopsRepository;
 import com.jms.repositories.s.SMtfRepository;
 import com.jms.repositories.system.JmsEventRepository;
@@ -69,6 +71,8 @@ public class NotificationService implements INotificationService{
 	private SecurityUtils securityUtils;
 	@Autowired
 	private SecuredObjDAO securedObjDAO;
+	@Autowired
+	private PStopsPlanRepository pStopsPlanRepository;
 	
 	@Autowired
 	private UsersRepository usersRepository;
@@ -122,7 +126,7 @@ public class NotificationService implements INotificationService{
 	@Override
 	public void createNotificationToReceivers(Company company,
 			Long eventId, Long sourceId, 
-			NotificationMethodEnum notificationMethodEnum, List<EventReceiver> receivers) {
+			NotificationMethodEnum notificationMethodEnum, List<EventReceiver> receivers,Date msgTime) {
 		NotiMethod method = notiMethodRepository.findByMethod(notificationMethodEnum.name());
 		JmsEvent jmsEvent = jmsEventRepository.findOne(eventId);
 		Notification noti = new Notification();
@@ -142,16 +146,22 @@ public class NotificationService implements INotificationService{
 			receiver.setNotification(noti);
 			receiver.setUnsubscribe(0l);
 			receiver.setChecked(0l);
+			
+		//	Date creationTime;
+			if(msgTime==null)
+			{
+				msgTime = new Date();
+			}
 			if(e.getDelay()!=null)
 			{
-				Long currentTime = new Date().getTime();
+				Long currentTime = msgTime.getTime();
 				currentTime =currentTime+e.getDelay()*60*1000;
 			//	logger.debug("delay: " +e.getDelay()*60*1000);
 				receiver.setReceiveTime(new Date(currentTime));
 			}
 			else
 			{
-				receiver.setReceiveTime(new Date());
+				receiver.setReceiveTime(msgTime);
 			}
 		
 			receiverRepository.save(receiver);
@@ -210,7 +220,7 @@ public class NotificationService implements INotificationService{
 	 */
 	@Override
 	public void sendEmails() {
-		logger.debug("send email.");
+//		logger.debug("send email.");
 		for(Receiver r: receiverRepository.findEmailsNotSendReceivers())
 		{
 			Long idGroup = r.getGroups().getIdGroup();
@@ -351,12 +361,39 @@ public class NotificationService implements INotificationService{
 					}
 
 				}	
+				 
+				else if(event.getIdEvent().equals(16l))
+				{
+
+
+					title = event.getDescription();
+					emailTemplate = "planStopTemplate.vm";
+					PStopsPlan	p = pStopsPlanRepository.findOne(sourceId);
+					if(p!=null)
+					{
+							
+							model.put("machine",p.getMMachine().getCode());
+							try{
+								emailSenderService.sendEmail(toEmailAddresses,emailTemplate,title, model, null);
+								r.setMsg("sended");
+							}catch(Exception e){
+								e.printStackTrace();
+								r.setMsg("wrong email address: " + u.getEmail());
+							}
+					
+					}
+					else{
+						r.setMsg("solved");
+					}
+
+				
+				}
 			}
 			else
 			{
 				r.setMsg("no email");
 			}
-			System.out.println("email: " +toEmailAddresses[0] +", msg: " +r.getMsg());
+			//System.out.println("email: " +toEmailAddresses[0] +", msg: " +r.getMsg());
 			receiverRepository.save(r);
 		}
 		

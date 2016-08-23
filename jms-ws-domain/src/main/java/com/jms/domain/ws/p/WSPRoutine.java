@@ -23,6 +23,7 @@ public class WSPRoutine {
 	private Long statusId;
 	
 	private Boolean edit;
+	private Boolean saved;
 	
 	private Map<String, WSPRoutineD> wsRoutineDs = new LinkedHashMap<String, WSPRoutineD>(0);
 
@@ -160,6 +161,14 @@ public class WSPRoutine {
 
 	public void setEdit(Boolean edit) {
 		this.edit = edit;
+	}
+
+	public Boolean getSaved() {
+		return saved;
+	}
+
+	public void setSaved(Boolean saved) {
+		this.saved = saved;
 	}
 
 }

@@ -176,12 +176,18 @@ public class MMachineService {
 		{
 			dbMMachine.setPWorkCenter(pWorkCenterRepository.findOne(wsMachine.getIdWc()));
 		}
+		dbMMachine.setMtbf(wsMachine.getMtbf());
+		dbMMachine.setMttr(wsMachine.getMttr());
+		dbMMachine.setDowntime(wsMachine.getDowntime());
 		dbMMachine.setCompany(securityUtils.getCurrentDBUser().getCompany());
 	    return dbMMachine;
 	}
 	protected WSMachine toWSMachine(MMachine mMachine) throws Exception
 	{
 		WSMachine pc = (WSMachine)BeanUtil.shallowCopy(mMachine, WSMachine.class, null);
+		pc.setMtbf(mMachine.getMtbf());
+		pc.setDowntime(mMachine.getDowntime());
+		pc.setMttr(mMachine.getMttr());
 		if(mMachine.getMMachineGroup()!=null)
 		{
 			pc.setGroup(mMachine.getMMachineGroup().getGroupName());

@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class WSPUnplannedStops {
 	
+	
+	private boolean saved;
 	private Long idUnplannedStops;
 	private Long pSubCodeId;
 	private String pSubCode;
@@ -167,6 +169,14 @@ public class WSPUnplannedStops {
 
 	public void setEventId(Long eventId) {
 		this.eventId = eventId;
+	}
+
+	public boolean isSaved() {
+		return saved;
+	}
+
+	public void setSaved(boolean saved) {
+		this.saved = saved;
 	}
 
 }

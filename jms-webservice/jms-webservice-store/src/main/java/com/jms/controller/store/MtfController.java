@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
 
 import com.jms.domain.db.SMtf;
 import com.jms.domain.db.SMtfMaterial;
@@ -23,6 +25,7 @@ import com.jms.service.store.MtfMaterialService;
 import com.jms.service.store.MtfService;
 import com.jms.service.store.SMtfTypeDicService;
 import com.jms.web.security.SecurityUtils;
+import org.springframework.data.domain.PageRequest;
 
 
 @RestController
@@ -113,6 +116,7 @@ public class MtfController {
 	@RequestMapping(value="/s/smtfMaterialList", method=RequestMethod.POST)
 	public WSTableData  getSmtfMaterialList(@RequestParam Long typeId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
+		Pageable pageable = new PageRequest(start,length);
 		//System.out.println("get smtf materials:  type = " + typeId);
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		List<WSSMtfMaterial> wsSMtfMaterials = mtfMaterialService.findWSSMtfMaterial(companyId, typeId);

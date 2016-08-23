@@ -19,6 +19,7 @@ import com.jms.domain.db.MHistoryPart;
 import com.jms.domain.db.MMachine;
 import com.jms.domain.db.MRepairHistory;
 import com.jms.domain.db.MSparePart;
+import com.jms.domain.db.PUnplannedStops;
 import com.jms.domain.db.SInventory;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
@@ -35,6 +36,7 @@ import com.jms.repositories.m.MRepairHistoryRepository;
 import com.jms.repositories.m.MSparePartRepository;
 import com.jms.repositories.m.MStatusDicRepository;
 import com.jms.repositories.p.PLineRepository;
+import com.jms.repositories.p.PUnplannedStopsRepository;
 import com.jms.repositories.p.PWipRepository;
 import com.jms.repositories.p.PWorkCenterRepository;
 import com.jms.repositories.s.SBinRepository;
@@ -73,6 +75,8 @@ public class MRepairHistoryService {
 
 	@Autowired private SInventoryRepository sInventoryRepository;
 	@Autowired private UsersRepository usersRepository;
+	
+	@Autowired private PUnplannedStopsRepository pUnplannedStopsRepository;
 	
 
 	
@@ -174,6 +178,25 @@ public class MRepairHistoryService {
 		if(wsMRepairHistory.getMaintainerId()!=null)
 		{
 			dbMRepairHistory.setUsersByMaintainer(usersRepository.findOne(wsMRepairHistory.getMaintainerId()));
+		}
+		if(wsMRepairHistory.getIdUnplannedStop()!=null)
+		{
+			PUnplannedStops pUnplannedStops = pUnplannedStopsRepository.findOne(wsMRepairHistory.getIdUnplannedStop());
+			if(wsMRepairHistory.getResponseTime()==null)
+			{
+				dbMRepairHistory.setResponseTime(pUnplannedStops.getEqSt());
+			}
+		  if(wsMRepairHistory.getRepairingTime()==null)
+		  {
+			  dbMRepairHistory.setRepairingTime(pUnplannedStops.getEqFt());
+		  }
+			if(wsMRepairHistory.getRecoverTime()==null)
+			{
+				dbMRepairHistory.setRecoverTime(pUnplannedStops.getOpFt());
+			}
+		
+			
+			
 		}
 	    return dbMRepairHistory;
 	}

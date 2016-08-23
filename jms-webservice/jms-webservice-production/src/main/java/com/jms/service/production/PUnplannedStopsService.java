@@ -63,17 +63,25 @@ public class PUnplannedStopsService {
 		if(wsPUnplannedStops.getIdUnplannedStops()!=null)
 		{
 			pUnplannedStops = pUnplannedStopsRepository.findOne(wsPUnplannedStops.getIdUnplannedStops());
+			//System.out.println(" id UnplannedStops: " + wsPUnplannedStops.getIdUnplannedStops());
 		}
 		else
 		{
+			//System.out.println(" id UnplannedStops: " + wsPUnplannedStops.getIdUnplannedStops() +",  sub code: " + wsPUnplannedStops.getpSubCodeId());
 			pUnplannedStops = new PUnplannedStops();
 			List<PUnplannedStops> ws = pUnplannedStopsRepository.getByMachineIdAndStatusIdAndHasSubCode(wsPUnplannedStops.getIdMachine(), 18l);
 			if(wsPUnplannedStops.getpSubCodeId()!=null&&ws!=null&&!ws.isEmpty())
+			{
+				System.out.println(" 该设备已经有停机，不能再次停机，返回！ sub code: " + wsPUnplannedStops.getpSubCodeId() +", machine Id: " + wsPUnplannedStops.getIdMachine());
+				wsPUnplannedStops.setSaved(false);
 				return wsPUnplannedStops;
-		
+			}
+				
+			
 			pUnplannedStops.setOpSt(new Date());
 		}
 		
+		wsPUnplannedStops.setSaved(true);
 		PUnplannedStops dbPUnplannedStops= toDBPUnplannedStops(wsPUnplannedStops,pUnplannedStops);
 		
 		dbPUnplannedStops.setIdCompany(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
@@ -102,7 +110,7 @@ public class PUnplannedStopsService {
 		List<EventReceiver> eventReceivers = eventReceiverRepository.findByIdEventAndIdCompany(eventId,securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 		if(eventReceivers!=null)
 		{
-			notificationService.createNotificationToReceivers(securityUtils.getCurrentDBUser().getCompany(), eventId, wsPUnplannedStops.getIdUnplannedStops(), NotificationMethodEnum.sys, eventReceivers);
+			notificationService.createNotificationToReceivers(securityUtils.getCurrentDBUser().getCompany(), eventId, wsPUnplannedStops.getIdUnplannedStops(), NotificationMethodEnum.sys, eventReceivers,wsPUnplannedStops.getOpSt());
 		}
 		
 		
@@ -157,6 +165,16 @@ public class PUnplannedStopsService {
 		return v;
 	}
 
+	
+	@Transactional(readOnly=true) 
+	public WSPUnplannedStops findWSPUnplannedStopsById(Long idUnplannedStops) throws Exception
+	{	
+		
+		PUnplannedStops pUnplannedStops =pUnplannedStopsRepository.findOne(idUnplannedStops);
+	
+	     return toWSPUnplannedStops(pUnplannedStops);
+	
+	}
 	
 
 	@Transactional(readOnly=true) 

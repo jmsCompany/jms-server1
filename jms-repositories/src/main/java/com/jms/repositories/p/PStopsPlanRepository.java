@@ -18,10 +18,14 @@ public interface PStopsPlanRepository extends JpaRepository<PStopsPlan, Long>{
 	public List<PStopsPlan> getPStopsPlansByCompanyId(Long companyId);
 	
 //	and DATE(p.planSt)=CURDATE() 
-	@Query("select p from PStopsPlan p where p.company.idCompany=?1  and p.MMachine.idMachine=?2 and now()>p.planSt and now()<p.planFt order by p.planSt desc")
-	public List<PStopsPlan> getPStopsPlansByCompanyIdAndMachineId(Long companyId,Long machineId);
+	@Query("select p from PStopsPlan p where p.company.idCompany=?1  and p.MMachine.idMachine=?2 and p.planSt<?3 and p.actFt is null order by p.planSt desc")
+	public List<PStopsPlan> getPStopsPlansByCompanyIdAndMachineId(Long companyId,Long machineId,Date future);
 	
 	@Query("select p from PStopsPlan p where p.MMachine.idMachine=?1 and p.actSt>=?2 and p.actSt<=?3")
 	public List<PStopsPlan> getPStopsPlansByMachineIdAndDuration(Long machineId,Date start,Date end);
+	
+	//需要提醒的计划停机
+	@Query("select p from PStopsPlan p where p.planSt<=?1 and p.remind is null")
+	public List<PStopsPlan> getPStopsPlansBydRemindTime(Date remind);
 
 }

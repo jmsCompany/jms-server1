@@ -71,19 +71,38 @@ public class RoutineService {
 		if(wsPRoutine.getLineId()==null||wsPRoutine.getLineId().equals(0l))
 			return wsPRoutine;
 	
+		
+		PRoutine dbRoutine0 = pRoutineRepository.getByMaterialId(wsPRoutine.getMaterialId());
+		
 		if(wsPRoutine.getIdRoutine()!=null&&!wsPRoutine.getIdRoutine().equals(0l))
 		{
 			pRoutine = pRoutineRepository.findOne(wsPRoutine.getIdRoutine());
+			
+			if(dbRoutine0!=null&&(!dbRoutine0.getIdRoutine().equals(pRoutine.getIdRoutine())))
+			{
+				wsPRoutine.setSaved(false);
+				return wsPRoutine;
+			}
 			pRoutineDRepository.delete(pRoutine.getPRoutineDs());
 			pRoutine.getPRoutineDs().clear();
 		}
 		else
 		{
+			if(dbRoutine0!=null)
+			{
+				wsPRoutine.setSaved(false);
+				return wsPRoutine;
+			}
 			pRoutine = new PRoutine();
 	
 		}
 		
+		
+		
+		
+		
 		PRoutine dbPRoutine= toDBPRoutine(wsPRoutine,pRoutine);
+		
 		dbPRoutine = pRoutineRepository.save(dbPRoutine);
 	
 		
@@ -121,11 +140,48 @@ public class RoutineService {
 		return wsPRoutine;		
 		
 	}
+	
+	
+	@Transactional(readOnly=false)
+	public WSPRoutine updateWSPRoutineInfo(WSPRoutine wsPRoutine) throws Exception {
+		PRoutine pRoutine = pRoutineRepository.findOne(wsPRoutine.getIdRoutine());
+		
+		PDraw draw = pRoutine.getPDraw();
+		if(draw!=null)
+		{
+			draw.setDrawNo(wsPRoutine.getDrawNo());
+			draw.setDrawVer(wsPRoutine.getDrawVer());
+			draw.setDrawAtt(wsPRoutine.getDrawAtt());
+			pDrawRepository.save(draw);
+		}
+		
+		pRoutine.setPLine(pLineRepository.findOne(wsPRoutine.getLineId()));
+		pRoutine.setPStatusDic(pStatusDicRepository.findOne(wsPRoutine.getStatusId()));
+		
+		pRoutineRepository.save(pRoutine);
+		return wsPRoutine;
+	}
+	
+	
 
 	@Transactional(readOnly=false)
 	public Valid deletePRoutine(Long idPRoutine)
 	{
 		Valid valid = new Valid();
+		PRoutine r = pRoutineRepository.findOne(idPRoutine);
+		if(r!=null)
+		{
+		    for(PRoutineD p: pRoutineDRepository.findByRoutineId(idPRoutine))
+		    {
+		    	
+		    	if(p.getPCPps()!=null&&!p.getPCPps().isEmpty())
+		    	{
+		    		valid.setValid(false);
+		    		return valid;
+		    	}
+		    
+		    }
+		}
 		pRoutineRepository.delete(idPRoutine);
 		valid.setValid(true);
 		

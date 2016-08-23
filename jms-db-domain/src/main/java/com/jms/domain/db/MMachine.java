@@ -2,6 +2,7 @@ package com.jms.domain.db;
 // Generated 2016-3-31 16:15:17 by Hibernate Tools 3.2.2.GA
 
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,6 +43,11 @@ public class MMachine  implements java.io.Serializable {
      private Long totalKwa;
      private String spec;
      private Date satCompletedDate;
+     
+     private  BigDecimal mttr;
+     private  BigDecimal mtbf;
+     private  BigDecimal downtime;
+  
      private Set<MRepairHistory> MRepairHistories = new HashSet<MRepairHistory>(0);
      private Set<PCPp> PCPps = new HashSet<PCPp>(0);
      private Set<QFaiInFinal> QFaiInFinals = new HashSet<QFaiInFinal>(0);
@@ -259,6 +265,33 @@ public class MMachine  implements java.io.Serializable {
     public void setPCheckTimes(Set<PCheckTime> PCheckTimes) {
         this.PCheckTimes = PCheckTimes;
     }
+
+    @Column(name="mttr", scale=4)
+	public BigDecimal getMttr() {
+		return mttr;
+	}
+
+	public void setMttr(BigDecimal mttr) {
+		this.mttr = mttr;
+	}
+
+    @Column(name="mtbf", scale=4)
+	public BigDecimal getMtbf() {
+		return mtbf;
+	}
+
+	public void setMtbf(BigDecimal mtbf) {
+		this.mtbf = mtbf;
+	}
+
+    @Column(name="downtime", scale=4)
+	public BigDecimal getDowntime() {
+		return downtime;
+	}
+
+	public void setDowntime(BigDecimal downtime) {
+		this.downtime = downtime;
+	}
 
 
 

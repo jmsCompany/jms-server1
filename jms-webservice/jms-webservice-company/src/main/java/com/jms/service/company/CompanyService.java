@@ -53,6 +53,7 @@ import com.jms.repositories.user.GroupTypeRepository;
 import com.jms.repositories.user.RoleRepository;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.repositories.workmanagement.ProjectRepository;
+import com.jms.s.ISmtfNoService;
 import com.jms.repositories.s.SStkRepository;
 import com.jms.system.INotificationService;
 import com.jms.user.IUserService;
@@ -100,6 +101,9 @@ public class CompanyService {
 	@Autowired
 	private SStkRepository sStkRepository;
 	
+	@Autowired
+	private ISmtfNoService sMtfNoService;
+	
 	
 	
 	
@@ -138,7 +142,7 @@ public class CompanyService {
 		company.setUser(dbUser);
 		company.setUsersByCreator(dbUser);
 		company.setCreationTime(new Date());
-		companyRepository.save(company);
+		company = companyRepository.save(company);
 		dbUser.setCompany(company);
 		usersRepository.save(dbUser);
 
@@ -164,6 +168,9 @@ public class CompanyService {
 		// todo: find template company by some rules!!
 		Company templateCompany = companyRepository.findByCompanyName("企业模版");
 		copyDataBetweenCompanies(templateCompany, company);
+		
+		
+		sMtfNoService.loadSmtfNosByCompanyId(company.getIdCompany());
 		return true;
 
 	}

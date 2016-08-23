@@ -1,5 +1,6 @@
 package com.jms.system;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public interface INotificationService {
 	
 	public void createNotification(Company company,AbstractSecuredEntity entity,EventTypeEnum eventTypeEnum,NotificationMethodEnum notificationMethodEnum, List<Long> groups);
 	public List<WSNotification> loadNotifactions(Pageable pageable) throws ClassNotFoundException ;
-	public void createNotificationToReceivers(Company company,Long eventId,Long sourceId,NotificationMethodEnum notificationMethodEnum,  List<EventReceiver> receivers);
+	public void createNotificationToReceivers(Company company,Long eventId,Long sourceId,NotificationMethodEnum notificationMethodEnum,  List<EventReceiver> receivers,Date msgTime);
 	public void sendEmails();
 	
 	public void sendEmails(List<EventReceiver> eventReceivers,String title,String template,Map<String, Object> model,String[] files);

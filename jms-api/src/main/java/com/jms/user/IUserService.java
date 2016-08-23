@@ -1,8 +1,12 @@
 package com.jms.user;
+import java.util.Date;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.jms.domain.db.GroupMembers;
+import com.jms.domain.db.GroupMembersId;
+import com.jms.domain.db.Groups;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSUser;
@@ -20,5 +24,9 @@ public interface IUserService {
 	public List<WSUser> getUsersByIdGroup(Long idGroup) throws Exception;
 //	@Transactional(readOnly=false)
 //	public Valid addRolesforUser(WSUserRoles wsUserRoles) throws Exception;
+	
+
+	public Groups getGroupsByUserId(Long userId);
+	
 }
 

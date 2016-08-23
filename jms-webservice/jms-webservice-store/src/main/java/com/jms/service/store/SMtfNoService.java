@@ -16,11 +16,12 @@ import com.jms.domain.db.SStkTypeDic;
 import com.jms.domain.ws.s.WSStkType;
 import com.jms.repositories.s.SMtfNoRepository;
 import com.jms.repositories.s.SStkTypeDicRepository;
+import com.jms.s.ISmtfNoService;
 
 
 @Service
 @Transactional
-public class SMtfNoService {
+public class SMtfNoService implements ISmtfNoService{
 
 	private static final Logger logger = LogManager.getLogger(SMtfNoService.class
 			.getCanonicalName());
@@ -29,7 +30,7 @@ public class SMtfNoService {
 	
 	
 
-	
+	@Override
 	public void loadSmtfNosByCompanyId(Long companyId) {
 		
        for(int type=1;type<13;type++)

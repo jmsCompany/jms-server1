@@ -39,6 +39,8 @@ public class PStopsPlan  implements java.io.Serializable {
      private Date planFt;
      private Date actSt;
      private Date actFt;
+     
+     private Long remind;
      private Set<PActStops> PActStopses = new HashSet<PActStops>(0);
 
     public PStopsPlan() {
@@ -156,6 +158,15 @@ public class PStopsPlan  implements java.io.Serializable {
     public void setPActStopses(Set<PActStops> PActStopses) {
         this.PActStopses = PActStopses;
     }
+
+    @Column(name="remind")
+	public Long getRemind() {
+		return remind;
+	}
+
+	public void setRemind(Long remind) {
+		this.remind = remind;
+	}
 
 
 

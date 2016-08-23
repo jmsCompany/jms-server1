@@ -178,9 +178,15 @@ public class WoController {
 			List<PCheckPlan> pCheckPlans =pCheckPlanRepository.getMaxCheckPlanByCppId(w.getIdCPp());
 		    if(pCheckPlans!=null&&!pCheckPlans.isEmpty())
 		    {
-		        qtyFinished =qtyFinished +pCheckPlans.get(0).getFinQty();
-			    checkTime =pCheckPlans.get(0).getCheckTime().toString();
-			    planCheckTime= pCheckPlans.get(0).getPlanCheckTime().toString();
+		    
+		    	if(pCheckPlans.get(0).getFinQty()!=null)
+		    	{
+		    		qtyFinished =qtyFinished +pCheckPlans.get(0).getFinQty();
+		    	}
+		        
+			    checkTime =(pCheckPlans.get(0).getCheckTime()==null)?"":pCheckPlans.get(0).getCheckTime().toString();
+			    
+			    planCheckTime= (pCheckPlans.get(0).getPlanCheckTime()==null)?"":pCheckPlans.get(0).getPlanCheckTime().toString();
 			    planQty=(pCheckPlans.get(0).getPlanQty()==null)?0l:pCheckPlans.get(0).getPlanQty();
 			    finQty = (pCheckPlans.get(0).getFinQty()==null)?0l:pCheckPlans.get(0).getFinQty();
 			

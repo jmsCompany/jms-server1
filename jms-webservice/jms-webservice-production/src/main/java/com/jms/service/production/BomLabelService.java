@@ -14,12 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jms.domain.db.FCostCenter;
 import com.jms.domain.db.PBom;
 import com.jms.domain.db.PBomLabel;
-import com.jms.domain.db.PWo;
-import com.jms.domain.db.PWorkCenter;
-import com.jms.domain.db.SStk;
-import com.jms.domain.db.Users;
+import com.jms.domain.db.PRoutineD;
 import com.jms.domain.ws.Valid;
-import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.p.WSPBom;
 import com.jms.domain.ws.p.WSPBomItem;
 import com.jms.domain.ws.p.WSPWo;
@@ -30,6 +26,7 @@ import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.f.FCostCenterRepository;
 import com.jms.repositories.p.PBomLabelRepository;
 import com.jms.repositories.p.PBomRepository;
+import com.jms.repositories.p.PRoutineDRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PWoRepository;
 import com.jms.repositories.p.PWorkCenterRepository;
@@ -52,7 +49,8 @@ public class BomLabelService {
 	private CompanyRepository companyRepository;
 	@Autowired 
 	private PStatusDicRepository pStatusDicRepository;
-	
+	@Autowired
+	private PRoutineDRepository pRoutineDRepository;
 
 	@Autowired
 	private SecurityUtils securityUtils;
@@ -75,6 +73,7 @@ public class BomLabelService {
 		if(isNew&&pBoms!=null&&!pBoms.isEmpty())
 		{
 			wsPBom.setIdBomLabel(0l);
+			wsPBom.setSaved(false);
 			return wsPBom;
 		}
 			
@@ -84,9 +83,7 @@ public class BomLabelService {
 			pBomRepository.deleteByBomLabelIdAnPidIdNotNull(pBomLabel.getIdBomLabel());
 			pBomRepository.deleteByBomLabelIdAnPidIdNull(pBomLabel.getIdBomLabel());
 			pBomLabel.getPBoms().clear();
-				
 	
-				
 		}
 		else
 		{
@@ -124,19 +121,51 @@ public class BomLabelService {
 		}
 	
 		
-		
+		wsPBom.setSaved(true);
 		return wsPBom;		
 		
+	}
+	
+	@Transactional(readOnly=false)
+	public WSPBom updateBomStatus(WSPBom wsPBom) throws Exception {
+		PBomLabel pBomLabel = pBomLabelRepository.findOne(wsPBom.getIdBomLabel());
+		pBomLabel.setPStatusDic(pStatusDicRepository.findOne(wsPBom.getStatusId()));
+		pBomLabelRepository.save(pBomLabel);	
+		return wsPBom;
 	}
 
 	@Transactional(readOnly=false)
 	public Valid deletePWSPBom(Long bomLabelId)
 	{
-		Valid valid = new Valid();
+		Valid valid = new Valid();	
+		
+		PBomLabel pBomLabel = pBomLabelRepository.findOne(bomLabelId);
+		
+		for(PBom p: pBomLabel.getPBoms())
+		{
+			if(p.getIdRoutineD()!=null)
+			{
+
+				PRoutineD r = pRoutineDRepository.findOne(p.getIdRoutineD());
+				if(!r.getPCPps().isEmpty())
+				{
+					valid.setValid(false);
+					return valid;
+					
+				}
+			
+			}
+			if(!p.getPMrs().isEmpty())
+			{
+				valid.setValid(false);
+				return valid;
+				
+			}
+			
+		}
 		
 		pBomLabelRepository.delete(bomLabelId);
 		valid.setValid(true);
-		
 		return valid;
 	}
 
@@ -152,7 +181,7 @@ public class BomLabelService {
 	@Transactional(readOnly=true) 
 	public List<WSPBom> findWSPBomList() throws Exception
 	{	
-		 List<WSPBom> ws = new ArrayList<WSPBom>();
+		List<WSPBom> ws = new ArrayList<WSPBom>();
 		List<PBomLabel> pBomLabels =pBomLabelRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 		for(PBomLabel pl :pBomLabels)
 		{
@@ -206,16 +235,33 @@ public class BomLabelService {
 		int i=0;
 		
 		List<PBom> pboms = pBomRepository.findByBomLabelId(pBomLabel.getIdBomLabel());
+		
+		boolean edit =true;
 		for(PBom p:pboms)
 		{
 			if(p.getPBom()!=null)
 			{
+				if(p.getIdRoutineD()!=null)
+				{
+					PRoutineD r = pRoutineDRepository.findOne(p.getIdRoutineD());
+					if(edit&&r!=null&&!r.getPCPps().isEmpty())
+					{
+						edit = false;
+						
+					}
+				}
+				if(!p.getPMrs().isEmpty())
+				{
+					edit = false;
+				}
 
+		
 				WSPBomItem item = new WSPBomItem();
 				item.setIdBom(p.getIdBom());
 				item.setIdBomLabel(pBomLabel.getIdBomLabel());
 				item.setLvl(p.getLvl());
 		
+				item.setIdRoutineD(p.getIdRoutineD());
 				item.setQpu(p.getQpu());
 				if(p.getPWorkCenter()!=null)
 				{
@@ -259,6 +305,7 @@ public class BomLabelService {
 				pc.setPno(p.getSMaterial().getPno());
 			}
 		}
+		pc.setEdit(edit);
 		return pc;
 	}
 

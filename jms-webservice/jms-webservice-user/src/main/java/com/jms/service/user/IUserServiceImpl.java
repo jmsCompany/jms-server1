@@ -16,6 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jms.domain.db.GroupMembers;
+import com.jms.domain.db.GroupMembersId;
 import com.jms.domain.db.Groups;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Message;
@@ -24,6 +26,7 @@ import com.jms.domain.ws.WSRoles;
 import com.jms.domain.ws.WSUser;
 import com.jms.domainadapter.UserAdapter;
 import com.jms.messages.MessagesUitl;
+import com.jms.repositories.user.GroupMemberRepository;
 import com.jms.repositories.user.GroupRepository;
 import com.jms.repositories.user.GroupTypeRepository;
 import com.jms.repositories.user.UsersRepository;
@@ -44,6 +47,13 @@ public class IUserServiceImpl implements IUserService {
 	private ResourceBundleMessageSource source;
 
 	@Autowired protected UserAdapter userAdapter;
+	
+	@Autowired
+	private GroupRepository groupRepository;
+	@Autowired
+	private GroupTypeRepository groupTypeRepository;
+	@Autowired
+	private GroupMemberRepository groupMemberRepository;
 
 	public Boolean register(Users users) {
 		Boolean valid = checkLogin(users.getUsername(), users.getEmail(),
@@ -147,6 +157,33 @@ public class IUserServiceImpl implements IUserService {
 			wsUsers.add(wsuser);
 		}
 		return wsUsers;
+	}
+
+	@Override
+	public Groups getGroupsByUserId(Long userId)
+	{
+		Users u = usersRepository.findOne(userId);
+		Groups group =groupRepository.findHimselfGroupByIdUser(""+userId);
+		if(group == null)
+		{
+			group = new Groups();
+			group.setCompany(u.getCompany());
+			group.setCreationTime(new Date());
+			group.setGroupName(""+userId);
+			group.setGroupType(groupTypeRepository.findOne(2l));
+			group = groupRepository.save(group);
+		}
+		if(group.getGroupMemberses().isEmpty())
+		{
+			GroupMembers gm = new GroupMembers();
+			GroupMembersId id = new GroupMembersId();
+			id.setIdGroup(group.getIdGroup());
+			id.setIdUser(userId);
+			gm.setId(id);
+			groupMemberRepository.save(gm);
+		}
+		
+		return group;
 	}
 	
 	

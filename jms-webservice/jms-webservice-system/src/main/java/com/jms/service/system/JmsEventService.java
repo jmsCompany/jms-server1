@@ -9,6 +9,7 @@ import com.jms.domain.db.Company;
 import com.jms.domain.db.Groups;
 import com.jms.domain.db.JmsEvent;
 import com.jms.domain.db.PMr;
+import com.jms.domain.db.PStopsPlan;
 import com.jms.domain.db.PUnplannedStops;
 import com.jms.domain.db.SMtf;
 import com.jms.domain.db.WProject;
@@ -127,6 +128,13 @@ public class JmsEventService {
 		saStopGroup.setName(EventTypeEnum.create_sa.name());
 		saStopGroup.setDescription("SA停机");
 		jmsEventRepository.save(opStopGroup);
+		
+		
+		JmsEvent planStop = new JmsEvent();
+		planStop.setClass_(PStopsPlan.class.getCanonicalName());
+		planStop.setName(EventTypeEnum.create.name());
+		planStop.setDescription("计划停机");
+		jmsEventRepository.save(planStop);
 		
 	
 		

@@ -12,6 +12,9 @@ public class WSPActualSetup implements java.io.Serializable{
 
 	     private String woNo;
 	     private String shift;
+	     
+	     private String cpp;
+	     
 	     private String machine;
 	     
 	     private String pno;
@@ -20,6 +23,8 @@ public class WSPActualSetup implements java.io.Serializable{
 	     
 	     private Date actSt;
 	     private Date actFt;
+	     
+	     
 		public Long getIdActualSetup() {
 			return idActualSetup;
 		}
@@ -79,6 +84,13 @@ public class WSPActualSetup implements java.io.Serializable{
 		}
 		public void setMachine(String machine) {
 			this.machine = machine;
+		}
+	
+		public String getCpp() {
+			return cpp;
+		}
+		public void setCpp(String cpp) {
+			this.cpp = cpp;
 		}
    
 }

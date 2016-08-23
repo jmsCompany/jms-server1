@@ -158,7 +158,7 @@ public class StopsPlanController {
 			String pf=(w.getPlanFt()==null)?"":w.getPlanFt().toString();
 			String as=(w.getActSt()==null)?"":w.getActSt().toString();
 			String af=(w.getActFt()==null)?"":w.getActFt().toString();
-			String[] d = {""+w.getMMachine().getCode(),w.getPSubCode().getSubCode(),ps,pf,as,af};
+			String[] d = {""+w.getMMachine().getCode(),w.getPSubCode().getSubCode(),ps,pf,as,af,w.getPStatusDic().getName(),""+w.getIdStopsPlan()};
 			lst.add(d);
 
 		}

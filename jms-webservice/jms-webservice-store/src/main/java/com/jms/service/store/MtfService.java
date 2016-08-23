@@ -785,7 +785,7 @@ public class MtfService {
 					List<EventReceiver> eventReceivers = eventReceiverRepository.findByIdEventAndIdCompany(11l,securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 					if(eventReceivers!=null)
 					{
-						notificationService.createNotificationToReceivers(securityUtils.getCurrentDBUser().getCompany(), 11l, sMtf.getIdMt(), NotificationMethodEnum.sys, eventReceivers);
+						notificationService.createNotificationToReceivers(securityUtils.getCurrentDBUser().getCompany(), 11l, sMtf.getIdMt(), NotificationMethodEnum.sys, eventReceivers,new Date());
 					}
 			
 				}

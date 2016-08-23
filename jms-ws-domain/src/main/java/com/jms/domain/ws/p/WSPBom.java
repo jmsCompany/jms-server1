@@ -17,6 +17,9 @@ public class WSPBom {
     private String material;
     private String pno;
     private String rev;
+    private boolean saved;
+    private boolean edit;
+    
     private Map<String,WSPBomItem> bomItems = new LinkedHashMap<String,WSPBomItem>(0);
 
     public Long getIdBomLabel() {
@@ -90,6 +93,18 @@ public class WSPBom {
 	}
 	public void setRev(String rev) {
 		this.rev = rev;
+	}
+	public boolean isSaved() {
+		return saved;
+	}
+	public void setSaved(boolean saved) {
+		this.saved = saved;
+	}
+	public boolean isEdit() {
+		return edit;
+	}
+	public void setEdit(boolean edit) {
+		this.edit = edit;
 	}
 
 }

@@ -41,6 +41,14 @@ public class ActualSetupController {
 	}
 	
 	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findWSPActualSetupById", method=RequestMethod.GET)
+	public WSPActualSetup findWSPActualSetupById(@RequestParam("actSetupId") Long actSetupId){
+		return actualSetupService.findWSPActualSetupById(actSetupId);
+		
+	}
+	
+	
 //	工单woNO、物料pno-rev-des、班次shift、机器machineCode- machineName、实际开始停机actSt、实际结束停机actFt
 	@Transactional(readOnly = true)
 	@RequestMapping(value = "/p/getActSetupList", method = RequestMethod.POST)
@@ -62,7 +70,7 @@ public class ActualSetupController {
 			String material = s.getPno()+"-"+s.getRev()+"-"+s.getDes();
 			String actF = (w.getActFt()==null)?"":w.getActFt().toString();
 			String actS = (w.getActSt()==null)?"":w.getActSt().toString();
-			String[] d = { w.getPCPp().getPWo().getWoNo(), material,w.getPCPp().getPShiftPlanD().getShift(),w.getPCPp().getMMachine().getCode(),actS,actF};
+			String[] d = { w.getPCPp().getPWo().getWoNo(), material,w.getPCPp().getPShiftPlanD().getShift(),w.getPCPp().getMMachine().getCode(),actS,actF,""+w.getIdActualSetup()};
 			lst.add(d);
 
 		}

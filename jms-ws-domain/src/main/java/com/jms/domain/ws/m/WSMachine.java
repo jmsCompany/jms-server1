@@ -1,5 +1,6 @@
 package com.jms.domain.ws.m;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 
@@ -32,6 +33,11 @@ public class WSMachine {
     
     private Long idStk;
     private String stk;
+    
+    private  BigDecimal mttr;
+    private  BigDecimal mtbf;
+    private  BigDecimal downtime;
+ 
     
 	public Long getIdMachine() {
 		return idMachine;
@@ -152,6 +158,24 @@ public class WSMachine {
 	}
 	public void setIdStk(Long idStk) {
 		this.idStk = idStk;
+	}
+	public BigDecimal getMttr() {
+		return mttr;
+	}
+	public void setMttr(BigDecimal mttr) {
+		this.mttr = mttr;
+	}
+	public BigDecimal getMtbf() {
+		return mtbf;
+	}
+	public void setMtbf(BigDecimal mtbf) {
+		this.mtbf = mtbf;
+	}
+	public BigDecimal getDowntime() {
+		return downtime;
+	}
+	public void setDowntime(BigDecimal downtime) {
+		this.downtime = downtime;
 	}
 
 }
