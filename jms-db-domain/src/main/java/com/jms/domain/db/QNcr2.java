@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2016-8-23 14:57:20 by Hibernate Tools 3.2.2.GA
+// Generated 2016-8-23 16:01:55 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.Date;
@@ -30,10 +30,9 @@ public class QNcr2  implements java.io.Serializable {
 
 
      private Long idNcr;
-     private QG8d QG8d;
-     private QCar QCar;
+     private QNoProcess QNoProcess;
      private String ncrNo;
-     private String who;
+     private Long who;
      private Date when1;
      private String where1;
      private String howMuch;
@@ -48,16 +47,16 @@ public class QNcr2  implements java.io.Serializable {
      private String car;
      private String q8d;
      private Date deadline;
-     private String respnose;
+     private Long respnose;
      private Date date;
-     private Set<QNoProcess> QNoProcesses = new HashSet<QNoProcess>(0);
+     private Set<QCar> QCars = new HashSet<QCar>(0);
+     private Set<QG8d> QG8ds = new HashSet<QG8d>(0);
 
     public QNcr2() {
     }
 
-    public QNcr2(QG8d QG8d, QCar QCar, String ncrNo, String who, Date when1, String where1, String howMuch, String how, String what, String pic1OrgFilename, String pic1Filename, String pic2OrgFilename, String picFilename, String emergencyAction, Date actionDate, String car, String q8d, Date deadline, String respnose, Date date, Set<QNoProcess> QNoProcesses) {
-       this.QG8d = QG8d;
-       this.QCar = QCar;
+    public QNcr2(QNoProcess QNoProcess, String ncrNo, Long who, Date when1, String where1, String howMuch, String how, String what, String pic1OrgFilename, String pic1Filename, String pic2OrgFilename, String picFilename, String emergencyAction, Date actionDate, String car, String q8d, Date deadline, Long respnose, Date date, Set<QCar> QCars, Set<QG8d> QG8ds) {
+       this.QNoProcess = QNoProcess;
        this.ncrNo = ncrNo;
        this.who = who;
        this.when1 = when1;
@@ -76,7 +75,8 @@ public class QNcr2  implements java.io.Serializable {
        this.deadline = deadline;
        this.respnose = respnose;
        this.date = date;
-       this.QNoProcesses = QNoProcesses;
+       this.QCars = QCars;
+       this.QG8ds = QG8ds;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -90,22 +90,13 @@ public class QNcr2  implements java.io.Serializable {
         this.idNcr = idNcr;
     }
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="id_g8d")
-    public QG8d getQG8d() {
-        return this.QG8d;
+    @JoinColumn(name="id_no_process")
+    public QNoProcess getQNoProcess() {
+        return this.QNoProcess;
     }
     
-    public void setQG8d(QG8d QG8d) {
-        this.QG8d = QG8d;
-    }
-@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="id_car")
-    public QCar getQCar() {
-        return this.QCar;
-    }
-    
-    public void setQCar(QCar QCar) {
-        this.QCar = QCar;
+    public void setQNoProcess(QNoProcess QNoProcess) {
+        this.QNoProcess = QNoProcess;
     }
     
     @Column(name="ncr_no", length=20)
@@ -117,12 +108,12 @@ public class QNcr2  implements java.io.Serializable {
         this.ncrNo = ncrNo;
     }
     
-    @Column(name="who", length=20)
-    public String getWho() {
+    @Column(name="who")
+    public Long getWho() {
         return this.who;
     }
     
-    public void setWho(String who) {
+    public void setWho(Long who) {
         this.who = who;
     }
     @Temporal(TemporalType.DATE)
@@ -252,12 +243,12 @@ public class QNcr2  implements java.io.Serializable {
         this.deadline = deadline;
     }
     
-    @Column(name="respnose", length=20)
-    public String getRespnose() {
+    @Column(name="respnose")
+    public Long getRespnose() {
         return this.respnose;
     }
     
-    public void setRespnose(String respnose) {
+    public void setRespnose(Long respnose) {
         this.respnose = respnose;
     }
     @Temporal(TemporalType.DATE)
@@ -270,12 +261,20 @@ public class QNcr2  implements java.io.Serializable {
         this.date = date;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="QNcr2")
-    public Set<QNoProcess> getQNoProcesses() {
-        return this.QNoProcesses;
+    public Set<QCar> getQCars() {
+        return this.QCars;
     }
     
-    public void setQNoProcesses(Set<QNoProcess> QNoProcesses) {
-        this.QNoProcesses = QNoProcesses;
+    public void setQCars(Set<QCar> QCars) {
+        this.QCars = QCars;
+    }
+@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="QNcr2")
+    public Set<QG8d> getQG8ds() {
+        return this.QG8ds;
+    }
+    
+    public void setQG8ds(Set<QG8d> QG8ds) {
+        this.QG8ds = QG8ds;
     }
 
 

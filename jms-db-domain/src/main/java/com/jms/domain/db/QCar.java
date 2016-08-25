@@ -1,18 +1,16 @@
 package com.jms.domain.db;
-// Generated 2016-8-23 14:57:20 by Hibernate Tools 3.2.2.GA
+// Generated 2016-8-23 16:01:55 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,6 +26,7 @@ public class QCar  implements java.io.Serializable {
 
 
      private Long idCar;
+     private QNcr2 QNcr2;
      private String carNo;
      private String to1;
      private String problemDes;
@@ -47,18 +46,18 @@ public class QCar  implements java.io.Serializable {
      private Date commitDate1;
      private String permanentCorrectiveAction;
      private Date commitDate2;
-     private String response;
+     private Long response;
      private Date date1;
      private String result;
      private String actionPlan;
-     private String confirmor;
+     private Long confirmor;
      private Date date2;
-     private Set<QNcr2> QNcr2s = new HashSet<QNcr2>(0);
 
     public QCar() {
     }
 
-    public QCar(String carNo, String to1, String problemDes, String ia, String ea, String quality, String ehs, String other1, String other1Des, String man, String machine, String material, String method, String other2, String other2Des, String interimCorrectiveAction, Date commitDate1, String permanentCorrectiveAction, Date commitDate2, String response, Date date1, String result, String actionPlan, String confirmor, Date date2, Set<QNcr2> QNcr2s) {
+    public QCar(QNcr2 QNcr2, String carNo, String to1, String problemDes, String ia, String ea, String quality, String ehs, String other1, String other1Des, String man, String machine, String material, String method, String other2, String other2Des, String interimCorrectiveAction, Date commitDate1, String permanentCorrectiveAction, Date commitDate2, Long response, Date date1, String result, String actionPlan, Long confirmor, Date date2) {
+       this.QNcr2 = QNcr2;
        this.carNo = carNo;
        this.to1 = to1;
        this.problemDes = problemDes;
@@ -84,7 +83,6 @@ public class QCar  implements java.io.Serializable {
        this.actionPlan = actionPlan;
        this.confirmor = confirmor;
        this.date2 = date2;
-       this.QNcr2s = QNcr2s;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -96,6 +94,15 @@ public class QCar  implements java.io.Serializable {
     
     public void setIdCar(Long idCar) {
         this.idCar = idCar;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="id_ncr")
+    public QNcr2 getQNcr2() {
+        return this.QNcr2;
+    }
+    
+    public void setQNcr2(QNcr2 QNcr2) {
+        this.QNcr2 = QNcr2;
     }
     
     @Column(name="car_no", length=20)
@@ -269,12 +276,12 @@ public class QCar  implements java.io.Serializable {
         this.commitDate2 = commitDate2;
     }
     
-    @Column(name="response", length=20)
-    public String getResponse() {
+    @Column(name="response")
+    public Long getResponse() {
         return this.response;
     }
     
-    public void setResponse(String response) {
+    public void setResponse(Long response) {
         this.response = response;
     }
     @Temporal(TemporalType.DATE)
@@ -305,12 +312,12 @@ public class QCar  implements java.io.Serializable {
         this.actionPlan = actionPlan;
     }
     
-    @Column(name="confirmor", length=20)
-    public String getConfirmor() {
+    @Column(name="confirmor")
+    public Long getConfirmor() {
         return this.confirmor;
     }
     
-    public void setConfirmor(String confirmor) {
+    public void setConfirmor(Long confirmor) {
         this.confirmor = confirmor;
     }
     @Temporal(TemporalType.DATE)
@@ -321,14 +328,6 @@ public class QCar  implements java.io.Serializable {
     
     public void setDate2(Date date2) {
         this.date2 = date2;
-    }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="QCar")
-    public Set<QNcr2> getQNcr2s() {
-        return this.QNcr2s;
-    }
-    
-    public void setQNcr2s(Set<QNcr2> QNcr2s) {
-        this.QNcr2s = QNcr2s;
     }
 
 

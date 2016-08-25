@@ -1,10 +1,12 @@
 package com.jms.domain.db;
-// Generated 2016-8-23 14:57:20 by Hibernate Tools 3.2.2.GA
+// Generated 2016-8-23 16:01:55 by Hibernate Tools 3.2.2.GA
 
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,17 +29,12 @@ public class QG8dUsers  implements java.io.Serializable {
     public QG8dUsers() {
     }
 
-	
-    public QG8dUsers(Long idG8dUsers) {
-        this.idG8dUsers = idG8dUsers;
-    }
-    public QG8dUsers(Long idG8dUsers, QG8d QG8d, Long idUser) {
-       this.idG8dUsers = idG8dUsers;
+    public QG8dUsers(QG8d QG8d, Long idUser) {
        this.QG8d = QG8d;
        this.idUser = idUser;
     }
    
-     @Id 
+     @Id @GeneratedValue(strategy=IDENTITY)
     
     @Column(name="id_g8d_users", unique=true, nullable=false)
     public Long getIdG8dUsers() {

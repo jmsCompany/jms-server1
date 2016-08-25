@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2016-8-23 14:57:20 by Hibernate Tools 3.2.2.GA
+// Generated 2016-8-23 16:01:55 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.Date;
@@ -9,7 +9,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,6 +30,7 @@ public class QG8d  implements java.io.Serializable {
 
 
      private Long idG8d;
+     private QNcr2 QNcr2;
      private String g8dNo;
      private String title;
      private Date dateOpened;
@@ -50,24 +55,22 @@ public class QG8d  implements java.io.Serializable {
      private String prevenAction;
      private Date dateImplemented4;
      private String systemicPrevent;
-     private String responsibility;
+     private Long responsibility;
      private String tiRecognition;
      private Date dateClosed;
-     private String reportedBy;
+     private Long reportedBy;
      private Long idLeader;
+     
+     private Long verification1;
+     private Long verification2;
+     private Long verification3;
      private Set<QG8dUsers> QG8dUserses = new HashSet<QG8dUsers>(0);
-     private Set<QG8dUsers> QG8dUserses_1 = new HashSet<QG8dUsers>(0);
-     private Set<QNcr2> QNcr2s = new HashSet<QNcr2>(0);
 
     public QG8d() {
     }
 
-	
-    public QG8d(Long idG8d) {
-        this.idG8d = idG8d;
-    }
-    public QG8d(Long idG8d, String g8dNo, String title, Date dateOpened, Date lastUpdated, Long idMaterial, Long idRoutineD, String organisationInfo, Character emergencyResponseAction, String effective1, Date dateImplemented1, String problemState, String interimContainmentAction, String effective2, Date dateImplemented2, String rootCause, String default_, String contribution, String chosenPermanentAction, String effective3, String implementedPermanentAction, Date dateImplemented3, String prevenAction, Date dateImplemented4, String systemicPrevent, String responsibility, String tiRecognition, Date dateClosed, String reportedBy, Long idLeader, Set<QG8dUsers> QG8dUserses, Set<QG8dUsers> QG8dUserses_1, Set<QNcr2> QNcr2s) {
-       this.idG8d = idG8d;
+    public QG8d(QNcr2 QNcr2, String g8dNo, String title, Date dateOpened, Date lastUpdated, Long idMaterial, Long idRoutineD, String organisationInfo, Character emergencyResponseAction, String effective1, Date dateImplemented1, String problemState, String interimContainmentAction, String effective2, Date dateImplemented2, String rootCause, String default_, String contribution, String chosenPermanentAction, String effective3, String implementedPermanentAction, Date dateImplemented3, String prevenAction, Date dateImplemented4, String systemicPrevent, Long responsibility, String tiRecognition, Date dateClosed, Long reportedBy, Long idLeader, Long verification1,Long verification2,Long verification3,Set<QG8dUsers> QG8dUserses) {
+       this.QNcr2 = QNcr2;
        this.g8dNo = g8dNo;
        this.title = title;
        this.dateOpened = dateOpened;
@@ -97,12 +100,13 @@ public class QG8d  implements java.io.Serializable {
        this.dateClosed = dateClosed;
        this.reportedBy = reportedBy;
        this.idLeader = idLeader;
+       this.verification1 = verification1;
+       this.verification2 = verification2;
+       this.verification3 = verification3;
        this.QG8dUserses = QG8dUserses;
-       this.QG8dUserses_1 = QG8dUserses_1;
-       this.QNcr2s = QNcr2s;
     }
    
-     @Id 
+     @Id @GeneratedValue(strategy=IDENTITY)
     
     @Column(name="id_g8d", unique=true, nullable=false)
     public Long getIdG8d() {
@@ -111,6 +115,15 @@ public class QG8d  implements java.io.Serializable {
     
     public void setIdG8d(Long idG8d) {
         this.idG8d = idG8d;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="id_ncr")
+    public QNcr2 getQNcr2() {
+        return this.QNcr2;
+    }
+    
+    public void setQNcr2(QNcr2 QNcr2) {
+        this.QNcr2 = QNcr2;
     }
     
     @Column(name="g8d_no", length=20)
@@ -329,12 +342,12 @@ public class QG8d  implements java.io.Serializable {
         this.systemicPrevent = systemicPrevent;
     }
     
-    @Column(name="responsibility", length=20)
-    public String getResponsibility() {
+    @Column(name="responsibility")
+    public Long getResponsibility() {
         return this.responsibility;
     }
     
-    public void setResponsibility(String responsibility) {
+    public void setResponsibility(Long responsibility) {
         this.responsibility = responsibility;
     }
     
@@ -356,12 +369,12 @@ public class QG8d  implements java.io.Serializable {
         this.dateClosed = dateClosed;
     }
     
-    @Column(name="reported_by", length=20)
-    public String getReportedBy() {
+    @Column(name="reported_by")
+    public Long getReportedBy() {
         return this.reportedBy;
     }
     
-    public void setReportedBy(String reportedBy) {
+    public void setReportedBy(Long reportedBy) {
         this.reportedBy = reportedBy;
     }
     
@@ -381,22 +394,30 @@ public class QG8d  implements java.io.Serializable {
     public void setQG8dUserses(Set<QG8dUsers> QG8dUserses) {
         this.QG8dUserses = QG8dUserses;
     }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="QG8d")
-    public Set<QG8dUsers> getQG8dUserses_1() {
-        return this.QG8dUserses_1;
-    }
-    
-    public void setQG8dUserses_1(Set<QG8dUsers> QG8dUserses_1) {
-        this.QG8dUserses_1 = QG8dUserses_1;
-    }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="QG8d")
-    public Set<QNcr2> getQNcr2s() {
-        return this.QNcr2s;
-    }
-    
-    public void setQNcr2s(Set<QNcr2> QNcr2s) {
-        this.QNcr2s = QNcr2s;
-    }
+
+	public Long getVerification1() {
+		return verification1;
+	}
+
+	public void setVerification1(Long verification1) {
+		this.verification1 = verification1;
+	}
+
+	public Long getVerification2() {
+		return verification2;
+	}
+
+	public void setVerification2(Long verification2) {
+		this.verification2 = verification2;
+	}
+
+	public Long getVerification3() {
+		return verification3;
+	}
+
+	public void setVerification3(Long verification3) {
+		this.verification3 = verification3;
+	}
 
 
 

@@ -1,5 +1,5 @@
 package com.jms.domain.db;
-// Generated 2016-8-23 14:57:20 by Hibernate Tools 3.2.2.GA
+// Generated 2016-8-23 16:01:55 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.HashSet;
@@ -8,6 +8,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -27,25 +29,18 @@ public class QFileType  implements java.io.Serializable {
      private String des;
      private Long idCompany;
      private Set<QFileManagent> QFileManagents = new HashSet<QFileManagent>(0);
-     private Set<QFileManagent> QFileManagents_1 = new HashSet<QFileManagent>(0);
 
     public QFileType() {
     }
 
-	
-    public QFileType(Long idFileType) {
-        this.idFileType = idFileType;
-    }
-    public QFileType(Long idFileType, String type, String des, Long idCompany, Set<QFileManagent> QFileManagents, Set<QFileManagent> QFileManagents_1) {
-       this.idFileType = idFileType;
+    public QFileType(String type, String des, Long idCompany, Set<QFileManagent> QFileManagents) {
        this.type = type;
        this.des = des;
        this.idCompany = idCompany;
        this.QFileManagents = QFileManagents;
-       this.QFileManagents_1 = QFileManagents_1;
     }
    
-     @Id 
+     @Id @GeneratedValue(strategy=IDENTITY)
     
     @Column(name="id_file_type", unique=true, nullable=false)
     public Long getIdFileType() {
@@ -89,14 +84,6 @@ public class QFileType  implements java.io.Serializable {
     
     public void setQFileManagents(Set<QFileManagent> QFileManagents) {
         this.QFileManagents = QFileManagents;
-    }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="QFileType")
-    public Set<QFileManagent> getQFileManagents_1() {
-        return this.QFileManagents_1;
-    }
-    
-    public void setQFileManagents_1(Set<QFileManagent> QFileManagents_1) {
-        this.QFileManagents_1 = QFileManagents_1;
     }
 
 

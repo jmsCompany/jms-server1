@@ -38,7 +38,7 @@ public class CheckListService {
 	private SMaterialRepository sMaterialRepository;
 	
 
-	public WSQCheckList saveCheckList(@RequestBody WSQCheckList wsQCheckList) throws Exception {
+	public WSQCheckList saveCheckList(WSQCheckList wsQCheckList) throws Exception {
 		QCheckList qCheckList;
 		if(wsQCheckList.getIdCheckList()!=null&&!wsQCheckList.getIdCheckList().equals(0l))
 		{
@@ -56,7 +56,7 @@ public class CheckListService {
 	}
 	
 	
-	public Valid deleteCheckList(@RequestParam("checkListlId") Long checkListlId) {
+	public Valid deleteCheckList( Long checkListlId) {
 		Valid v = new Valid();
 		v.setValid(true);
 		qCheckListRepository.delete(checkListlId);

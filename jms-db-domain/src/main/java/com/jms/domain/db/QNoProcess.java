@@ -1,13 +1,17 @@
 package com.jms.domain.db;
-// Generated 2016-8-23 14:57:20 by Hibernate Tools 3.2.2.GA
+// Generated 2016-8-23 16:01:55 by Hibernate Tools 3.2.2.GA
 
 
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -20,9 +24,7 @@ import javax.persistence.Table;
 public class QNoProcess  implements java.io.Serializable {
 
 
-     private String idNoProcess;
-     private QNcr2 QNcr2;
-     private QDeviation QDeviation;
+     private Long idNoProcess;
      private String ncpNo;
      private String lotNo;
      private Long idMaterial;
@@ -30,8 +32,8 @@ public class QNoProcess  implements java.io.Serializable {
      private String default_;
      private Long idLocation;
      private String des;
-     private String release1;
-     private String audit01;
+     private Long release1;
+     private Long audit01;
      private String comment;
      private String isSorting;
      private Float sortingQty;
@@ -43,29 +45,27 @@ public class QNoProcess  implements java.io.Serializable {
      private Float manHour;
      private String isDeviation;
      private String deviationQty;
-     private String owner;
-     private String audit02;
-     private String countersign;
-     private String approval02;
+     private Long owner;
+     private Long audit02;
+     private Long countersign;
+     private Long approval02;
      private String inprovementAction;
      private String concernOrNot;
-     private String response;
-     private String audit03;
-     private String approval03;
+     private Long response;
+     private Long audit03;
+     private Long approval03;
      private Long idQstatus;
      private Long idCompany;
+     
+     private Long idCpp;
+     private Long idUnplannedStop;
+     private Set<QDeviation> QDeviations = new HashSet<QDeviation>(0);
+     private Set<QNcr2> QNcr2s = new HashSet<QNcr2>(0);
 
     public QNoProcess() {
     }
 
-	
-    public QNoProcess(String idNoProcess) {
-        this.idNoProcess = idNoProcess;
-    }
-    public QNoProcess(String idNoProcess, QNcr2 QNcr2, QDeviation QDeviation, String ncpNo, String lotNo, Long idMaterial, Long qty, String default_, Long idLocation, String des, String release1, String audit01, String comment, String isSorting, Float sortingQty, String isReworking, Float reworkingQty, String isScrap, Float scrapQty, String idReject, Float manHour, String isDeviation, String deviationQty, String owner, String audit02, String countersign, String approval02, String inprovementAction, String concernOrNot, String response, String audit03, String approval03, Long idQstatus, Long idCompany) {
-       this.idNoProcess = idNoProcess;
-       this.QNcr2 = QNcr2;
-       this.QDeviation = QDeviation;
+    public QNoProcess(String ncpNo, String lotNo, Long idMaterial, Long qty, String default_, Long idLocation, String des, Long release1, Long audit01, String comment, String isSorting, Float sortingQty, String isReworking, Float reworkingQty, String isScrap, Float scrapQty, String idReject, Float manHour, String isDeviation, String deviationQty, Long owner, Long audit02, Long countersign, Long approval02, String inprovementAction, String concernOrNot, Long response, Long audit03, Long approval03, Long idQstatus, Long idCompany,Long idCpp,Long idUnplannedStop, Set<QDeviation> QDeviations, Set<QNcr2> QNcr2s) {
        this.ncpNo = ncpNo;
        this.lotNo = lotNo;
        this.idMaterial = idMaterial;
@@ -97,35 +97,21 @@ public class QNoProcess  implements java.io.Serializable {
        this.approval03 = approval03;
        this.idQstatus = idQstatus;
        this.idCompany = idCompany;
+       this.idCpp=idCpp;
+       this.idUnplannedStop=idUnplannedStop;
+       this.QDeviations = QDeviations;
+       this.QNcr2s = QNcr2s;
     }
    
-     @Id 
+     @Id @GeneratedValue(strategy=IDENTITY)
     
-    @Column(name="id_no_process", unique=true, nullable=false, length=20)
-    public String getIdNoProcess() {
+    @Column(name="id_no_process", unique=true, nullable=false)
+    public Long getIdNoProcess() {
         return this.idNoProcess;
     }
     
-    public void setIdNoProcess(String idNoProcess) {
+    public void setIdNoProcess(Long idNoProcess) {
         this.idNoProcess = idNoProcess;
-    }
-@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="id_ncr")
-    public QNcr2 getQNcr2() {
-        return this.QNcr2;
-    }
-    
-    public void setQNcr2(QNcr2 QNcr2) {
-        this.QNcr2 = QNcr2;
-    }
-@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="id_deviation")
-    public QDeviation getQDeviation() {
-        return this.QDeviation;
-    }
-    
-    public void setQDeviation(QDeviation QDeviation) {
-        this.QDeviation = QDeviation;
     }
     
     @Column(name="ncp_no", length=32)
@@ -191,21 +177,21 @@ public class QNoProcess  implements java.io.Serializable {
         this.des = des;
     }
     
-    @Column(name="release1", length=32)
-    public String getRelease1() {
+    @Column(name="release1")
+    public Long getRelease1() {
         return this.release1;
     }
     
-    public void setRelease1(String release1) {
+    public void setRelease1(Long release1) {
         this.release1 = release1;
     }
     
-    @Column(name="audit01", length=32)
-    public String getAudit01() {
+    @Column(name="audit01")
+    public Long getAudit01() {
         return this.audit01;
     }
     
-    public void setAudit01(String audit01) {
+    public void setAudit01(Long audit01) {
         this.audit01 = audit01;
     }
     
@@ -308,39 +294,39 @@ public class QNoProcess  implements java.io.Serializable {
         this.deviationQty = deviationQty;
     }
     
-    @Column(name="owner", length=32)
-    public String getOwner() {
+    @Column(name="owner")
+    public Long getOwner() {
         return this.owner;
     }
     
-    public void setOwner(String owner) {
+    public void setOwner(Long owner) {
         this.owner = owner;
     }
     
-    @Column(name="audit02", length=32)
-    public String getAudit02() {
+    @Column(name="audit02")
+    public Long getAudit02() {
         return this.audit02;
     }
     
-    public void setAudit02(String audit02) {
+    public void setAudit02(Long audit02) {
         this.audit02 = audit02;
     }
     
-    @Column(name="countersign", length=32)
-    public String getCountersign() {
+    @Column(name="countersign")
+    public Long getCountersign() {
         return this.countersign;
     }
     
-    public void setCountersign(String countersign) {
+    public void setCountersign(Long countersign) {
         this.countersign = countersign;
     }
     
-    @Column(name="approval02", length=20)
-    public String getApproval02() {
+    @Column(name="approval02")
+    public Long getApproval02() {
         return this.approval02;
     }
     
-    public void setApproval02(String approval02) {
+    public void setApproval02(Long approval02) {
         this.approval02 = approval02;
     }
     
@@ -362,30 +348,30 @@ public class QNoProcess  implements java.io.Serializable {
         this.concernOrNot = concernOrNot;
     }
     
-    @Column(name="response", length=32)
-    public String getResponse() {
+    @Column(name="response")
+    public Long getResponse() {
         return this.response;
     }
     
-    public void setResponse(String response) {
+    public void setResponse(Long response) {
         this.response = response;
     }
     
-    @Column(name="audit03", length=32)
-    public String getAudit03() {
+    @Column(name="audit03")
+    public Long getAudit03() {
         return this.audit03;
     }
     
-    public void setAudit03(String audit03) {
+    public void setAudit03(Long audit03) {
         this.audit03 = audit03;
     }
     
-    @Column(name="approval03", length=32)
-    public String getApproval03() {
+    @Column(name="approval03")
+    public Long getApproval03() {
         return this.approval03;
     }
     
-    public void setApproval03(String approval03) {
+    public void setApproval03(Long approval03) {
         this.approval03 = approval03;
     }
     
@@ -406,6 +392,40 @@ public class QNoProcess  implements java.io.Serializable {
     public void setIdCompany(Long idCompany) {
         this.idCompany = idCompany;
     }
+@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="QNoProcess")
+    public Set<QDeviation> getQDeviations() {
+        return this.QDeviations;
+    }
+    
+    public void setQDeviations(Set<QDeviation> QDeviations) {
+        this.QDeviations = QDeviations;
+    }
+@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="QNoProcess")
+    public Set<QNcr2> getQNcr2s() {
+        return this.QNcr2s;
+    }
+    
+    public void setQNcr2s(Set<QNcr2> QNcr2s) {
+        this.QNcr2s = QNcr2s;
+    }
+
+    @Column(name="id_cpp")
+	public Long getIdCpp() {
+		return idCpp;
+	}
+
+	public void setIdCpp(Long idCpp) {
+		this.idCpp = idCpp;
+	}
+
+    @Column(name="id_unplanned_stop")
+	public Long getIdUnplannedStop() {
+		return idUnplannedStop;
+	}
+
+	public void setIdUnplannedStop(Long idUnplannedStop) {
+		this.idUnplannedStop = idUnplannedStop;
+	}
 
 
 

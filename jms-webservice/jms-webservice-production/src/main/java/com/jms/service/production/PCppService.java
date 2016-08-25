@@ -443,13 +443,16 @@ public class PCppService {
             float passedEff =1f;
             w.setPassedEff(passedEff);
             
-            long pt = cpp.getPlanFt().getTime()-cpp.getPlanSt().getTime()-planStopTime;//计划负荷时间
-            long at = cpp.getActFt().getTime()-cpp.getActSt().getTime()-planStopTime-unplannnedStopTime;//实际负荷时间
+            long pt = cpp.getPlanFt().getTime()-cpp.getPlanSt().getTime()-planStopTime-unplannnedStopTime-loadingTime;
+            long at = cpp.getPlanFt().getTime()-cpp.getPlanSt().getTime();
+            
+            
+           
             float timeEff = (float)pt/(float)at;
             w.setTimeEff(timeEff);
            	
             
-            float machineEff =(float)(actQty*machineTime)/(float)at; //性能开动率
+            float machineEff =(float)(actQty*machineTime)/(float)pt; //性能开动率
             w.setMachineEff(machineEff);
 		
             float oee = timeEff*machineEff*passedEff;

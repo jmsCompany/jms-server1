@@ -404,7 +404,7 @@ public class MMainReportController {
 				breakdownTime = breakdownTime + (s.getOpFt().getTime() - s.getOpSt().getTime());
 			}
 
-			float rate = (float) breakdownTime / actTime;
+			float rate = (actTime.equals(0l))?0l:(float) breakdownTime / actTime;
 
 			WSBreakdownRate w = new WSBreakdownRate();
 			w.setX(x);

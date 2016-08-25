@@ -1,18 +1,16 @@
 package com.jms.domain.db;
-// Generated 2016-8-23 14:57:20 by Hibernate Tools 3.2.2.GA
+// Generated 2016-8-23 16:01:55 by Hibernate Tools 3.2.2.GA
 
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,35 +26,36 @@ public class QDeviation  implements java.io.Serializable {
 
 
      private Long idDeviation;
+     private QNoProcess QNoProcess;
      private String deviationNo;
      private Long idMaterial;
      private Long idRoutineD;
      private Long idCompanyCo;
-     private String issuer;
-     private Date date;
+     private Long issuer;
+     private Date date1;
      private String scopePeriodMaxqty;
      private String reason;
      private String mfgRemark;
-     private String mfgSign;
+     private Long mfgSign;
      private String aeRemark;
-     private String aeSign;
+     private Long aeSign;
      private String qeRemark;
-     private String qeSign;
+     private Long qeSign;
      private String otherFuction;
-     private String ofSign;
+     private Long ofSign;
      private Long idDept;
-     private Set<QNoProcess> QNoProcesses = new HashSet<QNoProcess>(0);
 
     public QDeviation() {
     }
 
-    public QDeviation(String deviationNo, Long idMaterial, Long idRoutineD, Long idCompanyCo, String issuer, Date date, String scopePeriodMaxqty, String reason, String mfgRemark, String mfgSign, String aeRemark, String aeSign, String qeRemark, String qeSign, String otherFuction, String ofSign, Long idDept, Set<QNoProcess> QNoProcesses) {
+    public QDeviation(QNoProcess QNoProcess, String deviationNo, Long idMaterial, Long idRoutineD, Long idCompanyCo, Long issuer, Date date1, String scopePeriodMaxqty, String reason, String mfgRemark, Long mfgSign, String aeRemark, Long aeSign, String qeRemark, Long qeSign, String otherFuction, Long ofSign, Long idDept) {
+       this.QNoProcess = QNoProcess;
        this.deviationNo = deviationNo;
        this.idMaterial = idMaterial;
        this.idRoutineD = idRoutineD;
        this.idCompanyCo = idCompanyCo;
        this.issuer = issuer;
-       this.date = date;
+       this.date1 = date1;
        this.scopePeriodMaxqty = scopePeriodMaxqty;
        this.reason = reason;
        this.mfgRemark = mfgRemark;
@@ -68,7 +67,6 @@ public class QDeviation  implements java.io.Serializable {
        this.otherFuction = otherFuction;
        this.ofSign = ofSign;
        this.idDept = idDept;
-       this.QNoProcesses = QNoProcesses;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -80,6 +78,15 @@ public class QDeviation  implements java.io.Serializable {
     
     public void setIdDeviation(Long idDeviation) {
         this.idDeviation = idDeviation;
+    }
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="id_no_process")
+    public QNoProcess getQNoProcess() {
+        return this.QNoProcess;
+    }
+    
+    public void setQNoProcess(QNoProcess QNoProcess) {
+        this.QNoProcess = QNoProcess;
     }
     
     @Column(name="deviation_no", length=20)
@@ -118,22 +125,22 @@ public class QDeviation  implements java.io.Serializable {
         this.idCompanyCo = idCompanyCo;
     }
     
-    @Column(name="issuer", length=32)
-    public String getIssuer() {
+    @Column(name="issuer")
+    public Long getIssuer() {
         return this.issuer;
     }
     
-    public void setIssuer(String issuer) {
+    public void setIssuer(Long issuer) {
         this.issuer = issuer;
     }
     @Temporal(TemporalType.DATE)
-    @Column(name="date", length=10)
-    public Date getDate() {
-        return this.date;
+    @Column(name="date1", length=10)
+    public Date getDate1() {
+        return this.date1;
     }
     
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDate1(Date date1) {
+        this.date1 = date1;
     }
     
     @Column(name="scope_period_maxqty", length=128)
@@ -163,12 +170,12 @@ public class QDeviation  implements java.io.Serializable {
         this.mfgRemark = mfgRemark;
     }
     
-    @Column(name="mfg_sign", length=20)
-    public String getMfgSign() {
+    @Column(name="mfg_sign")
+    public Long getMfgSign() {
         return this.mfgSign;
     }
     
-    public void setMfgSign(String mfgSign) {
+    public void setMfgSign(Long mfgSign) {
         this.mfgSign = mfgSign;
     }
     
@@ -181,12 +188,12 @@ public class QDeviation  implements java.io.Serializable {
         this.aeRemark = aeRemark;
     }
     
-    @Column(name="ae_sign", length=20)
-    public String getAeSign() {
+    @Column(name="ae_sign")
+    public Long getAeSign() {
         return this.aeSign;
     }
     
-    public void setAeSign(String aeSign) {
+    public void setAeSign(Long aeSign) {
         this.aeSign = aeSign;
     }
     
@@ -199,12 +206,12 @@ public class QDeviation  implements java.io.Serializable {
         this.qeRemark = qeRemark;
     }
     
-    @Column(name="qe_sign", length=20)
-    public String getQeSign() {
+    @Column(name="qe_sign")
+    public Long getQeSign() {
         return this.qeSign;
     }
     
-    public void setQeSign(String qeSign) {
+    public void setQeSign(Long qeSign) {
         this.qeSign = qeSign;
     }
     
@@ -217,12 +224,12 @@ public class QDeviation  implements java.io.Serializable {
         this.otherFuction = otherFuction;
     }
     
-    @Column(name="of_sign", length=20)
-    public String getOfSign() {
+    @Column(name="of_sign")
+    public Long getOfSign() {
         return this.ofSign;
     }
     
-    public void setOfSign(String ofSign) {
+    public void setOfSign(Long ofSign) {
         this.ofSign = ofSign;
     }
     
@@ -233,14 +240,6 @@ public class QDeviation  implements java.io.Serializable {
     
     public void setIdDept(Long idDept) {
         this.idDept = idDept;
-    }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="QDeviation")
-    public Set<QNoProcess> getQNoProcesses() {
-        return this.QNoProcesses;
-    }
-    
-    public void setQNoProcesses(Set<QNoProcess> QNoProcesses) {
-        this.QNoProcesses = QNoProcesses;
     }
 
 
