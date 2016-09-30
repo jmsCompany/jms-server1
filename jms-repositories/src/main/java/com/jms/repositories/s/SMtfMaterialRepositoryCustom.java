@@ -20,5 +20,11 @@ public interface SMtfMaterialRepositoryCustom {
 		    Long toStkId,
 			String fromDay,
 			String toDay);
+	
+	public List<SMtfMaterial> getSmtfMaterialList(Long companyId,
+			Long typeId,
+			String q,
+			String fromDay,
+			String toDay);
 		
 }

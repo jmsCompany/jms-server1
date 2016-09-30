@@ -156,7 +156,10 @@ public class QFileManagementController {
 			String routineD ="";
 			if(w.getIdRoutineD()!=null){
 				PRoutineD pRoutineD = pRoutineDRepository.findOne(w.getIdRoutineD());
-				routineD = pRoutineD.getRouteNo()+"_"+pRoutineD.getDes();
+				if(pRoutineD!=null){
+					routineD = pRoutineD.getRouteNo()+"_"+pRoutineD.getDes();
+				}
+				
 			}
 
 			String person ="";

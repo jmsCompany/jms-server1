@@ -117,12 +117,17 @@ public class MtfController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/smtfMaterialList", method=RequestMethod.POST)
-	public WSTableData  getSmtfMaterialList(@RequestParam Long typeId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+	public WSTableData  getSmtfMaterialList(
+			@RequestParam Long typeId, 
+			@RequestParam(required=false) String from,
+			@RequestParam(required=false) String to,
+			@RequestParam(required=false) String q,
+			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
-		Pageable pageable = new PageRequest(start,length);
+		//Pageable pageable = new PageRequest(start,length);
 		//System.out.println("get smtf materials:  type = " + typeId);
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
-		List<WSSMtfMaterial> wsSMtfMaterials = mtfMaterialService.findWSSMtfMaterial(companyId, typeId);
+		List<SMtfMaterial> wsSMtfMaterials = sMtfMaterialRepositoryCustom.getSmtfMaterialList(companyId, typeId, q, from, to);
 		//System.out.println("get smtf materials:  size = " + wsSMtfMaterials.size());
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
@@ -138,7 +143,7 @@ public class MtfController {
 		    {
 		    	//System.out.println("case 1 来料入库 " + typeId);
 		    	for (int i = start; i < end; i++) {
-					WSSMtfMaterial w = wsSMtfMaterials.get(i);
+					WSSMtfMaterial w =mtfMaterialService.toWSSMtfMaterial(wsSMtfMaterials.get(i));
 					String status =(w.getStatus()==null)?"":""+w.getStatus();
 					String[] d = {w.getMtNo(),""+w.getCodePo(),w.getCodeCo(),formatDate(w.getDeliveryDate()),formatDate(w.getCreationTime()),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),status,""+w.getIdMt()};
 					lst.add(d);
@@ -150,7 +155,7 @@ public class MtfController {
 		   case 2: //采购退货
 		    {
 		    	for (int i = start; i < end; i++) {
-					WSSMtfMaterial w = wsSMtfMaterials.get(i);
+		    		WSSMtfMaterial w =mtfMaterialService.toWSSMtfMaterial(wsSMtfMaterials.get(i));
 					String[] d = {w.getEmpMtUser(),formatDate(w.getCreationTime()),w.getMtNo(),w.getCodeCo(),w.getCodePo(),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),w.getLotNo(),""+w.getQty(),""+w.getIdMt()};
 					lst.add(d);
 
@@ -160,8 +165,7 @@ public class MtfController {
 		   case 5: //出货
 		    {
 		    	for (int i = start; i < end; i++) {
-					WSSMtfMaterial w = wsSMtfMaterials.get(i);
-					
+		    		WSSMtfMaterial w =mtfMaterialService.toWSSMtfMaterial(wsSMtfMaterials.get(i));
 					String[] d = {w.getMtNo(),w.getSoCode(),w.getCodeCo(),formatDate(w.getDeliveryDate()),formatDate(w.getCreationTime()),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),""+w.getIdMt()};
 			    	//System.out.println("mtNo ...... "+ w.getMtNo());
 					lst.add(d);
@@ -171,8 +175,7 @@ public class MtfController {
 		   case 6: //销售退货
 		    {
 		    	for (int i = start; i < end; i++) {
-					WSSMtfMaterial w = wsSMtfMaterials.get(i);
-					
+		    		WSSMtfMaterial w =mtfMaterialService.toWSSMtfMaterial(wsSMtfMaterials.get(i));
 					String[] d = {w.getMtNo(),w.getSoCode(),w.getCodeCo(),formatDate(w.getDeliveryDate()),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),w.getRecMtUser(),formatDate(w.getCreationTime()),""+w.getIdMt()};
 			    	//System.out.println("mtNo ...... "+ w.getMtNo());
 					lst.add(d);

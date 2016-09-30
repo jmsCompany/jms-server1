@@ -67,14 +67,32 @@ public class QNoProcessService {
 		    	smtfNo.setDes("不合格品");
 		    	smtfNo.setPrefix("Q");
 		    	smtfNo.setType(13l);
+		    	smtfNo.setToday(new Date());
 		    	smtfNo = sMtfNoRepository.save(smtfNo);
 		    }
-		    long currentVal =smtfNo.getCurrentVal()+1;
-		    smtfNo.setCurrentVal(currentVal);
+		    
+		    long currentVal;
+		    SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd"); 
+		    String dd = myFmt.format(new Date());
+
+		    
+		    if(smtfNo.getToday()!=null&&myFmt.format(smtfNo.getToday()).equals(dd))
+		    {
+		    	   currentVal =smtfNo.getCurrentVal()+1;
+				    smtfNo.setCurrentVal(currentVal);
+		    }
+		    else
+		    {
+		    	 currentVal=1l;
+		    	 smtfNo.setToday(new Date());
+		    	 smtfNo.setCurrentVal(1l);
+		    }
+		    logger.debug("dd: "  + dd+", today: " + myFmt.format(smtfNo.getToday()));
+	
 		    sMtfNoRepository.save(smtfNo);
 		    SimpleDateFormat myFmt1=new SimpleDateFormat("yyyyMMdd"); 
-		    String dd = myFmt1.format(new Date());;
-		    String mtNo = smtfNo.getPrefix()+dd+String.format("%03d", currentVal);
+		    String dd1 = myFmt1.format(new Date());;
+		    String mtNo = smtfNo.getPrefix()+dd1+String.format("%03d", currentVal);
 		    qNoProcess.setNcpNo(mtNo);
 		}
 		if(wsQNoProcess.getTime()==null)

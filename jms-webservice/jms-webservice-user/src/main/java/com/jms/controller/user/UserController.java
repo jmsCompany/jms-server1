@@ -907,7 +907,10 @@ public class UserController {
 		}
 		for(Users u : users)
 		{
+			
+		//	System.out.println("id: " + u.getIdUser() +", name: " + u.getName());
 			WSSelectObj w = new WSSelectObj(u.getIdUser(),u.getName());
+			
 			ws.add(w);
 		}
 		return ws;

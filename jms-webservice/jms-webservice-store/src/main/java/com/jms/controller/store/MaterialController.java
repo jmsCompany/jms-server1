@@ -150,7 +150,11 @@ public class MaterialController {
 	public List<WSSelectObj> findMaterialTypes() {
 		List<WSSelectObj> wso = new ArrayList<WSSelectObj>();
 		for (SMaterialTypeDic s : sMaterialTypeDicRepository.findAll()) {
-			wso.add(new WSSelectObj(s.getId(), s.getName()));
+			if(!s.getName().equals("备件"))
+			{
+				wso.add(new WSSelectObj(s.getId(), s.getName()));
+			}
+			
 		}
 		return wso;
 	}

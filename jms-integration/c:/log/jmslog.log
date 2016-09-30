@@ -1,818 +1,160 @@
-[2016-09-24 09:38:00.802] log4j2 - 7530  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7530 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-24 09:38:00.814] log4j2 - 7530 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-24 09:38:20.083] log4j2 - 7530 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-24 09:38:20.086] log4j2 - 7530 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-24 09:38:25.032] log4j2 - 7530  INFO [main] --- Application: Started Application in 24.571 seconds (JVM running for 25.671)
-[2016-09-24 09:54:46.383] log4j2 - 7530  WARN [http-nio-9999-exec-8] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
-[2016-09-24 09:54:46.385] log4j2 - 7530  WARN [http-nio-9999-exec-8] --- SqlExceptionHelper: Truncated incorrect date value: '1470016440000'
-[2016-09-24 09:54:46.385] log4j2 - 7530  WARN [http-nio-9999-exec-8] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
-[2016-09-24 09:54:46.385] log4j2 - 7530  WARN [http-nio-9999-exec-8] --- SqlExceptionHelper: Truncated incorrect date value: '1474682040000'
-[2016-09-24 09:54:51.190] log4j2 - 7530  WARN [http-nio-9999-exec-10] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
-[2016-09-24 09:54:51.190] log4j2 - 7530  WARN [http-nio-9999-exec-10] --- SqlExceptionHelper: Truncated incorrect date value: '1470016440000'
-[2016-09-24 09:54:51.191] log4j2 - 7530  WARN [http-nio-9999-exec-10] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
-[2016-09-24 09:54:51.191] log4j2 - 7530  WARN [http-nio-9999-exec-10] --- SqlExceptionHelper: Truncated incorrect date value: '1474682040000'
-[2016-09-24 09:55:02.546] log4j2 - 7530  WARN [http-nio-9999-exec-7] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
-[2016-09-24 09:55:02.546] log4j2 - 7530  WARN [http-nio-9999-exec-7] --- SqlExceptionHelper: Truncated incorrect date value: '1469930040000'
-[2016-09-24 09:55:02.546] log4j2 - 7530  WARN [http-nio-9999-exec-7] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
-[2016-09-24 09:55:02.546] log4j2 - 7530  WARN [http-nio-9999-exec-7] --- SqlExceptionHelper: Truncated incorrect date value: '1474682040000'
-[2016-09-24 09:55:20.165] log4j2 - 7530  WARN [http-nio-9999-exec-7] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
-[2016-09-24 09:55:20.165] log4j2 - 7530  WARN [http-nio-9999-exec-7] --- SqlExceptionHelper: Incorrect date value: '2016-09-24 09:55:20.15' for column 'creation_time' at row 1
-[2016-09-24 09:55:28.638] log4j2 - 7530  WARN [http-nio-9999-exec-9] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
-[2016-09-24 09:55:28.639] log4j2 - 7530  WARN [http-nio-9999-exec-9] --- SqlExceptionHelper: Truncated incorrect date value: '1472522040000'
-[2016-09-24 09:55:28.639] log4j2 - 7530  WARN [http-nio-9999-exec-9] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
-[2016-09-24 09:55:28.639] log4j2 - 7530  WARN [http-nio-9999-exec-9] --- SqlExceptionHelper: Truncated incorrect date value: '-55801271160000'
-[2016-09-24 09:55:39.280] log4j2 - 7530  WARN [http-nio-9999-exec-9] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
-[2016-09-24 09:55:39.280] log4j2 - 7530  WARN [http-nio-9999-exec-9] --- SqlExceptionHelper: Truncated incorrect date value: '1472522040000'
-[2016-09-24 09:55:39.280] log4j2 - 7530  WARN [http-nio-9999-exec-9] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
-[2016-09-24 09:55:39.280] log4j2 - 7530  WARN [http-nio-9999-exec-9] --- SqlExceptionHelper: Truncated incorrect date value: '-55801271160000'
-[2016-09-24 10:33:26.056] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 1, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 268
-[2016-09-24 10:33:26.057] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: item: 32, timeValue: 268, year: 2016
-[2016-09-24 10:33:26.059] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 1, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 268
-[2016-09-24 10:33:26.059] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: item: 34, timeValue: 268, year: 2016
-[2016-09-24 10:33:26.061] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 2, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 39
-[2016-09-24 10:33:26.061] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: item: 8, timeValue: 39, year: 2016
-[2016-09-24 10:33:26.062] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 2, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 39
-[2016-09-24 10:33:26.062] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: item: 33, timeValue: 39, year: 2016
-[2016-09-24 10:33:26.065] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 3, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
-[2016-09-24 10:33:26.065] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: item: 6, timeValue: 9, year: 2016
-[2016-09-24 10:33:26.067] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 4, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
-[2016-09-24 10:33:26.067] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: item: 9, timeValue: 3, year: 2016
-[2016-09-24 10:33:26.069] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 5, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
-[2016-09-24 10:33:26.069] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: item: 24, timeValue: 2, year: 2016
-[2016-09-24 10:33:26.071] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 6, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
-[2016-09-24 10:33:26.071] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: item: 25, timeValue: 2016, year: 2016
-[2016-09-24 10:34:24.577] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 1, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 268
-[2016-09-24 10:34:24.577] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: item: 32, timeValue: 268, year: 2016
-[2016-09-24 10:34:24.579] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 1, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 268
-[2016-09-24 10:34:24.580] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: item: 34, timeValue: 268, year: 2016
-[2016-09-24 10:34:24.582] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 2, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 39
-[2016-09-24 10:34:24.582] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: item: 8, timeValue: 39, year: 2016
-[2016-09-24 10:34:24.583] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 2, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 39
-[2016-09-24 10:34:24.584] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: item: 33, timeValue: 39, year: 2016
-[2016-09-24 10:34:24.586] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 3, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
-[2016-09-24 10:34:24.586] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: item: 6, timeValue: 9, year: 2016
-[2016-09-24 10:34:24.588] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 4, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
-[2016-09-24 10:34:24.588] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: item: 9, timeValue: 3, year: 2016
-[2016-09-24 10:34:24.590] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 5, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
-[2016-09-24 10:34:24.590] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: item: 24, timeValue: 2, year: 2016
-[2016-09-24 10:34:24.592] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 6, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
-[2016-09-24 10:34:24.592] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: item: 25, timeValue: 2016, year: 2016
-[2016-09-24 10:36:38.288] log4j2 - 7530 DEBUG [http-nio-9999-exec-9] --- MMainRecordService: type: 1, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 268
-[2016-09-24 10:36:38.288] log4j2 - 7530 DEBUG [http-nio-9999-exec-9] --- MMainRecordService: item: 32, timeValue: 268, year: 2016
-[2016-09-24 10:36:38.290] log4j2 - 7530 DEBUG [http-nio-9999-exec-9] --- MMainRecordService: type: 1, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 268
-[2016-09-24 10:36:38.290] log4j2 - 7530 DEBUG [http-nio-9999-exec-9] --- MMainRecordService: item: 34, timeValue: 268, year: 2016
-[2016-09-24 10:36:38.292] log4j2 - 7530 DEBUG [http-nio-9999-exec-9] --- MMainRecordService: type: 2, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 39
-[2016-09-24 10:36:38.292] log4j2 - 7530 DEBUG [http-nio-9999-exec-9] --- MMainRecordService: item: 8, timeValue: 39, year: 2016
-[2016-09-24 10:36:38.294] log4j2 - 7530 DEBUG [http-nio-9999-exec-9] --- MMainRecordService: type: 2, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 39
-[2016-09-24 10:36:38.294] log4j2 - 7530 DEBUG [http-nio-9999-exec-9] --- MMainRecordService: item: 33, timeValue: 39, year: 2016
-[2016-09-24 10:36:38.297] log4j2 - 7530 DEBUG [http-nio-9999-exec-9] --- MMainRecordService: type: 3, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
-[2016-09-24 10:36:38.297] log4j2 - 7530 DEBUG [http-nio-9999-exec-9] --- MMainRecordService: item: 6, timeValue: 9, year: 2016
-[2016-09-24 10:36:38.300] log4j2 - 7530 DEBUG [http-nio-9999-exec-9] --- MMainRecordService: type: 4, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
-[2016-09-24 10:36:38.300] log4j2 - 7530 DEBUG [http-nio-9999-exec-9] --- MMainRecordService: item: 9, timeValue: 3, year: 2016
-[2016-09-24 10:36:38.303] log4j2 - 7530 DEBUG [http-nio-9999-exec-9] --- MMainRecordService: type: 5, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
-[2016-09-24 10:36:38.303] log4j2 - 7530 DEBUG [http-nio-9999-exec-9] --- MMainRecordService: item: 24, timeValue: 2, year: 2016
-[2016-09-24 10:36:38.306] log4j2 - 7530 DEBUG [http-nio-9999-exec-9] --- MMainRecordService: type: 6, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
-[2016-09-24 10:36:38.307] log4j2 - 7530 DEBUG [http-nio-9999-exec-9] --- MMainRecordService: item: 25, timeValue: 2016, year: 2016
-[2016-09-24 10:37:15.686] log4j2 - 7530 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:37:15.715] log4j2 - 7530 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:37:15.745] log4j2 - 7530 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:37:15.767] log4j2 - 7530 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:37:15.794] log4j2 - 7530 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:37:15.841] log4j2 - 7530 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:37:15.900] log4j2 - 7530 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 2, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:37:15.905] log4j2 - 7530 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 2, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:37:42.883] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 2, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:37:42.883] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 1, year: 2016
-[2016-09-24 10:37:42.884] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 2, year: 2016
-[2016-09-24 10:37:42.885] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 3, year: 2016
-[2016-09-24 10:37:42.886] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 4, year: 2016
-[2016-09-24 10:37:42.887] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 5, year: 2016
-[2016-09-24 10:37:42.888] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 6, year: 2016
-[2016-09-24 10:37:42.892] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 7, year: 2016
-[2016-09-24 10:37:42.893] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 8, year: 2016
-[2016-09-24 10:37:42.895] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 9, year: 2016
-[2016-09-24 10:37:42.896] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 10, year: 2016
-[2016-09-24 10:37:42.897] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 11, year: 2016
-[2016-09-24 10:37:42.898] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 12, year: 2016
-[2016-09-24 10:37:42.899] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 13, year: 2016
-[2016-09-24 10:37:42.900] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 14, year: 2016
-[2016-09-24 10:37:42.901] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 15, year: 2016
-[2016-09-24 10:37:42.901] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 16, year: 2016
-[2016-09-24 10:37:42.902] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 17, year: 2016
-[2016-09-24 10:37:42.903] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 18, year: 2016
-[2016-09-24 10:37:42.904] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 19, year: 2016
-[2016-09-24 10:37:42.905] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 20, year: 2016
-[2016-09-24 10:37:42.906] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 21, year: 2016
-[2016-09-24 10:37:42.907] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 22, year: 2016
-[2016-09-24 10:37:42.908] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 23, year: 2016
-[2016-09-24 10:37:42.909] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 24, year: 2016
-[2016-09-24 10:37:42.910] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 25, year: 2016
-[2016-09-24 10:37:42.911] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 26, year: 2016
-[2016-09-24 10:37:42.912] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 27, year: 2016
-[2016-09-24 10:37:42.913] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 28, year: 2016
-[2016-09-24 10:37:42.914] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 29, year: 2016
-[2016-09-24 10:37:42.915] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 30, year: 2016
-[2016-09-24 10:37:42.916] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 31, year: 2016
-[2016-09-24 10:37:42.917] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 32, year: 2016
-[2016-09-24 10:37:42.918] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 33, year: 2016
-[2016-09-24 10:37:42.919] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 34, year: 2016
-[2016-09-24 10:37:42.920] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 35, year: 2016
-[2016-09-24 10:37:42.921] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 36, year: 2016
-[2016-09-24 10:37:42.923] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 37, year: 2016
-[2016-09-24 10:37:42.925] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 38, year: 2016
-[2016-09-24 10:37:42.927] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 39, year: 2016
-[2016-09-24 10:37:42.928] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 40, year: 2016
-[2016-09-24 10:37:42.929] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 41, year: 2016
-[2016-09-24 10:37:42.930] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 42, year: 2016
-[2016-09-24 10:37:42.931] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 43, year: 2016
-[2016-09-24 10:37:42.932] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 44, year: 2016
-[2016-09-24 10:37:42.934] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 45, year: 2016
-[2016-09-24 10:37:42.935] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 46, year: 2016
-[2016-09-24 10:37:42.936] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 47, year: 2016
-[2016-09-24 10:37:42.937] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 48, year: 2016
-[2016-09-24 10:37:42.938] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 49, year: 2016
-[2016-09-24 10:37:42.939] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 50, year: 2016
-[2016-09-24 10:37:42.940] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 51, year: 2016
-[2016-09-24 10:37:42.941] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 8, timeValue: 52, year: 2016
-[2016-09-24 10:37:42.944] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 2, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:37:42.944] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 1, year: 2016
-[2016-09-24 10:37:42.946] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 2, year: 2016
-[2016-09-24 10:37:42.947] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 3, year: 2016
-[2016-09-24 10:37:42.948] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 4, year: 2016
-[2016-09-24 10:37:42.949] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 5, year: 2016
-[2016-09-24 10:37:42.950] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 6, year: 2016
-[2016-09-24 10:37:42.951] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 7, year: 2016
-[2016-09-24 10:37:42.952] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 8, year: 2016
-[2016-09-24 10:37:42.953] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 9, year: 2016
-[2016-09-24 10:37:42.954] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 10, year: 2016
-[2016-09-24 10:37:42.955] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 11, year: 2016
-[2016-09-24 10:37:42.955] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 12, year: 2016
-[2016-09-24 10:37:42.956] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 13, year: 2016
-[2016-09-24 10:37:42.957] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 14, year: 2016
-[2016-09-24 10:37:42.958] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 15, year: 2016
-[2016-09-24 10:37:42.959] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 16, year: 2016
-[2016-09-24 10:37:42.960] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 17, year: 2016
-[2016-09-24 10:37:42.961] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 18, year: 2016
-[2016-09-24 10:37:42.963] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 19, year: 2016
-[2016-09-24 10:37:42.964] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 20, year: 2016
-[2016-09-24 10:37:42.965] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 21, year: 2016
-[2016-09-24 10:37:42.965] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 22, year: 2016
-[2016-09-24 10:37:42.966] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 23, year: 2016
-[2016-09-24 10:37:42.968] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 24, year: 2016
-[2016-09-24 10:37:42.969] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 25, year: 2016
-[2016-09-24 10:37:42.970] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 26, year: 2016
-[2016-09-24 10:37:42.971] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 27, year: 2016
-[2016-09-24 10:37:42.972] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 28, year: 2016
-[2016-09-24 10:37:42.974] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 29, year: 2016
-[2016-09-24 10:37:42.978] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 30, year: 2016
-[2016-09-24 10:37:42.979] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 31, year: 2016
-[2016-09-24 10:37:42.980] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 32, year: 2016
-[2016-09-24 10:37:42.981] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 33, year: 2016
-[2016-09-24 10:37:42.982] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 34, year: 2016
-[2016-09-24 10:37:42.983] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 35, year: 2016
-[2016-09-24 10:37:42.984] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 36, year: 2016
-[2016-09-24 10:37:42.985] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 37, year: 2016
-[2016-09-24 10:37:42.986] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 38, year: 2016
-[2016-09-24 10:37:42.988] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 39, year: 2016
-[2016-09-24 10:37:42.993] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 40, year: 2016
-[2016-09-24 10:37:42.994] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 41, year: 2016
-[2016-09-24 10:37:42.995] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 42, year: 2016
-[2016-09-24 10:37:42.997] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 43, year: 2016
-[2016-09-24 10:37:42.998] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 44, year: 2016
-[2016-09-24 10:37:42.999] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 45, year: 2016
-[2016-09-24 10:37:43.000] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 46, year: 2016
-[2016-09-24 10:37:43.001] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 47, year: 2016
-[2016-09-24 10:37:43.002] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 48, year: 2016
-[2016-09-24 10:37:43.002] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 49, year: 2016
-[2016-09-24 10:37:43.003] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 50, year: 2016
-[2016-09-24 10:37:43.004] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 51, year: 2016
-[2016-09-24 10:37:43.005] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 33, timeValue: 52, year: 2016
-[2016-09-24 10:37:43.006] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 3, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:37:43.007] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 6, timeValue: 1, year: 2016
-[2016-09-24 10:37:43.008] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 6, timeValue: 2, year: 2016
-[2016-09-24 10:37:43.009] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 6, timeValue: 3, year: 2016
-[2016-09-24 10:37:43.010] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 6, timeValue: 4, year: 2016
-[2016-09-24 10:37:43.012] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 6, timeValue: 5, year: 2016
-[2016-09-24 10:37:43.014] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 6, timeValue: 6, year: 2016
-[2016-09-24 10:37:43.015] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 6, timeValue: 7, year: 2016
-[2016-09-24 10:37:43.017] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 6, timeValue: 8, year: 2016
-[2016-09-24 10:37:43.018] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 6, timeValue: 9, year: 2016
-[2016-09-24 10:37:43.019] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 6, timeValue: 10, year: 2016
-[2016-09-24 10:37:43.019] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 6, timeValue: 11, year: 2016
-[2016-09-24 10:37:43.020] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 6, timeValue: 12, year: 2016
-[2016-09-24 10:37:43.023] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 4, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:37:43.023] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 9, timeValue: 1, year: 2016
-[2016-09-24 10:37:43.026] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 9, timeValue: 2, year: 2016
-[2016-09-24 10:37:43.027] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 9, timeValue: 3, year: 2016
-[2016-09-24 10:37:43.028] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 9, timeValue: 4, year: 2016
-[2016-09-24 10:37:43.030] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 5, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:37:43.030] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 24, timeValue: 1, year: 2016
-[2016-09-24 10:37:43.031] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 24, timeValue: 2, year: 2016
-[2016-09-24 10:37:43.034] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 6, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 2016
-[2016-09-24 10:37:43.034] log4j2 - 7530 DEBUG [http-nio-9999-exec-8] --- MMainReportController: idItem: 25, timeValue: 2016, year: 2016
-[2016-09-24 10:40:44.949] log4j2 - 7530 DEBUG [http-nio-9999-exec-1] --- MMainRecordService: type: 1, day: 32, week: 6, month: 2, season: 1, halfYear: 1, year: 2016, timeValue: 32
-[2016-09-24 10:40:44.970] log4j2 - 7530 DEBUG [http-nio-9999-exec-1] --- MMainRecordService: type: 1, day: 32, week: 6, month: 2, season: 1, halfYear: 1, year: 2016, timeValue: 32
-[2016-09-24 10:40:45.001] log4j2 - 7530 DEBUG [http-nio-9999-exec-1] --- MMainRecordService: type: 1, day: 32, week: 6, month: 2, season: 1, halfYear: 1, year: 2016, timeValue: 32
-[2016-09-24 10:40:45.030] log4j2 - 7530 DEBUG [http-nio-9999-exec-1] --- MMainRecordService: type: 1, day: 32, week: 6, month: 2, season: 1, halfYear: 1, year: 2016, timeValue: 32
-[2016-09-24 10:40:45.054] log4j2 - 7530 DEBUG [http-nio-9999-exec-1] --- MMainRecordService: type: 1, day: 32, week: 6, month: 2, season: 1, halfYear: 1, year: 2016, timeValue: 32
-[2016-09-24 10:40:45.082] log4j2 - 7530 DEBUG [http-nio-9999-exec-1] --- MMainRecordService: type: 1, day: 32, week: 6, month: 2, season: 1, halfYear: 1, year: 2016, timeValue: 32
-[2016-09-24 10:40:45.106] log4j2 - 7530 DEBUG [http-nio-9999-exec-1] --- MMainRecordService: type: 2, day: 32, week: 6, month: 2, season: 1, halfYear: 1, year: 2016, timeValue: 6
-[2016-09-24 10:40:45.111] log4j2 - 7530 DEBUG [http-nio-9999-exec-1] --- MMainRecordService: type: 2, day: 32, week: 6, month: 2, season: 1, halfYear: 1, year: 2016, timeValue: 6
-[2016-09-24 10:43:52.511] log4j2 - 7530 DEBUG [http-nio-9999-exec-1] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:43:52.539] log4j2 - 7530 DEBUG [http-nio-9999-exec-1] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:43:52.564] log4j2 - 7530 DEBUG [http-nio-9999-exec-1] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:43:52.590] log4j2 - 7530 DEBUG [http-nio-9999-exec-1] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:43:52.610] log4j2 - 7530 DEBUG [http-nio-9999-exec-1] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:43:52.635] log4j2 - 7530 DEBUG [http-nio-9999-exec-1] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:43:52.659] log4j2 - 7530 DEBUG [http-nio-9999-exec-1] --- MMainRecordService: type: 2, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:43:52.662] log4j2 - 7530 DEBUG [http-nio-9999-exec-1] --- MMainRecordService: type: 2, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:44:27.025] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 2, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:44:27.025] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 1, year: 2016
-[2016-09-24 10:44:27.026] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 2, year: 2016
-[2016-09-24 10:44:27.027] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 3, year: 2016
-[2016-09-24 10:44:27.028] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 4, year: 2016
-[2016-09-24 10:44:27.029] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 5, year: 2016
-[2016-09-24 10:44:27.029] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 6, year: 2016
-[2016-09-24 10:44:27.031] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 7, year: 2016
-[2016-09-24 10:44:27.033] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 8, year: 2016
-[2016-09-24 10:44:27.034] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 9, year: 2016
-[2016-09-24 10:44:27.035] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 10, year: 2016
-[2016-09-24 10:44:27.036] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 11, year: 2016
-[2016-09-24 10:44:27.037] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 12, year: 2016
-[2016-09-24 10:44:27.038] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 13, year: 2016
-[2016-09-24 10:44:27.039] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 14, year: 2016
-[2016-09-24 10:44:27.040] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 15, year: 2016
-[2016-09-24 10:44:27.041] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 16, year: 2016
-[2016-09-24 10:44:27.043] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 17, year: 2016
-[2016-09-24 10:44:27.044] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 18, year: 2016
-[2016-09-24 10:44:27.046] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 19, year: 2016
-[2016-09-24 10:44:27.047] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 20, year: 2016
-[2016-09-24 10:44:27.048] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 21, year: 2016
-[2016-09-24 10:44:27.048] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 22, year: 2016
-[2016-09-24 10:44:27.049] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 23, year: 2016
-[2016-09-24 10:44:27.050] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 24, year: 2016
-[2016-09-24 10:44:27.051] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 25, year: 2016
-[2016-09-24 10:44:27.052] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 26, year: 2016
-[2016-09-24 10:44:27.053] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 27, year: 2016
-[2016-09-24 10:44:27.054] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 28, year: 2016
-[2016-09-24 10:44:27.055] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 29, year: 2016
-[2016-09-24 10:44:27.056] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 30, year: 2016
-[2016-09-24 10:44:27.057] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 31, year: 2016
-[2016-09-24 10:44:27.058] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 32, year: 2016
-[2016-09-24 10:44:27.059] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 33, year: 2016
-[2016-09-24 10:44:27.060] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 34, year: 2016
-[2016-09-24 10:44:27.061] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 35, year: 2016
-[2016-09-24 10:44:27.062] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 36, year: 2016
-[2016-09-24 10:44:27.063] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 37, year: 2016
-[2016-09-24 10:44:27.064] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 38, year: 2016
-[2016-09-24 10:44:27.064] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 39, year: 2016
-[2016-09-24 10:44:27.065] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 40, year: 2016
-[2016-09-24 10:44:27.066] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 41, year: 2016
-[2016-09-24 10:44:27.067] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 42, year: 2016
-[2016-09-24 10:44:27.068] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 43, year: 2016
-[2016-09-24 10:44:27.070] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 44, year: 2016
-[2016-09-24 10:44:27.071] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 45, year: 2016
-[2016-09-24 10:44:27.072] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 46, year: 2016
-[2016-09-24 10:44:27.073] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 47, year: 2016
-[2016-09-24 10:44:27.074] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 48, year: 2016
-[2016-09-24 10:44:27.075] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 49, year: 2016
-[2016-09-24 10:44:27.076] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 50, year: 2016
-[2016-09-24 10:44:27.077] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 51, year: 2016
-[2016-09-24 10:44:27.078] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 8, timeValue: 52, year: 2016
-[2016-09-24 10:44:27.079] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 2, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:44:27.079] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 1, year: 2016
-[2016-09-24 10:44:27.080] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 2, year: 2016
-[2016-09-24 10:44:27.081] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 3, year: 2016
-[2016-09-24 10:44:27.082] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 4, year: 2016
-[2016-09-24 10:44:27.083] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 5, year: 2016
-[2016-09-24 10:44:27.083] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 6, year: 2016
-[2016-09-24 10:44:27.084] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 7, year: 2016
-[2016-09-24 10:44:27.086] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 8, year: 2016
-[2016-09-24 10:44:27.087] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 9, year: 2016
-[2016-09-24 10:44:27.087] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 10, year: 2016
-[2016-09-24 10:44:27.088] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 11, year: 2016
-[2016-09-24 10:44:27.089] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 12, year: 2016
-[2016-09-24 10:44:27.090] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 13, year: 2016
-[2016-09-24 10:44:27.090] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 14, year: 2016
-[2016-09-24 10:44:27.091] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 15, year: 2016
-[2016-09-24 10:44:27.092] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 16, year: 2016
-[2016-09-24 10:44:27.092] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 17, year: 2016
-[2016-09-24 10:44:27.093] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 18, year: 2016
-[2016-09-24 10:44:27.094] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 19, year: 2016
-[2016-09-24 10:44:27.095] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 20, year: 2016
-[2016-09-24 10:44:27.096] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 21, year: 2016
-[2016-09-24 10:44:27.097] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 22, year: 2016
-[2016-09-24 10:44:27.098] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 23, year: 2016
-[2016-09-24 10:44:27.099] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 24, year: 2016
-[2016-09-24 10:44:27.100] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 25, year: 2016
-[2016-09-24 10:44:27.102] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 26, year: 2016
-[2016-09-24 10:44:27.103] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 27, year: 2016
-[2016-09-24 10:44:27.104] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 28, year: 2016
-[2016-09-24 10:44:27.105] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 29, year: 2016
-[2016-09-24 10:44:27.106] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 30, year: 2016
-[2016-09-24 10:44:27.107] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 31, year: 2016
-[2016-09-24 10:44:27.108] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 32, year: 2016
-[2016-09-24 10:44:27.109] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 33, year: 2016
-[2016-09-24 10:44:27.110] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 34, year: 2016
-[2016-09-24 10:44:27.111] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 35, year: 2016
-[2016-09-24 10:44:27.112] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 36, year: 2016
-[2016-09-24 10:44:27.113] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 37, year: 2016
-[2016-09-24 10:44:27.114] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 38, year: 2016
-[2016-09-24 10:44:27.115] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 39, year: 2016
-[2016-09-24 10:44:27.116] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 40, year: 2016
-[2016-09-24 10:44:27.117] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 41, year: 2016
-[2016-09-24 10:44:27.118] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 42, year: 2016
-[2016-09-24 10:44:27.119] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 43, year: 2016
-[2016-09-24 10:44:27.120] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 44, year: 2016
-[2016-09-24 10:44:27.120] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 45, year: 2016
-[2016-09-24 10:44:27.121] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 46, year: 2016
-[2016-09-24 10:44:27.122] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 47, year: 2016
-[2016-09-24 10:44:27.123] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 48, year: 2016
-[2016-09-24 10:44:27.124] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 49, year: 2016
-[2016-09-24 10:44:27.125] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 50, year: 2016
-[2016-09-24 10:44:27.126] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 51, year: 2016
-[2016-09-24 10:44:27.132] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 33, timeValue: 52, year: 2016
-[2016-09-24 10:44:27.137] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 3, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:44:27.137] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 6, timeValue: 1, year: 2016
-[2016-09-24 10:44:27.138] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 6, timeValue: 2, year: 2016
-[2016-09-24 10:44:27.139] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 6, timeValue: 3, year: 2016
-[2016-09-24 10:44:27.140] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 6, timeValue: 4, year: 2016
-[2016-09-24 10:44:27.141] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 6, timeValue: 5, year: 2016
-[2016-09-24 10:44:27.142] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 6, timeValue: 6, year: 2016
-[2016-09-24 10:44:27.143] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 6, timeValue: 7, year: 2016
-[2016-09-24 10:44:27.143] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 6, timeValue: 8, year: 2016
-[2016-09-24 10:44:27.144] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 6, timeValue: 9, year: 2016
-[2016-09-24 10:44:27.145] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 6, timeValue: 10, year: 2016
-[2016-09-24 10:44:27.146] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 6, timeValue: 11, year: 2016
-[2016-09-24 10:44:27.147] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 6, timeValue: 12, year: 2016
-[2016-09-24 10:44:27.149] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 4, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:44:27.149] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 9, timeValue: 1, year: 2016
-[2016-09-24 10:44:27.151] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 9, timeValue: 2, year: 2016
-[2016-09-24 10:44:27.152] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 9, timeValue: 3, year: 2016
-[2016-09-24 10:44:27.154] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 9, timeValue: 4, year: 2016
-[2016-09-24 10:44:27.156] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 5, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:44:27.156] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 24, timeValue: 1, year: 2016
-[2016-09-24 10:44:27.157] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 24, timeValue: 2, year: 2016
-[2016-09-24 10:44:27.159] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 6, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 2016
-[2016-09-24 10:44:27.159] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainReportController: idItem: 25, timeValue: 2016, year: 2016
-[2016-09-24 10:45:20.029] log4j2 - 7530 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:45:20.055] log4j2 - 7530 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:45:20.077] log4j2 - 7530 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:45:20.098] log4j2 - 7530 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:45:20.123] log4j2 - 7530 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:45:20.155] log4j2 - 7530 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:45:20.179] log4j2 - 7530 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 2, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:45:20.184] log4j2 - 7530 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 2, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:46:30.510] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 1, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 268
-[2016-09-24 10:46:30.510] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: item: 32, timeValue: 268, year: 2016
-[2016-09-24 10:46:30.511] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 1, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 268
-[2016-09-24 10:46:30.511] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: item: 34, timeValue: 268, year: 2016
-[2016-09-24 10:46:30.513] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 2, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 39
-[2016-09-24 10:46:30.513] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: item: 8, timeValue: 39, year: 2016
-[2016-09-24 10:46:30.514] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 2, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 39
-[2016-09-24 10:46:30.514] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: item: 33, timeValue: 39, year: 2016
-[2016-09-24 10:46:30.515] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 3, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
-[2016-09-24 10:46:30.515] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: item: 6, timeValue: 9, year: 2016
-[2016-09-24 10:46:30.517] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 4, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
-[2016-09-24 10:46:30.517] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: item: 9, timeValue: 3, year: 2016
-[2016-09-24 10:46:30.518] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 5, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
-[2016-09-24 10:46:30.518] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: item: 24, timeValue: 2, year: 2016
-[2016-09-24 10:46:30.520] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 6, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
-[2016-09-24 10:46:30.520] log4j2 - 7530 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: item: 25, timeValue: 2016, year: 2016
-[2016-09-24 10:52:22.629] log4j2 - 7530 DEBUG [http-nio-9999-exec-3] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:52:22.653] log4j2 - 7530 DEBUG [http-nio-9999-exec-3] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:52:22.677] log4j2 - 7530 DEBUG [http-nio-9999-exec-3] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:52:22.706] log4j2 - 7530 DEBUG [http-nio-9999-exec-3] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:52:22.728] log4j2 - 7530 DEBUG [http-nio-9999-exec-3] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:52:22.754] log4j2 - 7530 DEBUG [http-nio-9999-exec-3] --- MMainRecordService: type: 1, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:52:22.782] log4j2 - 7530 DEBUG [http-nio-9999-exec-3] --- MMainRecordService: type: 2, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 10:52:22.786] log4j2 - 7530 DEBUG [http-nio-9999-exec-3] --- MMainRecordService: type: 2, day: 1, week: 1, month: 1, season: 1, halfYear: 1, year: 2016, timeValue: 1
-[2016-09-24 11:01:42.396] log4j2 - 7654  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7654 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-24 11:01:42.398] log4j2 - 7654 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-24 11:02:01.799] log4j2 - 7654 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-24 11:02:01.801] log4j2 - 7654 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-24 11:02:07.285] log4j2 - 7654  INFO [main] --- Application: Started Application in 25.18 seconds (JVM running for 26.113)
-[2016-09-24 11:09:30.952] log4j2 - 7666  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7666 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-24 11:09:30.954] log4j2 - 7666 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-24 11:09:47.161] log4j2 - 7666 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-24 11:09:47.163] log4j2 - 7666 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-24 11:09:52.058] log4j2 - 7666  INFO [main] --- Application: Started Application in 21.337 seconds (JVM running for 22.445)
-[2016-09-24 11:23:18.374] log4j2 - 7669  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7669 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-24 11:23:18.383] log4j2 - 7669 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-24 11:23:35.009] log4j2 - 7669 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-24 11:23:35.011] log4j2 - 7669 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-24 11:23:39.848] log4j2 - 7669  INFO [main] --- Application: Started Application in 21.795 seconds (JVM running for 22.803)
-[2016-09-24 11:37:49.637] log4j2 - 7682  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7682 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-24 11:37:49.640] log4j2 - 7682 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-24 11:38:06.447] log4j2 - 7682 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-24 11:38:06.448] log4j2 - 7682 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-24 11:38:10.803] log4j2 - 7682  INFO [main] --- Application: Started Application in 21.392 seconds (JVM running for 22.204)
-[2016-09-24 11:42:29.357] log4j2 - 7684  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7684 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-24 11:42:29.360] log4j2 - 7684 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-24 11:42:47.817] log4j2 - 7684 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-24 11:42:47.820] log4j2 - 7684 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-24 11:42:53.347] log4j2 - 7684  INFO [main] --- Application: Started Application in 24.229 seconds (JVM running for 25.248)
-[2016-09-24 11:43:27.636] log4j2 - 7684 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 1, machineTime: 3600000, pt: -1292951000
-[2016-09-24 11:43:27.636] log4j2 - 7684 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 1.0027921, machineEff: -0.002784328, passedEff: 1.0
-[2016-09-24 11:43:27.643] log4j2 - 7684 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 1, machineTime: 3600000, pt: 0
-[2016-09-24 11:43:27.643] log4j2 - 7684 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.0, machineEff: Infinity, passedEff: 1.0
-[2016-09-24 11:43:27.648] log4j2 - 7684 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 1, machineTime: 7200000, pt: 0
-[2016-09-24 11:43:27.649] log4j2 - 7684 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.0, machineEff: Infinity, passedEff: 1.0
-[2016-09-24 11:43:27.654] log4j2 - 7684 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 1, machineTime: 7200000, pt: 21600000
-[2016-09-24 11:43:27.655] log4j2 - 7684 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.75, machineEff: 0.33333334, passedEff: 1.0
-[2016-09-24 11:43:27.659] log4j2 - 7684 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 1, machineTime: 3600000, pt: 10800000
-[2016-09-24 11:43:27.659] log4j2 - 7684 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.75, machineEff: 0.33333334, passedEff: 1.0
-[2016-09-24 11:43:27.665] log4j2 - 7684 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 0, machineTime: 3600000, pt: 7196000
-[2016-09-24 11:43:27.665] log4j2 - 7684 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.9994444, machineEff: 0.0, passedEff: 1.0
-[2016-09-24 11:43:27.669] log4j2 - 7684 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 0, machineTime: 7200000, pt: 0
-[2016-09-24 11:43:27.669] log4j2 - 7684 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.0, machineEff: NaN, passedEff: 1.0
-[2016-09-24 11:43:27.676] log4j2 - 7684 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 3, machineTime: 7200000, pt: 3600000
-[2016-09-24 11:43:27.676] log4j2 - 7684 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.5, machineEff: 6.0, passedEff: 1.0
-[2016-09-24 11:49:28.929] log4j2 - 7695  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7695 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-24 11:49:28.933] log4j2 - 7695 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-24 11:49:45.759] log4j2 - 7695 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-24 11:49:45.764] log4j2 - 7695 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-24 11:49:50.829] log4j2 - 7695  INFO [main] --- Application: Started Application in 22.141 seconds (JVM running for 23.041)
-[2016-09-24 11:50:43.665] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 1, machineTime: 3600000, pt: -1292951000
-[2016-09-24 11:50:43.666] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 1.0027921, machineEff: -0.002784328, passedEff: 1.0
-[2016-09-24 11:50:43.675] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 1, machineTime: 3600000, pt: 0
-[2016-09-24 11:50:43.675] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.0, machineEff: 1.0, passedEff: 1.0
-[2016-09-24 11:50:43.682] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 1, machineTime: 7200000, pt: 0
-[2016-09-24 11:50:43.682] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.0, machineEff: 1.0, passedEff: 1.0
-[2016-09-24 11:50:43.688] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 1, machineTime: 7200000, pt: 21600000
-[2016-09-24 11:50:43.688] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.75, machineEff: 0.33333334, passedEff: 1.0
-[2016-09-24 11:50:43.693] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 1, machineTime: 3600000, pt: 10800000
-[2016-09-24 11:50:43.693] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.75, machineEff: 0.33333334, passedEff: 1.0
-[2016-09-24 11:50:43.699] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 0, machineTime: 3600000, pt: 7196000
-[2016-09-24 11:50:43.699] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.9994444, machineEff: 0.0, passedEff: 1.0
-[2016-09-24 11:50:43.704] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 0, machineTime: 7200000, pt: 0
-[2016-09-24 11:50:43.704] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.0, machineEff: 1.0, passedEff: 1.0
-[2016-09-24 11:50:43.710] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 3, machineTime: 7200000, pt: 3600000
-[2016-09-24 11:50:43.710] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.5, machineEff: 6.0, passedEff: 1.0
-[2016-09-24 11:51:06.364] log4j2 - 7695 DEBUG [http-nio-9999-exec-8] --- PCppService:  actQty: 1, machineTime: 3600000, pt: -1292951000
-[2016-09-24 11:51:06.364] log4j2 - 7695 DEBUG [http-nio-9999-exec-8] --- PCppService:  timeEff: 1.0027921, machineEff: -0.002784328, passedEff: 1.0
-[2016-09-24 11:51:06.371] log4j2 - 7695 DEBUG [http-nio-9999-exec-8] --- PCppService:  actQty: 1, machineTime: 3600000, pt: 0
-[2016-09-24 11:51:06.371] log4j2 - 7695 DEBUG [http-nio-9999-exec-8] --- PCppService:  timeEff: 0.0, machineEff: 1.0, passedEff: 1.0
-[2016-09-24 11:51:06.376] log4j2 - 7695 DEBUG [http-nio-9999-exec-8] --- PCppService:  actQty: 1, machineTime: 7200000, pt: 0
-[2016-09-24 11:51:06.377] log4j2 - 7695 DEBUG [http-nio-9999-exec-8] --- PCppService:  timeEff: 0.0, machineEff: 1.0, passedEff: 1.0
-[2016-09-24 11:51:06.382] log4j2 - 7695 DEBUG [http-nio-9999-exec-8] --- PCppService:  actQty: 1, machineTime: 7200000, pt: 21600000
-[2016-09-24 11:51:06.382] log4j2 - 7695 DEBUG [http-nio-9999-exec-8] --- PCppService:  timeEff: 0.75, machineEff: 0.33333334, passedEff: 1.0
-[2016-09-24 11:51:06.386] log4j2 - 7695 DEBUG [http-nio-9999-exec-8] --- PCppService:  actQty: 1, machineTime: 3600000, pt: 10800000
-[2016-09-24 11:51:06.386] log4j2 - 7695 DEBUG [http-nio-9999-exec-8] --- PCppService:  timeEff: 0.75, machineEff: 0.33333334, passedEff: 1.0
-[2016-09-24 11:51:06.392] log4j2 - 7695 DEBUG [http-nio-9999-exec-8] --- PCppService:  actQty: 0, machineTime: 3600000, pt: 7196000
-[2016-09-24 11:51:06.392] log4j2 - 7695 DEBUG [http-nio-9999-exec-8] --- PCppService:  timeEff: 0.9994444, machineEff: 0.0, passedEff: 1.0
-[2016-09-24 11:51:06.396] log4j2 - 7695 DEBUG [http-nio-9999-exec-8] --- PCppService:  actQty: 0, machineTime: 7200000, pt: 0
-[2016-09-24 11:51:06.397] log4j2 - 7695 DEBUG [http-nio-9999-exec-8] --- PCppService:  timeEff: 0.0, machineEff: 1.0, passedEff: 1.0
-[2016-09-24 11:51:06.403] log4j2 - 7695 DEBUG [http-nio-9999-exec-8] --- PCppService:  actQty: 3, machineTime: 7200000, pt: 3600000
-[2016-09-24 11:51:06.403] log4j2 - 7695 DEBUG [http-nio-9999-exec-8] --- PCppService:  timeEff: 0.5, machineEff: 6.0, passedEff: 1.0
-[2016-09-24 11:53:14.262] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 1, machineTime: 3600000, pt: -1292951000
-[2016-09-24 11:53:14.262] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 1.0027921, machineEff: -0.002784328, passedEff: 1.0
-[2016-09-24 11:53:14.270] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 1, machineTime: 3600000, pt: 0
-[2016-09-24 11:53:14.270] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.0, machineEff: 1.0, passedEff: 1.0
-[2016-09-24 11:53:14.277] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 1, machineTime: 7200000, pt: 0
-[2016-09-24 11:53:14.278] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.0, machineEff: 1.0, passedEff: 1.0
-[2016-09-24 11:53:14.283] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 1, machineTime: 7200000, pt: 21600000
-[2016-09-24 11:53:14.283] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.75, machineEff: 0.33333334, passedEff: 1.0
-[2016-09-24 11:53:14.287] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 1, machineTime: 3600000, pt: 10800000
-[2016-09-24 11:53:14.287] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.75, machineEff: 0.33333334, passedEff: 1.0
-[2016-09-24 11:53:14.294] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 0, machineTime: 3600000, pt: 7196000
-[2016-09-24 11:53:14.294] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.9994444, machineEff: 0.0, passedEff: 1.0
-[2016-09-24 11:53:14.299] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 0, machineTime: 7200000, pt: 0
-[2016-09-24 11:53:14.299] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.0, machineEff: 1.0, passedEff: 1.0
-[2016-09-24 11:53:14.305] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  actQty: 3, machineTime: 7200000, pt: 3600000
-[2016-09-24 11:53:14.306] log4j2 - 7695 DEBUG [http-nio-9999-exec-6] --- PCppService:  timeEff: 0.5, machineEff: 6.0, passedEff: 1.0
-[2016-09-24 13:03:36.834] log4j2 - 7722  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7722 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-24 13:03:36.837] log4j2 - 7722 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-24 13:03:54.797] log4j2 - 7722 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-24 13:03:54.800] log4j2 - 7722 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-24 13:04:00.573] log4j2 - 7722  INFO [main] --- Application: Started Application in 24.019 seconds (JVM running for 25.072)
-[2016-09-24 13:08:56.812] log4j2 - 7723  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7723 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-24 13:08:56.818] log4j2 - 7723 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-24 13:09:14.597] log4j2 - 7723 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-24 13:09:14.599] log4j2 - 7723 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-24 13:09:19.897] log4j2 - 7723  INFO [main] --- Application: Started Application in 23.352 seconds (JVM running for 24.226)
-[2016-09-24 13:24:50.681] log4j2 - 7732  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7732 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-24 13:24:50.682] log4j2 - 7732 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-24 13:25:06.516] log4j2 - 7732 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-24 13:25:06.519] log4j2 - 7732 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-24 13:25:12.072] log4j2 - 7732  INFO [main] --- Application: Started Application in 21.605 seconds (JVM running for 22.392)
-[2016-09-24 13:53:30.890] log4j2 - 7759  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7759 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-24 13:53:30.892] log4j2 - 7759 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-24 13:53:46.925] log4j2 - 7759 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-24 13:53:46.927] log4j2 - 7759 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-24 13:53:51.696] log4j2 - 7759  INFO [main] --- Application: Started Application in 21.071 seconds (JVM running for 21.919)
-[2016-09-24 14:01:45.439] log4j2 - 7762  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7762 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-24 14:01:45.440] log4j2 - 7762 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-24 14:02:01.641] log4j2 - 7762 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-24 14:02:01.644] log4j2 - 7762 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-24 14:02:06.425] log4j2 - 7762  INFO [main] --- Application: Started Application in 21.214 seconds (JVM running for 22.02)
-[2016-09-24 14:41:11.898] log4j2 - 7778  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7778 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-24 14:41:11.899] log4j2 - 7778 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-24 14:41:28.480] log4j2 - 7778 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-24 14:41:28.483] log4j2 - 7778 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-24 14:41:33.185] log4j2 - 7778  INFO [main] --- Application: Started Application in 21.563 seconds (JVM running for 22.386)
-[2016-09-24 14:52:00.388] log4j2 - 7778 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 1, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 268
-[2016-09-24 14:52:00.391] log4j2 - 7778 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 1, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 268
-[2016-09-24 14:52:00.393] log4j2 - 7778 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 2, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 39
-[2016-09-24 14:52:00.394] log4j2 - 7778 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 2, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 39
-[2016-09-24 14:52:00.396] log4j2 - 7778 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 3, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
-[2016-09-24 14:52:00.398] log4j2 - 7778 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 4, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
-[2016-09-24 14:52:00.399] log4j2 - 7778 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 5, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
-[2016-09-24 14:52:00.401] log4j2 - 7778 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 6, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
-[2016-09-24 15:06:18.480] log4j2 - 7778 DEBUG [http-nio-9999-exec-6] --- MMainRecordService: type: 1, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 268
-[2016-09-24 15:06:18.482] log4j2 - 7778 DEBUG [http-nio-9999-exec-6] --- MMainRecordService: type: 1, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 268
-[2016-09-24 15:07:34.069] log4j2 - 7778 DEBUG [http-nio-9999-exec-6] --- MMainRecordService: type: 1, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 268
-[2016-09-24 15:07:34.070] log4j2 - 7778 DEBUG [http-nio-9999-exec-6] --- MMainRecordService: type: 1, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 268
-[2016-09-24 15:07:34.072] log4j2 - 7778 DEBUG [http-nio-9999-exec-6] --- MMainRecordService: type: 2, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 39
-[2016-09-24 15:07:34.073] log4j2 - 7778 DEBUG [http-nio-9999-exec-6] --- MMainRecordService: type: 2, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 39
-[2016-09-24 15:07:34.075] log4j2 - 7778 DEBUG [http-nio-9999-exec-6] --- MMainRecordService: type: 3, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
-[2016-09-24 15:07:34.078] log4j2 - 7778 DEBUG [http-nio-9999-exec-6] --- MMainRecordService: type: 4, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
-[2016-09-24 15:07:34.080] log4j2 - 7778 DEBUG [http-nio-9999-exec-6] --- MMainRecordService: type: 5, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
-[2016-09-24 15:07:34.081] log4j2 - 7778 DEBUG [http-nio-9999-exec-6] --- MMainRecordService: type: 6, day: 268, week: 39, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
-[2016-09-24 15:12:05.308] log4j2 - 7788  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7788 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-24 15:12:05.310] log4j2 - 7788 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-24 15:12:21.803] log4j2 - 7788 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-24 15:12:21.805] log4j2 - 7788 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-24 15:12:26.159] log4j2 - 7788  INFO [main] --- Application: Started Application in 21.09 seconds (JVM running for 21.891)
-[2016-09-24 15:14:53.822] log4j2 - 7801  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7801 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-24 15:14:53.824] log4j2 - 7801 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-24 15:15:17.254] log4j2 - 7801 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-24 15:15:17.260] log4j2 - 7801 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-24 15:15:18.205] log4j2 - 7801  WARN [main] --- AnnotationConfigEmbeddedWebApplicationContext: Exception encountered during context initialization - cancelling refresh attempt
-org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'databaseInit': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Could not autowire field: private com.jms.service.company.CompanyService com.jms.DatabaseInit.companyService; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'companyService': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Could not autowire field: private com.jms.acl.SecuredObjectService com.jms.service.company.CompanyService.securedObjectService; nested exception is java.lang.NoClassDefFoundError: com/jms/acl/SidPerm
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:334) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1210) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:755) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:757) ~[spring-context-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:480) [spring-context-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.refresh(EmbeddedWebApplicationContext.java:118) [spring-boot-1.2.4.RELEASE.jar:1.2.4.RELEASE]
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:686) [spring-boot-1.2.4.RELEASE.jar:1.2.4.RELEASE]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:320) [spring-boot-1.2.4.RELEASE.jar:1.2.4.RELEASE]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:957) [spring-boot-1.2.4.RELEASE.jar:1.2.4.RELEASE]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:946) [spring-boot-1.2.4.RELEASE.jar:1.2.4.RELEASE]
-	at com.jms.Application.main(Application.java:40) [classes/:?]
-Caused by: org.springframework.beans.factory.BeanCreationException: Could not autowire field: private com.jms.service.company.CompanyService com.jms.DatabaseInit.companyService; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'companyService': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Could not autowire field: private com.jms.acl.SecuredObjectService com.jms.service.company.CompanyService.securedObjectService; nested exception is java.lang.NoClassDefFoundError: com/jms/acl/SidPerm
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:561) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:331) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	... 16 more
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'companyService': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Could not autowire field: private com.jms.acl.SecuredObjectService com.jms.service.company.CompanyService.securedObjectService; nested exception is java.lang.NoClassDefFoundError: com/jms/acl/SidPerm
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:334) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1210) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1120) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1044) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:942) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:533) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:331) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	... 16 more
-Caused by: org.springframework.beans.factory.BeanCreationException: Could not autowire field: private com.jms.acl.SecuredObjectService com.jms.service.company.CompanyService.securedObjectService; nested exception is java.lang.NoClassDefFoundError: com/jms/acl/SidPerm
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:561) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:331) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1210) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1120) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1044) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:942) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:533) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:331) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	... 16 more
-Caused by: java.lang.NoClassDefFoundError: com/jms/acl/SidPerm
-	at java.lang.Class.getDeclaredMethods0(Native Method) ~[?:1.8.0_45]
-	at java.lang.Class.privateGetDeclaredMethods(Class.java:2701) ~[?:1.8.0_45]
-	at java.lang.Class.getDeclaredMethods(Class.java:1975) ~[?:1.8.0_45]
-	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:571) ~[spring-core-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.util.ReflectionUtils.doWithMethods(ReflectionUtils.java:488) ~[spring-core-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.util.ReflectionUtils.doWithMethods(ReflectionUtils.java:474) ~[spring-core-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:241) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineConstructorsFromBeanPostProcessors(AbstractAutowireCapableBeanFactory.java:1065) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1038) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:504) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1120) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1044) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:942) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:533) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:331) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1210) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1120) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1044) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:942) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:533) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:331) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	... 16 more
-Caused by: java.lang.ClassNotFoundException: com.jms.acl.SidPerm
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:381) ~[?:1.8.0_45]
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:424) ~[?:1.8.0_45]
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331) ~[?:1.8.0_45]
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:357) ~[?:1.8.0_45]
-	at java.lang.Class.getDeclaredMethods0(Native Method) ~[?:1.8.0_45]
-	at java.lang.Class.privateGetDeclaredMethods(Class.java:2701) ~[?:1.8.0_45]
-	at java.lang.Class.getDeclaredMethods(Class.java:1975) ~[?:1.8.0_45]
-	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:571) ~[spring-core-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.util.ReflectionUtils.doWithMethods(ReflectionUtils.java:488) ~[spring-core-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.util.ReflectionUtils.doWithMethods(ReflectionUtils.java:474) ~[spring-core-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:241) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineConstructorsFromBeanPostProcessors(AbstractAutowireCapableBeanFactory.java:1065) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1038) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:504) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1120) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1044) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:942) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:533) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:331) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1210) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1120) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1044) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:942) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:533) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:331) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	... 16 more
-[2016-09-24 15:15:18.454] log4j2 - 7801  WARN [localhost-startStop-1] --- WebappClassLoaderBase: The web application [jms] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
- java.lang.Object.wait(Native Method)
- java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
- com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)
-[2016-09-24 15:15:18.468] log4j2 - 7801  WARN [main] --- SpringApplication: Error handling failed (Error creating bean with name 'delegatingApplicationListener' defined in class path resource [org/springframework/security/config/annotation/web/configuration/WebSecurityConfiguration.class]: BeanPostProcessor before instantiation of bean failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Could not autowire method: public void org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration.setObjectPostProcessor(org.springframework.security.config.annotation.ObjectPostProcessor); nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration': Initialization of bean failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'org.springframework.context.annotation.ConfigurationClassPostProcessor.importRegistry' is defined)
-[2016-09-24 15:15:18.471] log4j2 - 7801 ERROR [main] --- SpringApplication: Application startup failed
-org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'databaseInit': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Could not autowire field: private com.jms.service.company.CompanyService com.jms.DatabaseInit.companyService; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'companyService': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Could not autowire field: private com.jms.acl.SecuredObjectService com.jms.service.company.CompanyService.securedObjectService; nested exception is java.lang.NoClassDefFoundError: com/jms/acl/SidPerm
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:334) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1210) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:755) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:757) ~[spring-context-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:480) ~[spring-context-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.refresh(EmbeddedWebApplicationContext.java:118) ~[spring-boot-1.2.4.RELEASE.jar:1.2.4.RELEASE]
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:686) ~[spring-boot-1.2.4.RELEASE.jar:1.2.4.RELEASE]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:320) [spring-boot-1.2.4.RELEASE.jar:1.2.4.RELEASE]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:957) [spring-boot-1.2.4.RELEASE.jar:1.2.4.RELEASE]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:946) [spring-boot-1.2.4.RELEASE.jar:1.2.4.RELEASE]
-	at com.jms.Application.main(Application.java:40) [classes/:?]
-Caused by: org.springframework.beans.factory.BeanCreationException: Could not autowire field: private com.jms.service.company.CompanyService com.jms.DatabaseInit.companyService; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'companyService': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Could not autowire field: private com.jms.acl.SecuredObjectService com.jms.service.company.CompanyService.securedObjectService; nested exception is java.lang.NoClassDefFoundError: com/jms/acl/SidPerm
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:561) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:331) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	... 16 more
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'companyService': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Could not autowire field: private com.jms.acl.SecuredObjectService com.jms.service.company.CompanyService.securedObjectService; nested exception is java.lang.NoClassDefFoundError: com/jms/acl/SidPerm
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:334) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1210) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1120) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1044) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:942) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:533) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:331) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	... 16 more
-Caused by: org.springframework.beans.factory.BeanCreationException: Could not autowire field: private com.jms.acl.SecuredObjectService com.jms.service.company.CompanyService.securedObjectService; nested exception is java.lang.NoClassDefFoundError: com/jms/acl/SidPerm
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:561) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:331) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1210) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1120) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1044) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:942) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:533) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:331) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	... 16 more
-Caused by: java.lang.NoClassDefFoundError: com/jms/acl/SidPerm
-	at java.lang.Class.getDeclaredMethods0(Native Method) ~[?:1.8.0_45]
-	at java.lang.Class.privateGetDeclaredMethods(Class.java:2701) ~[?:1.8.0_45]
-	at java.lang.Class.getDeclaredMethods(Class.java:1975) ~[?:1.8.0_45]
-	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:571) ~[spring-core-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.util.ReflectionUtils.doWithMethods(ReflectionUtils.java:488) ~[spring-core-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.util.ReflectionUtils.doWithMethods(ReflectionUtils.java:474) ~[spring-core-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:241) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineConstructorsFromBeanPostProcessors(AbstractAutowireCapableBeanFactory.java:1065) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1038) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:504) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1120) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1044) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:942) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:533) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:331) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1210) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1120) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1044) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:942) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:533) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:331) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	... 16 more
-Caused by: java.lang.ClassNotFoundException: com.jms.acl.SidPerm
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:381) ~[?:1.8.0_45]
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:424) ~[?:1.8.0_45]
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331) ~[?:1.8.0_45]
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:357) ~[?:1.8.0_45]
-	at java.lang.Class.getDeclaredMethods0(Native Method) ~[?:1.8.0_45]
-	at java.lang.Class.privateGetDeclaredMethods(Class.java:2701) ~[?:1.8.0_45]
-	at java.lang.Class.getDeclaredMethods(Class.java:1975) ~[?:1.8.0_45]
-	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:571) ~[spring-core-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.util.ReflectionUtils.doWithMethods(ReflectionUtils.java:488) ~[spring-core-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.util.ReflectionUtils.doWithMethods(ReflectionUtils.java:474) ~[spring-core-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:241) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineConstructorsFromBeanPostProcessors(AbstractAutowireCapableBeanFactory.java:1065) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1038) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:504) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1120) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1044) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:942) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:533) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:331) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1210) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1120) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1044) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:942) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:533) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:331) ~[spring-beans-4.1.6.RELEASE.jar:4.1.6.RELEASE]
-	... 16 more
-[2016-09-24 15:15:48.282] log4j2 - 7817  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7817 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-24 15:15:48.285] log4j2 - 7817 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-24 15:16:03.921] log4j2 - 7817 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-24 15:16:03.923] log4j2 - 7817 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-24 15:16:08.804] log4j2 - 7817  INFO [main] --- Application: Started Application in 20.75 seconds (JVM running for 21.546)
+[2016-09-30 09:18:31.488] log4j2 - 10308  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 10308 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-09-30 09:18:31.503] log4j2 - 10308 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-09-30 09:18:51.315] log4j2 - 10308 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-09-30 09:18:51.317] log4j2 - 10308 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-09-30 09:18:58.151] log4j2 - 10308  INFO [main] --- Application: Started Application in 27.019 seconds (JVM running for 28.603)
+[2016-09-30 09:23:05.013] log4j2 - 10401  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 10401 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-09-30 09:23:05.016] log4j2 - 10401 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-09-30 09:23:22.205] log4j2 - 10401 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-09-30 09:23:22.210] log4j2 - 10401 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-09-30 09:23:26.783] log4j2 - 10401  INFO [main] --- Application: Started Application in 22.016 seconds (JVM running for 22.841)
+[2016-09-30 09:28:39.899] log4j2 - 10405  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 10405 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-09-30 09:28:39.900] log4j2 - 10405 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-09-30 09:28:56.516] log4j2 - 10405 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-09-30 09:28:56.518] log4j2 - 10405 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-09-30 09:29:01.637] log4j2 - 10405  INFO [main] --- Application: Started Application in 21.973 seconds (JVM running for 22.955)
+[2016-09-30 09:38:00.544] log4j2 - 734  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 734 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-09-30 09:38:00.550] log4j2 - 734 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-09-30 09:38:19.995] log4j2 - 734 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-09-30 09:38:19.997] log4j2 - 734 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-09-30 09:38:24.894] log4j2 - 734  INFO [main] --- Application: Started Application in 24.72 seconds (JVM running for 26.19)
+[2016-09-30 09:54:36.500] log4j2 - 734  WARN [http-nio-9999-exec-4] --- SqlExceptionHelper: SQL Error: 1146, SQLState: 42S02
+[2016-09-30 09:54:36.500] log4j2 - 734 ERROR [http-nio-9999-exec-4] --- SqlExceptionHelper: Table 'jms5.smtf_no' doesn't exist
+[2016-09-30 09:54:36.514] log4j2 - 734  WARN [http-nio-9999-exec-4] --- SqlExceptionHelper: SQL Warning Code: 1146, SQLState: 42S02
+[2016-09-30 09:54:36.514] log4j2 - 734  WARN [http-nio-9999-exec-4] --- SqlExceptionHelper: Table 'jms5.smtf_no' doesn't exist
+[2016-09-30 10:01:32.233] log4j2 - 734  WARN [http-nio-9999-exec-8] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
+[2016-09-30 10:01:32.233] log4j2 - 734  WARN [http-nio-9999-exec-8] --- SqlExceptionHelper: Incorrect date value: '2016-09-30 10:01:32.22' for column 'creation_time' at row 1
+[2016-09-30 10:02:26.714] log4j2 - 734  WARN [http-nio-9999-exec-6] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
+[2016-09-30 10:02:26.715] log4j2 - 734  WARN [http-nio-9999-exec-6] --- SqlExceptionHelper: Truncated incorrect date value: '1475114460000'
+[2016-09-30 10:02:26.715] log4j2 - 734  WARN [http-nio-9999-exec-6] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
+[2016-09-30 10:02:26.715] log4j2 - 734  WARN [http-nio-9999-exec-6] --- SqlExceptionHelper: Truncated incorrect date value: '1475287260000'
+[2016-09-30 10:08:53.627] log4j2 - 774  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 774 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-09-30 10:08:53.629] log4j2 - 774 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-09-30 10:09:09.709] log4j2 - 774 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-09-30 10:09:09.711] log4j2 - 774 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-09-30 10:09:15.268] log4j2 - 774  INFO [main] --- Application: Started Application in 21.918 seconds (JVM running for 22.893)
+[2016-09-30 10:11:29.871] log4j2 - 774  WARN [http-nio-9999-exec-7] --- SqlExceptionHelper: SQL Error: 1146, SQLState: 42S02
+[2016-09-30 10:11:29.871] log4j2 - 774 ERROR [http-nio-9999-exec-7] --- SqlExceptionHelper: Table 'jms5.smtf_no' doesn't exist
+[2016-09-30 10:11:29.883] log4j2 - 774  WARN [http-nio-9999-exec-7] --- SqlExceptionHelper: SQL Warning Code: 1146, SQLState: 42S02
+[2016-09-30 10:11:29.884] log4j2 - 774  WARN [http-nio-9999-exec-7] --- SqlExceptionHelper: Table 'jms5.smtf_no' doesn't exist
+[2016-09-30 10:13:02.516] log4j2 - 774  WARN [http-nio-9999-exec-10] --- SqlExceptionHelper: SQL Error: 1146, SQLState: 42S02
+[2016-09-30 10:13:02.516] log4j2 - 774 ERROR [http-nio-9999-exec-10] --- SqlExceptionHelper: Table 'jms5.smtf_no' doesn't exist
+[2016-09-30 10:13:02.520] log4j2 - 774  WARN [http-nio-9999-exec-10] --- SqlExceptionHelper: SQL Warning Code: 1146, SQLState: 42S02
+[2016-09-30 10:13:02.520] log4j2 - 774  WARN [http-nio-9999-exec-10] --- SqlExceptionHelper: Table 'jms5.smtf_no' doesn't exist
+[2016-09-30 10:19:07.118] log4j2 - 782  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 782 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-09-30 10:19:07.120] log4j2 - 782 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-09-30 10:19:23.338] log4j2 - 782 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-09-30 10:19:23.340] log4j2 - 782 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-09-30 10:19:28.028] log4j2 - 782  INFO [main] --- Application: Started Application in 21.17 seconds (JVM running for 22.176)
+[2016-09-30 10:20:37.560] log4j2 - 782 DEBUG [http-nio-9999-exec-2] --- QNoProcessService: dd: 2016-09-30, today: 2016-09-30
+[2016-09-30 10:29:29.363] log4j2 - 791  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 791 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-09-30 10:29:29.365] log4j2 - 791 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-09-30 10:29:46.073] log4j2 - 791 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-09-30 10:29:46.075] log4j2 - 791 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-09-30 10:29:50.828] log4j2 - 791  INFO [main] --- Application: Started Application in 21.717 seconds (JVM running for 22.672)
+[2016-09-30 10:38:47.776] log4j2 - 791  WARN [http-nio-9999-exec-5] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
+[2016-09-30 10:38:47.778] log4j2 - 791  WARN [http-nio-9999-exec-5] --- SqlExceptionHelper: Truncated incorrect date value: '1475116680000'
+[2016-09-30 10:38:47.778] log4j2 - 791  WARN [http-nio-9999-exec-5] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
+[2016-09-30 10:38:47.779] log4j2 - 791  WARN [http-nio-9999-exec-5] --- SqlExceptionHelper: Truncated incorrect date value: '1475289480000'
+[2016-09-30 10:56:58.458] log4j2 - 831  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 831 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-09-30 10:56:58.460] log4j2 - 831 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-09-30 10:57:14.723] log4j2 - 831 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-09-30 10:57:14.725] log4j2 - 831 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-09-30 10:57:19.511] log4j2 - 831  INFO [main] --- Application: Started Application in 21.273 seconds (JVM running for 22.067)
+[2016-09-30 11:12:53.888] log4j2 - 846  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 846 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-09-30 11:12:53.889] log4j2 - 846 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-09-30 11:13:11.001] log4j2 - 846 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-09-30 11:13:11.003] log4j2 - 846 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-09-30 11:13:15.944] log4j2 - 846  INFO [main] --- Application: Started Application in 22.283 seconds (JVM running for 23.083)
+[2016-09-30 11:25:33.217] log4j2 - 846 DEBUG [http-nio-9999-exec-8] --- QNcr2Service: dd: 2016-09-30, today: 2016-09-30
+[2016-09-30 11:28:50.889] log4j2 - 856  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 856 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-09-30 11:28:50.890] log4j2 - 856 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-09-30 11:29:06.437] log4j2 - 856 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-09-30 11:29:06.440] log4j2 - 856 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-09-30 11:29:11.085] log4j2 - 856  INFO [main] --- Application: Started Application in 20.411 seconds (JVM running for 21.208)
+[2016-09-30 11:31:51.433] log4j2 - 861  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 861 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-09-30 11:31:51.435] log4j2 - 861 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-09-30 11:32:08.624] log4j2 - 861 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-09-30 11:32:08.626] log4j2 - 861 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-09-30 11:32:13.481] log4j2 - 861  INFO [main] --- Application: Started Application in 22.267 seconds (JVM running for 23.061)
+[2016-09-30 11:34:24.095] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
+[2016-09-30 11:34:24.099] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
+[2016-09-30 11:34:24.101] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
+[2016-09-30 11:34:24.102] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
+[2016-09-30 11:34:24.104] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 3, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
+[2016-09-30 11:34:24.107] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 4, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
+[2016-09-30 11:34:24.109] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 5, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
+[2016-09-30 11:34:24.111] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 6, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
+[2016-09-30 11:34:34.611] log4j2 - 861 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
+[2016-09-30 11:34:34.613] log4j2 - 861 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
+[2016-09-30 11:34:34.616] log4j2 - 861 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
+[2016-09-30 11:34:34.617] log4j2 - 861 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
+[2016-09-30 11:34:34.620] log4j2 - 861 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 3, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
+[2016-09-30 11:34:34.623] log4j2 - 861 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 4, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
+[2016-09-30 11:34:34.626] log4j2 - 861 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 5, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
+[2016-09-30 11:34:34.629] log4j2 - 861 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 6, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
+[2016-09-30 11:34:36.031] log4j2 - 861 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
+[2016-09-30 11:34:36.033] log4j2 - 861 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
+[2016-09-30 11:34:36.035] log4j2 - 861 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
+[2016-09-30 11:34:36.037] log4j2 - 861 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
+[2016-09-30 11:34:36.040] log4j2 - 861 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 3, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
+[2016-09-30 11:34:36.042] log4j2 - 861 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 4, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
+[2016-09-30 11:34:36.044] log4j2 - 861 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 5, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
+[2016-09-30 11:34:36.046] log4j2 - 861 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 6, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
+[2016-09-30 11:38:58.532] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
+[2016-09-30 11:38:58.535] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
+[2016-09-30 11:38:58.538] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
+[2016-09-30 11:38:58.540] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
+[2016-09-30 11:38:58.543] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 3, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
+[2016-09-30 11:38:58.545] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 4, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
+[2016-09-30 11:38:58.548] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 5, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
+[2016-09-30 11:38:58.551] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 6, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
+[2016-09-30 11:40:05.218] log4j2 - 871  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 871 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-09-30 11:40:05.222] log4j2 - 871 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-09-30 11:40:21.700] log4j2 - 871 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-09-30 11:40:21.703] log4j2 - 871 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-09-30 11:40:26.424] log4j2 - 871  INFO [main] --- Application: Started Application in 21.488 seconds (JVM running for 22.378)
+[2016-09-30 11:42:38.801] log4j2 - 875  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 875 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-09-30 11:42:38.802] log4j2 - 875 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-09-30 11:42:55.416] log4j2 - 875 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-09-30 11:42:55.418] log4j2 - 875 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-09-30 11:43:00.144] log4j2 - 875  INFO [main] --- Application: Started Application in 21.564 seconds (JVM running for 22.362)
+[2016-09-30 11:45:11.852] log4j2 - 876  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 876 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-09-30 11:45:11.854] log4j2 - 876 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-09-30 11:45:29.160] log4j2 - 876 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-09-30 11:45:29.163] log4j2 - 876 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-09-30 11:45:33.768] log4j2 - 876  INFO [main] --- Application: Started Application in 22.143 seconds (JVM running for 22.927)
+[2016-09-30 11:47:47.241] log4j2 - 881  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 881 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-09-30 11:47:47.244] log4j2 - 881 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-09-30 11:48:03.512] log4j2 - 881 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-09-30 11:48:03.516] log4j2 - 881 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-09-30 11:48:08.363] log4j2 - 881  INFO [main] --- Application: Started Application in 21.352 seconds (JVM running for 22.185)
+[2016-09-30 12:16:58.886] log4j2 - 881 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
+[2016-09-30 12:16:58.888] log4j2 - 881 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
+[2016-09-30 12:16:58.890] log4j2 - 881 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
+[2016-09-30 12:16:58.892] log4j2 - 881 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
+[2016-09-30 12:16:58.894] log4j2 - 881 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 3, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
+[2016-09-30 12:16:58.896] log4j2 - 881 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 4, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
+[2016-09-30 12:16:58.899] log4j2 - 881 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 5, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
+[2016-09-30 12:16:58.901] log4j2 - 881 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 6, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
+[2016-09-30 12:19:14.182] log4j2 - 930  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 930 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-09-30 12:19:14.185] log4j2 - 930 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-09-30 12:19:29.865] log4j2 - 930 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-09-30 12:19:29.867] log4j2 - 930 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-09-30 12:19:34.576] log4j2 - 930  INFO [main] --- Application: Started Application in 20.622 seconds (JVM running for 21.39)
+[2016-09-30 12:20:12.170] log4j2 - 930 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
+[2016-09-30 12:20:12.172] log4j2 - 930 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
+[2016-09-30 12:20:12.174] log4j2 - 930 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
+[2016-09-30 12:20:12.176] log4j2 - 930 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
+[2016-09-30 12:20:12.178] log4j2 - 930 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 3, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
+[2016-09-30 12:20:12.181] log4j2 - 930 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 4, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
+[2016-09-30 12:20:12.183] log4j2 - 930 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 5, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
+[2016-09-30 12:20:12.186] log4j2 - 930 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 6, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
+[2016-09-30 12:20:44.521] log4j2 - 930 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
+[2016-09-30 12:20:44.523] log4j2 - 930 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
+[2016-09-30 12:20:44.526] log4j2 - 930 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
+[2016-09-30 12:20:44.528] log4j2 - 930 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
+[2016-09-30 12:20:44.531] log4j2 - 930 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 3, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
+[2016-09-30 12:20:44.534] log4j2 - 930 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 4, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
+[2016-09-30 12:20:44.537] log4j2 - 930 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 5, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
+[2016-09-30 12:20:44.540] log4j2 - 930 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 6, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016

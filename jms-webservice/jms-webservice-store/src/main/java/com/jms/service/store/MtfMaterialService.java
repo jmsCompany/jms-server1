@@ -210,7 +210,7 @@ public class MtfMaterialService {
 	
 	
 	
-	protected SMtfMaterial toDBMtfMaterial(WSSMtfMaterial wsSMtfMaterial,SMtfMaterial sMtfMaterial) throws Exception
+	public SMtfMaterial toDBMtfMaterial(WSSMtfMaterial wsSMtfMaterial,SMtfMaterial sMtfMaterial) throws Exception
 	{
 	
 		SMtfMaterial dbSMtfMaterial = (SMtfMaterial)BeanUtil.shallowCopy(wsSMtfMaterial, SMtfMaterial.class, sMtfMaterial);
@@ -262,7 +262,7 @@ public class MtfMaterialService {
 		return dbSMtfMaterial;
 	}
 	
-	protected WSSMtfMaterial toWSSMtfMaterial(SMtfMaterial sMtfMaterial) throws Exception
+	public WSSMtfMaterial toWSSMtfMaterial(SMtfMaterial sMtfMaterial) throws Exception
 	{
 		WSSMtfMaterial wsSMtfMaterial = (WSSMtfMaterial)BeanUtil.shallowCopy(sMtfMaterial, WSSMtfMaterial.class, null);
 		if(sMtfMaterial.getSMtf().getUsersByEmpMt()!=null)

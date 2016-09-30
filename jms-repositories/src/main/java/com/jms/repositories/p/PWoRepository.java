@@ -23,7 +23,7 @@ public interface PWoRepository extends JpaRepository<PWo, Long>{
     public List<PWo> getActiveWosByCompanyId(Long companyId);
     
     
-    @Query("select p from PWo p where p.SSo.company.idCompany=?1 and p.woNo like ?2 order by p.PStatusDic.idPstatus")
+    @Query("select p from PWo p where p.SSo.company.idCompany=?1 and (p.woNo like ?2 or p.SSo.SMaterial.pno like ?2 or  p.SSo.SMaterial.des like ?2) order by p.PStatusDic.idPstatus")
     public List<PWo> getByCompanyIdAndQuery(Long companyId,String q);
     
     
