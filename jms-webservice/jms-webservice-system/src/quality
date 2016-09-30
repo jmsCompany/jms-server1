@@ -1,0 +1,727 @@
+1. 数据结构传输协议
+1.1 public class WSQG8d  implements java.io.Serializable{
+
+    private Long idG8d;
+    private Long idNcr;
+    private String g8dNo;
+    private String title;
+    private Date dateOpened;
+    private Date lastUpdated;
+    private Long idMaterial;
+    private Long idRoutineD;
+    private String organisationInfo;
+    private Character emergencyResponseAction;
+    private String effective1;
+    private Date dateImplemented1;
+    private String problemState;
+    private String interimContainmentAction;
+    private String effective2;
+    private Date dateImplemented2;
+    private String rootCause;
+    private String default_;
+    private String contribution;
+    private String chosenPermanentAction;
+    private String effective3;
+    private String implementedPermanentAction;
+    private Date dateImplemented3;
+    private String prevenAction;
+    private Date dateImplemented4;
+    private String systemicPrevent;
+    private Long responsibility;
+    private String tiRecognition;
+    private Date dateClosed;
+    private Long reportedBy;
+    private Long idLeader;
+    
+    private Long verification1;
+    private Long verification2;
+    private Long verification3;
+    
+    
+    private List<WSQG8dUser> users = new ArrayList<WSQG8dUser>(0);
+    }
+    
+    
+    
+    
+ 1.2 public class WSQG8dUser  implements java.io.Serializable{
+
+	private Long idG8dUsers;
+    private Long idG8d;
+    private Long idNcr;
+    }
+   
+   
+   
+ 1.3  public class WSQCar  implements java.io.Serializable{
+    private Long idQNcr2;
+    private Long idCar;
+    private String carNo;
+    private String to1;
+    private String problemDes;
+    private String ia;
+    private String ea;
+    private String quality;
+    private String ehs;
+    private String other1;
+    private String other1Des;
+    private String man;
+    private String machine;
+    private String material;
+    private String method;
+    private String other2;
+    private String other2Des;
+    private String interimCorrectiveAction;
+    private Date commitDate1;
+    private String permanentCorrectiveAction;
+    private Date commitDate2;
+    private Long response;
+    private Date date1;
+    private String result;
+    private String actionPlan;
+    private Long confirmor;
+    private Date date2;
+    }
+    
+    
+ 1.4 public class WSQDeviation  implements java.io.Serializable{
+	   
+	     private Long idDeviation;
+	     private Long idNoProcess;
+	     private String deviationNo;
+	     private Long idMaterial;
+	     private String material;
+	     private Long idRoutineD;
+	     private String routineD;
+	     private Long idCompanyCo;
+	     private String companyCo;
+	     private Long issuer;
+	     private String issuerName;
+	     private Date date1;
+	     private String scopePeriodMaxqty;
+	     private String reason;
+	     private String mfgRemark;
+	     private Long mfgSign;
+	     private String aeRemark;
+	     private Long aeSign;
+	     private String qeRemark;
+	     private Long qeSign;
+	     private String otherFuction;
+	     private Long ofSign;
+	     private Long idDept;
+	     }
+	     
+	     
+	     
+1.5 public class WSQFileManagent  implements java.io.Serializable{
+
+	private Long idFile;
+    private Long idFileType;
+    private String fileNo;
+    private Long idRoutineD;
+    private Long creator;
+    private String creationTime;
+    private String orgFilename;
+    private String fileName;
+    private Long uploadByUser;
+    private Long idCompany;
+    private Long idWo;
+    private Long idMaterial;
+    }
+    
+ 
+ 1.6 public class WSQNcr2  implements java.io.Serializable{
+	   
+	private Long idNcr;
+	     private Long idQNoProcess;
+	     private String ncrNo;
+	     private Long who;
+	     private Date when1;
+	     private String where1;
+	     private String howMuch;
+	     private String how;
+	     private String what;
+	     private String pic1OrgFilename;
+	     private String pic1Filename;
+	     private String pic2OrgFilename;
+	     private String picFilename;
+	     private String emergencyAction;
+	     private Date actionDate;
+	     private String car;
+	     private String q8d;
+	     private Date deadline;
+	     private Long respnose;
+	     private Date date;
+	     private List<WSQCar> cars = new ArrayList<WSQCar>(0);
+	     private List<WSQG8d> g8ds = new ArrayList<WSQG8d>(0);
+	     }
+	     
+	     
+1.7 public class WSQNoProcess  implements java.io.Serializable{
+    private Long idNoProcess;
+    private String ncpNo;
+    private String lotNo;
+    private Long idMaterial;
+    private String material;
+    private Float qty;
+    private String default_;
+    private Long idLocation;
+    private String des;
+    private Long release1;
+    private Long audit01;
+    private String comment;
+    private String isSorting;
+    private Float sortingQty;
+    private String isReworking;
+    private Float reworkingQty;
+    private String isScrap;
+    private Float scrapQty;
+    private String idReject;
+    private Float manHour;
+    private String isDeviation;
+    private Float deviationQty;
+    private Long owner;
+    private Long audit02;
+    private Long countersign;
+    private Long approval02;
+    private String inprovementAction;
+    private String concernOrNot;
+    private Long response;
+    private Long audit03;
+    private Long approval03;
+    private Long idQstatus;
+    private Long idCompany;
+    }
+    
+    //上传文件返回类型
+ 1.8 public class FileMeta {
+	
+	 private Long fileId;
+	 private String orgName;
+	 private String fileName;
+	 private String fileSize;
+	 private String fileType;
+	 private String des;
+     private byte[] bytes;
+     ｝   
+    
+    
+ 2. 文件管理：
+ 
+ //列出文件类型：
+ @Transactional(readOnly = false)
+	@RequestMapping(value="/q/getQFileTypes", method=RequestMethod.GET)
+	public List<WSSelectObj> getQFileTypes() {
+		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
+		for(QFileType f :qFileTypeRepository.getByIdCompany(securityUtils.getCurrentDBUser().getCompany().getIdCompany()) )
+		{
+			WSSelectObj w = new WSSelectObj(f.getIdFileType(),f.getType());
+			ws.add(w);
+		}
+		return ws;
+		
+	}
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/q/saveQFileManagement", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSQFileManagent saveQFileManagement(@RequestBody WSQFileManagent wsQFileManagement) throws Exception {
+		return qFileManagementService.saveWSQFileManagent(wsQFileManagement);
+	}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/q/deleteQFileManagement", method=RequestMethod.GET)
+	public Valid deleteQFileManagement(@RequestParam("fileId") Long fileId) {
+		return qFileManagementService.deleteQFileManagent(fileId);
+		
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/q/findQFileManagement", method=RequestMethod.GET)
+	public WSQFileManagent findQFileManagement(@RequestParam("fileId") Long fileId) throws Exception {
+		return qFileManagementService.findWSQFileManagent(fileId);
+		
+	}
+	
+	／／上传文件
+	@Transactional(readOnly = false)
+	@RequestMapping(value = "/q/uploadQFile", method = RequestMethod.POST)
+	public FileMeta uploadQFile(MultipartHttpServletRequest request,
+			HttpServletResponse response) {
+		FileMeta fileMeta = new FileMeta();
+		if (request.getFileNames().hasNext()) {
+			return fileUploadService.upload(request, response,false);
+		}
+		return fileMeta;
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/q/getQFileManagementList", method=RequestMethod.POST)
+	public WSTableData  getQFileManagementList(
+			@RequestParam String from,
+			@RequestParam String to,
+			@RequestParam(required=false) Long materialId,
+			@RequestParam(required=false) Long woId,
+			@RequestParam(required=false) Long routineDId,
+			@RequestParam(required=false) Long fileTypeId,
+			@RequestParam(required=false) Long creatorId,
+			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+
+		List<QFileManagent> qFileManagementList =qFileManagementRepositoryCustomImpl.getQFiles(companyId, from, to, materialId, woId, routineDId, fileTypeId, creatorId);
+		
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(qFileManagementList.size()<start + length)
+			end =qFileManagementList.size();
+		else
+			end =start + length;
+		for (int i = start; i < end; i++) {
+			QFileManagent w = qFileManagementList.get(i);
+			
+			String sMaterial="";
+			if(w.getIdMaterial()!=null)
+			{
+				SMaterial material = sMaterialRepository.findOne(w.getIdMaterial());
+				sMaterial= material.getPno()+"_"+material.getRev()+"_"+material.getDes();
+			}
+			String fileType = (w.getQFileType()==null)?"":w.getQFileType().getType();
+			String fileNo = (w.getFileNo()==null)?"":w.getFileNo();
+
+			String wo ="";
+			if(w.getIdWo()!=null){
+				PWo pwo = pWoRepository.findOne(w.getIdWo());
+				wo=pwo.getWoNo();
+			}
+			
+			String routineD ="";
+			if(w.getIdRoutineD()!=null){
+				PRoutineD pRoutineD = pRoutineDRepository.findOne(w.getIdRoutineD());
+				routineD = pRoutineD.getRouteNo()+"_"+pRoutineD.getDes();
+			}
+
+			String person ="";
+			if(w.getCreator()!=null)
+			{
+				Users  u = usersRepository.findOne(w.getCreator());
+				if(u.getName()!=null)
+				{
+					person = u.getName();
+				}
+			}
+			String date = (w.getCreationTime()==null)?"":""+w.getCreationTime().toString();
+
+			String[] d = {fileNo, fileType,sMaterial,wo,routineD,date,person,""+w.getIdFile()};
+			lst.add(d);
+
+		}
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(qFileManagementList.size());
+		t.setRecordsFiltered(qFileManagementList.size());
+	    t.setData(lst);
+	    return t;
+	}
+	
+	3. CAR 管理
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/q/saveQCar", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSQCar saveQCar(@RequestBody WSQCar wsQCar) throws Exception {
+		return qCarService.saveWSQCar(wsQCar);
+	}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/q/deleteQCar", method=RequestMethod.GET)
+	public Valid deleteQCar(@RequestParam("qCarId") Long qCarId) {
+		return qCarService.deleteQCar(qCarId);
+		
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/q/findQCar", method=RequestMethod.GET)
+	public WSQCar findQCar(@RequestParam("qCarId") Long qCarId) throws Exception {
+		return qCarService.findWSQcar(qCarId);
+		
+	}
+	
+	
+	
+
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/q/getQCarList", method=RequestMethod.POST)
+	public WSTableData  getQCarList(@RequestParam Long from,@RequestParam Long to,@RequestParam Long materialId,@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		
+		Date fromDate = new Date(from);
+		Date toDate = new Date(to);
+		List<QCar> qCarList =qCarRepository.getByFromToAndMaterialId(fromDate, toDate, materialId);
+		
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(qCarList.size()<start + length)
+			end =qCarList.size();
+		else
+			end =start + length;
+		for (int i = start; i < end; i++) {
+			QCar w = qCarList.get(i);
+			
+		    String to1 = (w.getTo1()==null)?"":w.getTo1();
+		    String carNo = (w.getCarNo()==null)?"":w.getCarNo();
+		    String response = "";
+		    if(w.getResponse()!=null)
+		    {
+		    	Users u = usersRepository.findOne(w.getResponse());
+		    	response = (u.getName()==null)?"":u.getName();
+		    	
+		    }
+		    String date1 = (w.getDate1()==null)?"":w.getDate1().toString();
+		    String date2 = (w.getDate2()==null)?"":w.getDate2().toString();
+		    String confirmor="";
+		    if(w.getConfirmor()!=null)
+		    {
+		    	Users u = usersRepository.findOne(w.getConfirmor());
+		    	confirmor = (u.getName()==null)?"":u.getName();
+		    }
+		
+
+			String[] d = {to1,carNo,date1,confirmor,date2,""+w.getIdCar()};
+			lst.add(d);
+
+		}
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(qCarList.size());
+		t.setRecordsFiltered(qCarList.size());
+	    t.setData(lst);
+	    return t;
+	}
+	
+	
+	4.deviation管理
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/q/saveQDeviation", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSQDeviation saveQDeviation(@RequestBody WSQDeviation wsQDeviation) throws Exception {
+		return qDeviationService.saveWSQDeviation(wsQDeviation);
+	}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/q/deleteQDeviation", method=RequestMethod.GET)
+	public Valid deleteQDeviation(@RequestParam("qDeviationId") Long qDeviationId) {
+		return qDeviationService.deleteQDeviation(qDeviationId);
+		
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/q/findQDeviation", method=RequestMethod.GET)
+	public WSQDeviation findQDeviation(@RequestParam("qDeviationId") Long qDeviationId) throws Exception {
+		return qDeviationService.findWSQDeviation(qDeviationId);
+		
+	}
+
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/q/getQDeviationList", method=RequestMethod.POST)
+	public WSTableData  getQDeviationList(@RequestParam Long from,@RequestParam Long to,@RequestParam Long materialId,@RequestParam(required =false) String reason,@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		
+		Date fromDate = new Date(from);
+		Date toDate = new Date(to);
+		List<QDeviation> qDeviationList;
+		if(reason==null)
+		{
+			qDeviationList=qDeviationRepository.getByFromToAndMaterialId(fromDate, toDate, materialId);
+		}
+		else
+		{
+			reason = "%"+reason+"%";
+			qDeviationList=qDeviationRepository.getByFromToAndMaterialIdAndReason(fromDate, toDate, materialId, reason);
+		}
+		
+		
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(qDeviationList.size()<start + length)
+			end =qDeviationList.size();
+		else
+			end =start + length;
+		for (int i = start; i < end; i++) {
+			QDeviation w = qDeviationList.get(i);
+			
+			String deviationNo = (w.getDeviationNo()==null)?"":w.getDeviationNo();
+			
+			String sMaterial="";
+			if(w.getQNoProcess().getIdMaterial()!=null)
+			{
+				SMaterial material = sMaterialRepository.findOne(w.getQNoProcess().getIdMaterial());
+				sMaterial= material.getPno()+"_"+material.getRev()+"_"+material.getDes();
+			}
+			String routineD="";
+			{
+				if(w.getIdRoutineD()!=null)
+				{
+					PRoutineD rd = pRoutineDRepository.findOne(w.getIdRoutineD());
+					routineD = rd.getRouteNo()+"_"+rd.getDes();
+				}
+			}
+			String dept ="";
+			
+			String companyCo="";
+			
+			if(w.getIdCompanyCo()!=null)
+			{
+				SCompanyCo cc = sCompanyCoRepository.findOne(w.getIdCompanyCo());
+				companyCo = cc.getCode();
+			}
+
+			
+			String person ="";
+			if(w.getIssuer()!=null)
+			{
+				Users  u = usersRepository.findOne(w.getIssuer());
+				if(u.getName()!=null)
+				{
+					person = u.getName();
+				}
+			}
+			String date1 = (w.getDate1()==null)?"":""+w.getDate1().toString();
+
+			String[] d = {deviationNo,sMaterial,routineD,dept,companyCo,person,date1,""+w.getIdDeviation()};
+			lst.add(d);
+
+		}
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(qDeviationList.size());
+		t.setRecordsFiltered(qDeviationList.size());
+	    t.setData(lst);
+	    return t;
+	}
+	
+	5.G8D管理
+		@Transactional(readOnly = false)
+	@RequestMapping(value="/q/saveQG8d", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSQG8d saveQG8d(@RequestBody WSQG8d wsQG8d) throws Exception {
+		return qG8dService.saveWSQG8d(wsQG8d);
+	}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/q/deleteQG8d", method=RequestMethod.GET)
+	public Valid deleteQG8d(@RequestParam("qDG8dId") Long qG8dId) {
+		return qG8dService.deleteQG8d(qG8dId);
+		
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/q/findQG8d", method=RequestMethod.GET)
+	public WSQG8d findQG8d(@RequestParam("qDG8dId") Long qDG8dId) throws Exception {
+		return qG8dService.findWSQG8d(qDG8dId);
+		
+	}
+
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/q/getQG8dList", method=RequestMethod.POST)
+	public WSTableData  getQG8dList(@RequestParam Long from,@RequestParam Long to,@RequestParam Long materialId,@RequestParam(required =false) String problemState,@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		
+		Date fromDate = new Date(from);
+		Date toDate = new Date(to);
+		List<QG8d> qG8dList;
+		if(problemState==null)
+		{
+			qG8dList=qG8dRepository.getByFromToAndMaterialId(fromDate, toDate, materialId);
+		}
+		else
+		{
+			problemState = "%"+problemState+"%";
+			qG8dList=qG8dRepository.getByFromToAndMaterialIdAndReason(fromDate, toDate, materialId, problemState);
+		}
+		
+		
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(qG8dList.size()<start + length)
+			end =qG8dList.size();
+		else
+			end =start + length;
+		for (int i = start; i < end; i++) {
+			 QG8d w = qG8dList.get(i);
+			
+			String g8dNo = (w.getG8dNo()==null)?"":w.getG8dNo();
+			String dateOpened = (w.getDateOpened()==null)?"":""+w.getDateOpened().toString();
+			String sMaterial="";
+			if(w.getIdMaterial()!=null)
+			{
+				SMaterial material = sMaterialRepository.findOne(w.getIdMaterial());
+				sMaterial= material.getPno()+"_"+material.getRev()+"_"+material.getDes();
+			}
+			String routineD="";
+			{
+				if(w.getIdRoutineD()!=null)
+				{
+					PRoutineD rd = pRoutineDRepository.findOne(w.getIdRoutineD());
+					routineD = rd.getRouteNo()+"_"+rd.getDes();
+				}
+			}
+			
+			String dateClosed = (w.getDateClosed()==null)?"":""+w.getDateClosed().toString();
+
+			String[] d = {g8dNo,dateOpened,sMaterial,routineD,dateClosed,""+w.getIdG8d()};
+			lst.add(d);
+
+		}
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(qG8dList.size());
+		t.setRecordsFiltered(qG8dList.size());
+	    t.setData(lst);
+	    return t;
+	}
+	
+	
+	6. NCR管理
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/q/saveQNcr2", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSQNcr2 saveQNcr2(@RequestBody WSQNcr2 wsQNcr2) throws Exception {
+		return qNcr2Service.saveWSQNcr2(wsQNcr2);
+	}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/q/deleteQNcr2", method=RequestMethod.GET)
+	public Valid deleteQNcr2(@RequestParam("qNcr2Id") Long qNcr2Id) {
+		return qNcr2Service.deleteQNcr2(qNcr2Id);
+		
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/q/findQNcr2", method=RequestMethod.GET)
+	public WSQNcr2 findQNcr2(@RequestParam("qNcr2Id") Long qNcr2Id) throws Exception {
+		return qNcr2Service.findWSQNcr2(qNcr2Id);
+		
+	}
+
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/q/getQNcr2List", method=RequestMethod.POST)
+	public WSTableData  getQNcr2List(@RequestParam Long from,@RequestParam Long to,@RequestParam Long materialId,@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		
+		Date fromDate = new Date(from);
+		Date toDate = new Date(to);
+		List<QNcr2> qNcr2List =qNcr2Repository.getByFromToAndMaterialId(fromDate, toDate, materialId);
+		
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(qNcr2List.size()<start + length)
+			end =qNcr2List.size();
+		else
+			end =start + length;
+		for (int i = start; i < end; i++) {
+			QNcr2 w = qNcr2List.get(i);
+			
+			String sMaterial="";
+			if(w.getQNoProcess().getIdMaterial()!=null)
+			{
+				SMaterial material = sMaterialRepository.findOne(w.getQNoProcess().getIdMaterial());
+				sMaterial= material.getPno()+"_"+material.getRev()+"_"+material.getDes();
+			}
+			String ncrNo = (w.getNcrNo()==null)?"":w.getNcrNo();
+
+			String emergencyAction = (w.getEmergencyAction()==null)?"":w.getEmergencyAction();
+			String person ="";
+			if(w.getWho()!=null)
+			{
+				Users  u = usersRepository.findOne(w.getWho());
+				if(u.getName()!=null)
+				{
+					person = u.getName();
+				}
+			}
+			String date = (w.getDate()==null)?"":""+w.getDate().toString();
+
+			String[] d = {sMaterial,ncrNo,emergencyAction,person,date,""+w.getIdNcr()};
+			lst.add(d);
+
+		}
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(qNcr2List.size());
+		t.setRecordsFiltered(qNcr2List.size());
+	    t.setData(lst);
+	    return t;
+	}
+	
+	//上传图片
+	@Transactional(readOnly = false)
+	@RequestMapping(value = "/q/uploadNcrImage", method = RequestMethod.POST)
+	public FileMeta uploadFile(MultipartHttpServletRequest request,
+			HttpServletResponse response) {
+		FileMeta fileMeta = new FileMeta();
+		if (request.getFileNames().hasNext()) {
+			return fileUploadService.upload(request, response,false);
+		}
+		return fileMeta;
+	}
+	
+	
+	7.NoProcess管理
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/q/saveQNoProcess", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSQNoProcess saveQNoProcess(@RequestBody WSQNoProcess wsQNoProcess) throws Exception {
+		return qNoProcessService.saveWSQNoProcess(wsQNoProcess);
+	}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/q/deleteQNoProcess", method=RequestMethod.GET)
+	public Valid deleteQNoProcess(@RequestParam("qNoProcessId") Long qNoProcessId) {
+		return qNoProcessService.deleteQNoProcess(qNoProcessId);
+		
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/q/findQNoProcess", method=RequestMethod.GET)
+	public WSQNoProcess findQNoProcess(@RequestParam("qNoProcessId") Long qNoProcessId) throws Exception {
+		return qNoProcessService.findWSQNoProcess(qNoProcessId);
+		
+	}
+	
+	
+	
+
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/q/getQNoProcessList", method=RequestMethod.POST)
+	public WSTableData  getQNoProcessList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		
+		Long idCompany =securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		List<QNoProcess> qNoProcessList =qNoProcessRepository.getByIdCompany(idCompany);
+		
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(qNoProcessList.size()<start + length)
+			end =qNoProcessList.size();
+		else
+			end =start + length;
+		for (int i = start; i < end; i++) {
+			QNoProcess w = qNoProcessList.get(i);
+			
+			String sMaterial="";
+			if(w.getIdMaterial()!=null)
+			{
+				SMaterial material = sMaterialRepository.findOne(w.getIdMaterial());
+				sMaterial= material.getPno()+"_"+material.getRev()+"_"+material.getDes();
+			}
+			String lotNo = (w.getLotNo()==null)?"":w.getNcpNo();
+
+			String qty = (w.getQty()==null)?"":""+w.getQty();
+
+			String[] d = {""+w.getIdNoProcess(),sMaterial,lotNo,qty,""+w.getIdNoProcess()};
+			lst.add(d);
+
+		}
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(qNoProcessList.size());
+		t.setRecordsFiltered(qNoProcessList.size());
+	    t.setData(lst);
+	    return t;
+	}
