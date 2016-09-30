@@ -59,6 +59,12 @@ public class SMaterial  implements java.io.Serializable {
      private Set<MHistoryPart> MHistoryParts = new HashSet<MHistoryPart>(0);
      private Set<SPoMaterial> SPoMaterials = new HashSet<SPoMaterial>(0);
      private Set<SInventory> SInventories = new HashSet<SInventory>(0);
+     
+     
+     private Long checkCycle;
+     private Long cycleUnit;
+  
+
 
     public SMaterial() {
     }
@@ -373,6 +379,24 @@ public class SMaterial  implements java.io.Serializable {
     public void setSInventories(Set<SInventory> SInventories) {
         this.SInventories = SInventories;
     }
+
+    @Column(name="check_cycle")
+	public Long getCheckCycle() {
+		return checkCycle;
+	}
+
+	public void setCheckCycle(Long checkCycle) {
+		this.checkCycle = checkCycle;
+	}
+
+	   @Column(name="cycle_unit")
+	public Long getCycleUnit() {
+		return cycleUnit;
+	}
+
+	public void setCycleUnit(Long cycleUnit) {
+		this.cycleUnit = cycleUnit;
+	}
 
 
 }

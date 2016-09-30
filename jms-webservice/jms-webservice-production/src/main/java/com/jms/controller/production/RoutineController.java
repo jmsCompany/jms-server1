@@ -146,7 +146,7 @@ public class RoutineController {
 		{
 			for(PRoutineD r: pRoutineDRepository.findByMaterialId(s.getIdMaterial()))
 			{
-				WSSelectObj w = new WSSelectObj(r.getIdRoutineD(),r.getRouteNo());
+				WSSelectObj w = new WSSelectObj(r.getIdRoutineD(),r.getRouteNo()+"_"+r.getDes());
 				ws.add(w);
 			}
 			

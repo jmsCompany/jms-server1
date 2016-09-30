@@ -12,6 +12,7 @@ import com.jms.domain.db.QCar;
 import com.jms.domain.db.QCheckList;
 import com.jms.domain.db.QNoProcess;
 import com.jms.domain.db.SMaterial;
+import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.q.WSQCar;
 import com.jms.domain.ws.q.WSQCheckList;
@@ -26,6 +27,7 @@ import com.jms.repositories.q.QNcr2Repository;
 import com.jms.repositories.q.QNoProcessRepository;
 import com.jms.repositories.q.QTesterRepository;
 import com.jms.repositories.s.SMaterialRepository;
+import com.jms.repositories.user.UsersRepository;
 import com.jms.web.security.SecurityUtils;
 
 
@@ -40,7 +42,8 @@ public class QCarService {
 	private QCarRepository qCarRepository;
 	@Autowired
 	private  SecurityUtils securityUtils;
-	
+	@Autowired
+	private UsersRepository usersRepository;
 
 	public WSQCar saveWSQCar( WSQCar wsQCar) throws Exception {
 		QCar qCar;
@@ -96,6 +99,19 @@ public class QCarService {
 		if(qCar.getQNcr2()!=null)
 		{
 			pc.setIdQNcr2(qCar.getQNcr2().getIdNcr());
+			pc.setNcrNo(qCar.getQNcr2().getNcrNo());
+		}
+		if(qCar.getConfirmor()!=null)
+		{
+			Users u = usersRepository.findOne(qCar.getConfirmor());
+			String name = (u.getName()==null)?""+u.getIdUser():u.getName();
+			pc.setConfirmorName(name);
+		}
+		if(qCar.getResponse()!=null)
+		{
+			Users u = usersRepository.findOne(qCar.getResponse());
+			String name = (u.getName()==null)?""+u.getIdUser():u.getName();
+			pc.setResponseName(name);
 		}
 		
 		return pc;

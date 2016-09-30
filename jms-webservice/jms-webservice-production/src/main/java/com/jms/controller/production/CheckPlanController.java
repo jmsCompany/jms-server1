@@ -76,8 +76,17 @@ public class CheckPlanController {
 			SMaterial s = w.getPCPp().getPWo().getSSo().getSMaterial();
 			String material = s.getPno()+"-"+s.getRev()+"-"+s.getDes();
 			String  plancheckTime =(w.getPlanCheckTime()==null)?"":w.getPlanCheckTime().toString();
+			String woNo =(w.getPCPp().getPWo().getWoNo()==null)?"":w.getPCPp().getPWo().getWoNo();
+			String routinNo="";
+			if(w.getPCPp().getPRoutineD()!=null)
+			{
+				routinNo=(w.getPCPp().getPRoutineD().getRouteNo()==null)?"":w.getPCPp().getPRoutineD().getRouteNo();
+			}
+			String shift =(w.getPCPp().getPShiftPlanD().getShift()==null)?"":w.getPCPp().getPShiftPlanD().getShift();
+			String code =(w.getPCPp().getMMachine().getCode()==null)?"":w.getPCPp().getMMachine().getCode();
+			String name = (w.getPCPp().getUsers().getName()==null)?"":w.getPCPp().getUsers().getName();
 			
-			String[] d = {w.getPCPp().getPWo().getWoNo(),w.getPCPp().getPRoutineD().getRouteNo(),material,w.getPCPp().getPShiftPlanD().getShift(),w.getPCPp().getMMachine().getCode(),w.getPCPp().getUsers().getName(),plancheckTime
+			String[] d = {woNo,routinNo,material,shift,code,name,plancheckTime
 					,""+w.getToBeQty(),w.getCheckTime().toString(),""+w.getFinQty(),""+w.getToBeQty()};
 			lst.add(d);
 

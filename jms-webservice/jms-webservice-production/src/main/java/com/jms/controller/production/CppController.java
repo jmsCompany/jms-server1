@@ -1,6 +1,6 @@
 package com.jms.controller.production;
 
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -210,11 +210,46 @@ public class CppController {
 	    return ws;
 	}
 
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/getCppListByMaterialId", method=RequestMethod.GET)
+	public List<WSSelectObj>  getCppListByMaterialId(@RequestParam("materialId") Long materialId) {	   
+		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
+		
+		for(PCPp cpp:pCPpRepository.getByMaterialId(materialId))
+		 {
+			
+			Date d = cpp.getPlanFt();
+			String dd = "";
+			if(d!=null)
+			{
+				SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd"); 
+				dd= formatter.format(d);
+			}
+			String shift = "";
+			if(cpp.getPShiftPlanD()!=null)
+			{
+				shift = cpp.getPShiftPlanD().getShift();
+			}
+			String s =cpp.getPWo().getWoNo()+"_"+cpp.getMMachine().getCode()+"_"+dd +" "+shift;
+			
+			
+			WSSelectObj w = new WSSelectObj(cpp.getIdCPp(),s);
+			ws.add(w);
+		 }
+		
+	    return ws;
+	}
 
+	
+	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/hasCheckPlans", method=RequestMethod.GET)
 	public Valid hasCheckPlans(@RequestParam("cppId") Long cppId)  {
 		Valid v =  pCppService.hasCheckPlans(cppId);
 		return v;
 	}
+	
+	
 }

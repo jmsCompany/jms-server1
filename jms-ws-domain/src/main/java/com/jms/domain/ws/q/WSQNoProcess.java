@@ -1,13 +1,16 @@
 package com.jms.domain.ws.q;
 
+import java.util.Date;
 
 public class WSQNoProcess  implements java.io.Serializable{
-    private Long idNoProcess;
+ 
+	
+	private Long idNoProcess;
     private String ncpNo;
     private String lotNo;
     private Long idMaterial;
     private String material;
-    private Long qty;
+    private Float qty;
     private String default_;
     private Long idLocation;
     private String des;
@@ -23,7 +26,7 @@ public class WSQNoProcess  implements java.io.Serializable{
     private String idReject;
     private Float manHour;
     private String isDeviation;
-    private String deviationQty;
+    private Float deviationQty;
     private Long owner;
     private Long audit02;
     private Long countersign;
@@ -35,6 +38,34 @@ public class WSQNoProcess  implements java.io.Serializable{
     private Long approval03;
     private Long idQstatus;
     private Long idCompany;
+    
+    private Long idDeviation;
+    private String deviationNo;
+    
+    private Long idNcr;
+    private String ncrNo;
+    
+    
+    
+    private String realease1Name;
+    private String ownerName;
+    private String audit01Name;
+    private String audit02Name;
+    private String countersignName;
+    private String approval02Name;
+    private String responseName;
+    private String audit03Name;
+    private String approval03Name;
+    
+    
+    private Long idCpp;
+    private Long idUnplannedStop;
+    
+    
+    
+    private Date time;
+    
+    
 	public Long getIdNoProcess() {
 		return idNoProcess;
 	}
@@ -59,10 +90,10 @@ public class WSQNoProcess  implements java.io.Serializable{
 	public void setIdMaterial(Long idMaterial) {
 		this.idMaterial = idMaterial;
 	}
-	public Long getQty() {
+	public Float getQty() {
 		return qty;
 	}
-	public void setQty(Long qty) {
+	public void setQty(Float qty) {
 		this.qty = qty;
 	}
 	public String getDefault_() {
@@ -155,10 +186,10 @@ public class WSQNoProcess  implements java.io.Serializable{
 	public void setIsDeviation(String isDeviation) {
 		this.isDeviation = isDeviation;
 	}
-	public String getDeviationQty() {
+	public Float getDeviationQty() {
 		return deviationQty;
 	}
-	public void setDeviationQty(String deviationQty) {
+	public void setDeviationQty(Float deviationQty) {
 		this.deviationQty = deviationQty;
 	}
 	public Long getOwner() {
@@ -232,5 +263,101 @@ public class WSQNoProcess  implements java.io.Serializable{
 	}
 	public void setMaterial(String material) {
 		this.material = material;
+	}
+	public Long getIdDeviation() {
+		return idDeviation;
+	}
+	public void setIdDeviation(Long idDeviation) {
+		this.idDeviation = idDeviation;
+	}
+	public String getDeviationNo() {
+		return deviationNo;
+	}
+	public void setDeviationNo(String deviationNo) {
+		this.deviationNo = deviationNo;
+	}
+	public Long getIdNcr() {
+		return idNcr;
+	}
+	public void setIdNcr(Long idNcr) {
+		this.idNcr = idNcr;
+	}
+	public String getNcrNo() {
+		return ncrNo;
+	}
+	public void setNcrNo(String ncrNo) {
+		this.ncrNo = ncrNo;
+	}
+	public String getOwnerName() {
+		return ownerName;
+	}
+	public void setOwnerName(String ownerName) {
+		this.ownerName = ownerName;
+	}
+	public String getAudit02Name() {
+		return audit02Name;
+	}
+	public void setAudit02Name(String audit02Name) {
+		this.audit02Name = audit02Name;
+	}
+	public String getCountersignName() {
+		return countersignName;
+	}
+	public void setCountersignName(String countersignName) {
+		this.countersignName = countersignName;
+	}
+	public String getApproval02Name() {
+		return approval02Name;
+	}
+	public void setApproval02Name(String approval02Name) {
+		this.approval02Name = approval02Name;
+	}
+	public String getResponseName() {
+		return responseName;
+	}
+	public void setResponseName(String responseName) {
+		this.responseName = responseName;
+	}
+	public String getAudit03Name() {
+		return audit03Name;
+	}
+	public void setAudit03Name(String audit03Name) {
+		this.audit03Name = audit03Name;
+	}
+	public String getApproval03Name() {
+		return approval03Name;
+	}
+	public void setApproval03Name(String approval03Name) {
+		this.approval03Name = approval03Name;
+	}
+	public String getRealease1Name() {
+		return realease1Name;
+	}
+	public void setRealease1Name(String realease1Name) {
+		this.realease1Name = realease1Name;
+	}
+	public String getAudit01Name() {
+		return audit01Name;
+	}
+	public void setAudit01Name(String audit01Name) {
+		this.audit01Name = audit01Name;
+	}
+	public Long getIdCpp() {
+		return idCpp;
+	}
+	public void setIdCpp(Long idCpp) {
+		this.idCpp = idCpp;
+	}
+	public Long getIdUnplannedStop() {
+		return idUnplannedStop;
+	}
+	public void setIdUnplannedStop(Long idUnplannedStop) {
+		this.idUnplannedStop = idUnplannedStop;
+	}
+	public Date getTime() {
+		return time;
+	}
+	public void setTime(Date time) {
+		this.time = time;
 	}
 }

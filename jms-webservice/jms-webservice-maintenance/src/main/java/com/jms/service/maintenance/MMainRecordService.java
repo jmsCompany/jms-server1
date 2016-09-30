@@ -268,8 +268,6 @@ public class MMainRecordService {
 			
 			long type = w.getMMainCycle().getIdMainCycle(); //1日，2周，3月，4季度，5半年，6年
 			
-			
-			
 			int timeValue=getTimeValue(d,type);
 			
 			String user = "";
@@ -277,7 +275,7 @@ public class MMainRecordService {
 			Long idMainRecord = -1l;
 			String mainDate="";
 			
-			logger.debug("item: " + w.getIdMainItem() + ", timeValue: " + timeValue +", year: " + year);
+			//logger.debug("item: " + w.getIdMainItem() + ", timeValue: " + timeValue +", year: " + year);
 			MMainRecord  record = mMainRecordRepository.getByIdMainItemAndTimeValueAndYear(w.getIdMainItem(), (long)timeValue, (long)year);
 			if(record !=null)
 			{

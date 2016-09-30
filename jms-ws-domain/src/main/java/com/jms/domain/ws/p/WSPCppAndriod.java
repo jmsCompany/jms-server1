@@ -16,7 +16,7 @@ public class WSPCppAndriod implements java.io.Serializable{
 	private String op;//操作工人
 	private String shift;//班次
 	private String line;//产线
-	private Long drawNo;//产品图纸编号
+	private String drawNo;//产品图纸编号
 	private String drawVer;//产品图纸版本
 	private String route;//工艺
 	private String mNo;//机器编码
@@ -39,6 +39,9 @@ public class WSPCppAndriod implements java.io.Serializable{
 	
 	private Long checkInterval; //
 	private Long checkIntervalType; //1分钟，2小时，3天
+	
+	
+	private String routeDes;
 	
 	
 	private List<String> categories=new ArrayList<String>();//工种
@@ -80,10 +83,10 @@ public class WSPCppAndriod implements java.io.Serializable{
 	public void setLine(String line) {
 		this.line = line;
 	}
-	public Long getDrawNo() {
+	public String getDrawNo() {
 		return drawNo;
 	}
-	public void setDrawNo(Long drawNo) {
+	public void setDrawNo(String drawNo) {
 		this.drawNo = drawNo;
 	}
 	public String getDrawVer() {
@@ -195,6 +198,12 @@ public class WSPCppAndriod implements java.io.Serializable{
 	}
 	public void setActFt(Long actFt) {
 		this.actFt = actFt;
+	}
+	public String getRouteDes() {
+		return routeDes;
+	}
+	public void setRouteDes(String routeDes) {
+		this.routeDes = routeDes;
 	}
 	
    

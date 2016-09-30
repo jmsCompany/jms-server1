@@ -130,6 +130,10 @@ public class MRepairHistoryService {
 	
 		for(WSMHistoryPart p:wsMRepairHistory.getHistoryPartItems().values())
 		{
+			if(p.getMaterialId().equals(0l))
+			{
+				continue;
+			}
 			MHistoryPart h = new MHistoryPart();
 			h.setMRepairHistory(dbRepairHistory);
 			h.setQty(p.getQty());
@@ -146,7 +150,8 @@ public class MRepairHistoryService {
 	public Valid deleteWSMRepairHistory(Long idRepairHistory)
 	{
 		Valid valid = new Valid();
-		mHistoryPartRepository.delete(idRepairHistory);
+		mRepairHistoryRepository.delete(idRepairHistory);
+		//mHistoryPartRepository.delete(idRepairHistory);
 		valid.setValid(true);
 		return valid;
 	}
@@ -240,8 +245,12 @@ public class MRepairHistoryService {
 		{
 			WSMHistoryPart w = new WSMHistoryPart();
 			w.setIdHistoryPart(m.getIdHistoryPart());
-			w.setMaterial(m.getSMaterial().getPno()+"_"+m.getSMaterial().getRev()+"_"+m.getSMaterial().getDes());
-			w.setMaterialId(m.getSMaterial().getIdMaterial());
+			if(m.getSMaterial()!=null)
+			{
+				w.setMaterial(m.getSMaterial().getPno()+"_"+m.getSMaterial().getRev()+"_"+m.getSMaterial().getDes());
+				w.setMaterialId(m.getSMaterial().getIdMaterial());
+			}
+			
 			w.setQty(m.getQty());
 			w.setRepairHistoryId(m.getMRepairHistory().getIdRepairHistory());
 			historyPartItems.put("item"+i, w);

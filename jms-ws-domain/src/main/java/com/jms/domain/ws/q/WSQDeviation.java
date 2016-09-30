@@ -4,13 +4,18 @@ import java.util.Date;
 
 
 public class WSQDeviation  implements java.io.Serializable{
+	   
 	     private Long idDeviation;
 	     private Long idNoProcess;
 	     private String deviationNo;
 	     private Long idMaterial;
+	     private String material;
 	     private Long idRoutineD;
+	     private String routineD;
 	     private Long idCompanyCo;
+	     private String companyCo;
 	     private Long issuer;
+	 
 	     private Date date1;
 	     private String scopePeriodMaxqty;
 	     private String reason;
@@ -23,6 +28,14 @@ public class WSQDeviation  implements java.io.Serializable{
 	     private String otherFuction;
 	     private Long ofSign;
 	     private Long idDept;
+	     
+	     private String mfgSignName;
+	     private String aeSignName;
+	     private String qeSignName;
+	     private String ofSignName;
+	     
+	     private String issuerName;
+	
 		public Long getIdDeviation() {
 			return idDeviation;
 		}
@@ -136,5 +149,53 @@ public class WSQDeviation  implements java.io.Serializable{
 		}
 		public void setIdDept(Long idDept) {
 			this.idDept = idDept;
+		}
+		public String getIssuerName() {
+			return issuerName;
+		}
+		public void setIssuerName(String issuerName) {
+			this.issuerName = issuerName;
+		}
+		public String getCompanyCo() {
+			return companyCo;
+		}
+		public void setCompanyCo(String companyCo) {
+			this.companyCo = companyCo;
+		}
+		public String getRoutineD() {
+			return routineD;
+		}
+		public void setRoutineD(String routineD) {
+			this.routineD = routineD;
+		}
+		public String getMaterial() {
+			return material;
+		}
+		public void setMaterial(String material) {
+			this.material = material;
+		}
+		public String getMfgSignName() {
+			return mfgSignName;
+		}
+		public void setMfgSignName(String mfgSignName) {
+			this.mfgSignName = mfgSignName;
+		}
+		public String getAeSignName() {
+			return aeSignName;
+		}
+		public void setAeSignName(String aeSignName) {
+			this.aeSignName = aeSignName;
+		}
+		public String getQeSignName() {
+			return qeSignName;
+		}
+		public void setQeSignName(String qeSignName) {
+			this.qeSignName = qeSignName;
+		}
+		public String getOfSignName() {
+			return ofSignName;
+		}
+		public void setOfSignName(String ofSignName) {
+			this.ofSignName = ofSignName;
 		}
 }

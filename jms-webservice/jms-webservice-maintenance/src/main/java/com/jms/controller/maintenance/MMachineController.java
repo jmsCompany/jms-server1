@@ -40,7 +40,12 @@ public class MMachineController {
 	   return mMachineService.getMachinesObj();
 	}
 
-	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/m/getMachinesHasBinObjs", method=RequestMethod.GET)
+	public List<WSSelectObj> getMachinesHasBinObjs() throws Exception {	
+	   return mMachineService.getMachinesHasBinObjs();
+	}
+
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/m/getMachinesObjsByLineId", method=RequestMethod.GET)

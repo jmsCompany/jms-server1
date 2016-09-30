@@ -232,13 +232,21 @@ public class PStopsPlanService {
 	{
 	
 	
+		 //   logger.debug("actSt: " + wsPStopsPlan.getActSt() +", actFt: " + wsPStopsPlan.getActFt());
 			PStopsPlan dbPStopsPlan = (PStopsPlan)BeanUtil.shallowCopy(wsPStopsPlan, PStopsPlan.class, pStopsPlan);
 			dbPStopsPlan.setCompany(securityUtils.getCurrentDBUser().getCompany());
 			if(!wsPStopsPlan.getMachineId().equals(-1l))
 			{
 				dbPStopsPlan.setMMachine(mMachineRepository.findOne(wsPStopsPlan.getMachineId()));
 			}
-			
+			if(wsPStopsPlan.getActSt()==null)
+			{
+				dbPStopsPlan.setActSt(null);
+			}
+			if(wsPStopsPlan.getActFt()==null)
+			{
+				dbPStopsPlan.setActFt(null);
+			}
 			dbPStopsPlan.setPSubCode(pSubCodeRepository.findOne(wsPStopsPlan.getpSubCodeId()));
 			dbPStopsPlan.setPStatusDic(pStatusDicRepository.findOne(wsPStopsPlan.getStatusId()));
 			return dbPStopsPlan;

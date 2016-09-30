@@ -16,7 +16,7 @@ public class WSQG8d  implements java.io.Serializable{
     private Long idMaterial;
     private Long idRoutineD;
     private String organisationInfo;
-    private Character emergencyResponseAction;
+    private String emergencyResponseAction;
     private String effective1;
     private Date dateImplemented1;
     private String problemState;
@@ -42,6 +42,15 @@ public class WSQG8d  implements java.io.Serializable{
     private Long verification1;
     private Long verification2;
     private Long verification3;
+    
+    
+    private String material;
+    private String idLeaderName;
+    private String verification1Name;
+    private String verification2Name;
+    private String verification3Name;
+    private String reportedByName;
+    private String responsibilityName;
     
     
     private List<WSQG8dUser> users = new ArrayList<WSQG8dUser>(0);
@@ -99,10 +108,10 @@ public class WSQG8d  implements java.io.Serializable{
 	public void setOrganisationInfo(String organisationInfo) {
 		this.organisationInfo = organisationInfo;
 	}
-	public Character getEmergencyResponseAction() {
+	public String getEmergencyResponseAction() {
 		return emergencyResponseAction;
 	}
-	public void setEmergencyResponseAction(Character emergencyResponseAction) {
+	public void setEmergencyResponseAction(String emergencyResponseAction) {
 		this.emergencyResponseAction = emergencyResponseAction;
 	}
 	public String getEffective1() {
@@ -254,5 +263,47 @@ public class WSQG8d  implements java.io.Serializable{
 	}
 	public void setUsers(List<WSQG8dUser> users) {
 		this.users = users;
+	}
+	public String getMaterial() {
+		return material;
+	}
+	public void setMaterial(String material) {
+		this.material = material;
+	}
+	public String getIdLeaderName() {
+		return idLeaderName;
+	}
+	public void setIdLeaderName(String idLeaderName) {
+		this.idLeaderName = idLeaderName;
+	}
+	public String getVerification1Name() {
+		return verification1Name;
+	}
+	public void setVerification1Name(String verification1Name) {
+		this.verification1Name = verification1Name;
+	}
+	public String getVerification2Name() {
+		return verification2Name;
+	}
+	public void setVerification2Name(String verification2Name) {
+		this.verification2Name = verification2Name;
+	}
+	public String getVerification3Name() {
+		return verification3Name;
+	}
+	public void setVerification3Name(String verification3Name) {
+		this.verification3Name = verification3Name;
+	}
+	public String getReportedByName() {
+		return reportedByName;
+	}
+	public void setReportedByName(String reportedByName) {
+		this.reportedByName = reportedByName;
+	}
+	public String getResponsibilityName() {
+		return responsibilityName;
+	}
+	public void setResponsibilityName(String responsibilityName) {
+		this.responsibilityName = responsibilityName;
 	}
 }

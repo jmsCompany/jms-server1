@@ -25,7 +25,7 @@ public class PDraw  implements java.io.Serializable {
 
 
      private Long idDraw;
-     private Long drawNo;
+     private String drawNo;
      private String drawVer;
      private String drawAtt;
      private Set<PRoutine> PRoutines = new HashSet<PRoutine>(0);
@@ -33,7 +33,7 @@ public class PDraw  implements java.io.Serializable {
     public PDraw() {
     }
 
-    public PDraw(Long drawNo, String drawVer, String drawAtt, Set<PRoutine> PRoutines) {
+    public PDraw(String drawNo, String drawVer, String drawAtt, Set<PRoutine> PRoutines) {
        this.drawNo = drawNo;
        this.drawVer = drawVer;
        this.drawAtt = drawAtt;
@@ -51,12 +51,13 @@ public class PDraw  implements java.io.Serializable {
         this.idDraw = idDraw;
     }
     
-    @Column(name="draw_no")
-    public Long getDrawNo() {
+
+    @Column(name="draw_no", length=64)
+    public String getDrawNo() {
         return this.drawNo;
     }
     
-    public void setDrawNo(Long drawNo) {
+    public void setDrawNo(String drawNo) {
         this.drawNo = drawNo;
     }
     

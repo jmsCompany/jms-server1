@@ -6,7 +6,9 @@ public class WSQG8dUser  implements java.io.Serializable{
 
 	private Long idG8dUsers;
     private Long idG8d;
-    private Long idNcr;
+    private Long idUser;
+    private String name;
+    
 	public Long getIdG8dUsers() {
 		return idG8dUsers;
 	}
@@ -19,11 +21,18 @@ public class WSQG8dUser  implements java.io.Serializable{
 	public void setIdG8d(Long idG8d) {
 		this.idG8d = idG8d;
 	}
-	public Long getIdNcr() {
-		return idNcr;
+
+	public Long getIdUser() {
+		return idUser;
 	}
-	public void setIdNcr(Long idNcr) {
-		this.idNcr = idNcr;
+	public void setIdUser(Long idUser) {
+		this.idUser = idUser;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
   
 }

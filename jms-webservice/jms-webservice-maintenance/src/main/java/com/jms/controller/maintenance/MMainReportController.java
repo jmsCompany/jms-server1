@@ -275,8 +275,20 @@ public class MMainReportController {
 				breakdownTime = breakdownTime + (s.getOpFt().getTime() - s.getOpSt().getTime());
 			}
 
-			float mtbf = (float) (actTime - breakdownTime) / (float) i;
-			float mttr = (float) (breakdownTime) / (float) i;
+			float mtbf=0f;
+			float mttr = 0f;
+			if(i==0)
+			{
+				mtbf = (float) (actTime - breakdownTime);
+			    mttr = 0f;
+			}
+			else
+			{	 
+				mtbf = (float) (actTime - breakdownTime) / (float) i;
+			    mttr = (float) (breakdownTime) / (float) i;
+				
+			}
+		
 
 			w.setMtbfActual(mtbf);
 			w.setMttrActual(mttr);

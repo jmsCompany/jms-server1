@@ -20,8 +20,15 @@ public class SSpoMaterialRepositoryCustomImpl implements SSpoMaterialRepositoryC
 
 
 	@Override
-	public List<SPoMaterial> getCustomSpoMaterials(Long companyId, String q, String fromDay, String toDay) {
+	public List<SPoMaterial> getCustomSpoMaterials(Long companyId,Long type, String q, String fromDay, String toDay) {
 		 String query ="select s from SPoMaterial s where s.SPo.company.idCompany=" +companyId;
+		 
+		 if(type!=null)
+		 {
+			 
+			 query =query + " and s.SPo.SStatusDic.id = " + type +" ";  
+		 }
+		 
 		 if(q!=null)
 		 {
 			 q ="'%" + q + "%'";

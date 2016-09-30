@@ -250,7 +250,7 @@ public class UserController {
 					{
 						m.setRoute(cpp.getPRoutineD().getRouteNo());
 						//m.setRouteId(cpp.getPRoutineD().get);//图纸
-						
+						m.setRouteDes(cpp.getPRoutineD().getDes());
 						//附件
 						for(PRoutineDAtt pa:cpp.getPRoutineD().getPRoutineDAtts())
 						{
@@ -454,7 +454,7 @@ public class UserController {
 					{
 						m.setRoute(cpp.getPRoutineD().getRouteNo());
 						//m.setRouteId(cpp.getPRoutineD().get);//图纸
-						
+						m.setRouteDes(cpp.getPRoutineD().getDes());
 						//附件
 						for(PRoutineDAtt pa:cpp.getPRoutineD().getPRoutineDAtts())
 						{
@@ -579,6 +579,7 @@ public class UserController {
 					//产品图纸
 					if(cpp.getPRoutineD()!=null)
 					{
+					
 						if(cpp.getPRoutineD().getPRoutine()!=null)
 						{
 							if(cpp.getPRoutineD().getPRoutine().getPDraw()!=null)
@@ -631,6 +632,7 @@ public class UserController {
 					{
 						m.setRoute(cpp.getPRoutineD().getRouteNo());
 						//m.setRouteId(cpp.getPRoutineD().get);//图纸
+						m.setRouteDes(cpp.getPRoutineD().getDes());
 						
 						//附件
 						for(PRoutineDAtt pa:cpp.getPRoutineD().getPRoutineDAtts())
@@ -787,7 +789,7 @@ public class UserController {
 				break;
 			}
 			Groups equipmentGroup = groupRepository.findGroupByGroupNameAndCompany(SandVikRoleEnum.equipment.name(), securityUtils.getCurrentDBUser().getCompany().getIdCompany(),GroupTypeEnum.Role.name());
-		System.out.println("");
+		//System.out.println("");
 			
 			if(equipmentGroup!=null&&g.getAuthority().equals(""+equipmentGroup.getIdGroup()))
 			{

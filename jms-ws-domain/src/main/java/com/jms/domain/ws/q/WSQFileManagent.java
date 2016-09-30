@@ -1,18 +1,21 @@
 package com.jms.domain.ws.q;
 
+import java.util.Date;
+
 public class WSQFileManagent  implements java.io.Serializable{
 
-    private Long idFile;
+	private Long idFile;
     private Long idFileType;
     private String fileNo;
     private Long idRoutineD;
     private Long creator;
-    private String creationTime;
+    private Date creationTime;
     private String orgFilename;
     private String fileName;
     private Long uploadByUser;
     private Long idCompany;
     private Long idWo;
+    private Long idMaterial;
     
 	public Long getIdFile() {
 		return idFile;
@@ -44,10 +47,10 @@ public class WSQFileManagent  implements java.io.Serializable{
 	public void setCreator(Long creator) {
 		this.creator = creator;
 	}
-	public String getCreationTime() {
+	public Date getCreationTime() {
 		return creationTime;
 	}
-	public void setCreationTime(String creationTime) {
+	public void setCreationTime(Date creationTime) {
 		this.creationTime = creationTime;
 	}
 	public String getOrgFilename() {
@@ -79,5 +82,11 @@ public class WSQFileManagent  implements java.io.Serializable{
 	}
 	public void setIdWo(Long idWo) {
 		this.idWo = idWo;
+	}
+	public Long getIdMaterial() {
+		return idMaterial;
+	}
+	public void setIdMaterial(Long idMaterial) {
+		this.idMaterial = idMaterial;
 	}
 }

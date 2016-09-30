@@ -31,6 +31,12 @@ public class WSQCar  implements java.io.Serializable{
     private String actionPlan;
     private Long confirmor;
     private Date date2;
+    
+    
+    
+    private String ncrNo;
+    private String responseName;
+    private String confirmorName;
 	public Long getIdQNcr2() {
 		return idQNcr2;
 	}
@@ -192,5 +198,23 @@ public class WSQCar  implements java.io.Serializable{
 	}
 	public void setDate2(Date date2) {
 		this.date2 = date2;
+	}
+	public String getNcrNo() {
+		return ncrNo;
+	}
+	public void setNcrNo(String ncrNo) {
+		this.ncrNo = ncrNo;
+	}
+	public String getResponseName() {
+		return responseName;
+	}
+	public void setResponseName(String responseName) {
+		this.responseName = responseName;
+	}
+	public String getConfirmorName() {
+		return confirmorName;
+	}
+	public void setConfirmorName(String confirmorName) {
+		this.confirmorName = confirmorName;
 	}
 }

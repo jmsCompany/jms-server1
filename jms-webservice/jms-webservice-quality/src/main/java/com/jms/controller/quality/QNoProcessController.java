@@ -54,14 +54,13 @@ public class QNoProcessController {
 		
 	}
 	
+	
+	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/q/findQNoProcess", method=RequestMethod.GET)
 	public WSQNoProcess findQNoProcess(@RequestParam("qNoProcessId") Long qNoProcessId) throws Exception {
-		return qNoProcessService.findWSQNoProcess(qNoProcessId);
-		
+		return qNoProcessService.findWSQNoProcess(qNoProcessId);	
 	}
-	
-	
 	
 
 	@Transactional(readOnly = true)
@@ -86,11 +85,11 @@ public class QNoProcessController {
 				SMaterial material = sMaterialRepository.findOne(w.getIdMaterial());
 				sMaterial= material.getPno()+"_"+material.getRev()+"_"+material.getDes();
 			}
-			String lotNo = (w.getLotNo()==null)?"":w.getNcpNo();
+			String lotNo = (w.getLotNo()==null)?"":w.getLotNo();
 
 			String qty = (w.getQty()==null)?"":""+w.getQty();
 
-			String[] d = {""+w.getIdNoProcess(),sMaterial,lotNo,qty,""+w.getIdNoProcess()};
+			String[] d = {w.getNcpNo(),sMaterial,lotNo,qty,""+w.getIdNoProcess()};
 			lst.add(d);
 
 		}

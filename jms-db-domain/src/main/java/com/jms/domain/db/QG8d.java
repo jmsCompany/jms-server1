@@ -38,7 +38,7 @@ public class QG8d  implements java.io.Serializable {
      private Long idMaterial;
      private Long idRoutineD;
      private String organisationInfo;
-     private Character emergencyResponseAction;
+     private String emergencyResponseAction;
      private String effective1;
      private Date dateImplemented1;
      private String problemState;
@@ -69,7 +69,7 @@ public class QG8d  implements java.io.Serializable {
     public QG8d() {
     }
 
-    public QG8d(QNcr2 QNcr2, String g8dNo, String title, Date dateOpened, Date lastUpdated, Long idMaterial, Long idRoutineD, String organisationInfo, Character emergencyResponseAction, String effective1, Date dateImplemented1, String problemState, String interimContainmentAction, String effective2, Date dateImplemented2, String rootCause, String default_, String contribution, String chosenPermanentAction, String effective3, String implementedPermanentAction, Date dateImplemented3, String prevenAction, Date dateImplemented4, String systemicPrevent, Long responsibility, String tiRecognition, Date dateClosed, Long reportedBy, Long idLeader, Long verification1,Long verification2,Long verification3,Set<QG8dUsers> QG8dUserses) {
+    public QG8d(QNcr2 QNcr2, String g8dNo, String title, Date dateOpened, Date lastUpdated, Long idMaterial, Long idRoutineD, String organisationInfo, String emergencyResponseAction, String effective1, Date dateImplemented1, String problemState, String interimContainmentAction, String effective2, Date dateImplemented2, String rootCause, String default_, String contribution, String chosenPermanentAction, String effective3, String implementedPermanentAction, Date dateImplemented3, String prevenAction, Date dateImplemented4, String systemicPrevent, Long responsibility, String tiRecognition, Date dateClosed, Long reportedBy, Long idLeader, Long verification1,Long verification2,Long verification3,Set<QG8dUsers> QG8dUserses) {
        this.QNcr2 = QNcr2;
        this.g8dNo = g8dNo;
        this.title = title;
@@ -189,12 +189,12 @@ public class QG8d  implements java.io.Serializable {
         this.organisationInfo = organisationInfo;
     }
     
-    @Column(name="emergency_response_action", length=1)
-    public Character getEmergencyResponseAction() {
+    @Column(name="emergency_response_action", length=64)
+    public String getEmergencyResponseAction() {
         return this.emergencyResponseAction;
     }
     
-    public void setEmergencyResponseAction(Character emergencyResponseAction) {
+    public void setEmergencyResponseAction(String emergencyResponseAction) {
         this.emergencyResponseAction = emergencyResponseAction;
     }
     

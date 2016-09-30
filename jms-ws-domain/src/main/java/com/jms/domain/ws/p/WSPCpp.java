@@ -27,7 +27,7 @@ public class WSPCpp implements java.io.Serializable{
     
     
 	private String line;//产线
-	private Long drawNo;//产品图纸编号
+	private String drawNo;//产品图纸编号
 	private String drawVer;//产品图纸版本
 	
 	
@@ -36,6 +36,8 @@ public class WSPCpp implements java.io.Serializable{
     private Date actFt;
 	
     private Long actQty;
+    
+    private String routeDes;
 	public String getCompanyName() {
 		return companyName;
 	}
@@ -133,10 +135,10 @@ public class WSPCpp implements java.io.Serializable{
 	public void setLine(String line) {
 		this.line = line;
 	}
-	public Long getDrawNo() {
+	public String getDrawNo() {
 		return drawNo;
 	}
-	public void setDrawNo(Long drawNo) {
+	public void setDrawNo(String drawNo) {
 		this.drawNo = drawNo;
 	}
 	public String getDrawVer() {
@@ -174,6 +176,12 @@ public class WSPCpp implements java.io.Serializable{
 	}
 	public void setActQty(Long actQty) {
 		this.actQty = actQty;
+	}
+	public String getRouteDes() {
+		return routeDes;
+	}
+	public void setRouteDes(String routeDes) {
+		this.routeDes = routeDes;
 	}
    
 }

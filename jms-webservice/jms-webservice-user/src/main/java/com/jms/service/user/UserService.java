@@ -3,6 +3,7 @@ package com.jms.service.user;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -174,7 +175,20 @@ public class UserService extends IUserServiceImpl{
 		{
 			WSPCppOP w  = new WSPCppOP();
 			w.setIdCpp(cpp.getIdCPp());
-			w.setCpp(cpp.getPWo().getWoNo()+"_"+cpp.getMMachine().getCode());
+			Date d = cpp.getPlanFt();
+			String dd = "";
+			if(d!=null)
+			{
+				SimpleDateFormat formatter = new SimpleDateFormat ("MMdd"); 
+				
+				dd= formatter.format(d);
+			}
+			String shift = "";
+			if(cpp.getPShiftPlanD()!=null)
+			{
+				shift = cpp.getPShiftPlanD().getShift();
+			}
+			w.setCpp(dd +" "+shift+"_"+cpp.getPWo().getWoNo()+"_"+cpp.getMMachine().getCode());
 			PCppOpId id =new PCppOpId();
 			id.setIdCpp(cpp.getIdCPp());
 			id.setIdUser(securityUtils.getCurrentDBUser().getIdUser());

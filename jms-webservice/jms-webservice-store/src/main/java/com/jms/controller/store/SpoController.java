@@ -109,13 +109,14 @@ public class SpoController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/spoMaterialList", method=RequestMethod.POST)
 	public WSTableData  getSpoList( 
+			@RequestParam(required=false,value="type") Long type,
 			@RequestParam(required=false,value="q") String q,
 			@RequestParam(required=false,value="fromDay") String fromDay,
 			@RequestParam(required=false,value="toDay") String toDay,
 			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
-		List<SPoMaterial> spoMaterials = sSpoMaterialRepositoryCustom.getCustomSpoMaterials(companyId, q, fromDay, toDay);
+		List<SPoMaterial> spoMaterials = sSpoMaterialRepositoryCustom.getCustomSpoMaterials(companyId, type,q, fromDay, toDay);
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
 		if(spoMaterials.size()<start + length)

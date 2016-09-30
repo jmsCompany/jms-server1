@@ -68,6 +68,24 @@ public class MMachineService {
 		return wss;
 	}
 	
+	@Transactional(readOnly=true)
+	public List<WSSelectObj> getMachinesHasBinObjs()
+	{
+		List<WSSelectObj> wss = new ArrayList<WSSelectObj>();
+		for(MMachine m :mMachineRepository.getActiveMachinesByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
+		{
+			if(m.getSBin()!=null)
+			{
+				WSSelectObj ws = new WSSelectObj();
+				ws.setId(m.getIdMachine());
+				ws.setName(m.getCode()+"_" +m.getSpec());
+				wss.add(ws);
+			}
+		
+		}
+		return wss;
+	}
+	
 	
 	@Transactional(readOnly=true)
 	public List<WSSelectObj> getMachinesObjByLineId(Long lineId)

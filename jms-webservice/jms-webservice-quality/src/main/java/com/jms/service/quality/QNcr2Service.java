@@ -1,5 +1,8 @@
 package com.jms.service.quality;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jms.domain.db.QCar;
 import com.jms.domain.db.QCheckList;
+import com.jms.domain.db.QG8d;
 import com.jms.domain.db.QNcr2;
 import com.jms.domain.db.QNoProcess;
 import com.jms.domain.db.SMaterial;
+import com.jms.domain.db.SMtfNo;
+import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.q.WSQCheckList;
 import com.jms.domain.ws.q.WSQNcr2;
@@ -26,6 +32,8 @@ import com.jms.repositories.q.QNcr2Repository;
 import com.jms.repositories.q.QNoProcessRepository;
 import com.jms.repositories.q.QTesterRepository;
 import com.jms.repositories.s.SMaterialRepository;
+import com.jms.repositories.s.SMtfNoRepository;
+import com.jms.repositories.user.UsersRepository;
 import com.jms.web.security.SecurityUtils;
 
 
@@ -41,6 +49,13 @@ public class QNcr2Service {
 	@Autowired
 	private  SecurityUtils securityUtils;
 	
+	@Autowired
+	private UsersRepository usersRepository;
+
+	@Autowired
+	private SMaterialRepository sMaterialRepository;
+	@Autowired
+	private SMtfNoRepository sMtfNoRepository;
 
 	public WSQNcr2 saveWSQNcr2(WSQNcr2 wsQNcr2) throws Exception {
 		QNcr2 qNcr2;
@@ -55,6 +70,32 @@ public class QNcr2Service {
 		}
 		
 		QNcr2 dbQNcr2 = toDBQNcr2(wsQNcr2,qNcr2);
+		
+		
+		
+		if(wsQNcr2.getNcrNo()==null||wsQNcr2.getNcrNo().isEmpty())
+		{
+			  //不合格品编码
+		    SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 14l);
+		    if(smtfNo==null)
+		    {
+		    	smtfNo = new SMtfNo();
+		    	smtfNo.setCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+		    	smtfNo.setCurrentVal(0l);
+		    	smtfNo.setDes("抱怨单");
+		    	smtfNo.setPrefix("N");
+		    	smtfNo.setType(14l);
+		    	smtfNo = sMtfNoRepository.save(smtfNo);
+		    }
+		    long currentVal =smtfNo.getCurrentVal()+1;
+		    smtfNo.setCurrentVal(currentVal);
+		    sMtfNoRepository.save(smtfNo);
+		    SimpleDateFormat myFmt1=new SimpleDateFormat("yyyyMMdd"); 
+		    String dd = myFmt1.format(new Date());;
+		    String mtNo = smtfNo.getPrefix()+dd+"-"+String.format("%03d", currentVal);
+		    dbQNcr2.setNcrNo(mtNo);
+		}
+		
 		
 		qNcr2Repository.save(dbQNcr2);
 		wsQNcr2.setIdNcr(dbQNcr2.getIdNcr());
@@ -97,8 +138,46 @@ public class QNcr2Service {
 		if(qNcr2.getQNoProcess()!=null)
 		{
 			pc.setIdQNoProcess(qNcr2.getQNoProcess().getIdNoProcess());
+			pc.setIdMaterial(qNcr2.getQNoProcess().getIdMaterial());
+			
 		}
 		
+		if(!qNcr2.getQCars().isEmpty())
+		{
+			QCar c = qNcr2.getQCars().iterator().next();
+			pc.setIdCar(c.getIdCar());
+			//pc.setCar(c.getCarNo());
+			pc.setCarNo(c.getCarNo());
+		}
+		if(!qNcr2.getQG8ds().isEmpty())
+		{
+			QG8d g = qNcr2.getQG8ds().iterator().next();
+			pc.setIdQ8d(g.getIdG8d());
+			pc.setQ8dNo(g.getG8dNo());
+		}
+		
+		if(qNcr2.getWho()!=null)
+		{
+			Users u = usersRepository.findOne(qNcr2.getWho());
+			String who = (u.getName()==null)?""+u.getIdUser():u.getName();
+			pc.setWhoName(who);
+		}
+		
+		if(qNcr2.getRespnose()!=null)
+		{
+			Users u = usersRepository.findOne(qNcr2.getRespnose());
+			String response = (u.getName()==null)?""+u.getIdUser():u.getName();
+			pc.setRespnoseName(response);
+		}
+		if(qNcr2.getQNoProcess()!=null)
+		{
+			if(qNcr2.getQNoProcess().getIdMaterial()!=null)
+			{
+				SMaterial material = sMaterialRepository.findOne(qNcr2.getQNoProcess().getIdMaterial());
+				pc.setMaterial(material.getPno()+"_"+material.getRev()+"_"+material.getDes());
+			}
+		}
+	
 		return pc;
 	}
 	

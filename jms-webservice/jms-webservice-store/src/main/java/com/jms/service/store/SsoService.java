@@ -1,29 +1,19 @@
 package com.jms.service.store;
 
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMtfNo;
 import com.jms.domain.db.SPic;
-import com.jms.domain.db.SPo;
-import com.jms.domain.db.SPoMaterial;
 import com.jms.domain.db.SSo;
 import com.jms.domain.ws.Valid;
-import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.s.WSMaterial;
 import com.jms.domain.ws.s.WSSSoRemark;
-import com.jms.domain.ws.s.WSSpo;
-import com.jms.domain.ws.s.WSSpoMaterial;
-import com.jms.domain.ws.s.WSSpoRemark;
 import com.jms.domain.ws.s.WSSso;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.s.SCompanyCoRepository;
@@ -32,7 +22,6 @@ import com.jms.repositories.s.SMaterialRepository;
 import com.jms.repositories.s.SMtfNoRepository;
 import com.jms.repositories.s.SSoRepository;
 import com.jms.repositories.s.SSpoMaterialRepository;
-import com.jms.repositories.s.SSpoRepository;
 import com.jms.repositories.s.SStatusDicRepository;
 import com.jms.repositories.s.SStermDicRepository;
 import com.jms.repositories.s.SStkTypeDicRepository;

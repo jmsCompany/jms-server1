@@ -36,6 +36,12 @@ public class WSMaterial {
     private Long fileId;
     private String fileName;
     
+    
+    
+    
+    private Long checkCycle;
+    private Long cycleUnit;
+    
 	public Long getIdMaterial() {
 		return idMaterial;
 	}
@@ -204,6 +210,18 @@ public class WSMaterial {
 	}
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+	public Long getCheckCycle() {
+		return checkCycle;
+	}
+	public void setCheckCycle(Long checkCycle) {
+		this.checkCycle = checkCycle;
+	}
+	public Long getCycleUnit() {
+		return cycleUnit;
+	}
+	public void setCycleUnit(Long cycleUnit) {
+		this.cycleUnit = cycleUnit;
 	}
 
 }

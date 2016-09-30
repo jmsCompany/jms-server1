@@ -6,48 +6,34 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.jms.domain.db.PActualSetup;
 import com.jms.domain.db.PBom;
 import com.jms.domain.db.PCPp;
-import com.jms.domain.db.PCheckTime;
 import com.jms.domain.db.PDraw;
 import com.jms.domain.db.PMr;
-import com.jms.domain.db.PRoutineD;
 import com.jms.domain.db.PStopsPlan;
 import com.jms.domain.db.PUnplannedStops;
-import com.jms.domain.db.PWip;
 import com.jms.domain.db.PWo;
 import com.jms.domain.db.SInventory;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMtfNo;
 import com.jms.domain.ws.Valid;
-import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.p.WSOEE;
-import com.jms.domain.ws.p.WSPCheckTime;
 import com.jms.domain.ws.p.WSPCpp;
 import com.jms.domain.ws.p.WSPMr;
-import com.jms.domain.ws.p.WSPRoutineD;
-import com.jms.domain.ws.p.WSPWip;
 import com.jms.domain.ws.p.WSPlannedMaterialSending;
 import com.jms.domain.ws.p.WSPlannedMaterialSendingItem;
-import com.jms.domain.ws.s.WSMaterialQty;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.m.MMachineRepository;
 import com.jms.repositories.p.PActualSetupRepository;
 import com.jms.repositories.p.PBomRepository;
 import com.jms.repositories.p.PCPpRepository;
-import com.jms.repositories.p.PCheckTimeRepository;
 import com.jms.repositories.p.PMrRepository;
 import com.jms.repositories.p.PPUTimeRepository;
 import com.jms.repositories.p.PRoutineDRepository;
@@ -55,7 +41,6 @@ import com.jms.repositories.p.PShiftPlanDRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PStopsPlanRepository;
 import com.jms.repositories.p.PUnplannedStopsRepository;
-import com.jms.repositories.p.PWipRepository;
 import com.jms.repositories.p.PWoRepository;
 import com.jms.repositories.s.SInventoryRepository;
 import com.jms.repositories.s.SMtfNoRepository;
@@ -68,47 +53,21 @@ public class PCppService {
 
 	private static final Logger logger = LogManager.getLogger(PCppService.class
 			.getCanonicalName());
-	@Autowired
-	private PCPpRepository pCPpRepository;
-	@Autowired
-	private  PPUTimeRepository pPUTimeRepository;
-	
-	
-	@Autowired 
-	private CompanyRepository companyRepository;
-	
-	@Autowired 
-	private PStatusDicRepository pStatusDicRepository;
-	@Autowired 
-	private MMachineRepository  mMachineRepository;
-	
-	@Autowired 
-	private PWoRepository pWoRepository;
-	@Autowired
-	private SecurityUtils securityUtils;
-	
-	@Autowired
-	private PRoutineDRepository pRoutineDRepository;
-	@Autowired
-	private PShiftPlanDRepository pShiftPlanDRepository;
-	@Autowired
-	private  UsersRepository usersRepository;
-	@Autowired
-	private  PBomRepository pBomRepository;
-	
-	@Autowired
-	private  PMrRepository pMrRepository;
-	
-	@Autowired
-	private SMtfNoRepository sMtfNoRepository;
-	
-	@Autowired
-	private SInventoryRepository sInventoryRepository;
+	@Autowired private PCPpRepository pCPpRepository;
+	@Autowired private CompanyRepository companyRepository;
+	@Autowired private MMachineRepository  mMachineRepository;
+	@Autowired private PWoRepository pWoRepository;
+	@Autowired private SecurityUtils securityUtils;
+	@Autowired private PRoutineDRepository pRoutineDRepository;
+	@Autowired private PShiftPlanDRepository pShiftPlanDRepository;
+	@Autowired private UsersRepository usersRepository;
+	@Autowired private PBomRepository pBomRepository;
+	@Autowired private PMrRepository pMrRepository;
+	@Autowired private SMtfNoRepository sMtfNoRepository;
+	@Autowired private SInventoryRepository sInventoryRepository;
 	@Autowired private PActualSetupRepository pActualSetupRepository;
-	
-	@Autowired private  PStopsPlanRepository pStopsPlanRepository;
-	
-	@Autowired private  PUnplannedStopsRepository pUnplannedStopsRepository;
+	@Autowired private PStopsPlanRepository pStopsPlanRepository;
+	@Autowired private PUnplannedStopsRepository pUnplannedStopsRepository;
 
 		
 	@Transactional(readOnly=false)
@@ -121,8 +80,6 @@ public class PCppService {
 		else
 		{
 			pCPp = new PCPp();
-			
-	
 		}
 		PCPp dbPCPp= toDBPCPp(wsPCpp,pCPp);
 		dbPCPp = pCPpRepository.save(dbPCPp);
@@ -164,9 +121,9 @@ public class PCppService {
 		Valid valid = new Valid();
 		pCPpRepository.delete(idPcpp);
 		valid.setValid(true);
-		
 		return valid;
 	}
+	
 	
 	
 	@Transactional(readOnly=false)
@@ -188,10 +145,10 @@ public class PCppService {
 		return v;
 	}
 	
+	
 	@Transactional(readOnly=true)
 	public Valid hasCheckPlans(Long idCpp) {
-		Valid v = new Valid();
-		
+		Valid v = new Valid();	
 		PCPp dbPCPp = pCPpRepository.findOne(idCpp);
 		if(dbPCPp.getPCheckPlans().isEmpty())
 		{
@@ -321,6 +278,7 @@ public class PCppService {
 	    {
 	    	pc.setpRoutineD(pCPp.getPRoutineD().getRouteNo());
 	    	pc.setpRoutineDId(pCPp.getPRoutineD().getIdRoutineD());
+	    	pc.setRouteDes(pCPp.getPRoutineD().getDes());
 	    	PDraw draw = pCPp.getPRoutineD().getPRoutine().getPDraw();
 	    	if(draw!=null)
 	    	{
@@ -368,6 +326,10 @@ public class PCppService {
 
 		for(PCPp cpp:cpps)
 		{
+			if(cpp.getPRoutineD()==null)
+			{
+				continue;
+			}
 			if(cpp.getPlanSt()==null||cpp.getPlanFt()==null||cpp.getActSt()==null||cpp.getActFt()==null)
 			{
 				continue;
@@ -390,12 +352,15 @@ public class PCppService {
 			}
 			if(loadingTime==0l)
 			{
-				loadingTime = (long)(cpp.getPRoutineD().getStdWtSetup()*60*60*1000);
+				long setupTime = (cpp.getPRoutineD().getStdWtSetup()==null)?0l:cpp.getPRoutineD().getStdWtSetup().longValue();
+				//System.out.println("std setup: " +cpp.getPRoutineD().getStdWtSetup());
+				loadingTime = (long)(setupTime*60*60*1000);
 			}
 			w.setLoadingTime(loadingTime);
 			w.setMachine(cpp.getMMachine().getCode());
 			w.setMachineId(cpp.getMMachine().getIdMachine());
-	        long machineTime =(long)(cpp.getPRoutineD().getStdWtMachine()*60*60*1000);
+			long maTime = (cpp.getPRoutineD().getStdWtMachine()==null)?0l:cpp.getPRoutineD().getStdWtMachine().longValue();
+	        long machineTime =(long)(maTime*60*60*1000);
 			w.setMachineTime(machineTime);  //理论加工时长.设备公司
 
 			w.setPassedQty(actQty); //to be modified
@@ -451,11 +416,19 @@ public class PCppService {
             float timeEff = (float)pt/(float)at;
             w.setTimeEff(timeEff);
            	
+          //  logger.debug(" actQty: " +actQty +", machineTime: " + machineTime +", pt: " + pt );
             
+         
             float machineEff =(float)(actQty*machineTime)/(float)pt; //性能开动率
+            if(pt==0l)
+            {
+            	machineEff=1f;
+            }
             w.setMachineEff(machineEff);
 		
             float oee = timeEff*machineEff*passedEff;
+            
+            //logger.debug(" timeEff: " +timeEff +", machineEff: " + machineEff +", passedEff: " + passedEff );
 			w.setOee(oee);
        
 			ws.add(w);
@@ -490,6 +463,10 @@ public class PCppService {
 		
 		for(PCPp cpp:cpps)
 		{
+			if(cpp.getPRoutineD()==null)
+			{
+				continue;
+			}
 			if(cpp.getPlanSt()==null||cpp.getPlanFt()==null||cpp.getActSt()==null||cpp.getActFt()==null)
 			{
 				continue;
@@ -522,6 +499,38 @@ public class PCppService {
 			long actT = w.getActTime() + cpp.getActFt().getTime()-cpp.getActSt().getTime();
 			w.setActTime(actT);
 			
+			
+			Long planStopTime =0l;
+			for(PStopsPlan p:pStopsPlanRepository.getPStopsPlansByMachineIdAndDuration(cpp.getMMachine().getIdMachine(), cpp.getActSt(), cpp.getActFt()))
+			{
+				if(p.getActFt()!=null)
+				{
+					planStopTime = planStopTime + p.getPlanFt().getTime()-p.getActSt().getTime();
+				}
+				else
+				{
+					planStopTime = planStopTime + cpp.getPlanFt().getTime()-p.getActSt().getTime();
+				}
+				
+			}
+			w.setPlanStopTime(planStopTime);
+			
+			
+			Long unplannnedStopTime =0l;
+			
+			for(PUnplannedStops p:pUnplannedStopsRepository.getByMachineIdAndDuration(machineId, cpp.getActSt(), cpp.getActFt()))
+			{
+				if(p.getEqFt()!=null)
+				{
+					unplannnedStopTime = unplannnedStopTime + p.getEqFt().getTime()-p.getOpSt().getTime();
+				}
+				else
+				{
+					unplannnedStopTime = unplannnedStopTime + cpp.getActFt().getTime()-p.getOpSt().getTime();
+				}
+			}
+			
+			w.setUnPlannedStopTime(unplannnedStopTime);
 
             float oee = (float)plant/(float)actT;
 			w.setOee(oee);
@@ -560,12 +569,12 @@ public class PCppService {
 //			 logger.debug("idMachine: " + idMachine +", machine: " + machine);
 			 if(cpp.getMMachine().getSBin()==null)
 			 {
-				 logger.debug("此机台无位置设定，不能发料！" +"idMachine: " + idMachine +", machine: " + machine);
+				// logger.debug("此机台无位置设定，不能发料！" +"idMachine: " + idMachine +", machine: " + machine);
 				 continue;
 			 }
 			 if(!cpp.getMMachine().getSBin().getSStk().getId().equals(toStkId))
 			 {
-				 logger.debug("skip this machine, " +"idMachine: " + idMachine +", machine: " + machine);
+				 //logger.debug("skip this machine, " +"idMachine: " + idMachine +", machine: " + machine);
 				 continue;
 			 }
 			 PBom pBom = pBomRepository.findProductByMaterialId(product.getIdMaterial());
@@ -663,7 +672,7 @@ public class PCppService {
 //						}
 //						
 //					}
-				//	w.setQtyDelivered(p.getq);
+//	                w.setQtyDelivered(p.getq);
 				    ws.add(w);
 				   
 				}

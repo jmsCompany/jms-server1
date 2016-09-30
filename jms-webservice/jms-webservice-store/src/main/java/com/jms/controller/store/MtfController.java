@@ -1,5 +1,6 @@
 package com.jms.controller.store;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -112,6 +113,8 @@ public class MtfController {
 	public Valid updateMtfStatus(@RequestBody WSSMtf wsSMtf) {
 		return mtfService.updateMtfStatus(wsSMtf);
 	}
+	
+	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/smtfMaterialList", method=RequestMethod.POST)
 	public WSTableData  getSmtfMaterialList(@RequestParam Long typeId, @RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
@@ -137,7 +140,7 @@ public class MtfController {
 		    	for (int i = start; i < end; i++) {
 					WSSMtfMaterial w = wsSMtfMaterials.get(i);
 					String status =(w.getStatus()==null)?"":""+w.getStatus();
-					String[] d = {w.getMtNo(),""+w.getCodePo(),w.getCodeCo(),w.getDeliveryDate().toString(),w.getCreationTime().toString(),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),status,""+w.getIdMt()};
+					String[] d = {w.getMtNo(),""+w.getCodePo(),w.getCodeCo(),formatDate(w.getDeliveryDate()),formatDate(w.getCreationTime()),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),status,""+w.getIdMt()};
 					lst.add(d);
 					//System.out.println(d[10]);
 
@@ -148,7 +151,7 @@ public class MtfController {
 		    {
 		    	for (int i = start; i < end; i++) {
 					WSSMtfMaterial w = wsSMtfMaterials.get(i);
-					String[] d = {w.getEmpMtUser(),w.getCreationTime().toString(),w.getMtNo(),w.getCodeCo(),w.getCodePo(),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),w.getLotNo(),""+w.getQty(),""+w.getIdMt()};
+					String[] d = {w.getEmpMtUser(),formatDate(w.getCreationTime()),w.getMtNo(),w.getCodeCo(),w.getCodePo(),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),w.getLotNo(),""+w.getQty(),""+w.getIdMt()};
 					lst.add(d);
 
 				}
@@ -159,7 +162,7 @@ public class MtfController {
 		    	for (int i = start; i < end; i++) {
 					WSSMtfMaterial w = wsSMtfMaterials.get(i);
 					
-					String[] d = {w.getMtNo(),w.getSoCode(),w.getCodeCo(),w.getDeliveryDate().toString(),w.getCreationTime().toString(),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),""+w.getIdMt()};
+					String[] d = {w.getMtNo(),w.getSoCode(),w.getCodeCo(),formatDate(w.getDeliveryDate()),formatDate(w.getCreationTime()),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),""+w.getIdMt()};
 			    	//System.out.println("mtNo ...... "+ w.getMtNo());
 					lst.add(d);
 				}
@@ -170,7 +173,7 @@ public class MtfController {
 		    	for (int i = start; i < end; i++) {
 					WSSMtfMaterial w = wsSMtfMaterials.get(i);
 					
-					String[] d = {w.getMtNo(),w.getSoCode(),w.getCodeCo(),w.getDeliveryDate().toString(),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),w.getRecMtUser(),w.getCreationTime().toString(),""+w.getIdMt()};
+					String[] d = {w.getMtNo(),w.getSoCode(),w.getCodeCo(),formatDate(w.getDeliveryDate()),w.getMaterialPno(),w.getMaterialRev(),w.getMaterialDes(),""+w.getQty(),w.getRecMtUser(),formatDate(w.getCreationTime()),""+w.getIdMt()};
 			    	//System.out.println("mtNo ...... "+ w.getMtNo());
 					lst.add(d);
 				}
@@ -188,7 +191,13 @@ public class MtfController {
 	    return t;
 	}
 	
-	
+	private String formatDate(Date d)
+	{
+		if(d==null)
+			return "";
+		SimpleDateFormat myFmt1=new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
+		return myFmt1.format(d);
+	}
 	
 	
 	@Transactional(readOnly = true)
@@ -242,7 +251,7 @@ public class MtfController {
 			}
 
 			
-			String[] d = {mtNo,w.getType(),material,lotNo,fromBin,toBin,""+w.getQty(),w.getEmpMtUser(),w.getRecMtUser(),w.getCreationTime().toString(),""+w.getIdMt()};
+			String[] d = {mtNo,w.getType(),material,lotNo,fromBin,toBin,""+w.getQty(),w.getEmpMtUser(),w.getRecMtUser(),formatDate(w.getCreationTime()),""+w.getIdMt()};
 			lst.add(d);
 		}
 
@@ -311,14 +320,31 @@ public class MtfController {
 				toBin="";
 			}
 
-			String empUser =(w.getSMtf().getUsersByEmpMt()==null)?"":w.getSMtf().getUsersByEmpMt().getUsername();
+			String empUser =(w.getSMtf().getUsersByEmpMt()==null)?"":w.getSMtf().getUsersByEmpMt().getName();
 			if(empUser==null)
 				empUser="";
 			String rectUser =(w.getSMtf().getUsersByRecMt()==null)?"":w.getSMtf().getUsersByRecMt().getUsername();
 			if(rectUser==null)
 				rectUser="";
-			
-			String[] d = {mtNo,w.getSMtf().getSMtfTypeDic().getName(),material,lotNo,fromBin,toBin,""+w.getQty(),empUser,rectUser,w.getSMtf().getCreationTime().toString(),""+w.getSMtf().getIdMt()};
+			Date date = w.getSMtf().getCreationTime();
+			String sDate = "";
+			if(date!=null)
+			{
+				SimpleDateFormat myFmt1=new SimpleDateFormat("yyyy-MM-dd"); 
+				sDate = myFmt1.format(date);;
+			}
+			String[] d = {
+					mtNo,
+					w.getSMtf().getSMtfTypeDic().getName(),
+					material,
+					lotNo,
+					fromBin,
+					toBin,
+					""+w.getQty(),
+					empUser,
+					sDate,
+					""+w.getSMtf().getIdMt()
+					};
 			lst.add(d);
 		}
 

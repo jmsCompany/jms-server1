@@ -60,6 +60,12 @@ public interface PCPpRepository extends JpaRepository<PCPp, Long>{
     
     @Query("select p from PCPp p where p.company.idCompany=?1 and p.actSt>?2 and p.actFt<?3 and  p.MMachine.idMachine=?4")
   	public List<PCPp> getActualByFromDateToDateAndMachineId(Long companyId,Date st,Date ft,Long machineId);
+    
+    
+    
+    @Query("select p from PCPp p where p.PWo.SSo.SMaterial.idMaterial=?1 order by p.idCPp desc")
+  	public List<PCPp> getByMaterialId(Long materialId);
+ 
    
     
 }

@@ -15,6 +15,7 @@ import com.jms.domain.db.SPoMaterial;
 public interface SSpoMaterialRepositoryCustom {
 	
 	public List<SPoMaterial> getCustomSpoMaterials(Long companyId,
+			Long type,
 			String q,
 			String fromDay,
 			String toDay);

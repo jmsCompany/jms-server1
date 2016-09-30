@@ -14,7 +14,7 @@ public class WSPRoutine {
 	private String materialDes;
 	private String materialRev;
 	private Long drawId;
-	private Long drawNo;
+	private String drawNo;
 	private String drawVer;
 	private String drawAtt;
 	private Long lineId;
@@ -83,11 +83,11 @@ public class WSPRoutine {
 		this.drawId = drawId;
 	}
 
-	public Long getDrawNo() {
+	public String getDrawNo() {
 		return drawNo;
 	}
 
-	public void setDrawNo(Long drawNo) {
+	public void setDrawNo(String drawNo) {
 		this.drawNo = drawNo;
 	}
 

@@ -96,6 +96,9 @@ public class Config {
      
      //保养类型
      public static final String[] mresults = {"是","否"};
+     
+     
+     public static final String[] qFileTypes = {"制程检验Pulley","制程检验Roller","终检Pulley","终检Roller","来料检验","其它","技术文件","Procedure"};
 
 
 }

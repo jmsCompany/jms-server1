@@ -6,12 +6,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.jms.domain.db.QG8d;
 
 
 
 public class WSQNcr2  implements java.io.Serializable{
-	     private Long idNcr;
+	   
+	private Long idNcr;
 	     private Long idQNoProcess;
 	     private String ncrNo;
 	     private Long who;
@@ -31,9 +31,24 @@ public class WSQNcr2  implements java.io.Serializable{
 	     private Date deadline;
 	     private Long respnose;
 	     private Date date;
+	     
+	     private Long idMaterial;
+	     
+	     private String whoName;
+	     private String respnoseName;
+	     
+	     private Long idCar;
+	     private Long idQ8d;
+	    
+	     private String carNo;
+	     private String q8dNo;
+	     
+	     private String material;
+	     
 	     private List<WSQCar> cars = new ArrayList<WSQCar>(0);
 	     private List<WSQG8d> g8ds = new ArrayList<WSQG8d>(0);
-		public Long getIdNcr() {
+	
+	     public Long getIdNcr() {
 			return idNcr;
 		}
 		public void setIdNcr(Long idNcr) {
@@ -164,5 +179,53 @@ public class WSQNcr2  implements java.io.Serializable{
 		}
 		public void setG8ds(List<WSQG8d> g8ds) {
 			this.g8ds = g8ds;
+		}
+		public Long getIdMaterial() {
+			return idMaterial;
+		}
+		public void setIdMaterial(Long idMaterial) {
+			this.idMaterial = idMaterial;
+		}
+		public String getWhoName() {
+			return whoName;
+		}
+		public void setWhoName(String whoName) {
+			this.whoName = whoName;
+		}
+		public String getRespnoseName() {
+			return respnoseName;
+		}
+		public void setRespnoseName(String respnoseName) {
+			this.respnoseName = respnoseName;
+		}
+		public Long getIdCar() {
+			return idCar;
+		}
+		public void setIdCar(Long idCar) {
+			this.idCar = idCar;
+		}
+		public Long getIdQ8d() {
+			return idQ8d;
+		}
+		public void setIdQ8d(Long idQ8d) {
+			this.idQ8d = idQ8d;
+		}
+		public String getCarNo() {
+			return carNo;
+		}
+		public void setCarNo(String carNo) {
+			this.carNo = carNo;
+		}
+		public String getQ8dNo() {
+			return q8dNo;
+		}
+		public void setQ8dNo(String q8dNo) {
+			this.q8dNo = q8dNo;
+		}
+		public String getMaterial() {
+			return material;
+		}
+		public void setMaterial(String material) {
+			this.material = material;
 		}
 }

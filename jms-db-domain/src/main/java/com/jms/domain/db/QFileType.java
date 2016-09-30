@@ -51,7 +51,7 @@ public class QFileType  implements java.io.Serializable {
         this.idFileType = idFileType;
     }
     
-    @Column(name="type", length=20)
+    @Column(name="type", length=256)
     public String getType() {
         return this.type;
     }
