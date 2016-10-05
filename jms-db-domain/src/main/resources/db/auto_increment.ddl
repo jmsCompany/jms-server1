@@ -414,4 +414,14 @@ modify `id_tester` int(11) not null auto_increment;
 alter table `q_un_roller_d` 
 modify `id_un_roller_d` int(11) not null auto_increment;
 
+
+
+alter table `o_calendar` 
+modify `id_calendar` int(11) not null auto_increment;
+
+
+alter table `o_overtime` 
+modify `id_overtime` int(11) not null auto_increment;
+
+
 set foreign_key_checks =1;
