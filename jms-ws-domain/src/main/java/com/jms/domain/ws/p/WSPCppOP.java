@@ -20,7 +20,7 @@ public class WSPCppOP implements java.io.Serializable{
 	}
 	public void setCpp(String cpp) {
 		this.cpp = cpp;
-	}
+	};
 	public boolean isChecked() {
 		return checked;
 	}

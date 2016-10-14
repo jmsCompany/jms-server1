@@ -188,6 +188,27 @@ public class RoutineService {
 		return valid;
 	}
 	
+	@Transactional(readOnly=false)
+	public Valid deletePRoutineD(Long idPRoutineD)
+	{
+		Valid valid = new Valid();
+		PRoutineD rd = pRoutineDRepository.findOne(idPRoutineD);
+		if(rd!=null)
+		{
+
+		    	if(rd.getPCPps()!=null&&!rd.getPCPps().isEmpty())
+		    	{
+		    		valid.setValid(false);
+		    		return valid;
+		    	}
+		
+		}
+		pRoutineDRepository.delete(idPRoutineD);
+		valid.setValid(true);
+		
+		return valid;
+	}
+	
 	
 	@Transactional(readOnly=true) 
 	public WSPRoutine findWSPRoutine(Long idPRoutine) throws Exception

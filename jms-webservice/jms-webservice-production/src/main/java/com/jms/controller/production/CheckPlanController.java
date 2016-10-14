@@ -1,6 +1,7 @@
 package com.jms.controller.production;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,7 @@ public class CheckPlanController {
 			end =pCheckPlans.size();
 		else
 			end =start + length;
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
 		for (int i = start; i < end; i++) {
 			PCheckPlan w = pCheckPlans.get(i);
 			
@@ -82,12 +84,21 @@ public class CheckPlanController {
 			{
 				routinNo=(w.getPCPp().getPRoutineD().getRouteNo()==null)?"":w.getPCPp().getPRoutineD().getRouteNo();
 			}
+			
+			
+			String checkTime = "";
+			if(w.getCheckTime()!=null)
+			{
+				checkTime= formatter.format(w.getCheckTime());
+			}
+			
+			
 			String shift =(w.getPCPp().getPShiftPlanD().getShift()==null)?"":w.getPCPp().getPShiftPlanD().getShift();
 			String code =(w.getPCPp().getMMachine().getCode()==null)?"":w.getPCPp().getMMachine().getCode();
 			String name = (w.getPCPp().getUsers().getName()==null)?"":w.getPCPp().getUsers().getName();
 			
 			String[] d = {woNo,routinNo,material,shift,code,name,plancheckTime
-					,""+w.getToBeQty(),w.getCheckTime().toString(),""+w.getFinQty(),""+w.getToBeQty()};
+					,""+w.getToBeQty(),checkTime,""+w.getFinQty(),""+w.getToBeQty()};
 			lst.add(d);
 
 		}

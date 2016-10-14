@@ -18,7 +18,7 @@ public class WSPRoutineD {
     private Float stdWtLabor;
     private Float stdWtMachine;
     private Float stdWtSetup;
-    
+    private Long isFinished;
 	public Long getIdRoutineD() {
 		return idRoutineD;
 	}
@@ -97,5 +97,11 @@ public class WSPRoutineD {
 	}
 	public void setStdWtSetup(Float stdWtSetup) {
 		this.stdWtSetup = stdWtSetup;
+	}
+	public Long getIsFinished() {
+		return isFinished;
+	}
+	public void setIsFinished(Long isFinished) {
+		this.isFinished = isFinished;
 	}
 }

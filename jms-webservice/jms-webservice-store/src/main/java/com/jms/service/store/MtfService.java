@@ -613,7 +613,7 @@ public class MtfService {
 //					{
 //						continue;
 //					}
-					if(wm.getQty().equals(0l))
+					if(wm.getQty()==null||wm.getQty().equals(0l))
 					{
 						continue;
 					}

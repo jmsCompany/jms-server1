@@ -1,160 +1,45 @@
-[2016-09-30 09:18:31.488] log4j2 - 10308  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 10308 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-30 09:18:31.503] log4j2 - 10308 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-30 09:18:51.315] log4j2 - 10308 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-30 09:18:51.317] log4j2 - 10308 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-30 09:18:58.151] log4j2 - 10308  INFO [main] --- Application: Started Application in 27.019 seconds (JVM running for 28.603)
-[2016-09-30 09:23:05.013] log4j2 - 10401  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 10401 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-30 09:23:05.016] log4j2 - 10401 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-30 09:23:22.205] log4j2 - 10401 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-30 09:23:22.210] log4j2 - 10401 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-30 09:23:26.783] log4j2 - 10401  INFO [main] --- Application: Started Application in 22.016 seconds (JVM running for 22.841)
-[2016-09-30 09:28:39.899] log4j2 - 10405  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 10405 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-30 09:28:39.900] log4j2 - 10405 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-30 09:28:56.516] log4j2 - 10405 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-30 09:28:56.518] log4j2 - 10405 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-30 09:29:01.637] log4j2 - 10405  INFO [main] --- Application: Started Application in 21.973 seconds (JVM running for 22.955)
-[2016-09-30 09:38:00.544] log4j2 - 734  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 734 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-30 09:38:00.550] log4j2 - 734 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-30 09:38:19.995] log4j2 - 734 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-30 09:38:19.997] log4j2 - 734 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-30 09:38:24.894] log4j2 - 734  INFO [main] --- Application: Started Application in 24.72 seconds (JVM running for 26.19)
-[2016-09-30 09:54:36.500] log4j2 - 734  WARN [http-nio-9999-exec-4] --- SqlExceptionHelper: SQL Error: 1146, SQLState: 42S02
-[2016-09-30 09:54:36.500] log4j2 - 734 ERROR [http-nio-9999-exec-4] --- SqlExceptionHelper: Table 'jms5.smtf_no' doesn't exist
-[2016-09-30 09:54:36.514] log4j2 - 734  WARN [http-nio-9999-exec-4] --- SqlExceptionHelper: SQL Warning Code: 1146, SQLState: 42S02
-[2016-09-30 09:54:36.514] log4j2 - 734  WARN [http-nio-9999-exec-4] --- SqlExceptionHelper: Table 'jms5.smtf_no' doesn't exist
-[2016-09-30 10:01:32.233] log4j2 - 734  WARN [http-nio-9999-exec-8] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
-[2016-09-30 10:01:32.233] log4j2 - 734  WARN [http-nio-9999-exec-8] --- SqlExceptionHelper: Incorrect date value: '2016-09-30 10:01:32.22' for column 'creation_time' at row 1
-[2016-09-30 10:02:26.714] log4j2 - 734  WARN [http-nio-9999-exec-6] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
-[2016-09-30 10:02:26.715] log4j2 - 734  WARN [http-nio-9999-exec-6] --- SqlExceptionHelper: Truncated incorrect date value: '1475114460000'
-[2016-09-30 10:02:26.715] log4j2 - 734  WARN [http-nio-9999-exec-6] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
-[2016-09-30 10:02:26.715] log4j2 - 734  WARN [http-nio-9999-exec-6] --- SqlExceptionHelper: Truncated incorrect date value: '1475287260000'
-[2016-09-30 10:08:53.627] log4j2 - 774  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 774 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-30 10:08:53.629] log4j2 - 774 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-30 10:09:09.709] log4j2 - 774 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-30 10:09:09.711] log4j2 - 774 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-30 10:09:15.268] log4j2 - 774  INFO [main] --- Application: Started Application in 21.918 seconds (JVM running for 22.893)
-[2016-09-30 10:11:29.871] log4j2 - 774  WARN [http-nio-9999-exec-7] --- SqlExceptionHelper: SQL Error: 1146, SQLState: 42S02
-[2016-09-30 10:11:29.871] log4j2 - 774 ERROR [http-nio-9999-exec-7] --- SqlExceptionHelper: Table 'jms5.smtf_no' doesn't exist
-[2016-09-30 10:11:29.883] log4j2 - 774  WARN [http-nio-9999-exec-7] --- SqlExceptionHelper: SQL Warning Code: 1146, SQLState: 42S02
-[2016-09-30 10:11:29.884] log4j2 - 774  WARN [http-nio-9999-exec-7] --- SqlExceptionHelper: Table 'jms5.smtf_no' doesn't exist
-[2016-09-30 10:13:02.516] log4j2 - 774  WARN [http-nio-9999-exec-10] --- SqlExceptionHelper: SQL Error: 1146, SQLState: 42S02
-[2016-09-30 10:13:02.516] log4j2 - 774 ERROR [http-nio-9999-exec-10] --- SqlExceptionHelper: Table 'jms5.smtf_no' doesn't exist
-[2016-09-30 10:13:02.520] log4j2 - 774  WARN [http-nio-9999-exec-10] --- SqlExceptionHelper: SQL Warning Code: 1146, SQLState: 42S02
-[2016-09-30 10:13:02.520] log4j2 - 774  WARN [http-nio-9999-exec-10] --- SqlExceptionHelper: Table 'jms5.smtf_no' doesn't exist
-[2016-09-30 10:19:07.118] log4j2 - 782  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 782 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-30 10:19:07.120] log4j2 - 782 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-30 10:19:23.338] log4j2 - 782 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-30 10:19:23.340] log4j2 - 782 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-30 10:19:28.028] log4j2 - 782  INFO [main] --- Application: Started Application in 21.17 seconds (JVM running for 22.176)
-[2016-09-30 10:20:37.560] log4j2 - 782 DEBUG [http-nio-9999-exec-2] --- QNoProcessService: dd: 2016-09-30, today: 2016-09-30
-[2016-09-30 10:29:29.363] log4j2 - 791  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 791 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-30 10:29:29.365] log4j2 - 791 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-30 10:29:46.073] log4j2 - 791 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-30 10:29:46.075] log4j2 - 791 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-30 10:29:50.828] log4j2 - 791  INFO [main] --- Application: Started Application in 21.717 seconds (JVM running for 22.672)
-[2016-09-30 10:38:47.776] log4j2 - 791  WARN [http-nio-9999-exec-5] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
-[2016-09-30 10:38:47.778] log4j2 - 791  WARN [http-nio-9999-exec-5] --- SqlExceptionHelper: Truncated incorrect date value: '1475116680000'
-[2016-09-30 10:38:47.778] log4j2 - 791  WARN [http-nio-9999-exec-5] --- SqlExceptionHelper: SQL Warning Code: 1292, SQLState: 22007
-[2016-09-30 10:38:47.779] log4j2 - 791  WARN [http-nio-9999-exec-5] --- SqlExceptionHelper: Truncated incorrect date value: '1475289480000'
-[2016-09-30 10:56:58.458] log4j2 - 831  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 831 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-30 10:56:58.460] log4j2 - 831 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-30 10:57:14.723] log4j2 - 831 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-30 10:57:14.725] log4j2 - 831 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-30 10:57:19.511] log4j2 - 831  INFO [main] --- Application: Started Application in 21.273 seconds (JVM running for 22.067)
-[2016-09-30 11:12:53.888] log4j2 - 846  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 846 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-30 11:12:53.889] log4j2 - 846 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-30 11:13:11.001] log4j2 - 846 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-30 11:13:11.003] log4j2 - 846 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-30 11:13:15.944] log4j2 - 846  INFO [main] --- Application: Started Application in 22.283 seconds (JVM running for 23.083)
-[2016-09-30 11:25:33.217] log4j2 - 846 DEBUG [http-nio-9999-exec-8] --- QNcr2Service: dd: 2016-09-30, today: 2016-09-30
-[2016-09-30 11:28:50.889] log4j2 - 856  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 856 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-30 11:28:50.890] log4j2 - 856 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-30 11:29:06.437] log4j2 - 856 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-30 11:29:06.440] log4j2 - 856 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-30 11:29:11.085] log4j2 - 856  INFO [main] --- Application: Started Application in 20.411 seconds (JVM running for 21.208)
-[2016-09-30 11:31:51.433] log4j2 - 861  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 861 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-30 11:31:51.435] log4j2 - 861 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-30 11:32:08.624] log4j2 - 861 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-30 11:32:08.626] log4j2 - 861 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-30 11:32:13.481] log4j2 - 861  INFO [main] --- Application: Started Application in 22.267 seconds (JVM running for 23.061)
-[2016-09-30 11:34:24.095] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
-[2016-09-30 11:34:24.099] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
-[2016-09-30 11:34:24.101] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
-[2016-09-30 11:34:24.102] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
-[2016-09-30 11:34:24.104] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 3, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
-[2016-09-30 11:34:24.107] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 4, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
-[2016-09-30 11:34:24.109] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 5, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
-[2016-09-30 11:34:24.111] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 6, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
-[2016-09-30 11:34:34.611] log4j2 - 861 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
-[2016-09-30 11:34:34.613] log4j2 - 861 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
-[2016-09-30 11:34:34.616] log4j2 - 861 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
-[2016-09-30 11:34:34.617] log4j2 - 861 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
-[2016-09-30 11:34:34.620] log4j2 - 861 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 3, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
-[2016-09-30 11:34:34.623] log4j2 - 861 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 4, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
-[2016-09-30 11:34:34.626] log4j2 - 861 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 5, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
-[2016-09-30 11:34:34.629] log4j2 - 861 DEBUG [http-nio-9999-exec-4] --- MMainRecordService: type: 6, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
-[2016-09-30 11:34:36.031] log4j2 - 861 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
-[2016-09-30 11:34:36.033] log4j2 - 861 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
-[2016-09-30 11:34:36.035] log4j2 - 861 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
-[2016-09-30 11:34:36.037] log4j2 - 861 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
-[2016-09-30 11:34:36.040] log4j2 - 861 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 3, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
-[2016-09-30 11:34:36.042] log4j2 - 861 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 4, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
-[2016-09-30 11:34:36.044] log4j2 - 861 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 5, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
-[2016-09-30 11:34:36.046] log4j2 - 861 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 6, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
-[2016-09-30 11:38:58.532] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
-[2016-09-30 11:38:58.535] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
-[2016-09-30 11:38:58.538] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
-[2016-09-30 11:38:58.540] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
-[2016-09-30 11:38:58.543] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 3, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
-[2016-09-30 11:38:58.545] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 4, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
-[2016-09-30 11:38:58.548] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 5, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
-[2016-09-30 11:38:58.551] log4j2 - 861 DEBUG [http-nio-9999-exec-10] --- MMainRecordService: type: 6, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
-[2016-09-30 11:40:05.218] log4j2 - 871  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 871 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-30 11:40:05.222] log4j2 - 871 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-30 11:40:21.700] log4j2 - 871 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-30 11:40:21.703] log4j2 - 871 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-30 11:40:26.424] log4j2 - 871  INFO [main] --- Application: Started Application in 21.488 seconds (JVM running for 22.378)
-[2016-09-30 11:42:38.801] log4j2 - 875  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 875 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-30 11:42:38.802] log4j2 - 875 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-30 11:42:55.416] log4j2 - 875 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-30 11:42:55.418] log4j2 - 875 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-30 11:43:00.144] log4j2 - 875  INFO [main] --- Application: Started Application in 21.564 seconds (JVM running for 22.362)
-[2016-09-30 11:45:11.852] log4j2 - 876  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 876 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-30 11:45:11.854] log4j2 - 876 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-30 11:45:29.160] log4j2 - 876 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-30 11:45:29.163] log4j2 - 876 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-30 11:45:33.768] log4j2 - 876  INFO [main] --- Application: Started Application in 22.143 seconds (JVM running for 22.927)
-[2016-09-30 11:47:47.241] log4j2 - 881  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 881 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-30 11:47:47.244] log4j2 - 881 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-30 11:48:03.512] log4j2 - 881 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-30 11:48:03.516] log4j2 - 881 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-30 11:48:08.363] log4j2 - 881  INFO [main] --- Application: Started Application in 21.352 seconds (JVM running for 22.185)
-[2016-09-30 12:16:58.886] log4j2 - 881 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
-[2016-09-30 12:16:58.888] log4j2 - 881 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
-[2016-09-30 12:16:58.890] log4j2 - 881 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
-[2016-09-30 12:16:58.892] log4j2 - 881 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
-[2016-09-30 12:16:58.894] log4j2 - 881 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 3, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
-[2016-09-30 12:16:58.896] log4j2 - 881 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 4, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
-[2016-09-30 12:16:58.899] log4j2 - 881 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 5, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
-[2016-09-30 12:16:58.901] log4j2 - 881 DEBUG [http-nio-9999-exec-7] --- MMainRecordService: type: 6, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
-[2016-09-30 12:19:14.182] log4j2 - 930  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 930 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-09-30 12:19:14.185] log4j2 - 930 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-09-30 12:19:29.865] log4j2 - 930 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-09-30 12:19:29.867] log4j2 - 930 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-09-30 12:19:34.576] log4j2 - 930  INFO [main] --- Application: Started Application in 20.622 seconds (JVM running for 21.39)
-[2016-09-30 12:20:12.170] log4j2 - 930 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
-[2016-09-30 12:20:12.172] log4j2 - 930 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
-[2016-09-30 12:20:12.174] log4j2 - 930 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
-[2016-09-30 12:20:12.176] log4j2 - 930 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
-[2016-09-30 12:20:12.178] log4j2 - 930 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 3, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
-[2016-09-30 12:20:12.181] log4j2 - 930 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 4, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
-[2016-09-30 12:20:12.183] log4j2 - 930 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 5, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
-[2016-09-30 12:20:12.186] log4j2 - 930 DEBUG [http-nio-9999-exec-8] --- MMainRecordService: type: 6, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
-[2016-09-30 12:20:44.521] log4j2 - 930 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
-[2016-09-30 12:20:44.523] log4j2 - 930 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 1, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 274
-[2016-09-30 12:20:44.526] log4j2 - 930 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
-[2016-09-30 12:20:44.528] log4j2 - 930 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 2, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 40
-[2016-09-30 12:20:44.531] log4j2 - 930 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 3, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 9
-[2016-09-30 12:20:44.534] log4j2 - 930 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 4, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 3
-[2016-09-30 12:20:44.537] log4j2 - 930 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 5, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2
-[2016-09-30 12:20:44.540] log4j2 - 930 DEBUG [http-nio-9999-exec-5] --- MMainRecordService: type: 6, day: 274, week: 40, month: 9, season: 3, halfYear: 2, year: 2016, timeValue: 2016
+[2016-10-14 09:11:14.261] log4j2 - 6994  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 6994 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-10-14 09:11:14.277] log4j2 - 6994 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-10-14 09:11:33.402] log4j2 - 6994 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-10-14 09:11:33.405] log4j2 - 6994 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-10-14 09:11:38.650] log4j2 - 6994  INFO [main] --- Application: Started Application in 24.742 seconds (JVM running for 26.27)
+[2016-10-14 09:17:04.880] log4j2 - 7053  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7053 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-10-14 09:17:04.882] log4j2 - 7053 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-10-14 09:17:21.291] log4j2 - 7053 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-10-14 09:17:21.294] log4j2 - 7053 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-10-14 09:17:26.297] log4j2 - 7053  INFO [main] --- Application: Started Application in 21.627 seconds (JVM running for 22.581)
+[2016-10-14 09:23:37.408] log4j2 - 7117  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7117 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-10-14 09:23:37.410] log4j2 - 7117 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-10-14 09:23:55.114] log4j2 - 7117 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-10-14 09:23:55.117] log4j2 - 7117 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-10-14 09:23:59.887] log4j2 - 7117  INFO [main] --- Application: Started Application in 22.757 seconds (JVM running for 23.69)
+[2016-10-14 09:59:54.056] log4j2 - 7591  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7591 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-10-14 09:59:54.057] log4j2 - 7591 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-10-14 10:00:11.500] log4j2 - 7591 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-10-14 10:00:11.502] log4j2 - 7591 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-10-14 10:00:16.852] log4j2 - 7591  INFO [main] --- Application: Started Application in 23.025 seconds (JVM running for 23.891)
+[2016-10-14 11:49:02.892] log4j2 - 8761  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 8761 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-10-14 11:49:02.894] log4j2 - 8761 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-10-14 11:49:22.880] log4j2 - 8761 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-10-14 11:49:22.883] log4j2 - 8761 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-10-14 11:49:29.654] log4j2 - 8761  INFO [main] --- Application: Started Application in 26.986 seconds (JVM running for 27.858)
+[2016-10-14 11:51:01.501] log4j2 - 8764  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 8764 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-10-14 11:51:01.502] log4j2 - 8764 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-10-14 11:51:18.312] log4j2 - 8764 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-10-14 11:51:18.315] log4j2 - 8764 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-10-14 11:51:24.214] log4j2 - 8764  INFO [main] --- Application: Started Application in 22.925 seconds (JVM running for 23.751)
+[2016-10-14 12:10:01.017] log4j2 - 8815  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 8815 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-10-14 12:10:01.019] log4j2 - 8815 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-10-14 12:10:24.187] log4j2 - 8815 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-10-14 12:10:24.191] log4j2 - 8815 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-10-14 12:10:30.406] log4j2 - 8815  INFO [main] --- Application: Started Application in 29.639 seconds (JVM running for 30.581)
+[2016-10-14 12:12:20.085] log4j2 - 8818  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 8818 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-10-14 12:12:20.088] log4j2 - 8818 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-10-14 12:12:37.869] log4j2 - 8818 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-10-14 12:12:37.873] log4j2 - 8818 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-10-14 12:12:43.616] log4j2 - 8818  INFO [main] --- Application: Started Application in 23.79 seconds (JVM running for 24.673)
+[2016-10-14 12:14:19.275] log4j2 - 8820  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 8820 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-10-14 12:14:19.276] log4j2 - 8820 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-10-14 12:14:36.485] log4j2 - 8820 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-10-14 12:14:36.487] log4j2 - 8820 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-10-14 12:14:42.619] log4j2 - 8820  INFO [main] --- Application: Started Application in 23.583 seconds (JVM running for 24.444)

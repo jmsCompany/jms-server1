@@ -12,7 +12,7 @@ import com.jms.domain.db.PRoutineD;
 @Repository
 public interface PRoutineDRepository extends JpaRepository<PRoutineD, Long>{
 
-	@Query("select p from PRoutineD p where p.PRoutine.SMaterial.idMaterial=?1")
+	@Query("select p from PRoutineD p where p.PRoutine.SMaterial.idMaterial=?1 order by routeNo")
     public List<PRoutineD> findByMaterialId(Long materialId);
 
 	

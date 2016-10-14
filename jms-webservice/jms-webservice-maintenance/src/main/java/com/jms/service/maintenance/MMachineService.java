@@ -154,7 +154,8 @@ public class MMachineService {
 	{
 		Valid valid = new Valid();
 		MMachine mMachine = mMachineRepository.findOne(idMachine);
-		if(!mMachine.getPCPps().isEmpty())
+		//mMachine.
+		if(!mMachine.getPCPps().isEmpty()||!mMachine.getMMainItems().isEmpty()||!mMachine.getMRepairHistories().isEmpty()||!mMachine.getMSpareParts().isEmpty()||!mMachine.getPStopsPlans().isEmpty())
 		{
 			valid.setValid(false);
 			valid.setMsg("该设备被使用过，故不能被删除，可以选择停用该设备！");

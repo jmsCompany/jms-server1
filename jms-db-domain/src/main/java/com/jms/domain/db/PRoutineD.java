@@ -42,6 +42,8 @@ public class PRoutineD  implements java.io.Serializable {
      private Set<PRoutineDAtt> PRoutineDAtts = new HashSet<PRoutineDAtt>(0);
      private Set<QCheckList> QCheckLists = new HashSet<QCheckList>(0);
      private Set<PCPp> PCPps = new HashSet<PCPp>(0);
+     
+     private Long isFinished;
 
     public PRoutineD() {
     }
@@ -186,6 +188,16 @@ public class PRoutineD  implements java.io.Serializable {
     public void setPCPps(Set<PCPp> PCPps) {
         this.PCPps = PCPps;
     }
+
+    @Column(name="is_finished")
+	public Long getIsFinished() {
+		return isFinished;
+	}
+
+
+	public void setIsFinished(Long isFinished) {
+		this.isFinished = isFinished;
+	}
 
 
 

@@ -129,7 +129,7 @@ public class UserController {
 				}
 				cppList.add(pCPpRepository.findOne(w.getIdCpp()));
 			}
-			else
+			else 
 			{
 				if(co!=null)
 				{
@@ -173,10 +173,14 @@ public class UserController {
 		
 				
 				List<PCppOp> cops = pCppOpRepository.getByUserId(securityUtils.getCurrentDBUser().getIdUser());
+				//System.out.println("user id: " + securityUtils.getCurrentDBUser().getIdUser());
 				List<PCPp> allCpps = new ArrayList<PCPp>();
                for(PCppOp o :cops)
                {
+            	  // System.out.println("idCpp: " + o.getId().getIdCpp());
             	   PCPp c = pCPpRepository.getOne(o.getId().getIdCpp());
+            	   if(c==null)
+            		   continue;
             	   if(c.getActFt()==null)
             	   {
             		   allCpps.add(c);

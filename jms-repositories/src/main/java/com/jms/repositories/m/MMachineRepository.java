@@ -12,17 +12,17 @@ import com.jms.domain.db.MMachine;
 public interface MMachineRepository extends JpaRepository<MMachine, Long>{
 
 
-	 @Query("select m from MMachine m where m.company.idCompany=?1 and m.MStatusDic.idMstatusDic=5")
+	 @Query("select m from MMachine m where m.company.idCompany=?1 and m.MStatusDic.idMstatusDic=5 order by m.code")
 	  public List<MMachine> getActiveMachinesByCompanyId(Long companyId);
 	 
 	 
-	 @Query("select m from MMachine m where m.PLine.idPline=?1")
+	 @Query("select m from MMachine m where m.PLine.idPline=?1 order by m.code")
 	  public List<MMachine> getByLineId(Long lineId);
 	 
 	 
-	 @Query("select m from MMachine m where m.company.idCompany=?1 and (m.code like ?2 or m.name like ?2 or m.spec like ?2 or m.MMachineGroup.groupName like ?2)")
+	 @Query("select m from MMachine m where m.company.idCompany=?1 and (m.code like ?2 or m.name like ?2 or m.spec like ?2 or m.MMachineGroup.groupName like ?2) order by m.code")
 	  public List<MMachine> getMachinesByCompanyIdAndQ(Long companyId,String q);
-	 @Query("select m from MMachine m where m.company.idCompany=?1")
+	 @Query("select m from MMachine m where m.company.idCompany=?1 order by m.code")
 	  public List<MMachine> getMachinesByCompanyId(Long companyId);
 	 
 }

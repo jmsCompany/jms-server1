@@ -126,7 +126,7 @@ public class MMainReportController {
 																								// day
 
 				for (int k = 0; k < counts; k++) {
-					logger.debug("idItem: " + item.getIdMainItem() + ", timeValue: " + timeValue + ", year: " + year);
+				//	logger.debug("idItem: " + item.getIdMainItem() + ", timeValue: " + timeValue + ", year: " + year);
 					MMainRecord record = mMainRecordRepository.getByIdMainItemAndTimeValueAndYear(item.getIdMainItem(),
 							(long) timeValue, (long) year);
 					WSMainItemResult ir = new WSMainItemResult();

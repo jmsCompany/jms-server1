@@ -1,5 +1,6 @@
 package com.jms.controller.quality;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -135,6 +136,7 @@ public class QFileManagementController {
 			end =qFileManagementList.size();
 		else
 			end =start + length;
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
 		for (int i = start; i < end; i++) {
 			QFileManagent w = qFileManagementList.get(i);
 			
@@ -171,7 +173,15 @@ public class QFileManagementController {
 					person = u.getName();
 				}
 			}
-			String date = (w.getCreationTime()==null)?"":""+w.getCreationTime().toString();
+			String date = "";
+
+			if(w.getCreationTime()!=null)
+			{
+				
+				date= formatter.format(w.getCreationTime());
+			}
+			
+			
 
 			String[] d = {fileNo, fileType,sMaterial,wo,routineD,date,person,""+w.getIdFile()};
 			lst.add(d);

@@ -95,7 +95,9 @@ public class QFileManagementService {
 		{
 			dbQFileManagent.setQFileType(qFileTypeRepository.findOne(wsQFileManagent.getIdFileType()));
 		}
-
+		dbQFileManagent.setIdCompany(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+		//dbQFileManagent.setCreationTime(new);
+		
 		return dbQFileManagent;
 	}
 	

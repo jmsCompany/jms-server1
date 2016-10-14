@@ -233,6 +233,23 @@ public class PCppService {
 	    pCPp.setCPpCode(mtNo);
 		}
 		
+		if(wsPCpp.getActSt()==null)
+		{
+			pCPp.setActSt(null);
+		}
+		if(wsPCpp.getActFt()==null)
+		{
+			pCPp.setActFt(null);
+		}
+		
+		if(wsPCpp.getPlanSt()==null)
+		{
+			pCPp.setPlanSt(null);
+		}
+		if(wsPCpp.getPlanFt()==null)
+		{
+			pCPp.setPlanFt(null);
+		}
 
         if(wsPCpp.getmMachineId()!=null)
         {
@@ -580,56 +597,60 @@ public class PCppService {
 			 PBom pBom = pBomRepository.findProductByMaterialId(product.getIdMaterial());
 				if(pBom!=null)
 				{
-					for(PBom p: pBomRepository.findMaterialsByRoutineDId(cpp.getPRoutineD().getIdRoutineD()))
-					{	
-						SMaterial material =p.getSMaterial();
-//						logger.debug("bomId: " + p.getIdBom() + ", material id: " +material.getIdMaterial() + ", material: " + material.getPno());
-						for(SInventory inv:sInventoryRepository.findInventoryByMaterialAndStk(material.getIdMaterial(), companyId, fromStkId))
-						{
-							if(inv.getQty()!=null&&inv.getQty().intValue()<=0)
+					if(cpp.getPRoutineD()!=null)
+					{
+						for(PBom p: pBomRepository.findMaterialsByRoutineDId(cpp.getPRoutineD().getIdRoutineD()))
+						{	
+							SMaterial material =p.getSMaterial();
+//							logger.debug("bomId: " + p.getIdBom() + ", material id: " +material.getIdMaterial() + ", material: " + material.getPno());
+							for(SInventory inv:sInventoryRepository.findInventoryByMaterialAndStk(material.getIdMaterial(), companyId, fromStkId))
 							{
-								continue;
+								if(inv.getQty()!=null&&inv.getQty().intValue()<=0)
+								{
+									continue;
+								}
+								String lotNo = (inv.getLotNo()==null)?"":inv.getLotNo();
+//								logger.debug("inv qty: " + inv.getQty() + ", lotNo: " + lotNo);
+								WSPlannedMaterialSendingItem w = new WSPlannedMaterialSendingItem();
+								w.setBomId(p.getIdBom());
+								w.setBin(inv.getSBin().getBin());
+								w.setCppId(cpp.getIdCPp());
+								w.setFromBinId(inv.getSBin().getIdBin());
+								w.setIdMachine(idMachine);
+								w.setIdMaterial(material.getIdMaterial());
+								w.setInvId(inv.getIdInv());
+								w.setLotNo(lotNo);
+								w.setMachine(machine);
+								w.setMaterial(material.getPno()+"_"+material.getRev()+"_"+material.getDes());
+								w.setPlannedQty(cpp.getQty());
+								w.setPlannedSt(cpp.getPlanSt());
+								w.setProduction(product.getPno()+"_"+product.getRev()+"_" + product.getDes());
+								w.setQty(0l);
+								Long qtyDelivered=0l;
+								for(PMr pmr: pMrRepository.getByBomIdAndCppId(p.getIdBom(), cpp.getIdCPp()))
+								{
+									Long d = (pmr.getQtyDelivered()==null)?0l:pmr.getQtyDelivered();
+									qtyDelivered =qtyDelivered+d;
+								}
+								w.setQtyDelivered(qtyDelivered);
+								w.setQtyStored(inv.getQty());
+								w.setShiftD(cpp.getPShiftPlanD().getShift());
+								w.setToBinId(cpp.getMMachine().getSBin().getIdBin());
+								Long shouldQty = 0l;
+								if(p.getQpu()!=null)
+								{
+									shouldQty = p.getQpu()*cpp.getQty();
+								}
+								w.setShouldQty(shouldQty);
+								w.setWip(cpp.getMMachine().getSBin().getSStk().getStkName());
+								w.setWoId(pwo.getIdWo());
+								w.setWoNo(pwo.getWoNo());
+								items.add(w);
+				
 							}
-							String lotNo = (inv.getLotNo()==null)?"":inv.getLotNo();
-//							logger.debug("inv qty: " + inv.getQty() + ", lotNo: " + lotNo);
-							WSPlannedMaterialSendingItem w = new WSPlannedMaterialSendingItem();
-							w.setBomId(p.getIdBom());
-							w.setBin(inv.getSBin().getBin());
-							w.setCppId(cpp.getIdCPp());
-							w.setFromBinId(inv.getSBin().getIdBin());
-							w.setIdMachine(idMachine);
-							w.setIdMaterial(material.getIdMaterial());
-							w.setInvId(inv.getIdInv());
-							w.setLotNo(lotNo);
-							w.setMachine(machine);
-							w.setMaterial(material.getPno()+"_"+material.getRev()+"_"+material.getDes());
-							w.setPlannedQty(cpp.getQty());
-							w.setPlannedSt(cpp.getPlanSt());
-							w.setProduction(product.getPno()+"_"+product.getRev()+"_" + product.getDes());
-							w.setQty(0l);
-							Long qtyDelivered=0l;
-							for(PMr pmr: pMrRepository.getByBomIdAndCppId(p.getIdBom(), cpp.getIdCPp()))
-							{
-								Long d = (pmr.getQtyDelivered()==null)?0l:pmr.getQtyDelivered();
-								qtyDelivered =qtyDelivered+d;
-							}
-							w.setQtyDelivered(qtyDelivered);
-							w.setQtyStored(inv.getQty());
-							w.setShiftD(cpp.getPShiftPlanD().getShift());
-							w.setToBinId(cpp.getMMachine().getSBin().getIdBin());
-							Long shouldQty = 0l;
-							if(p.getQpu()!=null)
-							{
-								shouldQty = p.getQpu()*cpp.getQty();
-							}
-							w.setShouldQty(shouldQty);
-							w.setWip(cpp.getMMachine().getSBin().getSStk().getStkName());
-							w.setWoId(pwo.getIdWo());
-							w.setWoNo(pwo.getWoNo());
-							items.add(w);
-			
 						}
 					}
+
 				}
 		}
 		

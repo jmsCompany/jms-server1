@@ -14,4 +14,7 @@ import com.jms.domain.db.PCppOpId;
 public interface PCppOpRepository extends JpaRepository<PCppOp, PCppOpId>{
     @Query("select p from PCppOp p where p.id.idUser=?1 order by p.id.idCpp desc")
 	public List<PCppOp> getByUserId(Long userId);
+    
+    @Query("select p from PCppOp p where p.id.idCpp=?1")
+   	public List<PCppOp> getByCppId(Long idCpp);
 }

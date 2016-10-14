@@ -45,6 +45,9 @@ public class PWo  implements java.io.Serializable {
      private Date actSt;
      private Date actFt;
      private Long actQty;
+     
+     private Long typeId;
+     private String orgWo;
 
     public PWo() {
     }
@@ -181,6 +184,26 @@ public class PWo  implements java.io.Serializable {
 
 	public void setActQty(Long actQty) {
 		this.actQty = actQty;
+	}
+
+	 @Column(name="type_id")
+	public Long getTypeId() {
+		return typeId;
+	}
+
+
+	public void setTypeId(Long typeId) {
+		this.typeId = typeId;
+	}
+
+    @Column(name="org_wo", length=64)
+	public String getOrgWo() {
+		return orgWo;
+	}
+
+
+	public void setOrgWo(String orgWo) {
+		this.orgWo = orgWo;
 	}
 
 

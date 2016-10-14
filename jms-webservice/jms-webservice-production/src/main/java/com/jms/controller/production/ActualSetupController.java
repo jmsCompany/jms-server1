@@ -1,6 +1,7 @@
 package com.jms.controller.production;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,12 +65,26 @@ public class ActualSetupController {
 			end = pActualSetups.size();
 		else
 			end = start + length;
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm"); 
 		for (int i = start; i < end; i++) {
 			PActualSetup w = pActualSetups.get(i);
 			SMaterial s = w.getPCPp().getPWo().getSSo().getSMaterial();
 			String material = s.getPno()+"-"+s.getRev()+"-"+s.getDes();
-			String actF = (w.getActFt()==null)?"":w.getActFt().toString();
-			String actS = (w.getActSt()==null)?"":w.getActSt().toString();
+			
+			String actF = "";
+			if(w.getActFt()!=null)
+			{
+				
+				actF= formatter.format(w.getActFt());
+			}
+			
+			String actS = "";
+			if(w.getActSt()!=null)
+			{
+				
+				actS= formatter.format(w.getActSt());
+			}
+			
 			String[] d = { w.getPCPp().getPWo().getWoNo(), material,w.getPCPp().getPShiftPlanD().getShift(),w.getPCPp().getMMachine().getCode(),actS,actF,""+w.getIdActualSetup()};
 			lst.add(d);
 

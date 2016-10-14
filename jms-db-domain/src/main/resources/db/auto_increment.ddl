@@ -424,4 +424,15 @@ alter table `o_overtime`
 modify `id_overtime` int(11) not null auto_increment;
 
 
+alter table `o_overtime` 
+modify `id_overtime` int(11) not null auto_increment;
+
+alter table `ehs_item` 
+modify `id_ehs` int(11) not null auto_increment;
+
+
+alter table `ehs_record` 
+modify `id_ehs_record` int(11) not null auto_increment;
+
+
 set foreign_key_checks =1;

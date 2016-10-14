@@ -114,6 +114,14 @@ public class RoutineController {
 		
 	}
 	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/p/deletePRoutineD", method=RequestMethod.GET)
+	public Valid deletePRoutineD(@RequestParam("idRoutineD") Long idRoutineD) {
+		return routineService.deletePRoutineD(idRoutineD);
+		
+	}
+	
 
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/findPRoutine", method=RequestMethod.GET)
@@ -137,6 +145,7 @@ public class RoutineController {
 	}
 	
 	
+	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/findRoutineDObjsByWoId", method=RequestMethod.GET)
 	public List<WSSelectObj> findRoutineDObjsByWoId(@RequestParam("woId") Long woId) throws Exception {
@@ -154,6 +163,8 @@ public class RoutineController {
 		return ws;
 		
 	}
+	
+	
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/findRoutineDObjsByMaterialId", method=RequestMethod.GET)

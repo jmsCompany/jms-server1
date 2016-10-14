@@ -1,6 +1,7 @@
 package com.jms.controller.production;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -97,14 +98,44 @@ public class UnplannedStopsController {
 			end =pUnplannedStops.size();
 		else
 			end =start + length;
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
 		for (int i = start; i < end; i++) {
 			PUnplannedStops w = pUnplannedStops.get(i);
 			
 			MMachine m = mMachineRepository.findOne(w.getIdMachine());
-			String opSt =(w.getOpSt()==null)?"":w.getOpSt().toString();
-			String eqSt=(w.getEqSt()==null)?"":w.getEqSt().toString();
-			String eqFt=(w.getEqFt()==null)?"":w.getEqFt().toString();
-			String opFt =(w.getOpFt()==null)?"":w.getOpFt().toString();
+			
+			String opSt = "";
+			if(w.getOpSt()!=null)
+			{
+				
+				opSt= formatter.format(w.getOpSt());
+			}
+			
+			String eqSt = "";
+			if(w.getEqSt()!=null)
+			{
+				
+				eqSt= formatter.format(w.getEqSt());
+			}
+			
+			
+			String eqFt = "";
+			if(w.getEqFt()!=null)
+			{
+				
+				eqFt= formatter.format(w.getEqFt());
+			}
+			
+			String opFt = "";
+			if(w.getOpFt()!=null)
+			{
+				
+				opFt= formatter.format(w.getOpFt());
+			}
+			
+			
+			
 			String subCode="";
 			if(w.getPSubCode()!=null)
 			{

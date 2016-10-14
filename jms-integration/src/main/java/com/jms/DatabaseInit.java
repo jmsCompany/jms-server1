@@ -26,6 +26,7 @@ import com.jms.service.maintenance.MMainCycleService;
 import com.jms.service.maintenance.MResultService;
 import com.jms.service.maintenance.MStatusDicService;
 import com.jms.service.production.EWorkCategoryDicService;
+import com.jms.service.production.OCalendarTypeService;
 import com.jms.service.production.PPUTimeService;
 import com.jms.service.production.PStatusDicService;
 import com.jms.service.production.PStopsCodeService;
@@ -183,6 +184,9 @@ public class DatabaseInit {
 	
 	@Autowired
 	private  QFileTypeService qFileTypeService;
+	
+	@Autowired
+	private  OCalendarTypeService oCalendarTypeService;
 	// 在系统初装的执行切只能执行一次，读取csv文件的数据到数据库中。
 	// todo:详细说明系统预设的所有信息这些信息的用途
 	public void init(ConfigurableApplicationContext ctx) throws IOException {
@@ -334,6 +338,8 @@ public class DatabaseInit {
 //		sMtfNoService.loadSmtfNosByCompanyId(12l);
 //		mResultService.loadMResults();
 	//	qFileTypeService.loadQFileTypes(8l);
+		
+	//	oCalendarTypeService.loadOCalendarTypes();
 	}
 	
 	

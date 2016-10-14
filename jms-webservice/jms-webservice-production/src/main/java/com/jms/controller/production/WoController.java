@@ -1,6 +1,7 @@
 package com.jms.controller.production;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -32,6 +33,7 @@ import com.jms.repositories.p.PBomRepository;
 import com.jms.repositories.p.PCheckPlanRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PWoRepository;
+import com.jms.repositories.p.PWoRepositoryCustom;
 import com.jms.repositories.s.SMtfMaterialRepository;
 import com.jms.service.production.WoService;
 import com.jms.web.security.SecurityUtils;
@@ -48,6 +50,8 @@ public class WoController {
 	@Autowired private PCheckPlanRepository pCheckPlanRepository;
 	@Autowired private SMtfMaterialRepository sMtfMaterialRepository;
 	@Autowired private PStatusDicRepository pStatusDicRepository;
+	
+	@Autowired private PWoRepositoryCustom pWoRepositoryCustomImpl;
 
 	
 	@Transactional(readOnly = false)
@@ -103,7 +107,17 @@ public class WoController {
 	
 		PWo pWo =pWoRepository.findOne(woId);
 		SSo sSo =pWo.getSSo();
+		if(sSo==null||sSo.getSMaterial()==null)
+		{
+			WSTableData t = new WSTableData();
+			return t;
+		}
 		PBom pBom = pBomRepository.findProductByMaterialId(sSo.getSMaterial().getIdMaterial());
+		if(pBom==null)
+		{
+			WSTableData t = new WSTableData();
+			return t;
+		}
 		Set<PBom> pBoms =pBom.getPBoms();
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
@@ -192,10 +206,7 @@ public class WoController {
 			
 			    deviation = planQty -finQty;
 		    }
-			
-			
-			
-			
+
 			String[] d = {pWo.getWoNo(),routineNo,w.getPlanSt().toString(),w.getPlanFt().toString(),""+w.getQty(),planCheckTime,checkTime,""+planQty,""+finQty,""+deviation};
 			
 			lst.add(d);
@@ -291,9 +302,16 @@ public class WoController {
 			Long qtyFinished =0l;
 			for(PCPp p: w.getPCPps())
 			{
-				List<PCheckPlan> pCheckPlans =pCheckPlanRepository.getMaxCheckPlanByCppId(p.getIdCPp());
-				if(pCheckPlans!=null&&!pCheckPlans.isEmpty())
-				qtyFinished =qtyFinished +pCheckPlans.get(0).getFinQty();
+				if(p.getPRoutineD()!=null)
+				{
+					if(p.getPRoutineD().getIsFinished()!=null&&p.getPRoutineD().getIsFinished().equals(1l))
+					{
+						List<PCheckPlan> pCheckPlans =pCheckPlanRepository.getMaxCheckPlanByCppId(p.getIdCPp());
+						if(pCheckPlans!=null&&!pCheckPlans.isEmpty())
+						qtyFinished =qtyFinished +pCheckPlans.get(0).getFinQty();
+					}
+				}
+				
 			}
 			Long difference = qty-qtyFinished;
 			String[] d = {w.getWoNo(),""+w.getQty(),""+qtyFinished,""+difference,w.getPStatusDic().getName(),""+w.getIdWo()};
@@ -311,21 +329,33 @@ public class WoController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/getWoList", method=RequestMethod.POST)
-	public WSTableData  getWorkCenterList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
-		List<PWo> pWos =pWoRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
-		
+	public WSTableData  getWoList(
+			@RequestParam(required=false) Long materialId,
+			@RequestParam(required=false) String q,
+			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+	    Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		List<PWo> pWos =pWoRepositoryCustomImpl.getPwos(companyId, q, materialId);
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
 		if(pWos.size()<start + length)
 			end =pWos.size();
 		else
 			end =start + length;
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
+		
 		for (int i = start; i < end; i++) {
 			PWo w = pWos.get(i);
 			String idSo=(w.getSSo()==null)?"":""+w.getSSo().getIdSo();
 			String codeSo=(w.getSSo()==null)?"":w.getSSo().getCodeSo();
 			String status=(w.getPStatusDic()==null)?"":w.getPStatusDic().getName();
-			String[] d = {w.getWoNo(),codeSo,""+w.getQty(),w.getCreationTime().toString(),""+w.getUsers().getName(),status,""+w.getIdWo()};
+			
+			String ctime = "";
+			if(w.getCreationTime()!=null)
+			{
+				
+				ctime= formatter.format(w.getCreationTime());
+			}
+			String[] d = {w.getWoNo(),codeSo,""+w.getQty(),ctime,""+w.getUsers().getName(),status,""+w.getIdWo()};
 			lst.add(d);
 
 		}

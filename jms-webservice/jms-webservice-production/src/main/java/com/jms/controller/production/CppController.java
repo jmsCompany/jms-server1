@@ -9,7 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import com.jms.domain.db.PCPp;
+import com.jms.domain.db.PCppOp;
 import com.jms.domain.db.PWo;
+import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
@@ -18,7 +20,9 @@ import com.jms.domain.ws.p.WSPCpp;
 import com.jms.domain.ws.p.WSPMr;
 import com.jms.domain.ws.p.WSPlannedMaterialSending;
 import com.jms.repositories.p.PCPpRepository;
+import com.jms.repositories.p.PCppOpRepository;
 import com.jms.repositories.p.PWoRepository;
+import com.jms.repositories.user.UsersRepository;
 import com.jms.service.production.PCppService;
 import com.jms.web.security.SecurityUtils;
 
@@ -31,6 +35,8 @@ public class CppController {
 	@Autowired private PCPpRepository pCPpRepository;
 	@Autowired private PWoRepository pWoRepository;
 	@Autowired private SecurityUtils securityUtils;
+	@Autowired private PCppOpRepository pCppOpRepository;
+	@Autowired private UsersRepository usersRepository;
 
 	
 	@Transactional(readOnly = false)
@@ -52,6 +58,7 @@ public class CppController {
 	public Valid finishCpp(@RequestParam("idCpp") Long idCpp) throws Exception {
 		return pCppService.finishCpp(idCpp);
 	}
+	
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/isStarted", method=RequestMethod.GET)
@@ -119,6 +126,7 @@ public class CppController {
 			end =pCpps.size();
 		else
 			end =start + length;
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
 		for (int i = start; i < end; i++) {
 			PCPp w = pCpps.get(i);
 			String routineDNo ="";
@@ -126,11 +134,61 @@ public class CppController {
 			{
 				routineDNo=w.getPRoutineD().getRouteNo();
 			}
-			String actSt = (w.getActSt()==null)?"":w.getActSt().toString();
-			String actFt = (w.getActFt()==null)?"":w.getActFt().toString();
+			
+			String planSt = "";
+			if(w.getPlanSt()!=null)
+			{
+				
+				planSt= formatter.format(w.getPlanSt());
+			}
+			
+			String planFt = "";
+			if(w.getPlanFt()!=null)
+			{
+				
+				planFt= formatter.format(w.getPlanFt());
+			}
+			
+			
+			String actSt = "";
+			if(w.getActSt()!=null)
+			{
+				
+				actSt= formatter.format(w.getActSt());
+			}
+			
+			String actFt = "";
+			if(w.getActFt()!=null)
+			{
+				
+				actFt= formatter.format(w.getActFt());
+			}
 			String product =w.getPWo().getSSo().getSMaterial().getPno()+"_"+w.getPWo().getSSo().getSMaterial().getRev()+"_"+w.getPWo().getSSo().getSMaterial().getDes();
-			String[] d = {""+w.getCPpCode(),w.getPWo().getWoNo(),routineDNo,product,""+w.getPWo().getQty(),w.getPShiftPlanD().getShift(),w.getPlanSt().toString(),w.getPlanFt().toString(),actSt,actFt,w.getMMachine().getCode()+""
-					+ "-"+w.getMMachine().getSpec(),w.getUsers().getName(),""+w.getQty(),""+w.getIdCPp()};
+			
+			
+			List<PCppOp> ops = pCppOpRepository.getByCppId(w.getIdCPp());
+			
+			String opNames = "";
+			for(PCppOp p: ops)
+			{
+			   
+			 Users u =   usersRepository.getOne(p.getId().getIdUser());
+			 
+			// System.out.println("cppId: " +w.getIdCPp() + ", uid: " + p.getId().getIdUser() + ", name: " +  u.getName());
+			 if(!opNames.isEmpty())
+			 {
+				 opNames = opNames +"," + u.getName(); 
+			 }
+			 else
+			 {
+				 opNames =  u.getName(); 
+			 }
+			 
+			
+			}
+			
+			String[] d = {""+w.getCPpCode(),w.getPWo().getWoNo(),routineDNo,product,""+w.getPWo().getQty(),w.getPShiftPlanD().getShift(),planSt,planFt,actSt,actFt,w.getMMachine().getCode()+""
+					+ "-"+w.getMMachine().getSpec(),opNames,""+w.getQty(),""+w.getIdCPp()};
 			lst.add(d);
 
 		}
@@ -217,6 +275,7 @@ public class CppController {
 	public List<WSSelectObj>  getCppListByMaterialId(@RequestParam("materialId") Long materialId) {	   
 		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
 		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
 		for(PCPp cpp:pCPpRepository.getByMaterialId(materialId))
 		 {
 			
@@ -224,7 +283,7 @@ public class CppController {
 			String dd = "";
 			if(d!=null)
 			{
-				SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd"); 
+				 
 				dd= formatter.format(d);
 			}
 			String shift = "";
@@ -233,8 +292,7 @@ public class CppController {
 				shift = cpp.getPShiftPlanD().getShift();
 			}
 			String s =cpp.getPWo().getWoNo()+"_"+cpp.getMMachine().getCode()+"_"+dd +" "+shift;
-			
-			
+
 			WSSelectObj w = new WSSelectObj(cpp.getIdCPp(),s);
 			ws.add(w);
 		 }
@@ -242,8 +300,7 @@ public class CppController {
 	    return ws;
 	}
 
-	
-	
+
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/hasCheckPlans", method=RequestMethod.GET)
 	public Valid hasCheckPlans(@RequestParam("cppId") Long cppId)  {

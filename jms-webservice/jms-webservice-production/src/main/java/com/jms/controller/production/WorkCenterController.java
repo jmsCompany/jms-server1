@@ -1,6 +1,7 @@
 package com.jms.controller.production;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,9 +64,17 @@ public class WorkCenterController {
 			end =pWorkCenters.size();
 		else
 			end =start + length;
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
 		for (int i = start; i < end; i++) {
 			PWorkCenter w = pWorkCenters.get(i);
-			String[] d = {w.getWorkCenter(),w.getCreationTime().toString(),""+w.getUsers().getName(),""+w.getIdWc()};
+			
+			String ctime = "";
+			if(w.getCreationTime()!=null)
+			{
+				
+				ctime= formatter.format(w.getCreationTime());
+			}
+			String[] d = {w.getWorkCenter(),ctime,""+w.getUsers().getName(),""+w.getIdWc()};
 			lst.add(d);
 
 		}
