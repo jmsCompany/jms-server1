@@ -68,7 +68,11 @@ public class OOvertimeController {
 			OOvertime w = oOvertimeList.get(i);
 			MMachine m = mMachineRepository.findOne(w.getIdMachine());
 			
-			String[] d = {m.getCode()+"_" + m.getSpec(), myFmt.format(w.getOvertimeStart()),myFmt.format(w.getOvertimeEnd()),myFmt.format(w.getCreationTime()),""+w.getIdCompany()};
+			String os =(w.getOvertimeStart()==null)?"":myFmt.format(w.getOvertimeStart());
+			String oe =(w.getOvertimeEnd()==null)?"":myFmt.format(w.getOvertimeEnd());
+			String ct= (w.getCreationTime()==null)?"":myFmt.format(w.getCreationTime());
+			
+			String[] d = {m.getCode()+"_" + m.getSpec(), os,oe,ct,""+w.getIdOvertime()};
 			lst.add(d);
 
 		}

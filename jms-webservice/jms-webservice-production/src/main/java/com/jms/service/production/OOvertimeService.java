@@ -76,21 +76,24 @@ public class OOvertimeService {
 		
 	}
 	
+	
 	protected OOvertime toDBOOvertime(WSOOvertime wsOOvertime,OOvertime oOvertime) throws Exception
 	{
 		
 		OOvertime dbOOvertime = (OOvertime)BeanUtil.shallowCopy(wsOOvertime, OOvertime.class, oOvertime);
 
-		
 		dbOOvertime.setIdCompany(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 		
 		dbOOvertime.setCreationTime(new Date());
+		
 		return dbOOvertime;
 	}
+
 	
 	private WSOOvertime toWSOOvertime(OOvertime oOvertime) throws Exception
 	{
 		WSOOvertime pc = (WSOOvertime)BeanUtil.shallowCopy(oOvertime, WSOOvertime.class, null);
 		return pc;
 	}
+	
 }

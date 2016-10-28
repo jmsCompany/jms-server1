@@ -1,16 +1,31 @@
 package com.jms.controller.production;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import com.csvreader.CsvReader;
 import com.jms.domain.db.PCPp;
 import com.jms.domain.db.PCppOp;
 import com.jms.domain.db.PWo;
+import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
@@ -19,6 +34,8 @@ import com.jms.domain.ws.p.WSOEE;
 import com.jms.domain.ws.p.WSPCpp;
 import com.jms.domain.ws.p.WSPMr;
 import com.jms.domain.ws.p.WSPlannedMaterialSending;
+import com.jms.file.FileMeta;
+import com.jms.file.FileUploadService;
 import com.jms.repositories.p.PCPpRepository;
 import com.jms.repositories.p.PCppOpRepository;
 import com.jms.repositories.p.PWoRepository;
@@ -37,7 +54,57 @@ public class CppController {
 	@Autowired private SecurityUtils securityUtils;
 	@Autowired private PCppOpRepository pCppOpRepository;
 	@Autowired private UsersRepository usersRepository;
+	@Autowired
+	private  FileUploadService fileUploadService;
+    @Value("${filePath}")
+	private String filePath;
 
+	@Transactional(readOnly = false)
+	@RequestMapping(value = "/s/uploadCppFile", method = RequestMethod.POST)
+	public Valid uploadCppFile( MultipartHttpServletRequest request, HttpServletResponse response)  {
+	
+		Valid v= new Valid();
+		FileMeta fileMeta = new FileMeta();
+		try{
+			if (request.getFileNames().hasNext()) {
+				fileMeta = fileUploadService.upload(request, response,true);
+				FileInputStream inputStream = new FileInputStream(filePath+fileMeta.getFileName());
+				CsvReader reader = new CsvReader(inputStream,',', Charset.forName("UTF-8"));
+				reader.readHeaders();
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
+				while(reader.readRecord())
+				{
+					System.out.println("woId:" + reader.get(0));
+					Long woId = Long.parseLong(reader.get(0)); //工单
+				    Long machineID = Long.parseLong(reader.get(1)); //机器
+				    Long routineDId = Long.parseLong(reader.get(2)); //工序
+				    Long shiftDId = Long.parseLong(reader.get(3)); //排班
+				    Long qty = Long.parseLong(reader.get(4)); //数量
+				    Date planSt =formatter.parse(reader.get(5));//计划开始
+				    Date planFt =formatter.parse(reader.get(6));//计划结束
+					WSPCpp cpp = new WSPCpp();
+					cpp.setPwoId(woId);
+					cpp.setmMachineId(machineID);
+					cpp.setpRoutineDId(routineDId);
+					cpp.setpShiftPlanDId(shiftDId);
+					cpp.setQty(qty);
+					cpp.setPlanSt(planSt);
+					cpp.setPlanFt(planFt);
+					pCppService.saveWSPCPp(cpp);
+				}
+				}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			v.setMsg("上传排产计划失败");
+			v.setValid(false);
+			return v;
+		}
+		v.setMsg("成功");
+		v.setValid(true);
+		return v;
+	}
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/p/saveWSPCpp", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)

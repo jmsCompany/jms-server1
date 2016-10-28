@@ -60,6 +60,8 @@ public class SMaterial  implements java.io.Serializable {
      private Set<SPoMaterial> SPoMaterials = new HashSet<SPoMaterial>(0);
      private Set<SInventory> SInventories = new HashSet<SInventory>(0);
      
+     private Long emailSended;
+     
      
      private Long checkCycle;
      private Long cycleUnit;
@@ -389,13 +391,22 @@ public class SMaterial  implements java.io.Serializable {
 		this.checkCycle = checkCycle;
 	}
 
-	   @Column(name="cycle_unit")
+    @Column(name="cycle_unit")
 	public Long getCycleUnit() {
 		return cycleUnit;
 	}
 
 	public void setCycleUnit(Long cycleUnit) {
 		this.cycleUnit = cycleUnit;
+	}
+	
+	@Column(name="email_sended")
+	public Long getEmailSended() {
+		return emailSended;
+	}
+
+	public void setEmailSended(Long emailSended) {
+		this.emailSended = emailSended;
 	}
 
 

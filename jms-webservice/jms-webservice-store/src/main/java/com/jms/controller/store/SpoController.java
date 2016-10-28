@@ -85,6 +85,50 @@ public class SpoController {
 	
 	
 	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value = "/s/uploadSpoFile", method = RequestMethod.POST)
+	public Valid uploadSpoFile( MultipartHttpServletRequest request, HttpServletResponse response) {
+	
+		Valid v= new Valid();
+		v.setMsg("成功");
+		v.setValid(true);
+		return v;
+//		FileMeta fileMeta = new FileMeta();
+//		if (request.getFileNames().hasNext()) {
+//			fileMeta = fileUploadService.upload(request, response,false);
+//			SAttachment spic = new SAttachment();
+//			spic.setOrgFilename(fileMeta.getOrgName());
+//			spic.setFilename(fileMeta.getFileName());
+//			//logger.debug("orgin file name: " +  fileMeta.getOrgName() +", file name in server: " + fileMeta.getFileName());
+//			spic.setUsers(securityUtils.getCurrentDBUser());
+//			spic = sAttachmentRepository.save(spic);
+//			fileMeta.setFileId(spic.getId());
+//			fileMeta.setBytes(null);
+//			if(spoId!=null&&!spoId.equals(0l))
+//			{
+//				SPo spo = sSpoRepository.findOne(spoId);
+//			    spo.setSAttachment(spic);
+//			    sSpoRepository.save(spo);
+//			}
+//
+//			
+//		}
+//		else
+//		{
+//			logger.debug("no file was uploaded");
+//		}
+//		return fileMeta;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveSpoRemark", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public Valid saveSpoRemark(@RequestBody WSSpoRemark wsSpoRemark) throws Exception {

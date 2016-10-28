@@ -7,7 +7,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.jms.domain.db.PRoutineD;
 import com.jms.domain.db.QFileManagent;
+import com.jms.domain.db.SMaterial;
+import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.q.WSQFileManagent;
 import com.jms.domainadapter.BeanUtil;
@@ -101,19 +105,56 @@ public class QFileManagementService {
 		return dbQFileManagent;
 	}
 	
-	private WSQFileManagent toWSQFileManagent(QFileManagent qFileManagent) throws Exception
+	public WSQFileManagent toWSQFileManagent(QFileManagent qFileManagent) throws Exception
 	{
 		WSQFileManagent pc = (WSQFileManagent)BeanUtil.shallowCopy(qFileManagent, WSQFileManagent.class, null);
 		
 		if(qFileManagent.getQFileType()!=null)
 		{
 			pc.setIdFileType(qFileManagent.getQFileType().getIdFileType());
+			pc.setFileType(qFileManagent.getQFileType().getType());
 		}
 		if(qFileManagent.getCreationTime()!=null)
 		{
 			pc.setCreationTime(qFileManagent.getCreationTime());
 		}
+		String person ="";
+		if(qFileManagent.getCreator()!=null)
+		{
+			
+				Users  u = usersRepository.findOne(qFileManagent.getCreator());
+				if(u.getName()!=null)
+				{
+					person = u.getName();
+				}
 		
+		}
+		pc.setCreatorName(person);
+		
+		String routineD ="";
+		if(qFileManagent.getIdRoutineD()!=null){
+			PRoutineD pRoutineD = pRoutineDRepository.findOne(qFileManagent.getIdRoutineD());
+			if(pRoutineD!=null){
+				routineD = pRoutineD.getRouteNo()+"_"+pRoutineD.getDes();
+			}
+			
+		}
+		pc.setRoutineD(routineD);
+		
+		String sMaterial="";
+		if(qFileManagent.getIdMaterial()!=null)
+		{
+			SMaterial material = sMaterialRepository.findOne(qFileManagent.getIdMaterial());
+			if(material!=null)
+			sMaterial= material.getPno()+"_"+material.getRev()+"_"+material.getDes();
+		}
+		pc.setMaterial(sMaterial);
+		
+		
+		if(qFileManagent.getIdWo()!=null)
+		{
+			pc.setWoNo(pWoRepository.findOne(qFileManagent.getIdWo()).getWoNo());
+		}
 		return pc;
 	}
 	

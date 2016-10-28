@@ -40,6 +40,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 				velocityEngine.addProperty("class.resource.loader.class",
 						"org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
 				String body = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, template, "UTF-8", model);
+				System.out.println("body: " + body);
 				message.setText(body, true);
 				if (files != null) {
 					for (String f : files) {
@@ -51,6 +52,8 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 			}
 		};
 		this.mailSender.send(preparator);
+		
+	
 
 	}
 

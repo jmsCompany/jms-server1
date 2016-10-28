@@ -19,6 +19,7 @@ public class WSUserProfile implements java.io.Serializable{
 	private List<WSMenu> WSMenuList;
 	private Boolean isOP;
 	private Boolean isAdmin;
+	private String lang;
 	
 	private String department;
 	private List<WSPCppAndriod> pcppList =new ArrayList<WSPCppAndriod>();
@@ -93,6 +94,12 @@ public class WSUserProfile implements java.io.Serializable{
 	}
 	public void setIsAdmin(Boolean isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+	public String getLang() {
+		return lang;
+	}
+	public void setLang(String lang) {
+		this.lang = lang;
 	}
 
 

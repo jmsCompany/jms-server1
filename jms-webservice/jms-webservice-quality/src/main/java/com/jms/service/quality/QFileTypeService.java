@@ -56,7 +56,7 @@ public class QFileTypeService {
 		for(String s : Config.qFileTypes)
 		{
 			
-			System.out.println(s);
+			//System.out.println(s);
 			QFileType t = new QFileType();
 			t.setDes(s);
 			t.setIdCompany(companyId);

@@ -17,6 +17,8 @@ public class WSQFileTemplate  implements java.io.Serializable{
     private String uploader;
     private String fileType;
     
+    //private String woNo;
+    
 	public Long getIdFileTemplate() {
 		return idFileTemplate;
 	}

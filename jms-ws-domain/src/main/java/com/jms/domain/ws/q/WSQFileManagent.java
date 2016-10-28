@@ -17,6 +17,13 @@ public class WSQFileManagent  implements java.io.Serializable{
     private Long idWo;
     private Long idMaterial;
     
+    private String routineD;
+    private String material;
+    private String fileType;
+    private String creatorName;
+    
+    private String woNo;
+    
 	public Long getIdFile() {
 		return idFile;
 	}
@@ -88,5 +95,35 @@ public class WSQFileManagent  implements java.io.Serializable{
 	}
 	public void setIdMaterial(Long idMaterial) {
 		this.idMaterial = idMaterial;
+	}
+	public String getRoutineD() {
+		return routineD;
+	}
+	public void setRoutineD(String routineD) {
+		this.routineD = routineD;
+	}
+	public String getMaterial() {
+		return material;
+	}
+	public void setMaterial(String material) {
+		this.material = material;
+	}
+	public String getFileType() {
+		return fileType;
+	}
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
+	}
+	public String getCreatorName() {
+		return creatorName;
+	}
+	public void setCreatorName(String creatorName) {
+		this.creatorName = creatorName;
+	}
+	public String getWoNo() {
+		return woNo;
+	}
+	public void setWoNo(String woNo) {
+		this.woNo = woNo;
 	}
 }

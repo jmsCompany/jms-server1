@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.jms.domain.db.MRepairHistory;
+import com.jms.domain.db.PUnplannedStops;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.m.WSMRepairHistory;
@@ -113,6 +114,17 @@ public class MRepairHistoryController {
 			String status =(w.getMStatusDic()==null)?"":w.getMStatusDic().getName();
 			String[] d = {machineCode,machineName,op,opReportTime,des,repair,finishTime,status,""+w.getIdRepairHistory()};
 			lst.add(d);
+			
+			
+//			if(mRepairHistory.getIdUnplannedStop()!=null)
+//			{
+//				PUnplannedStops pUnplannedStops = pUnplannedStopsRepository.findOne(mRepairHistory.getIdUnplannedStop());
+//				
+//				pc.setRecoverTime(pUnplannedStops.getOpFt());
+//				pc.setRepairingTime(pUnplannedStops.getEqFt());
+//				pc.setResponseTime(pUnplannedStops.getEqSt());
+//			}
+			
 
 		}
 		WSTableData t = new WSTableData();

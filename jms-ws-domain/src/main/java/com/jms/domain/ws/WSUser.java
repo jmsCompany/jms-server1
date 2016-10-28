@@ -33,6 +33,7 @@ public class WSUser implements java.io.Serializable{
     private Date lastLogin;
     private String token;
     private String locale;
+    private String lang;
     
     private List<WSRoles> roleList = new ArrayList<WSRoles>(0);
     public WSUser(){}
@@ -277,6 +278,14 @@ public class WSUser implements java.io.Serializable{
 
 	public void setRoleList(List<WSRoles> roleList) {
 		this.roleList = roleList;
+	}
+
+	public String getLang() {
+		return lang;
+	}
+
+	public void setLang(String lang) {
+		this.lang = lang;
 	}
 
 

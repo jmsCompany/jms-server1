@@ -257,6 +257,17 @@ public class MRepairHistoryService {
 			i++;
 		}
 		pc.setHistoryPartItems(historyPartItems);
+		
+		
+		if(mRepairHistory.getIdUnplannedStop()!=null)
+		{
+			PUnplannedStops pUnplannedStops = pUnplannedStopsRepository.findOne(mRepairHistory.getIdUnplannedStop());
+			
+			pc.setRecoverTime(pUnplannedStops.getOpFt());
+			pc.setRepairingTime(pUnplannedStops.getEqFt());
+			pc.setResponseTime(pUnplannedStops.getEqSt());
+		}
+		
 	    return pc;
 	}
 }

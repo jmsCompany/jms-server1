@@ -536,7 +536,27 @@ public class UserController {
 			//System.out.println("token is null????");
 			return userProfile;
 		}
+		if(wsUser.getLang()!=null)
+		{
+			userProfile.setLang(wsUser.getLang());
+		}
 		Users u =usersRepository.findByUsernameOrEmailOrMobile(wsUser.getLogin());
+		
+		if(wsUser.getLang()!=null)
+		{
+			userProfile.setLang(wsUser.getLang());
+			if(!wsUser.getLang().equals(u.getLang()))
+			{
+				u.setLang(wsUser.getLang());
+				usersRepository.save(u);
+			}
+		}
+		else
+		{
+			userProfile.setLang(u.getLang());
+		}
+		
+		
 		userProfile.setLogin(wsUser.getLogin());
 		userProfile.setToken(token);
 		userProfile.setIdUser(u.getIdUser());
@@ -544,6 +564,7 @@ public class UserController {
 		userProfile.setIdCompany(u.getCompany().getIdCompany());
 		userProfile.setName(u.getName());
 		userProfile.setDepartment("");
+		
 		Boolean isOP= false;
 		userProfile.setIsAdmin(false);
 		for(GroupMembers g:u.getGroupMemberses())

@@ -175,7 +175,7 @@ public class UserService extends IUserServiceImpl{
 		{
 			WSPCppOP w  = new WSPCppOP();
 			w.setIdCpp(cpp.getIdCPp());
-			Date d = cpp.getPlanFt();
+			Date d = cpp.getPlanSt();
 			String dd = "";
 			if(d!=null)
 			{
@@ -616,7 +616,7 @@ public class UserService extends IUserServiceImpl{
 				//保留该小组成员
 				if(gmsMap.containsKey(g.getIdGroup()))
 				{
-				    System.out.println("keep role......" +gmsMap.get(g.getIdGroup()).getGroups().getGroupName());
+				  //  System.out.println("keep role......" +gmsMap.get(g.getIdGroup()).getGroups().getGroupName());
 					gmsMap.remove(g.getIdGroup());
 					continue;
 				}

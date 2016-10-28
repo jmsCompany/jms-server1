@@ -75,9 +75,6 @@ public class PStandardRoutineDService {
 	@Transactional(readOnly=false)
 	public WSPStandardRoutined saveWSPStandardRoutined(WSPStandardRoutined wsPStandardRoutined) throws Exception {
 
-		if(wsPStandardRoutined.getIdStandardRoutined()==null||wsPStandardRoutined.getIdStandardRoutined().equals(0l))
-			return wsPStandardRoutined;
-	
 		PStandardRoutined dbPStandardRoutined;
 		
 		if(wsPStandardRoutined.getIdStandardRoutined()!=null&&!wsPStandardRoutined.getIdStandardRoutined().equals(0l))
@@ -90,6 +87,8 @@ public class PStandardRoutineDService {
 		}
 
 	     dbPStandardRoutined = toDBPStandardRoutined(wsPStandardRoutined,dbPStandardRoutined);
+	     
+	    // System.out.println("save standerd routineD: " + dbPStandardRoutined.getName());
 		
 	     dbPStandardRoutined = pStandardRoutinedRepository.save(dbPStandardRoutined);
 		 

@@ -60,6 +60,9 @@ public class Users  implements java.io.Serializable {
      private Date lastLogin;
      private String token;
      private Long userType;
+     
+     
+     private String lang;
      private Set<WProject> WProjects = new HashSet<WProject>(0);
      private Set<Notice> notices = new HashSet<Notice>(0);
      private Set<SPo> SPos = new HashSet<SPo>(0);
@@ -1012,6 +1015,16 @@ public class Users  implements java.io.Serializable {
     public void setPWos(Set<PWo> PWos) {
         this.PWos = PWos;
     }
+
+    @Column(name="lang", length=12)
+	public String getLang() {
+		return lang;
+	}
+
+
+	public void setLang(String lang) {
+		this.lang = lang;
+	}
 
 
 

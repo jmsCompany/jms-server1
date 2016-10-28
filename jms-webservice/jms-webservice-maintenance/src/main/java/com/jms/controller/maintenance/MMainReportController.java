@@ -231,7 +231,7 @@ public class MMainReportController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value = "/m/getWSMtbf", method = RequestMethod.GET)
 	public List<WSMtbf> getWSMtbf(@RequestParam int year, @RequestParam Long idMachine) throws ParseException {
-
+     //  System.out.println("year: " + year+", idMachine:" +idMachine);
 		MMachine machine = mMachineRepository.findOne(idMachine);
 		Calendar cl = Calendar.getInstance();
 		cl.setTime(new Date());
@@ -258,7 +258,7 @@ public class MMainReportController {
 				w.setMtbfTarget(machine.getMtbf().floatValue());
 			}
 
-			WSThreeDates dates = calculateBeginAndEndDates(year, month);
+			WSThreeDates dates = calculateBeginAndEndDates(year, x);
 			List<PCPp> cpps = pCPpRepository.getActualByFromDateToDateAndMachineId(companyId, dates.getMonday(),
 					dates.getSunday(), idMachine);
 			Long actTime = 0l;
@@ -267,20 +267,31 @@ public class MMainReportController {
 			}
 
 			long breakdownTime = 0;
+		//	System.out.println( "idmachine: " + idMachine +", monday: " +  dates.getMonday() +", sunday: " + dates.getSunday());
 			List<PUnplannedStops> ss = pUnplannedStopsRepository.getByMachineIdAndDuration(idMachine, dates.getMonday(),
 					dates.getSunday());
 			int i = 0;
 			for (PUnplannedStops s : ss) {
 				i++;
 				breakdownTime = breakdownTime + (s.getOpFt().getTime() - s.getOpSt().getTime());
+			//	System.out.println( "i: " + i +", breakdown time: " + breakdownTime);
 			}
 
 			float mtbf=0f;
 			float mttr = 0f;
 			if(i==0)
 			{
-				mtbf = (float) (actTime - breakdownTime);
-			    mttr = 0f;
+				if(actTime>0)
+				{
+					mtbf = (float) (actTime - breakdownTime);
+				    mttr = 0f;
+				}
+				else
+				{
+					mtbf = w.getMtbfTarget();
+				    mttr = w.getMttrTarget();
+				}
+				
 			}
 			else
 			{	 
@@ -406,17 +417,25 @@ public class MMainReportController {
 					dates.getSunday(), idMachine);
 			Long actTime = 0l;
 			for (PCPp p : cpps) {
+				
 				actTime = actTime + (p.getActFt().getTime() - p.getActSt().getTime());
 			}
+			//System.out.println("week: " + x+", beginDate: " + beginDate.toString()+", actTime: " + actTime);
 			long breakdownTime = 0;
 			List<PUnplannedStops> ss = pUnplannedStopsRepository.getByMachineIdAndDuration(idMachine, dates.getMonday(),
 					dates.getSunday());
 
 			for (PUnplannedStops s : ss) {
-				breakdownTime = breakdownTime + (s.getOpFt().getTime() - s.getOpSt().getTime());
+				long opFt = (s.getOpFt()==null)?dates.getSunday().getTime():s.getOpFt().getTime();
+				breakdownTime = breakdownTime + (opFt - s.getOpSt().getTime());
 			}
-
+			
 			float rate = (actTime.equals(0l))?0l:(float) breakdownTime / actTime;
+			if(breakdownTime>0)
+			{
+				System.out.println("breakdownTime : " + breakdownTime +", rate: " + rate);
+			}
+			
 
 			WSBreakdownRate w = new WSBreakdownRate();
 			w.setX(x);

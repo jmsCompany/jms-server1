@@ -296,14 +296,9 @@ public class DatabaseInit {
 		
 		/****导入公司数据***/
 //	   Resource materialsFile = ctx.getResource("classpath:data/san_material.csv");
-//	   materialService.loadMaterialsByCompanyId(materialsFile.getInputStream(), 8l);
+	//   materialService.loadMaterialsByCompanyId(materialsFile.getInputStream(), 8l);
 		
-		UserDetails userDetails = userDetailService.loadUserByUsername(""+usersRepository.findByUsername("18515510311").getIdUser());
-		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-				userDetails.getUsername(), userDetails.getPassword());
-		Authentication authenticated = authenticationManager
-				.authenticate(authentication);
-		SecurityContextHolder.getContext().setAuthentication(authenticated);
+
 //		 Resource departmentsFile = ctx.getResource("classpath:data/san_dept.csv");
 //		 groupService.loadDepartmentsByCompanyId(departmentsFile.getInputStream(), 8l);
 //		 Resource usersFile = ctx.getResource("classpath:data/san_users.csv");
@@ -340,6 +335,16 @@ public class DatabaseInit {
 	//	qFileTypeService.loadQFileTypes(8l);
 		
 	//	oCalendarTypeService.loadOCalendarTypes();
+		
+		
+		
+//		UserDetails userDetails = userDetailService.loadUserByUsername(""+usersRepository.findByUsername("18515510311").getIdUser());
+//		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+//				userDetails.getUsername(), userDetails.getPassword());
+//		Authentication authenticated = authenticationManager
+//				.authenticate(authentication);
+//		SecurityContextHolder.getContext().setAuthentication(authenticated);
+		
 	}
 	
 	
@@ -357,5 +362,11 @@ public class DatabaseInit {
 		
 	}
 
-	
+	@Scheduled(fixedRate=1000*60*60)
+	public void materialAlert() {
+		//System.out.println("remind");
+		//pStopsPlanService.remind();
+		sInventoryService.emailAlert();
+		
+	}
 }

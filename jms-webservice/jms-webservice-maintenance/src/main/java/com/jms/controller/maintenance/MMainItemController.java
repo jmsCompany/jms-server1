@@ -55,7 +55,7 @@ public class MMainItemController {
 
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/m/findMainItem", method=RequestMethod.GET)
-	public WSMainItem findSparePart(@RequestParam("idMainItem") Long idMainItem) throws Exception {
+	public WSMainItem findMainItem(@RequestParam("idMainItem") Long idMainItem) throws Exception {
 		return mMainItemService.findWSMainItem(idMainItem);
 		
 	}

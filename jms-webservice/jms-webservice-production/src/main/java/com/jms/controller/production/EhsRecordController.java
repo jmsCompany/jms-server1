@@ -42,6 +42,23 @@ public class EhsRecordController {
 	public WSEHSRecord saveWSEHSRecord(@RequestBody WSEHSRecord wsEHSRecord) throws Exception {
 		return ehsRecordService.saveWSEHSRecord(wsEHSRecord);
 	}
+	
+		
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/e/saveWSEHSRecordList", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public Valid saveWSEHSRecordList(@RequestBody List<WSEHSRecord> wsEHSRecordList) throws Exception {
+		
+		Valid v = new Valid();
+		v.setValid(true);
+		
+		for(WSEHSRecord wsEHSRecord:wsEHSRecordList)
+		{
+			ehsRecordService.saveWSEHSRecord(wsEHSRecord);
+		}
+		return v;
+		
+	}
 
 
 	@Transactional(readOnly = true)
@@ -54,6 +71,29 @@ public class EhsRecordController {
 	@RequestMapping(value="/e/deleteWSEHSRecord", method=RequestMethod.GET)
 	public Valid deleteWSEHSRecord(@RequestParam("idEhsRecord") Long idEhsRecord) {
 		return ehsRecordService.deleteWSEHSRecord(idEhsRecord);
+		
+	}
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/e/findWSEHSRecordList", method=RequestMethod.GET)
+	public List<WSEHSRecord> findWSEHSRecordList() throws Exception{
+		return ehsRecordService.findWSEHSRecordList();
+		
+	}
+	
+//	
+//	@Transactional(readOnly = true)
+//	@RequestMapping(value="/e/findWSEHSRecordList", method=RequestMethod.GET)
+//	public List<WSEHSRecord> findWSEHSRecordList(@RequestParam("idShiftD") Long idShiftD) throws Exception{
+//		return ehsRecordService.findWSEHSRecordList(idShiftD);
+//		
+//	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/e/ehsValid", method=RequestMethod.GET)
+	public Valid ehsValid() throws Exception{
+		return ehsRecordService.ehsValid();
 		
 	}
 	//date  op  shiftD   creationTime sup  remark   supTime  status   idEhsRecord;
@@ -86,14 +126,22 @@ public class EhsRecordController {
 			{
 				op = u.getName();
 			}
-			
+			String item="";
+			if(w.getEhsItem()!=null)
+			{
+				item=w.getEhsItem().getDes();
+			}
 			String shiftD = "";
 			
-			PShiftPlanD sp= pShiftPlanDRepository.findOne(w.getIdShiftD());
-			if(sp!=null)
+			if(w.getIdShiftD()!=null)
 			{
-				shiftD = sp.getShift();
+				PShiftPlanD sp= pShiftPlanDRepository.findOne(w.getIdShiftD());
+				if(sp!=null)
+				{
+					shiftD = sp.getShift();
+				}
 			}
+		
 			
 
 			String ctime = "";
@@ -101,14 +149,18 @@ public class EhsRecordController {
 			{
 				ctime= formatter.format(w.getCreationTime());
 			}
-			
-			//String sup="";
-			Users usup = usersRepository.findOne(w.getIdSup());
 			String sup="";
-			if(usup.getName()!=null)
+			//String sup="";
+			if(w.getIdSup()!=null)
 			{
-				sup = usup.getName();
+				Users usup = usersRepository.findOne(w.getIdSup());
+				
+				if(usup.getName()!=null)
+				{
+					sup = usup.getName();
+				}
 			}
+			
 			String remark="";
 			if(w.getRemark()!=null)
 			{
@@ -131,7 +183,7 @@ public class EhsRecordController {
 			{
 				status ="已处理";
 			}
-			String[] d = {date,  op,  shiftD, ctime, sup,  remark,   supTime,  status,""+w.getIdEhsRecord()};
+			String[] d = {date,  op, item, shiftD, ctime, sup,  remark,   supTime,  status,""+w.getIdEhsRecord()};
 			lst.add(d);
 
 		}

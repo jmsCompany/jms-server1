@@ -1,0 +1,174 @@
+	1)   文件模版的domain
+	
+	public class WSQFileTemplate  implements java.io.Serializable{
+  
+	private Long idFileTemplate;
+    private Long idFileType;
+    private String orgFilename;
+    private String filename;
+    private Long uploadBy;
+    private Date creationTime;
+    private Long idCompany;
+    
+    
+    private String uploader;
+    private String fileType;
+    }
+	
+	
+	2）根据文件类型得到文件模版，目前文件类型的字典如下：
+
+文件类型ID，名字，说明，公司ID	
+'1','制程检验Pulley','制程检验Pulley','8'
+'2','制程检验Roller','制程检验Roller','8'
+'3','终检Pulley','终检Pulley','8'
+'4','终检Roller','终检Roller','8'
+'5','来料检验','来料检验','8'
+'6','其它','其它','8'
+'13','技术文件','技术文件','8'
+'14','Procedure','Procedure','8'
+'7','制程检验Pulley','制程检验Pulley','9'
+'8','制程检验Roller','制程检验Roller','9'
+'9','终检Pulley','终检Pulley','9'
+'10','终检Roller','终检Roller','9'
+'11','来料检验','来料检验','9'
+'12','其它','其它','9'
+'15','技术文件','技术文件','9'
+'16','Procedure','Procedure','9'
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/q/findQFileTemplateByIdType", method=RequestMethod.GET)
+	public WSQFileTemplate findQFileTemplateByIdType(@RequestParam("idFileType") Long idFileType) throws Exception {
+		return qFileTemplateService.findQFileTemplateByIdType(idFileType);
+		
+	}
+	
+	
+	3） 根据文件名得到文件  （｛fileName｝为可变路径，可取WSQFileTemplate中的filename，｛orgFileName｝取WSQFileTemplate中的 orgFilename）
+	
+	@RequestMapping(value = "/getFile/{fileName}/{orgFileName}/", method = RequestMethod.GET)
+	public void getFile(@PathVariable("fileName") String fileName,@PathVariable("orgFileName") String orgFileName,  HttpServletRequest request,  
+          HttpServletResponse response) throws IOException {
+		
+		 response.setContentType("text/html;charset=UTF-8");  
+	     request.setCharacterEncoding("UTF-8");
+	     File f = new File(filePath + fileName);
+	     long fileLength =f.length();  
+	     response.setHeader("Content-disposition", "attachment; filename="  
+	                + new String(orgFileName.getBytes("utf-8"), "ISO8859-1"));  
+	     response.setHeader("Content-Length", String.valueOf(fileLength));
+		FileInputStream fs = new FileInputStream(f);
+		ByteStreams.copy(fs, response.getOutputStream());
+	}
+	
+	
+	
+	4）上传质量文件
+		@Transactional(readOnly = false)
+	@RequestMapping(value = "/q/uploadQFile", method = RequestMethod.POST)
+	public FileMeta uploadQFile(MultipartHttpServletRequest request,
+			HttpServletResponse response) {
+		FileMeta fileMeta = new FileMeta();
+		if (request.getFileNames().hasNext()) {
+			return fileUploadService.upload(request, response,false);
+		}
+		return fileMeta;
+	}
+	
+	5）文件的domain
+	public class FileMeta {
+	
+	 private Long fileId;
+	 private String orgName;
+	 private String fileName;
+	 private String fileSize;
+	 private String fileType;
+	 private String des;
+     private byte[] bytes;
+     ｝
+	6）保存质量报告文件 （将调用4）返回fileMeta中的fileName付给WSQFileManagent中的fileName）
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/q/saveQFileManagement", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSQFileManagent saveQFileManagement(@RequestBody WSQFileManagent wsQFileManagement) throws Exception {
+		return qFileManagementService.saveWSQFileManagent(wsQFileManagement);
+	}
+	
+	7）
+	质量报告文件的domain
+	
+	public class WSQFileManagent  implements java.io.Serializable{
+
+	private Long idFile;
+    private Long idFileType;
+    private String fileNo;
+    private Long idRoutineD;
+    private Long creator;
+    private Date creationTime;
+    private String orgFilename;
+    private String fileName;
+    private Long uploadByUser;
+    private Long idCompany;
+    private Long idWo;
+    private Long idMaterial;
+    ｝
+    －－－－－－－－－－
+    
+    
+    8）EHS纪录
+    
+    public class WSEHSRecord{
+
+    private Long idEhsRecord;
+    private String ehsItem;
+    private Long idEhsItem;
+    private Date date;
+    private Long idOp;
+    private Long idShiftD;
+    private Date creationTime;
+    private Long idSup;
+    private String remark;
+    private Date supTime;
+    private Long status;
+    private String sstatus;//0未处理，1已处理
+    private Long idCompany;
+    
+    
+    private String op;
+    private String sup;
+    private String shiftD;
+    ｝
+    
+    
+    11)根据排班的id获得是否通过EHS检查 
+    
+ 	@Transactional(readOnly = true)
+	@RequestMapping(value="/e/ehsValid", method=RequestMethod.GET)
+	public Valid ehsValid(@RequestParam("idShiftD") Long idShiftD) throws Exception{
+		return ehsRecordService.ehsValid(idShiftD);
+		
+	}
+	
+	12）Valid 结构valid
+	
+	public class Valid implements Serializable {
+
+	private Boolean valid; //true通过ehs检查，false未通过检查，如果没有通过须调用13）
+	private String msg;
+	｝
+    
+    13)根据排班的id获得EHS列表 
+    
+    @Transactional(readOnly = true)
+	@RequestMapping(value="/e/findWSEHSRecordList", method=RequestMethod.GET)
+	public List<WSEHSRecord> findWSEHSRecordList(@RequestParam("idShiftD") Long idShiftD) throws Exception{
+		return ehsRecordService.findWSEHSRecordList(idShiftD);
+		
+	}
+	
+	14）保存ehs列表
+		@Transactional(readOnly = false)
+	@RequestMapping(value="/e/saveWSEHSRecordList", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public Valid saveWSEHSRecordList(@RequestBody List<WSEHSRecord> wsEHSRecordList) throws Exception {
+	｝

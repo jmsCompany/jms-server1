@@ -1,45 +1,23 @@
-[2016-10-14 09:11:14.261] log4j2 - 6994  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 6994 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-10-14 09:11:14.277] log4j2 - 6994 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-10-14 09:11:33.402] log4j2 - 6994 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-10-14 09:11:33.405] log4j2 - 6994 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-10-14 09:11:38.650] log4j2 - 6994  INFO [main] --- Application: Started Application in 24.742 seconds (JVM running for 26.27)
-[2016-10-14 09:17:04.880] log4j2 - 7053  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7053 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-10-14 09:17:04.882] log4j2 - 7053 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-10-14 09:17:21.291] log4j2 - 7053 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-10-14 09:17:21.294] log4j2 - 7053 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-10-14 09:17:26.297] log4j2 - 7053  INFO [main] --- Application: Started Application in 21.627 seconds (JVM running for 22.581)
-[2016-10-14 09:23:37.408] log4j2 - 7117  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7117 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-10-14 09:23:37.410] log4j2 - 7117 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-10-14 09:23:55.114] log4j2 - 7117 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-10-14 09:23:55.117] log4j2 - 7117 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-10-14 09:23:59.887] log4j2 - 7117  INFO [main] --- Application: Started Application in 22.757 seconds (JVM running for 23.69)
-[2016-10-14 09:59:54.056] log4j2 - 7591  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 7591 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-10-14 09:59:54.057] log4j2 - 7591 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-10-14 10:00:11.500] log4j2 - 7591 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-10-14 10:00:11.502] log4j2 - 7591 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-10-14 10:00:16.852] log4j2 - 7591  INFO [main] --- Application: Started Application in 23.025 seconds (JVM running for 23.891)
-[2016-10-14 11:49:02.892] log4j2 - 8761  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 8761 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-10-14 11:49:02.894] log4j2 - 8761 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-10-14 11:49:22.880] log4j2 - 8761 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-10-14 11:49:22.883] log4j2 - 8761 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-10-14 11:49:29.654] log4j2 - 8761  INFO [main] --- Application: Started Application in 26.986 seconds (JVM running for 27.858)
-[2016-10-14 11:51:01.501] log4j2 - 8764  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 8764 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-10-14 11:51:01.502] log4j2 - 8764 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-10-14 11:51:18.312] log4j2 - 8764 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-10-14 11:51:18.315] log4j2 - 8764 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-10-14 11:51:24.214] log4j2 - 8764  INFO [main] --- Application: Started Application in 22.925 seconds (JVM running for 23.751)
-[2016-10-14 12:10:01.017] log4j2 - 8815  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 8815 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-10-14 12:10:01.019] log4j2 - 8815 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-10-14 12:10:24.187] log4j2 - 8815 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-10-14 12:10:24.191] log4j2 - 8815 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-10-14 12:10:30.406] log4j2 - 8815  INFO [main] --- Application: Started Application in 29.639 seconds (JVM running for 30.581)
-[2016-10-14 12:12:20.085] log4j2 - 8818  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 8818 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-10-14 12:12:20.088] log4j2 - 8818 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-10-14 12:12:37.869] log4j2 - 8818 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-10-14 12:12:37.873] log4j2 - 8818 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-10-14 12:12:43.616] log4j2 - 8818  INFO [main] --- Application: Started Application in 23.79 seconds (JVM running for 24.673)
-[2016-10-14 12:14:19.275] log4j2 - 8820  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 8820 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-10-14 12:14:19.276] log4j2 - 8820 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-10-14 12:14:36.485] log4j2 - 8820 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-10-14 12:14:36.487] log4j2 - 8820 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-10-14 12:14:42.619] log4j2 - 8820  INFO [main] --- Application: Started Application in 23.583 seconds (JVM running for 24.444)
+[2016-10-28 09:10:46.473] log4j2 - 2300  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 2300 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-10-28 09:10:46.497] log4j2 - 2300 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-10-28 09:11:09.661] log4j2 - 2300 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-10-28 09:11:09.663] log4j2 - 2300 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-10-28 09:11:15.558] log4j2 - 2300  INFO [main] --- Application: Started Application in 29.637 seconds (JVM running for 31.325)
+[2016-10-28 09:16:38.594] log4j2 - 2329  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 2329 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-10-28 09:16:38.621] log4j2 - 2329 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-10-28 09:16:57.577] log4j2 - 2329 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-10-28 09:16:57.580] log4j2 - 2329 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-10-28 09:17:03.062] log4j2 - 2329  INFO [main] --- Application: Started Application in 25.011 seconds (JVM running for 26.171)
+[2016-10-28 09:17:53.726] log4j2 - 2338  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 2338 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-10-28 09:17:53.728] log4j2 - 2338 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-10-28 09:18:11.375] log4j2 - 2338 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-10-28 09:18:11.377] log4j2 - 2338 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-10-28 09:18:16.744] log4j2 - 2338  INFO [main] --- Application: Started Application in 23.247 seconds (JVM running for 24.074)
+[2016-10-28 11:51:50.766] log4j2 - 2338  WARN [http-nio-9999-exec-7] --- LinkmanService: set email: 31@dr.com
+[2016-10-28 11:54:23.386] log4j2 - 2338  WARN [http-nio-9999-exec-10] --- LinkmanService: set email: 31@dr.com
+[2016-10-28 12:02:01.708] log4j2 - 2338  WARN [http-nio-9999-exec-6] --- LinkmanService: set email: 31@dr.com
+[2016-10-28 12:35:50.663] log4j2 - 3336  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 3336 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2016-10-28 12:35:50.666] log4j2 - 3336 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2016-10-28 12:36:07.492] log4j2 - 3336 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2016-10-28 12:36:07.495] log4j2 - 3336 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2016-10-28 12:36:12.504] log4j2 - 3336  INFO [main] --- Application: Started Application in 22.284 seconds (JVM running for 23.697)

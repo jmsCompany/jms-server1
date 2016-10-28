@@ -86,6 +86,11 @@ public class QFileTemplateService {
 		return toWSQFileTemplate(qFileTemplateRepository.findOne(idFileTemplate));
 	}
 	
+	
+	@Transactional(readOnly=true)
+	public WSQFileTemplate findQFileTemplateByIdType(Long idFileType) throws Exception {
+		return toWSQFileTemplate(qFileTemplateRepository.findByIdFileType(idFileType));
+	}
 
 	
 	private QFileTemplate toDBQFileTemplate(WSQFileTemplate wsQFileTemplate,QFileTemplate qFileTemplate) throws Exception

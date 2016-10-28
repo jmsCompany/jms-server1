@@ -21,5 +21,7 @@ public interface QFileTemplateRepository extends JpaRepository<QFileTemplate, Lo
 
 	
 	public List<QFileTemplate> findByIdCompany(Long idCompany);
+	
+	public QFileTemplate findByIdFileType(Long idFileType);
 
 }

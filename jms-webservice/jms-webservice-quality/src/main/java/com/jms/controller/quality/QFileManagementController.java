@@ -195,4 +195,35 @@ public class QFileManagementController {
 	    return t;
 	}
 	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/q/getQFileManagements", method=RequestMethod.POST)
+	public List<WSQFileManagent>  getQFileManagements(
+			@RequestParam(required=false) String from,
+			@RequestParam(required=false) String to,
+			@RequestParam(required=false) Long materialId,
+			@RequestParam(required=false) Long woId,
+			@RequestParam(required=false) Long routineDId,
+			@RequestParam(required=false) Long fileTypeId,
+			@RequestParam(required=false) Long creatorId
+			) throws Exception {	   
+		
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+
+		List<QFileManagent> qFileManagementList =qFileManagementRepositoryCustomImpl.getQFiles(companyId, from, to, materialId, woId, routineDId, fileTypeId, creatorId);
+		List<WSQFileManagent> wss = new ArrayList<WSQFileManagent>();
+		
+		for (QFileManagent q: qFileManagementList) {
+			
+			WSQFileManagent w =qFileManagementService.toWSQFileManagent(q);
+			wss.add(w);
+		}
+		
+	    return wss;
+	}
+	
+	
+	
+	
+	
 }

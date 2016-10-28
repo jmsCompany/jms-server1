@@ -20,6 +20,10 @@ public class WSEHSRecord{
     private Long idCompany;
     
     
+    private String op;
+    private String sup;
+    private String shiftD;
+    
 	public Long getIdEhsRecord() {
 		return idEhsRecord;
 	}
@@ -97,6 +101,24 @@ public class WSEHSRecord{
 	}
 	public void setIdEhsItem(Long idEhsItem) {
 		this.idEhsItem = idEhsItem;
+	}
+	public String getSup() {
+		return sup;
+	}
+	public void setSup(String sup) {
+		this.sup = sup;
+	}
+	public String getOp() {
+		return op;
+	}
+	public void setOp(String op) {
+		this.op = op;
+	}
+	public String getShiftD() {
+		return shiftD;
+	}
+	public void setShiftD(String shiftD) {
+		this.shiftD = shiftD;
 	}
 
 	   

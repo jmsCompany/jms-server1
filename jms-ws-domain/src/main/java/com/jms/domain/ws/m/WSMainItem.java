@@ -15,6 +15,8 @@ public class WSMainItem {
     private String mDept;
     private String item;
     
+    
+    private Long days;
     private List<WSMainItemResult> itemValues = new ArrayList<WSMainItemResult>();
 	
     public Long getIdMainItem() {
@@ -70,6 +72,12 @@ public class WSMainItem {
 	}
 	public void setItemValues(List<WSMainItemResult> itemValues) {
 		this.itemValues = itemValues;
+	}
+	public Long getDays() {
+		return days;
+	}
+	public void setDays(Long days) {
+		this.days = days;
 	}
    
 }
