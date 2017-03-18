@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="q_dimension_report"
-    ,catalog="jms5"
 )
 public class QDimensionReport  implements java.io.Serializable {
 

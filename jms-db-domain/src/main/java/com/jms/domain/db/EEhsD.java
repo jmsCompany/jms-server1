@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="e_ehs_d"
-    ,catalog="jms5"
 )
 public class EEhsD  implements java.io.Serializable {
 

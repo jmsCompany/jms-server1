@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="e_status"
-    ,catalog="jms5"
 )
 public class EStatus  implements java.io.Serializable {
 

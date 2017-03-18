@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="m_remark"
-    ,catalog="jms5"
 )
 public class MRemark  implements java.io.Serializable {
 

@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_material_pic"
-    ,catalog="jms5"
 )
 public class SMaterialPic  implements java.io.Serializable {
 

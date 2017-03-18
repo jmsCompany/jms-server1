@@ -20,7 +20,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="ehs_item"
-    ,catalog="jms5"
 )
 public class EhsItem  implements java.io.Serializable {
 

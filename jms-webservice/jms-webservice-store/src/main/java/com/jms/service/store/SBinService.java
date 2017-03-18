@@ -23,6 +23,7 @@ import com.jms.domain.ws.s.WSBin;
 import com.jms.domain.ws.s.WSInventory;
 import com.jms.domain.ws.s.WSStk;
 import com.jms.domain.ws.s.WSStkType;
+import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.s.SBinRepository;
 import com.jms.repositories.s.SInventoryRepository;
 import com.jms.repositories.s.SMaterialBinsRepository;
@@ -56,6 +57,9 @@ public class SBinService {
 	private  SMaterialBinsRepository sMaterialBinsRepository;
 	@Autowired
 	private  SInventoryRepository sInventoryRepository;
+	
+	@Autowired
+	private  CompanyRepository companyRepository;
 
 	public Valid saveBin(WSBin wsBin) {
 
@@ -306,6 +310,38 @@ public class SBinService {
 		} else {
 			sBinRepository.delete(binId);
 			valid.setValid(true);
+		}
+
+		return valid;
+	}
+	
+	
+	
+	
+	@Transactional(readOnly = false)
+	public Valid saveSystemBin(Long companyId,String name) {
+		Valid valid = new Valid();
+		
+		List<SStk> stks = sStkRepository.findByIdCompanyAndStkName(companyId, name);
+		//System.out.println("company id: " + companyId +", stkname: " + name);
+		if(stks.isEmpty())
+		{
+			//System.out.println("can not find company id: " + companyId +", stkname: " + name);
+			SStk stk = new SStk();
+			stk.setCompany(companyRepository.findOne(companyId));
+			stk.setDes(name);
+			stk.setSStatusDic(sStatusDicRepository.findOne(27l));
+			stk.setSStkTypeDic(sStkTypeDicRepository.findOne(9l));
+			stk.setStkName(name);
+			stk = sStkRepository.save(stk);
+			SBin bin = new SBin();
+			bin.setBin(name);
+			bin.setSStk(stk);
+			bin.setDes(name);
+
+			bin.setSStatusDic(sStatusDicRepository.findOne(25l));
+			bin.setSYesOrNoDic(sYesOrNoDicRepository.findOne(2l));
+			sBinRepository.save(bin);
 		}
 
 		return valid;

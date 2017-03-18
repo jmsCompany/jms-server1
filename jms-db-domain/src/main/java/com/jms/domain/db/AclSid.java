@@ -20,7 +20,6 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name="acl_sid"
-    ,catalog="jms5"
     , uniqueConstraints = @UniqueConstraint(columnNames={"sid", "principal"}) 
 )
 public class AclSid  implements java.io.Serializable {

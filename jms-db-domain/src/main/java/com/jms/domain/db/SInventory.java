@@ -20,7 +20,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="s_inventory"
-    ,catalog="jms5"
 )
 public class SInventory  implements java.io.Serializable {
 

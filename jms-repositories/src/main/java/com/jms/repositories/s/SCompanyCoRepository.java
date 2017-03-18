@@ -18,6 +18,10 @@ public interface SCompanyCoRepository  extends JpaRepository<SCompanyCo, Long>{
 	public List<SCompanyCo> findByCompanyID(Long idCompany);
 	
 	
+	@Query("select s from SCompanyCo s where s.company.idCompany=?1")
+	public List<SCompanyCo> findByCompanyCos(Long idCompany);
+	
+	
 
 		
 }

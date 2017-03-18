@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="q_ncp_disposal"
-    ,catalog="jms5"
 )
 public class QNcpDisposal  implements java.io.Serializable {
 

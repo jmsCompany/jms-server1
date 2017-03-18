@@ -170,6 +170,37 @@ public class NotificationService implements INotificationService{
 	}
 	
 
+	
+	@Override
+	public void createNotificationToEmail(Company company,
+			Long eventId, Long sourceId, 
+			NotificationMethodEnum notificationMethodEnum, String email,Date msgTime) {
+		NotiMethod method = notiMethodRepository.findByMethod(notificationMethodEnum.name());
+		JmsEvent jmsEvent = jmsEventRepository.findOne(eventId);
+		Notification noti = new Notification();
+		noti.setCompany(company);
+		noti.setCreationTime(new Date());
+		noti.setIdSource(sourceId);
+		noti.setJmsEvent(jmsEvent);
+		noti.setNotiMethod(method);
+		Users users = securityUtils.getCurrentDBUser();
+		noti.setUsers(users);
+		notificationRepository.save(noti);
+		
+			Receiver receiver = new Receiver();
+			receiver.setGroups(null);
+			receiver.setNotification(noti);
+			receiver.setUnsubscribe(0l);
+			receiver.setChecked(0l);
+			receiver.setReceiveTime(msgTime);
+			
+		
+			receiverRepository.save(receiver);
+		
+	}
+	
+	
+	
 	@Override
 	public List<WSNotification> loadNotifactions(Pageable pageable) throws ClassNotFoundException {
 		 JMSUserDetails jmsUserDetails = securityUtils.getCurrentUser();

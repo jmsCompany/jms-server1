@@ -20,7 +20,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="q_car"
-    ,catalog="jms5"
 )
 public class QCar  implements java.io.Serializable {
 

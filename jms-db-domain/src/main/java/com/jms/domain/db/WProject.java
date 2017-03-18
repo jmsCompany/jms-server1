@@ -27,7 +27,6 @@ import com.jms.domain.db.AbstractSecuredEntity;
  */
 @Entity
 @Table(name="w_project"
-    ,catalog="jms5"
 )
 public class WProject extends AbstractSecuredEntity  implements java.io.Serializable {
 

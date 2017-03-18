@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="w_task_doc"
-    ,catalog="jms5"
 )
 public class WTaskDoc  implements java.io.Serializable {
 

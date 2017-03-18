@@ -20,7 +20,6 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name="acl_class"
-    ,catalog="jms5"
     , uniqueConstraints = @UniqueConstraint(columnNames="class") 
 )
 public class AclClass  implements java.io.Serializable {

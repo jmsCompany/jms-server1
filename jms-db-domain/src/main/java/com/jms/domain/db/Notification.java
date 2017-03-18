@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="notification"
-    ,catalog="jms5"
 )
 public class Notification  implements java.io.Serializable {
 

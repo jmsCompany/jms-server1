@@ -23,7 +23,7 @@ public interface PCheckPlanRepository extends JpaRepository<PCheckPlan, Long>{
 	public List<PCheckPlan> getCheckPlans(Long companyId);
     
     
-    @Query("select p from PCheckPlan p where p.PCPp.idCPp=?1 order by p.idCheck DESC")
+    @Query("select p from PCheckPlan p where p.PCPp.idCPp=?1  and p.PCPp.PRoutineD.isFinished=1 order by p.idCheck DESC")
 	public List<PCheckPlan> getMaxCheckPlanByCppId(Long pcppId);
     
 }

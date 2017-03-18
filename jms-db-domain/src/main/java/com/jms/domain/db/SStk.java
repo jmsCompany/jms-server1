@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_stk"
-    ,catalog="jms5"
 )
 public class SStk  implements java.io.Serializable {
 

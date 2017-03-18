@@ -22,7 +22,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="q_no_process"
-    ,catalog="jms5"
 )
 public class QNoProcess  implements java.io.Serializable {
 

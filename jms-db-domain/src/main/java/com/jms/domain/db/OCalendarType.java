@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="o_calendar_type"
-    ,catalog="jms5"
 )
 public class OCalendarType  implements java.io.Serializable {
 

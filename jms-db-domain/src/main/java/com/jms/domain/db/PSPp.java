@@ -19,7 +19,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="p_s_pp"
-    ,catalog="jms5"
 )
 public class PSPp  implements java.io.Serializable {
 

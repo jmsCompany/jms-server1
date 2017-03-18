@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="roles"
-    ,catalog="jms5"
 )
 public class Roles  implements java.io.Serializable {
 

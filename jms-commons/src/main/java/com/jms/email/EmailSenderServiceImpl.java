@@ -2,6 +2,8 @@ package com.jms.email;
 
 import java.io.File;
 import java.util.Map;
+
+import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import org.apache.velocity.app.VelocityEngine;
@@ -30,27 +32,38 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 			final String[] files) {
 
 		MimeMessagePreparator preparator = new MimeMessagePreparator() {
-			public void prepare(MimeMessage mimeMessage) throws Exception {
-				MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-				message.setTo(toEmailAddresses);
-			
-				message.setFrom(new InternetAddress(from));
-				message.setSubject(subject);
-				velocityEngine.addProperty("resource.loader", "class");
-				velocityEngine.addProperty("class.resource.loader.class",
-						"org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-				String body = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, template, "UTF-8", model);
-				System.out.println("body: " + body);
-				message.setText(body, true);
-				if (files != null) {
-					for (String f : files) {
-						FileSystemResource file = new FileSystemResource(new File(f));
-						message.addAttachment(f, file);
+			public void prepare(MimeMessage mimeMessage) {
+				MimeMessageHelper message;
+				try {
+					message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+					message.setTo(toEmailAddresses);
+					
+					message.setFrom(new InternetAddress(from));
+					message.setSubject(subject);
+					velocityEngine.addProperty("resource.loader", "class");
+					velocityEngine.addProperty("class.resource.loader.class",
+							"org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+					String body = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, template, "UTF-8", model);
+					//VelocityEngineUtils.
+					System.out.println("body: " + body);
+					message.setText(body, true);
+				//	message.sett
+					if (files != null) {
+						for (String f : files) {
+							FileSystemResource file = new FileSystemResource(new File(f));
+							message.addAttachment(f, file);
+						}
 					}
-				}
 
-			}
+				}
+		    catch (MessagingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
 		};
+				
+		
 		this.mailSender.send(preparator);
 		
 	

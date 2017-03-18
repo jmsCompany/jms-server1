@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="jms_event"
-    ,catalog="jms5"
 )
 public class JmsEvent  implements java.io.Serializable {
 

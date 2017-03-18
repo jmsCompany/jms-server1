@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="p_shift_plan_d"
-    ,catalog="jms5"
 )
 public class PShiftPlanD  implements java.io.Serializable {
 

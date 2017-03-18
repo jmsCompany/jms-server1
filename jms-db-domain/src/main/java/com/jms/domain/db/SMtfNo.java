@@ -19,7 +19,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="smtf_no"
-    ,catalog="jms5"
 )
 public class SMtfNo  implements java.io.Serializable {
 

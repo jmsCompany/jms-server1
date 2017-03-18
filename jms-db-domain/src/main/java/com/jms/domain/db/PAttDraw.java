@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="p_att_draw"
-    ,catalog="jms5"
 )
 public class PAttDraw  implements java.io.Serializable {
 

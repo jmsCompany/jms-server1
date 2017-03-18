@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="p_poll_participant"
-    ,catalog="jms5"
 )
 public class PPollParticipant  implements java.io.Serializable {
 

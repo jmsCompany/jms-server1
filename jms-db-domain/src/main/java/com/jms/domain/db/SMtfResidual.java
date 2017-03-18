@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_mtf_residual"
-    ,catalog="jms5"
 )
 public class SMtfResidual  implements java.io.Serializable {
 

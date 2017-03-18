@@ -74,7 +74,7 @@ public class CppController {
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
 				while(reader.readRecord())
 				{
-					System.out.println("woId:" + reader.get(0));
+					//System.out.println("woId:" + reader.get(0));
 					Long woId = Long.parseLong(reader.get(0)); //工单
 				    Long machineID = Long.parseLong(reader.get(1)); //机器
 				    Long routineDId = Long.parseLong(reader.get(2)); //工序

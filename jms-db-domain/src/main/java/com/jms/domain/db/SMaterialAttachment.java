@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_material_attachment"
-    ,catalog="jms5"
 )
 public class SMaterialAttachment  implements java.io.Serializable {
 

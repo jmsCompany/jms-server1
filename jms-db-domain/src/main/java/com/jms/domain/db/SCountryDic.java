@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_country_dic"
-    ,catalog="jms5"
 )
 public class SCountryDic  implements java.io.Serializable {
 

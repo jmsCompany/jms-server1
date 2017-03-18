@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="group_members"
-    ,catalog="jms5"
 )
 public class GroupMembers  implements java.io.Serializable {
 

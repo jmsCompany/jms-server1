@@ -25,7 +25,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="s_po_material"
-    ,catalog="jms5"
 )
 public class SPoMaterial  implements java.io.Serializable {
 

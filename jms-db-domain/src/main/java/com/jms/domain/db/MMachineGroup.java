@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="m_machine_group"
-    ,catalog="jms5"
 )
 public class MMachineGroup  implements java.io.Serializable {
 

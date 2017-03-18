@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="q_file_type"
-    ,catalog="jms5"
 )
 public class QFileType  implements java.io.Serializable {
 

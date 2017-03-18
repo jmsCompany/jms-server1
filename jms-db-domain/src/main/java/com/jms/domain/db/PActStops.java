@@ -20,7 +20,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="p_act_stops"
-    ,catalog="jms5"
 )
 public class PActStops  implements java.io.Serializable {
 

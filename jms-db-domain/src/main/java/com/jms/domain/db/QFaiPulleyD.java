@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="q_fai_pulley_d"
-    ,catalog="jms5"
 )
 public class QFaiPulleyD  implements java.io.Serializable {
 

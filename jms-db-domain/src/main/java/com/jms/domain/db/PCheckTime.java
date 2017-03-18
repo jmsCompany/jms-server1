@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="p_check_time"
-    ,catalog="jms5"
 )
 public class PCheckTime  implements java.io.Serializable {
 

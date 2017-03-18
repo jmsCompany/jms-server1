@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="feedback"
-    ,catalog="jms5"
 )
 public class Feedback  implements java.io.Serializable {
 

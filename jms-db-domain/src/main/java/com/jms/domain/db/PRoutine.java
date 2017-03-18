@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="p_routine"
-    ,catalog="jms5"
 )
 public class PRoutine  implements java.io.Serializable {
 

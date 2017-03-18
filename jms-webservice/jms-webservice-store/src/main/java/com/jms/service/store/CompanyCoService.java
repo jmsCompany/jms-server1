@@ -12,6 +12,7 @@ import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.s.WSCompanyCo;
 import com.jms.domainadapter.BeanUtil;
+import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.s.SCompanyCoRepository;
 import com.jms.repositories.s.SCountryDicRepository;
 import com.jms.repositories.s.SLevelDicRepository;
@@ -28,7 +29,8 @@ public class CompanyCoService {
 			.getCanonicalName());
 	@Autowired
 	private SCompanyCoRepository sCompanyCoRepository;
-
+	@Autowired
+	private CompanyRepository companyRepository;
 	@Autowired 
 	private  SecurityUtils securityUtils;
 	@Autowired 
@@ -45,17 +47,9 @@ public class CompanyCoService {
 	
 	//to be modified
 	@Transactional(readOnly=true)
-	public List<WSCompanyCo> getCoCompanies(Long companyCoTypeId,Long idCompany) {
-		List<SCompanyCo> coCompanies;
-		if(companyCoTypeId==null)
-		{
-			coCompanies= sCompanyCoRepository.findByCompanyID(idCompany);
-		}
-		else
-		{
-			coCompanies= sCompanyCoRepository.findByCompanyIdandType(idCompany,companyCoTypeId);
-		}
-		List<WSCompanyCo> wsSCompanyCos = new ArrayList<WSCompanyCo>();
+	public List<WSCompanyCo> getCoCompanies(Long idType,Long idCompany) {
+		List<SCompanyCo> coCompanies= sCompanyCoRepository.findByCompanyIdandType(idCompany, idType);
+	    List<WSCompanyCo> wsSCompanyCos = new ArrayList<WSCompanyCo>();
 		for(SCompanyCo dbc:coCompanies)
 		{
 			wsSCompanyCos.add(toWSCompanyCo(dbc));
@@ -64,7 +58,19 @@ public class CompanyCoService {
 		return wsSCompanyCos;
 		
 	}
-
+	
+	@Transactional(readOnly=true)
+	public List<WSCompanyCo> getCoCompanies() {
+		List<SCompanyCo> coCompanies= sCompanyCoRepository.findByCompanyCos(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+	    List<WSCompanyCo> wsSCompanyCos = new ArrayList<WSCompanyCo>();
+		for(SCompanyCo dbc:coCompanies)
+		{
+			wsSCompanyCos.add(toWSCompanyCo(dbc));
+		}
+		
+		return wsSCompanyCos;
+		
+	}
 	
 	
 	@Transactional(readOnly=true)
@@ -140,6 +146,7 @@ public class CompanyCoService {
 	
 	private SCompanyCo toDBCompanyCo(WSCompanyCo wsCompanyCo,SCompanyCo companyCo) throws Exception
 	{
+		
 	
 		SCompanyCo dbCompanyCo = (SCompanyCo)BeanUtil.shallowCopy(wsCompanyCo, SCompanyCo.class, companyCo);
 		
@@ -179,6 +186,16 @@ public class CompanyCoService {
 		WSCompanyCo wsCom = new WSCompanyCo();
 		if(dbc==null)
 			return wsCom;
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		if(dbc.getAuditStatus()==null&&companyId.equals(dbc.getIdCompany1()))
+		{
+			 wsCom = new WSCompanyCo();
+			 wsCom.setId(dbc.getId());
+			 wsCom.setAuditStatus("未审核");
+			// companyRepository.findOne(dbc.getCompany())
+			 wsCom.setShortName(dbc.getCompany().getCompanyName());
+			 return wsCom;
+		}
 
 	    wsCom = new WSCompanyCo();
 		wsCom.setAddressAct(dbc.getAddressAct());
@@ -217,7 +234,7 @@ public class CompanyCoService {
 		wsCom.setShortName(dbc.getShortName());
 		if(dbc.getSStatusDic()!=null)
 		{
-		   wsCom.setStatus(dbc.getSStatusDic().getName());
+		    wsCom.setStatus(dbc.getSStatusDic().getName());
 		    wsCom.setStatusId(dbc.getSStatusDic().getId());
 		}
 		wsCom.setTaxNo(dbc.getTaxNo());
@@ -228,6 +245,27 @@ public class CompanyCoService {
 			wsCom.setTypeId(dbc.getSTypeDic().getId());
 		}
         wsCom.setUrl(dbc.getUrl());
+       
+       wsCom.setAuditStatusId(dbc.getAuditStatus());
+       
+//       /* 1 待我审核，2 待对方审核，3通过 4 拒绝**/
+//
+//       if(dbc.getAuditStatus().equals(1l))
+//       {
+//    	   wsCom.setAuditStatus("待我审核");
+//       }
+//       else if(dbc.getAuditStatus().equals(2l))
+//       {
+//    	   wsCom.setAuditStatus("待对方审核");
+//       }
+//       else if(dbc.getAuditStatus().equals(3l))
+//       {
+//    	   wsCom.setAuditStatus("通过");
+//       }
+//       else if(dbc.getAuditStatus().equals(4l))
+//       {
+//    	   wsCom.setAuditStatus("拒绝");
+//       }
 	    return wsCom;
 	}
 

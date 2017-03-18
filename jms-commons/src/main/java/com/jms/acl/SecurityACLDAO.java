@@ -37,12 +37,14 @@ public class SecurityACLDAO {
 			Class domainClass,Permission permission) {
         MutableAcl acl;
         ObjectIdentity oid = new ObjectIdentityImpl(domainClass, element.getId());
+        System.out.println("class:" + domainClass.getName() +", id: " + element.getId() +", user: " + element.getUser().getIdUser());
         try {
             acl = (MutableAcl) mutableAclService.readAclById(oid);
         } catch (NotFoundException nfe) {
             acl = mutableAclService.createAcl(oid);
         }
 
+        System.out.println("size: " + acl.getEntries().size());
         acl.insertAce(acl.getEntries().size(), permission, new PrincipalSid(""+element.getUser().getIdUser()), true);
      
         mutableAclService.updateAcl(acl);

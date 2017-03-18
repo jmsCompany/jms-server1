@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="event_receiver"
-    ,catalog="jms5"
 )
 
 public class EventReceiver  implements java.io.Serializable {
@@ -35,6 +34,7 @@ public class EventReceiver  implements java.io.Serializable {
      private Long idCompany;
      private Long idGroup;
      private Long delay;
+     private String email;
   
 
     public EventReceiver() {
@@ -93,6 +93,17 @@ public class EventReceiver  implements java.io.Serializable {
 
 	public void setDelay(Long delay) {
 		this.delay = delay;
+	}
+
+
+	@Column(name="email", length=256)
+	public String getEmail() {
+		return email;
+	}
+
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
     

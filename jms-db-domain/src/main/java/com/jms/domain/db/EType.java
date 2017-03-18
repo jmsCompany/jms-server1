@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="e_type"
-    ,catalog="jms5"
 )
 public class EType  implements java.io.Serializable {
 

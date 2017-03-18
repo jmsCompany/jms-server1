@@ -20,7 +20,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="m_main_record"
-    ,catalog="jms5"
 )
 public class MMainRecord  implements java.io.Serializable {
 

@@ -37,10 +37,13 @@ public class SecurityUtils {
 	public Users getCurrentDBUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Long userid;
+        //System.out.println("n: " +auth.getName() );
+        //System.out.println("p: " +auth.getPrincipal().toString() );
         if (auth.getPrincipal() instanceof UserDetails) {
         	userid =((JMSUserDetails) auth.getPrincipal()).getIdUser();
         } else {
         	userid = null;
+        //	System.out.println("no user id");
         }
         
        return usersRepository.findOne(userid);

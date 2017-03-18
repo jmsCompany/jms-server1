@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="m_dept"
-    ,catalog="jms5"
 )
 public class MDept  implements java.io.Serializable {
 

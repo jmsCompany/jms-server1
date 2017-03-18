@@ -9,12 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.jms.domain.Config;
-import com.jms.domain.db.SLevelDic;
 import com.jms.domain.db.SMtfTypeDic;
+import com.jms.domain.db.Users;
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.s.WSStkType;
-import com.jms.repositories.s.SLevelDicRepository;
 import com.jms.repositories.s.SMtfTypeDicRepository;
+import com.jms.web.security.SecurityUtils;
 
 
 @Service
@@ -25,7 +24,7 @@ public class SMtfTypeDicService {
 			.getCanonicalName());
 	@Autowired
 	private SMtfTypeDicRepository sMtfTypeDicRepository;
-	
+	@Autowired private SecurityUtils securityUtils;
 
 	//导入物料流转类型
 	public void loadMtfTypes() {
@@ -46,7 +45,17 @@ public class SMtfTypeDicService {
 		{
 			WSSelectObj ws = new WSSelectObj();
 			ws.setId(s.getIdMtfType());
-			ws.setName(s.getName());
+			
+			Users u =securityUtils.getCurrentDBUser();
+			if(u.getLang()!=null&&u.getLang().equals("en"))
+			{
+				ws.setName(s.getNameEn());
+			}
+			else
+			{
+				ws.setName(s.getName());
+			}
+	
 			ls.add(ws);
 		}
 		return ls;

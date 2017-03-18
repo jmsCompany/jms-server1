@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_status_dic"
-    ,catalog="jms5"
 )
 public class SStatusDic  implements java.io.Serializable {
 
@@ -39,7 +38,7 @@ public class SStatusDic  implements java.io.Serializable {
      private Set<SStk> SStks = new HashSet<SStk>(0);
      private Set<SPoMaterial> SPoMaterials = new HashSet<SPoMaterial>(0);
      private Set<SMtf> SMtfs = new HashSet<SMtf>(0);
-
+     private String nameEn;
     public SStatusDic() {
     }
 
@@ -185,6 +184,14 @@ public class SStatusDic  implements java.io.Serializable {
     public void setSMtfs(Set<SMtf> SMtfs) {
         this.SMtfs = SMtfs;
     }
+    @Column(name="name_en", length=64)
+	public String getNameEn() {
+		return nameEn;
+	}
+
+	public void setNameEn(String nameEn) {
+		this.nameEn = nameEn;
+	}
 
 
 

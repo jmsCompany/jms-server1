@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="p_line"
-    ,catalog="jms5"
 )
 public class PLine  implements java.io.Serializable {
 

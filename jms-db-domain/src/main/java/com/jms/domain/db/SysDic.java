@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="sys_dic"
-    ,catalog="jms5"
 )
 public class SysDic  implements java.io.Serializable {
 

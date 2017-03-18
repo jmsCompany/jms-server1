@@ -24,11 +24,13 @@ import com.jms.domain.db.SMaterialTypeDic;
 import com.jms.domain.db.SStatusDic;
 import com.jms.domain.db.SysDic;
 import com.jms.domain.db.SysDicD;
+import com.jms.domain.db.Users;
 import com.jms.domain.ws.s.WSSStatus;
 import com.jms.repositories.s.SMaterialTypeDicRepository;
 import com.jms.repositories.s.SStatusDicRepository;
 import com.jms.repositories.system.SysDicDRepository;
 import com.jms.repositories.system.SysDicRepository;
+import com.jms.web.security.SecurityUtils;
 
 @Service
 @Transactional
@@ -38,12 +40,19 @@ public class SStatusDicService {
 			.getCanonicalName());
 	@Autowired
 	private SStatusDicRepository sStatusDicRepository;
-	
+	@Autowired private SecurityUtils securityUtils;
 	
 	@Transactional(readOnly=true)
 	public List<WSSStatus> getSStatus(String source, Boolean removeEdit)
 	{
 		List<WSSStatus> wss = new ArrayList<WSSStatus>();
+		
+		 Users u =securityUtils.getCurrentDBUser();
+		    boolean isEn = false;
+		    if(u.getLang()!=null&&u.getLang().equals("en"))
+		    {
+		    	isEn =true;
+		    }
 		for(SStatusDic s :sStatusDicRepository.getBySource(source))
 		{
 		
@@ -55,6 +64,14 @@ public class SStatusDicService {
 			{
 				WSSStatus ws = new WSSStatus();
 				ws.setId(s.getId());
+				if(isEn)
+				{
+					ws.setName(s.getNameEn());
+				}
+				else
+				{
+					ws.setName(s.getName());
+				}
 				ws.setName(s.getName());
 				wss.add(ws);
 			}

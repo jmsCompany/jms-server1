@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="q_conclusion_dic"
-    ,catalog="jms5"
 )
 public class QConclusionDic  implements java.io.Serializable {
 

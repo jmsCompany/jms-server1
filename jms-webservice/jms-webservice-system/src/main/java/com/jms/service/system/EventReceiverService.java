@@ -61,7 +61,7 @@ public class EventReceiverService {
 			Users u = usersRepository.findByUsername(login);
 			if(u==null)
 			{
-				u=usersRepository.findByUsername(login+"@@"+companyId);
+				u=usersRepository.findByUsername(login+"@"+companyId);
 			}
 			//System.out.println(login+"@@"+companyId);
 			Groups g = groupRepository.findHimselfGroupByIdUser(""+u.getIdUser());

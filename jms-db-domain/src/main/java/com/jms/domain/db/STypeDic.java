@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_type_dic"
-    ,catalog="jms5"
 )
 public class STypeDic  implements java.io.Serializable {
 
@@ -27,6 +26,9 @@ public class STypeDic  implements java.io.Serializable {
      private Long id;
      private String name;
      private Set<SCompanyCo> SCompanyCos = new HashSet<SCompanyCo>(0);
+     
+     
+     private String nameEn;
 
     public STypeDic() {
     }
@@ -63,6 +65,15 @@ public class STypeDic  implements java.io.Serializable {
     public void setSCompanyCos(Set<SCompanyCo> SCompanyCos) {
         this.SCompanyCos = SCompanyCos;
     }
+    
+    @Column(name="name_en", length=20)
+	public String getNameEn() {
+		return nameEn;
+	}
+
+	public void setNameEn(String nameEn) {
+		this.nameEn = nameEn;
+	}
 
 
 

@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="q_g8d_users"
-    ,catalog="jms5"
 )
 public class QG8dUsers  implements java.io.Serializable {
 

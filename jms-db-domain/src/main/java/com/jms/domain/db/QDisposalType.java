@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="q_disposal_type"
-    ,catalog="jms5"
 )
 public class QDisposalType  implements java.io.Serializable {
 

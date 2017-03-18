@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="p_bom"
-    ,catalog="jms5"
 )
 public class PBom  implements java.io.Serializable {
 

@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="e_work_category_dic"
-    ,catalog="jms5"
 )
 public class EWorkCategoryDic  implements java.io.Serializable {
 

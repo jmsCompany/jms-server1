@@ -20,7 +20,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="p_check_plan"
-    ,catalog="jms5"
 )
 public class PCheckPlan  implements java.io.Serializable {
 

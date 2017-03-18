@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="s_po"
-    ,catalog="jms5"
 )
 public class SPo  implements java.io.Serializable {
 
@@ -46,6 +45,10 @@ public class SPo  implements java.io.Serializable {
      private Long exchange;
      private String remark;
      private Set<SPoMaterial> SPoMaterials = new HashSet<SPoMaterial>(0);
+     
+     private Long idCompany1;
+     private Long idSo;
+     private String soNo;
 
     public SPo() {
     }
@@ -222,6 +225,31 @@ public class SPo  implements java.io.Serializable {
     public void setSPoMaterials(Set<SPoMaterial> SPoMaterials) {
         this.SPoMaterials = SPoMaterials;
     }
+    @Column(name="id_company1")
+	public Long getIdCompany1() {
+		return idCompany1;
+	}
+
+	public void setIdCompany1(Long idCompany1) {
+		this.idCompany1 = idCompany1;
+	}
+	 @Column(name="id_so")
+	public Long getIdSo() {
+		return idSo;
+	}
+
+	public void setIdSo(Long idSo) {
+		this.idSo = idSo;
+	}
+
+	 @Column(name="so_no", length=64)
+	public String getSoNo() {
+		return soNo;
+	}
+
+	public void setSoNo(String soNo) {
+		this.soNo = soNo;
+	}
 
 
 

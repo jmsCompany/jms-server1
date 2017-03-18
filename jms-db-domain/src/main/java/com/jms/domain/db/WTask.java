@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="w_task"
-    ,catalog="jms5"
 )
 public class WTask  implements java.io.Serializable {
 

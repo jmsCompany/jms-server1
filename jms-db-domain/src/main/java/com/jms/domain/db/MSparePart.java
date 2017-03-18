@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="m_spare_part"
-    ,catalog="jms5"
 )
 public class MSparePart  implements java.io.Serializable {
 

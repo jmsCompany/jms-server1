@@ -127,6 +127,7 @@ public class CompanyService {
 
 	@Transactional(readOnly = false)
 	public Boolean registCompany(WSCompany wsCompany) throws Exception {
+		
 		Boolean valid = checkCompanyName(wsCompany.getCompanyName(), null);
 		if (!valid)
 			return false;
@@ -135,6 +136,7 @@ public class CompanyService {
 				.getWsUsers().getMobile(), null);
 		if (!userValid)
 			return false;
+		//System.out.println("注册公司： " + wsCompany.getCompanyName() +", username: " + wsCompany.getWsUsers().getUsername());
 		Users dbUser = userAdapter.toDBUser(wsCompany.getWsUsers(), null);
 		iUserServiceImpl.register(dbUser);
 		wsCompany.setVerified(0l);
@@ -191,6 +193,7 @@ public class CompanyService {
 
 	public Boolean checkCompanyName(String companyName, Long idCompany) {
 
+		
 		String dbCompanyName = "";
 		// 已有公司修改
 		if (idCompany != null) {
@@ -251,8 +254,24 @@ public class CompanyService {
 			r1.setCompany(to);
 			r1.setLevel(r.getLevel());
 			roleRepository.save(r1);
+			
+			Groups g = new Groups();
+			g.setCompany(to);
+			g.setGroupName(""+r.getRole());
+			g.setDescription(r.getDescription());
+			g.setGroupType(groupTypeRepository.findOne(5l));
+			groupRepository.save(g);
+			
+			GroupMembers gm1 = new GroupMembers();
+			GroupMembersId id1 = new GroupMembersId();
+			System.out.println("admin group: " +g.getIdGroup() );
+			id1.setIdGroup(g.getIdGroup());
+			id1.setIdUser(securityUtils.getCurrentDBUser().getIdUser());
+			gm1.setId(id1);
+			groupMemberRepository.save(gm1);
 		}
 
+		
 		Users creator = securityUtils.getCurrentDBUser();
 		Long companyGroupId = -1l;
 
@@ -266,6 +285,7 @@ public class CompanyService {
 			g1.setGroupType(g.getGroupType());
 			g1.setDescription(g.getDescription());
 			g1.setUsers(creator);
+			System.out.println("create group: " + g.getGroupName());
 			groupRepository.save(g1);
 			List<Long> idGroups = new ArrayList<Long>();
 			idGroups.add(g1.getIdGroup());
@@ -323,24 +343,24 @@ public class CompanyService {
 			notificationService.createNotification(to, p, EventTypeEnum.create, NotificationMethodEnum.sys, idGroups);
 
 		}
-		List<Apps> appList = appsRepository.findAll();
+		List<Apps> appList = appsRepository.findInvs();
 		Users admin = from.getUsersByCreator();
 		// copy apps
-		Map<Apps, String> smap = securedObjectService
-				.getSecuredObjectsWithPermissions(admin, appList);
-
-		PrincipalSid pid = new PrincipalSid("" + creator.getIdUser());
-		// logger.debug("creator id: " + creator.getIdUser());
-		for (Apps a : smap.keySet()) {
+//	Map<Apps, String> smap = securedObjectService
+//				.getSecuredObjectsWithPermissions(admin, appList);
+//
+    	PrincipalSid pid = new PrincipalSid("" + creator.getIdUser());
+//		// logger.debug("creator id: " + creator.getIdUser());
+		for (Apps a : appList) {
 			securityACLDAO.addPermission(a, pid, BasePermission.ADMINISTRATION);
 		}
 
 		Users normalUser = usersRepository.findByUsername("user");
 		GrantedAuthoritySid sid = new GrantedAuthoritySid("" + companyGroupId);
-		Map<Apps, String> smap1 = securedObjectService
-				.getSecuredObjectsWithPermissions(normalUser, appList);
+//		Map<Apps, String> smap1 = securedObjectService
+//				.getSecuredObjectsWithPermissions(normalUser, appList);
 
-		for (Apps a : smap1.keySet()) {
+		for (Apps a : appList) {
 			securityACLDAO.addPermission(a, sid, BasePermission.READ);
 		}
 		

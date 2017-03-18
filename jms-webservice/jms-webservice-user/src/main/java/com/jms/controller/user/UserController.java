@@ -307,8 +307,18 @@ public class UserController {
 		for(Apps a : smap.keySet())
 		{
 			WSMenu item = new WSMenu();
-			item.setGroup(a.getGroups());
-			item.setName(a.getAppName());
+			if(u.getLang()!=null&&u.getLang().equals("en"))
+			{
+				item.setGroup(a.getGroupsEn());
+				item.setName(a.getAppNameEn());
+			}
+			else
+			{
+				item.setGroup(a.getGroups());
+				item.setName(a.getAppName());
+			}
+			
+			
 			item.setId(a.getIdApp());
 			item.setUrl(a.getUrl());
 			item.setPermission(smap.get(a));
@@ -511,8 +521,17 @@ public class UserController {
 		for(Apps a : smap.keySet())
 		{
 			WSMenu item = new WSMenu();
-			item.setGroup(a.getGroups());
-			item.setName(a.getAppName());
+			
+    if(u.getLang()!=null&&u.getLang().equals("en"))
+    {
+    	item.setGroup(a.getGroupsEn());
+		item.setName(a.getAppNameEn());
+    }
+    else
+    {
+		item.setGroup(a.getGroups());
+		item.setName(a.getAppName());
+    }
 			item.setId(a.getIdApp());
 			item.setUrl(a.getUrl());
 			item.setPermission(smap.get(a));
@@ -529,11 +548,11 @@ public class UserController {
 	@RequestMapping(value="/login", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public WSUserProfile login(@RequestBody WSUser wsUser) throws Exception {
 		WSUserProfile userProfile = new WSUserProfile();
-		//System.out.println("user: " +wsUser.getLogin() +", pass: "  +wsUser.getPassword());
+		System.out.println("user: " +wsUser.getLogin() +", pass: "  +wsUser.getPassword());
 		String token = userService.login(wsUser.getLogin(), wsUser.getPassword());
 		if(token==null)
 		{
-			//System.out.println("token is null????");
+			System.out.println("token is null????");
 			return userProfile;
 		}
 		if(wsUser.getLang()!=null)
@@ -711,8 +730,18 @@ public class UserController {
 		for(Apps a : smap.keySet())
 		{
 			WSMenu item = new WSMenu();
-			item.setGroup(a.getGroups());
-			item.setName(a.getAppName());
+			
+			if(u.getLang()!=null&&u.getLang().equals("en"))
+			{
+				item.setGroup(a.getGroupsEn());
+				item.setName(a.getAppNameEn());
+			}
+			else
+			{
+				item.setGroup(a.getGroups());
+				item.setName(a.getAppName());
+			}
+			
 			item.setId(a.getIdApp());
 			item.setUrl(a.getUrl());
 			item.setPermission(smap.get(a));
@@ -1017,13 +1046,25 @@ public class UserController {
 	public List<WSMenu> getWSMenuList() throws Exception
 	{
 		List<Apps> appList =appsRepository.findAll();
-		
+		Users u =securityUtils.getCurrentDBUser();
 		List<WSMenu> wsMenuList = new ArrayList<WSMenu>();
-		for(Apps a : appList)
+		Map<Apps, String> smap= securedObjectService.getSecuredObjectsWithPermissions(u, appList);
+		
+	
+		for(Apps a : smap.keySet())
 		{
 			WSMenu item = new WSMenu();
-			item.setGroup(a.getGroups());
-			item.setName(a.getAppName());
+			if(u.getLang()!=null&&u.getLang().equals("en"))
+			{
+				item.setGroup(a.getGroupsEn());
+				item.setName(a.getAppNameEn());
+			}
+			else
+			{
+				item.setGroup(a.getGroups());
+				item.setName(a.getAppName());
+			}
+			
 			item.setId(a.getIdApp());
 			item.setUrl(a.getUrl());
 		
@@ -1041,7 +1082,7 @@ public class UserController {
 		
 		Roles r = roleRepository.findOne(roleId);
 		Groups g = groupRepository.findGroupByGroupNameAndCompany(r.getRole(), securityUtils.getCurrentDBUser().getCompany().getIdCompany(), GroupTypeEnum.Role.name());
-		
+		Users u =securityUtils.getCurrentDBUser();
 		List<Apps> appList =appsRepository.findAll();
 		
 		List<WSMenu> wsMenuList = new ArrayList<WSMenu>();
@@ -1050,8 +1091,17 @@ public class UserController {
 		for(Apps a : smap.keySet())
 		{
 			WSMenu item = new WSMenu();
-			item.setGroup(a.getGroups());
-			item.setName(a.getAppName());
+			if(u.getLang()!=null&&u.getLang().equals("en"))
+			{
+				item.setGroup(a.getGroupsEn());
+				item.setName(a.getAppNameEn());
+			}
+			else
+			{
+				item.setGroup(a.getGroups());
+				item.setName(a.getAppName());
+			}
+			
 			item.setId(a.getIdApp());
 			item.setUrl(a.getUrl());
 			item.setPermission(smap.get(a));

@@ -1,0 +1,7 @@
+采购订单
+公司：$!{company}
+订单编码: $!{poNo}, 总价： $!{totalPrice}
+条目：
+$!{materials}
+备注：
+$!{remark}

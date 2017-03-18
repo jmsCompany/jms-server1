@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="p_stops_code"
-    ,catalog="jms5"
 )
 public class PStopsCode  implements java.io.Serializable {
 

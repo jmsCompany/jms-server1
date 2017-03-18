@@ -1,8 +1,5 @@
 package com.jms.service.maintenance;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
@@ -10,30 +7,15 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.csvreader.CsvReader;
 import com.jms.domain.Config;
-import com.jms.domain.db.MMachine;
-import com.jms.domain.db.MMainCycle;
-import com.jms.domain.db.MMainItem;
 import com.jms.domain.db.MResult;
-import com.jms.domain.db.MSparePart;
-import com.jms.domain.db.SInventory;
-import com.jms.domain.ws.Valid;
+import com.jms.domain.db.Users;
 import com.jms.domain.ws.WSSelectObj;
-import com.jms.domain.ws.m.WSMSparePart;
-import com.jms.domain.ws.m.WSMachine;
-import com.jms.domain.ws.m.WSMainItem;
-import com.jms.domainadapter.BeanUtil;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.m.MDeptRepository;
-import com.jms.repositories.m.MMachineGroupRepository;
-import com.jms.repositories.m.MMachineRepository;
 import com.jms.repositories.m.MMainCycleRepository;
 import com.jms.repositories.m.MMainItemRepository;
 import com.jms.repositories.m.MResultRepository;
-import com.jms.repositories.m.MSparePartRepository;
-import com.jms.repositories.m.MStatusDicRepository;
 import com.jms.repositories.p.PLineRepository;
 import com.jms.repositories.p.PWipRepository;
 import com.jms.repositories.p.PWorkCenterRepository;
@@ -71,16 +53,32 @@ public class MResultService {
 	@Autowired private SInventoryRepository sInventoryRepository;
 	
 	@Autowired private  MDeptRepository mDeptRepository;
-	
+
 
 	@Transactional(readOnly=true)
 	public List<WSSelectObj> getMResults()
 	{
 		List<WSSelectObj> wss = new ArrayList<WSSelectObj>();
-		for(MResult s :mResultRepository.findAll())
-		{
-			WSSelectObj w = new WSSelectObj(s.getIdResult(),s.getDes());
-			wss.add(w);
+		    Users u =securityUtils.getCurrentDBUser();
+		    boolean isEn = false;
+		    if(u.getLang()!=null&&u.getLang().equals("en"))
+		    {
+		    	isEn =true;
+		    }
+	    	for(MResult s :mResultRepository.findAll())
+		   {
+			if(isEn)
+			{	
+				WSSelectObj w = new WSSelectObj(s.getIdResult(),s.getDesEn());
+			    wss.add(w);
+				
+			}
+			else
+			{
+				WSSelectObj w = new WSSelectObj(s.getIdResult(),s.getDes());
+				wss.add(w);
+			}
+		
 		}
 		return wss;
 	}

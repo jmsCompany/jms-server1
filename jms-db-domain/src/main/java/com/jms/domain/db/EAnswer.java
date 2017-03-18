@@ -15,7 +15,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="e_answer"
-    ,catalog="jms5"
 )
 public class EAnswer  implements java.io.Serializable {
 

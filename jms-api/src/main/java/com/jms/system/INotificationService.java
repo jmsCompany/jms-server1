@@ -22,4 +22,7 @@ public interface INotificationService {
 	public void sendEmails();
 	
 	public void sendEmails(List<EventReceiver> eventReceivers,String title,String template,Map<String, Object> model,String[] files);
+	public void createNotificationToEmail(Company company,
+			Long eventId, Long sourceId, 
+			NotificationMethodEnum notificationMethodEnum, String email,Date msgTime);
 }

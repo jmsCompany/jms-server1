@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="p_poll"
-    ,catalog="jms5"
 )
 public class PPoll  implements java.io.Serializable {
 

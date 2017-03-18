@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="q_fai_in_final"
-    ,catalog="jms5"
 )
 public class QFaiInFinal  implements java.io.Serializable {
 

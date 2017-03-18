@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_company_co"
-    ,catalog="jms5"
 )
 public class SCompanyCo  implements java.io.Serializable {
 
@@ -49,6 +48,11 @@ public class SCompanyCo  implements java.io.Serializable {
      private String remark;
      private String autoRemark;
      private String auditBy;
+     
+     private Long idCompany1;
+     private Long auditStatus;
+     private String email;
+     
      private Set<SMtfResidual> SMtfResiduals = new HashSet<SMtfResidual>(0);
      private Set<SPo> SPos = new HashSet<SPo>(0);
      private Set<SSo> SSos = new HashSet<SSo>(0);
@@ -336,6 +340,32 @@ public class SCompanyCo  implements java.io.Serializable {
     public void setSLinkmans(Set<SLinkman> SLinkmans) {
         this.SLinkmans = SLinkmans;
     }
+
+    @Column(name="id_company1")
+	public Long getIdCompany1() {
+		return idCompany1;
+	}
+
+	public void setIdCompany1(Long idCompany1) {
+		this.idCompany1 = idCompany1;
+	}
+
+    @Column(name="audit_status")
+	public Long getAuditStatus() {
+		return auditStatus;
+	}
+
+	public void setAuditStatus(Long auditStatus) {
+		this.auditStatus = auditStatus;
+	}
+	  @Column(name="email", length=128)
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 
 

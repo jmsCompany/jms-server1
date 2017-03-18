@@ -407,7 +407,7 @@ public class UserService extends IUserServiceImpl{
 		reader.readHeaders();
 		while (reader.readRecord()) {
 			Users u = new Users();
-			u.setUsername(reader.get(0)+"@@"+company.getIdCompany());
+			u.setUsername(reader.get(0)+"@"+company.getIdCompany());
 			u.setPassword(reader.get(0));
 			u.setName(reader.get(1));
 			u.setDescription(reader.get(2)); //description as English name

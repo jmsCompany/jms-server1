@@ -102,12 +102,11 @@ public class QFileTemplateController {
 	}
 	
 	
-	
-	
 	@Transactional(readOnly = false)
-	@RequestMapping(value = "/p/uploadTemplateFile", method = RequestMethod.POST)
+	@RequestMapping(value = "/q/uploadTemplateFile", method = RequestMethod.POST)
 	public FileMeta uploadRoutineDAtt( @RequestParam("idFileTemplate") Long idFileTemplate, MultipartHttpServletRequest request,
 			HttpServletResponse response) {
+	 //   System.out.println(" idTmplate: " + idFileTemplate);
 		FileMeta fileMeta = new FileMeta();
 		if (request.getFileNames().hasNext()) {
 			fileMeta = fileUploadService.upload(request, response,true);

@@ -56,6 +56,7 @@ public class IUserServiceImpl implements IUserService {
 	private GroupMemberRepository groupMemberRepository;
 
 	public Boolean register(Users users) {
+		System.out.println("注册用户： " +users.getUsername());
 		Boolean valid = checkLogin(users.getUsername(), users.getEmail(),
 				users.getMobile(),null);
         String anyLogin ="";

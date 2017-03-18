@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="noti_method"
-    ,catalog="jms5"
 )
 public class NotiMethod  implements java.io.Serializable {
 

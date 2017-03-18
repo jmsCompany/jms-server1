@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="p_cpp_op"
-    ,catalog="jms5"
 )
 public class PCppOp  implements java.io.Serializable {
 

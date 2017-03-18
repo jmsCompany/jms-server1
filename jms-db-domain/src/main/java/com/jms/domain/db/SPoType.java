@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_po_type"
-    ,catalog="jms5"
 )
 public class SPoType  implements java.io.Serializable {
 

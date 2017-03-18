@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="q_ncp"
-    ,catalog="jms5"
 )
 public class QNcp  implements java.io.Serializable {
 

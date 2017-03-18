@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_mtf_type_dic"
-    ,catalog="jms5"
 )
 public class SMtfTypeDic  implements java.io.Serializable {
 
@@ -28,7 +27,7 @@ public class SMtfTypeDic  implements java.io.Serializable {
      private String name;
      private String des;
      private Set<SMtf> SMtfs = new HashSet<SMtf>(0);
-
+     private String nameEn;
     public SMtfTypeDic() {
     }
 
@@ -74,6 +73,14 @@ public class SMtfTypeDic  implements java.io.Serializable {
     public void setSMtfs(Set<SMtf> SMtfs) {
         this.SMtfs = SMtfs;
     }
+    @Column(name="name_en", length=64)
+	public String getNameEn() {
+		return nameEn;
+	}
+
+	public void setNameEn(String nameEn) {
+		this.nameEn = nameEn;
+	}
 
 
 

@@ -1,5 +1,6 @@
-[2016-10-28 12:35:50.663] log4j2 - 3336  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 3336 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2016-10-28 12:35:50.666] log4j2 - 3336 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2016-10-28 12:36:07.492] log4j2 - 3336 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2016-10-28 12:36:07.495] log4j2 - 3336 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2016-10-28 12:36:12.504] log4j2 - 3336  INFO [main] --- Application: Started Application in 22.284 seconds (JVM running for 23.697)
+[2017-03-18 19:19:58.684] log4j2 - 40333  INFO [main] --- Application: Starting Application on renhongtaodeMacBook-Pro.local with PID 40333 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
+[2017-03-18 19:19:58.687] log4j2 - 40333 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
+[2017-03-18 19:20:18.379] log4j2 - 40333 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
+[2017-03-18 19:20:18.382] log4j2 - 40333 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
+[2017-03-18 19:20:24.030] log4j2 - 40333  INFO [main] --- Application: Started Application in 25.644 seconds (JVM running for 26.734)
+[2017-03-18 19:20:55.696] log4j2 - 40333  WARN [http-nio-9998-exec-9] --- PageNotFound: Request method 'POST' not supported

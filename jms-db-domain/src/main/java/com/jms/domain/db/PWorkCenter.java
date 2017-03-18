@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="p_work_center"
-    ,catalog="jms5"
 )
 public class PWorkCenter  implements java.io.Serializable {
 

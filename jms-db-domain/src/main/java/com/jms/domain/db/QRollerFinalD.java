@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="q_roller_final_d"
-    ,catalog="jms5"
 )
 public class QRollerFinalD  implements java.io.Serializable {
 

@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="p_wo_route"
-    ,catalog="jms5"
 )
 public class PWoRoute  implements java.io.Serializable {
 

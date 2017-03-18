@@ -12,6 +12,7 @@ import com.jms.domain.db.PMr;
 import com.jms.domain.db.PStopsPlan;
 import com.jms.domain.db.PUnplannedStops;
 import com.jms.domain.db.SMtf;
+import com.jms.domain.db.SPo;
 import com.jms.domain.db.WProject;
 import com.jms.domain.db.WTask;
 import com.jms.repositories.system.JmsEventRepository;
@@ -137,6 +138,11 @@ public class JmsEventService {
 		jmsEventRepository.save(planStop);
 		
 	
+		JmsEvent po = new JmsEvent();
+		po.setClass_(SPo.class.getCanonicalName());
+		po.setName(EventTypeEnum.create.name());
+		po.setDescription("新建采购");
+		jmsEventRepository.save(po);
 		
 		
 	}

@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="e_result"
-    ,catalog="jms5"
 )
 public class EResult  implements java.io.Serializable {
 

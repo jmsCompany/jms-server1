@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="q_ncr_pic"
-    ,catalog="jms5"
 )
 public class QNcrPic  implements java.io.Serializable {
 

@@ -25,7 +25,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="m_machine"
-    ,catalog="jms5"
 )
 public class MMachine  implements java.io.Serializable {
 

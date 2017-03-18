@@ -32,6 +32,13 @@ public class WSSpo {
     private Long fileId;
     private String fileName;
     
+    
+    private Long idComCom;
+    private Long idSo;
+    private String soNo;
+    
+    private String email;
+    
     private Map<String,WSSpoMaterial> poItems = new LinkedHashMap<String,WSSpoMaterial>();
 	
     public Long getIdPo() {
@@ -177,6 +184,31 @@ public class WSSpo {
 	}
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+
+	public Long getIdSo() {
+		return idSo;
+	}
+	public void setIdSo(Long idSo) {
+		this.idSo = idSo;
+	}
+	public String getSoNo() {
+		return soNo;
+	}
+	public void setSoNo(String soNo) {
+		this.soNo = soNo;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public Long getIdComCom() {
+		return idComCom;
+	}
+	public void setIdComCom(Long idComCom) {
+		this.idComCom = idComCom;
 	}
 
 

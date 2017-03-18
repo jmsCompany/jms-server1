@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_pic"
-    ,catalog="jms5"
 )
 public class SPic  implements java.io.Serializable {
 

@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="f_cost_center"
-    ,catalog="jms5"
 )
 public class FCostCenter  implements java.io.Serializable {
 

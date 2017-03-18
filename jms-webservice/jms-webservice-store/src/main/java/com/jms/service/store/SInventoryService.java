@@ -239,11 +239,11 @@ public class SInventoryService {
 			if(material.getSafetyInv()!=null&&material.getSafetyInv()>0)
 			{
 				 Long invQty = 0l;
-				 SStk stk =sStkRepository.findByIdCompanyAndStkName(companyId, "IDI");
+				 List<SStk> stks =sStkRepository.findByIdCompanyAndStkName(companyId, "IDI");
 					
-	             if(stk!=null)
+	             if(!stks.isEmpty())
 	             {
-	            	List<SInventory> s =  sInventoryRepository.findInventoryByMaterialAndStk(material.getIdMaterial(), companyId, stk.getId());
+	            	List<SInventory> s =  sInventoryRepository.findInventoryByMaterialAndStk(material.getIdMaterial(), companyId, stks.get(0).getId());
 	 		        for(SInventory i:s)
 	 		        {
 	 		        	invQty =invQty+i.getQty();
@@ -257,7 +257,7 @@ public class SInventoryService {
 						if(sendNum>0)
 							break;
 						sendNum=1;
-						System.out.println("sendNum: " + sendNum);
+						//System.out.println("sendNum: " + sendNum);
 						String title = "物料低于安全库存";
 						String emailTemplate = "materialTemplate.vm";
 						List<Users> whs = groupMemberRepository.findWarehouseByCompanyId(companyId);
@@ -269,7 +269,7 @@ public class SInventoryService {
 							if(u.getEmail()!=null&&!u.getEmail().isEmpty())
 							{
 								ems.add(u.getEmail());
-								System.out.println(u.getEmail());
+								//System.out.println(u.getEmail());
 							}
 						
 						}

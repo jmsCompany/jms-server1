@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="p_sub_code"
-    ,catalog="jms5"
 )
 public class PSubCode  implements java.io.Serializable {
 

@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="e_level_dic"
-    ,catalog="jms5"
 )
 public class ELevelDic  implements java.io.Serializable {
 

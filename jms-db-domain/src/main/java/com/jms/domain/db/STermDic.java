@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_term_dic"
-    ,catalog="jms5"
 )
 public class STermDic  implements java.io.Serializable {
 

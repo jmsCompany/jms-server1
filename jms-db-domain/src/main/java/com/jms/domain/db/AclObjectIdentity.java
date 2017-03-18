@@ -22,7 +22,6 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name="acl_object_identity"
-    ,catalog="jms5"
     , uniqueConstraints = @UniqueConstraint(columnNames={"object_id_class", "object_id_identity"}) 
 )
 public class AclObjectIdentity  implements java.io.Serializable {

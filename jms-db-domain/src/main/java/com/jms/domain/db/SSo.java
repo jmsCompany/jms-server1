@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="s_so"
-    ,catalog="jms5"
 )
 public class SSo  implements java.io.Serializable {
 

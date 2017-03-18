@@ -22,7 +22,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="receiver"
-    ,catalog="jms5"
 )
 public class Receiver  implements java.io.Serializable {
 

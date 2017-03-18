@@ -20,7 +20,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="p_unplanned_stops"
-    ,catalog="jms5"
 )
 public class PUnplannedStops  implements java.io.Serializable {
 

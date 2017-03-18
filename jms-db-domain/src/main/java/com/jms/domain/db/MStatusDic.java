@@ -19,13 +19,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="m_status_dic"
-    ,catalog="jms5"
 )
 public class MStatusDic  implements java.io.Serializable {
 
 
      private Long idMstatusDic;
      private String name;
+     private String nameEn;
      private String des;
      private String source;
      private Set<MMachine> MMachines = new HashSet<MMachine>(0);
@@ -115,6 +115,14 @@ public class MStatusDic  implements java.io.Serializable {
     public void setMSpareParts(Set<MSparePart> MSpareParts) {
         this.MSpareParts = MSpareParts;
     }
+    @Column(name="name_en", length=64)
+	public String getNameEn() {
+		return nameEn;
+	}
+
+	public void setNameEn(String nameEn) {
+		this.nameEn = nameEn;
+	}
 
 
 

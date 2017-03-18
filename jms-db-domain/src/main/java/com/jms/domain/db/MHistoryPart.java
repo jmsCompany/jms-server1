@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="m_history_part"
-    ,catalog="jms5"
 )
 public class MHistoryPart  implements java.io.Serializable {
 

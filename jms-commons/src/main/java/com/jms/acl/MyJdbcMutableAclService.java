@@ -145,7 +145,7 @@ public class MyJdbcMutableAclService  extends JdbcAclService implements MutableA
         List<Long> classIds = jdbcTemplate.queryForList(selectClassPrimaryKey, new Object[] {type}, Long.class);
 
         if (!classIds.isEmpty()) {
-        	System.out.println("company is not empty: !!!! ");
+        	//System.out.println("company is not empty: !!!! ");
             return classIds.get(0);
         }
 

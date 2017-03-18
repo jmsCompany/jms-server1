@@ -19,13 +19,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="m_result"
-    ,catalog="jms5"
 )
 public class MResult  implements java.io.Serializable {
 
 
      private Long idResult;
      private String des;
+     private String desEn;
      private Set<MMainRecord> MMainRecords = new HashSet<MMainRecord>(0);
 
     public MResult() {
@@ -63,6 +63,14 @@ public class MResult  implements java.io.Serializable {
     public void setMMainRecords(Set<MMainRecord> MMainRecords) {
         this.MMainRecords = MMainRecords;
     }
+    @Column(name="des_en", length=20)
+	public String getDesEn() {
+		return desEn;
+	}
+
+	public void setDesEn(String desEn) {
+		this.desEn = desEn;
+	}
 
 
 

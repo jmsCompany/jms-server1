@@ -22,7 +22,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="q_file_managent"
-    ,catalog="jms5"
 )
 public class QFileManagent  implements java.io.Serializable {
 

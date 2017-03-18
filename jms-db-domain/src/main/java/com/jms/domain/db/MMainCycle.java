@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="m_main_cycle"
-    ,catalog="jms5"
 )
 public class MMainCycle  implements java.io.Serializable {
 

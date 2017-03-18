@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import com.jms.domain.db.SCompanyCo;
 import com.jms.domain.db.SCountryDic;
 import com.jms.domain.db.SLevelDic;
 import com.jms.domain.db.SStatusDic;
@@ -16,6 +18,7 @@ import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.s.WSCompanyCo;
+import com.jms.repositories.s.SCompanyCoRepository;
 import com.jms.repositories.s.SCountryDicRepository;
 import com.jms.repositories.s.SLevelDicRepository;
 import com.jms.repositories.s.SStatusDicRepository;
@@ -36,6 +39,7 @@ public class CompanyCoController {
 	@Autowired private SStermDicRepository sStermDicRepository;
 	@Autowired private SLevelDicRepository sLevelDicRepository;
 	@Autowired private SStatusDicRepository	sStatusDicRepository;
+	@Autowired private SCompanyCoRepository sCompanyCoRepository;
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveCompanyCo", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -44,6 +48,18 @@ public class CompanyCoController {
 		return companyCoService.saveWSCompanyCo(wSCompanyCo);
 	}
 	
+//	@Transactional(readOnly = false)
+//	@RequestMapping(value="/s/auditCompanyCo", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+//	public WSCompanyCo auditCompanyCo(@RequestBody WSCompanyCo wSCompanyCo) throws Exception {
+//	
+//		SCompanyCo sCompanyCo = sCompanyCoRepository.getOne(wSCompanyCo.getIdParent());
+//		sCompanyCo.setAuditBy(""+securityUtils.getCurrentDBUser().getIdUser());
+//		sCompanyCo.setAuditStatus(wSCompanyCo.getAuditStatusId());
+//		sCompanyCoRepository.save(sCompanyCo);
+//		return companyCoService.saveWSCompanyCo(wSCompanyCo);
+//	}
+//	
+//	
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/deleteCompanyCo", method=RequestMethod.GET)
@@ -146,6 +162,42 @@ public class CompanyCoController {
 	    t.setData(lst);
 	    return t;
 	}
+	
+	
+	
+	
+//	
+//	//外协公司？
+//	@Transactional(readOnly = true)
+//	@RequestMapping(value="/s/companyCos", method=RequestMethod.POST)
+//	public WSTableData  getCompanyCos(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+//// 	System.out.println("co Type: " + companyCoTypeId);
+//		List<WSCompanyCo> wsCompanyCos = companyCoService.getCoCompanies();
+//		List<String[]> lst = new ArrayList<String[]>();
+//		int end=0;
+//		if(wsCompanyCos.size()<start + length)
+//			end =wsCompanyCos.size();
+//		else
+//			end =start + length;
+//		for (int i = start; i < end; i++) {
+//			WSCompanyCo w = wsCompanyCos.get(i);
+//			String[] d = {w.getShortName(),w.getAuditStatus(),""+w.getId()};
+//			lst.add(d);
+//
+//		}
+//		WSTableData t = new WSTableData();
+//		t.setDraw(draw);
+//		t.setRecordsTotal(wsCompanyCos.size());
+//		t.setRecordsFiltered(wsCompanyCos.size());
+//	    t.setData(lst);
+//	    return t;
+//	}
+//	
+//	
+//	
+//	
+//	
+//	
 	
 	
 	

@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="q_report_record"
-    ,catalog="jms5"
 )
 public class QReportRecord  implements java.io.Serializable {
 

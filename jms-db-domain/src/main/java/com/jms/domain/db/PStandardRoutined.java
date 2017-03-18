@@ -14,7 +14,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="p_standard_routined"
-    ,catalog="jms5"
 )
 public class PStandardRoutined  implements java.io.Serializable {
 

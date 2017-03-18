@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="q_status_dic"
-    ,catalog="jms5"
 )
 public class QStatusDic  implements java.io.Serializable {
 

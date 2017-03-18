@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="p_draw"
-    ,catalog="jms5"
 )
 public class PDraw  implements java.io.Serializable {
 

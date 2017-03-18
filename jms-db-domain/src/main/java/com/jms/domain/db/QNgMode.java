@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="q_ng_mode"
-    ,catalog="jms5"
 )
 public class QNgMode  implements java.io.Serializable {
 

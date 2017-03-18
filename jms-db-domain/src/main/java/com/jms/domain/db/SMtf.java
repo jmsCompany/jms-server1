@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="s_mtf"
-    ,catalog="jms5"
 )
 public class SMtf  implements java.io.Serializable {
 
@@ -43,6 +42,8 @@ public class SMtf  implements java.io.Serializable {
      private Date creationTime;
      
      private Long idWo;
+     
+     private Long idSmtfC;
      private Set<SMtfMaterial> SMtfMaterials = new HashSet<SMtfMaterial>(0);
 
     public SMtf() {
@@ -190,6 +191,14 @@ public class SMtf  implements java.io.Serializable {
 		this.idWo = idWo;
 	}
 
+	@Column(name="id_smtf_c")
+	public Long getIdSmtfC() {
+		return idSmtfC;
+	}
+
+	public void setIdSmtfC(Long idSmtfC) {
+		this.idSmtfC = idSmtfC;
+	}
 
 
 

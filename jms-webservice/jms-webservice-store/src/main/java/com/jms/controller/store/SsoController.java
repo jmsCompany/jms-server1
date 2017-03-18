@@ -124,6 +124,21 @@ public class SsoController {
 
 	
 	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/findOpenedSoList", method=RequestMethod.GET)
+	public List<WSSelectObj> findOpenedSoList() throws Exception {
+		List<WSSelectObj>  ws = new ArrayList<WSSelectObj>();
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		for(SSo s :sSoRepository.findByCompanyIdAndStatusId(companyId,18l)) //激活状态
+		{
+			WSSelectObj w = new WSSelectObj(s.getIdSo(),s.getCodeSo());
+			ws.add(w);
+		}
+		return ws;
+	}
+
+	
+	
+	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/getMaterialDeliveredBySoId", method=RequestMethod.GET)
 	public WSMaterialDelivered getMaterialDeliveredBySoId(@RequestParam("soId") Long soId) throws Exception {
 		

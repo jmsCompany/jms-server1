@@ -7,6 +7,8 @@ public class WSCompanyCo {
 
 
     private Long id;
+    private Long idParent;
+    private Long parentAuditStatus;
     private String code;
     private String shortName;
     private String name;
@@ -35,6 +37,13 @@ public class WSCompanyCo {
     private Long statusId;
     private String status;
     
+    
+    private Long idCompany1;
+    private Long auditStatusId;
+    private String email;
+    
+    
+    private String auditStatus;
     
     private List<WSLinkman> linkmen = new ArrayList<WSLinkman>();
 
@@ -328,5 +337,65 @@ public class WSCompanyCo {
 
 	public void setLinkmen(List<WSLinkman> linkmen) {
 		this.linkmen = linkmen;
+	}
+
+
+	public Long getIdCompany1() {
+		return idCompany1;
+	}
+
+
+	public void setIdCompany1(Long idCompany1) {
+		this.idCompany1 = idCompany1;
+	}
+
+
+	public String getAuditStatus() {
+		return auditStatus;
+	}
+
+
+	public void setAuditStatus(String auditStatus) {
+		this.auditStatus = auditStatus;
+	}
+
+
+	public Long getAuditStatusId() {
+		return auditStatusId;
+	}
+
+
+	public void setAuditStatusId(Long auditStatusId) {
+		this.auditStatusId = auditStatusId;
+	}
+
+
+	public Long getIdParent() {
+		return idParent;
+	}
+
+
+	public void setIdParent(Long idParent) {
+		this.idParent = idParent;
+	}
+
+
+	public Long getParentAuditStatus() {
+		return parentAuditStatus;
+	}
+
+
+	public void setParentAuditStatus(Long parentAuditStatus) {
+		this.parentAuditStatus = parentAuditStatus;
+	}
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

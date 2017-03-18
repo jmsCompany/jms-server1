@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="q_g8d"
-    ,catalog="jms5"
 )
 public class QG8d  implements java.io.Serializable {
 

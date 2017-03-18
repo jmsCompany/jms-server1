@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_gender_dic"
-    ,catalog="jms5"
 )
 public class SGenderDic  implements java.io.Serializable {
 

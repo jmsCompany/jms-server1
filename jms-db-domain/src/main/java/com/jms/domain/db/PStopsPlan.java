@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="p_stops_plan"
-    ,catalog="jms5"
 )
 public class PStopsPlan  implements java.io.Serializable {
 

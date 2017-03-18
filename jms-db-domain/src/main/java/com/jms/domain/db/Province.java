@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="province"
-    ,catalog="jms5"
 )
 public class Province  implements java.io.Serializable {
 

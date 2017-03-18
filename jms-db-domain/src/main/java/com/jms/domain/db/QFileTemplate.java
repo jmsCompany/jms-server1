@@ -17,7 +17,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="q_file_template"
-    ,catalog="jms5"
 )
 public class QFileTemplate  implements java.io.Serializable {
 

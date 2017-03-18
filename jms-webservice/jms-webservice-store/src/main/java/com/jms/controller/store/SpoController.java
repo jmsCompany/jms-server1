@@ -1,15 +1,23 @@
 package com.jms.controller.store;
 
+import java.io.FileInputStream;
+import java.math.BigDecimal;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import com.csvreader.CsvReader;
 import com.jms.domain.db.SAttachment;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SPo;
@@ -17,6 +25,7 @@ import com.jms.domain.db.SPoMaterial;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
+import com.jms.domain.ws.p.WSPCpp;
 import com.jms.domain.ws.s.WSSpo;
 import com.jms.domain.ws.s.WSSpoMaterial;
 import com.jms.domain.ws.s.WSSpoRemark;
@@ -41,6 +50,8 @@ public class SpoController {
 	@Autowired private FileUploadService fileUploadService;
 	@Autowired private SAttachmentRepository sAttachmentRepository;
 	@Autowired private SSpoMaterialRepositoryCustom sSpoMaterialRepositoryCustom;
+    @Value("${filePath}")
+	private String filePath;
 	private static final Logger logger = LogManager.getLogger(SpoController.class
 			.getCanonicalName());
 	@Transactional(readOnly = false)
@@ -90,35 +101,84 @@ public class SpoController {
 	@RequestMapping(value = "/s/uploadSpoFile", method = RequestMethod.POST)
 	public Valid uploadSpoFile( MultipartHttpServletRequest request, HttpServletResponse response) {
 	
+		//poNo,coComId,exchange,tax,currTypeId,statusId,totalprice,materialId,unitprice,unit,qtyNum,price,deliveryDate,remark,sno
+
 		Valid v= new Valid();
+		FileMeta fileMeta = new FileMeta();
+		try{
+			if (request.getFileNames().hasNext()) {
+				fileMeta = fileUploadService.upload(request, response,true);
+				FileInputStream inputStream = new FileInputStream(filePath+fileMeta.getFileName());
+				CsvReader reader = new CsvReader(inputStream,',', Charset.forName("UTF-8"));
+				reader.readHeaders();
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
+			    WSSpo spo =new WSSpo();
+			    int i=0;
+				while(reader.readRecord())
+				{
+					i++;
+					//System.out.println("woId:" + reader.get(0));
+					String codePo = reader.get(0);//订单编码
+					if(codePo.isEmpty())
+					{
+						codePo=null;
+					}
+					Long coCompanyId = Long.parseLong(reader.get(1)); //合作公司ID
+				    Long exchange = Long.parseLong(reader.get(2)); //汇率
+				    Long tax = Long.parseLong(reader.get(3)); //税
+				    Long currTypeId = Long.parseLong(reader.get(4)); //币别
+				    Long statusId = Long.parseLong(reader.get(5)); //状态ID
+				    Long totalAmount =Long.parseLong(reader.get(6)); //总价
+				    Long materialId = Long.parseLong(reader.get(7)); //物料Id
+				    
+				    BigDecimal uprice =new BigDecimal(reader.get(8)); //单价
+				    String unit = reader.get(9); //单价
+				    Long qty = Long.parseLong(reader.get(10)); //数量
+				    Long price = Long.parseLong(reader.get(11)); //价格
+				    Date deliveryDate =formatter.parse(reader.get(12));//运货日期
+				    String remark = reader.get(13);//
+				    
+				    String sno = reader.get(14);//缺货单号
+				
+				    if(i==1)
+				    {
+				    	 spo.setCodePo(codePo);
+				    	 spo.setsCompanyCoId(coCompanyId);
+				    	 spo.setExchange(exchange);
+				    	 spo.setsCurrencyTypeId(currTypeId);
+				    	 spo.setTaxRate(tax);
+				    	 spo.setRemark(remark);
+				    	 spo.setsStatusId(statusId);//编辑状态
+				    	 spo.setTotalAmount(totalAmount);
+				    	// spo.set
+				    }
+				   
+				    WSSpoMaterial pm = new WSSpoMaterial();
+				    pm.setQtyPo(qty);
+				    pm.setUnit(unit);
+				    pm.setUprice(uprice);
+				    pm.setTotalPrice(price);
+				    pm.setDeliveryDate(deliveryDate);
+				    pm.setsMaterialId(materialId);
+				  //  pm.set
+				  //  pm.setDes(des);
+				    spo.getPoItems().put("item"+i, pm);
+				  
+			
+				}
+				  spoService.saveSpo(spo);
+				}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			v.setMsg("上传采购订单失败！");
+			v.setValid(false);
+			return v;
+		}
 		v.setMsg("成功");
 		v.setValid(true);
 		return v;
-//		FileMeta fileMeta = new FileMeta();
-//		if (request.getFileNames().hasNext()) {
-//			fileMeta = fileUploadService.upload(request, response,false);
-//			SAttachment spic = new SAttachment();
-//			spic.setOrgFilename(fileMeta.getOrgName());
-//			spic.setFilename(fileMeta.getFileName());
-//			//logger.debug("orgin file name: " +  fileMeta.getOrgName() +", file name in server: " + fileMeta.getFileName());
-//			spic.setUsers(securityUtils.getCurrentDBUser());
-//			spic = sAttachmentRepository.save(spic);
-//			fileMeta.setFileId(spic.getId());
-//			fileMeta.setBytes(null);
-//			if(spoId!=null&&!spoId.equals(0l))
-//			{
-//				SPo spo = sSpoRepository.findOne(spoId);
-//			    spo.setSAttachment(spic);
-//			    sSpoRepository.save(spo);
-//			}
-//
-//			
-//		}
-//		else
-//		{
-//			logger.debug("no file was uploaded");
-//		}
-//		return fileMeta;
 	}
 	
 	

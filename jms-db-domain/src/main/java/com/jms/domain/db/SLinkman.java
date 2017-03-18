@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_linkman"
-    ,catalog="jms5"
 )
 public class SLinkman  implements java.io.Serializable {
 

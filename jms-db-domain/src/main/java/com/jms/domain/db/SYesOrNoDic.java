@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_yes_or_no_dic"
-    ,catalog="jms5"
 )
 public class SYesOrNoDic  implements java.io.Serializable {
 

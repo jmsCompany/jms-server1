@@ -21,7 +21,6 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="p_mr"
-    ,catalog="jms5"
 )
 public class PMr   extends AbstractSecuredEntity  implements java.io.Serializable {
 

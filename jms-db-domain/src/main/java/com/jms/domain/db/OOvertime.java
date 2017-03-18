@@ -17,7 +17,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="o_overtime"
-    ,catalog="jms5"
 )
 public class OOvertime  implements java.io.Serializable {
 

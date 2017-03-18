@@ -107,6 +107,9 @@ public class PCheckPlanService {
 
 		}
 		pwo.setActQty(qtyFinished);
+		
+		
+		
 		pWoRepository.save(pwo);
 		return wsPCheckPlan;		
 		

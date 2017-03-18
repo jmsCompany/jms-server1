@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_material_type_dic"
-    ,catalog="jms5"
 )
 public class SMaterialTypeDic  implements java.io.Serializable {
 

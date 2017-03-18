@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="p_bom_label"
-    ,catalog="jms5"
 )
 public class PBomLabel  implements java.io.Serializable {
 

@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="q_tester"
-    ,catalog="jms5"
 )
 public class QTester  implements java.io.Serializable {
 

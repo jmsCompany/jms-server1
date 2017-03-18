@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="w_project_participant"
-    ,catalog="jms5"
 )
 public class WProjectParticipant  implements java.io.Serializable {
 

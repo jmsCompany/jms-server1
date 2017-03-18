@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="c_schedule_watcher"
-    ,catalog="jms5"
 )
 public class CScheduleWatcher  implements java.io.Serializable {
 

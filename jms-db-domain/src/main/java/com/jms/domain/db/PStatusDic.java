@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="p_status_dic"
-    ,catalog="jms5"
 )
 public class PStatusDic  implements java.io.Serializable {
 
@@ -39,6 +38,9 @@ public class PStatusDic  implements java.io.Serializable {
      private Set<PRoutine> PRoutines = new HashSet<PRoutine>(0);
      private Set<PWo> PWos = new HashSet<PWo>(0);
      private Set<PShiftPlan> PShiftPlans = new HashSet<PShiftPlan>(0);
+     
+     
+     private String nameEn;
 
     public PStatusDic() {
     }
@@ -185,6 +187,14 @@ public class PStatusDic  implements java.io.Serializable {
     public void setPShiftPlans(Set<PShiftPlan> PShiftPlans) {
         this.PShiftPlans = PShiftPlans;
     }
+    @Column(name="name_en", length=64)
+	public String getNameEn() {
+		return nameEn;
+	}
+
+	public void setNameEn(String nameEn) {
+		this.nameEn = nameEn;
+	}
 
 
 

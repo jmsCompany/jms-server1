@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="service_type"
-    ,catalog="jms5"
 )
 public class ServiceType  implements java.io.Serializable {
 

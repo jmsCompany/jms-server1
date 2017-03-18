@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="e_check_item_dic"
-    ,catalog="jms5"
 )
 public class ECheckItemDic  implements java.io.Serializable {
 

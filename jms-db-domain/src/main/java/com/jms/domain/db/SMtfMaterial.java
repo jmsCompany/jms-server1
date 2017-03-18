@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_mtf_material"
-    ,catalog="jms5"
 )
 public class SMtfMaterial  implements java.io.Serializable {
 

@@ -20,7 +20,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="p_actual_setup"
-    ,catalog="jms5"
 )
 public class PActualSetup  implements java.io.Serializable {
 

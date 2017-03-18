@@ -148,6 +148,7 @@ public class GroupService {
 		return groups;
 	}
 
+	
 	public List<WSGroup> getSectorsByIdCompany(Long idCompany) throws Exception {
 		List<WSGroup> groups = new ArrayList<WSGroup>(0);
 		for (Groups g : groupRepository.findByIdCompany(idCompany)) {
@@ -158,6 +159,8 @@ public class GroupService {
 		}
 		return groups;
 	}
+	
+	
 
 	public WSGroup getWSGroup(Long idGroup) throws Exception {
 		Groups g = groupRepository.findOne(idGroup);
@@ -173,7 +176,7 @@ public class GroupService {
 		while (reader.readRecord()) {
 			String login = reader.get(0).trim();
 			String department = reader.get(1).trim();
-			Users u = usersRepository.findByUsername(login+"@@"+company.getIdCompany());
+			Users u = usersRepository.findByUsername(login+"@"+company.getIdCompany());
 			Groups g = groupRepository.findGroupByGroupNameAndCompany(department, companyId, GroupTypeEnum.Sector.name());
 			addUserToDefaultGroup(u, g, null); 
 		}

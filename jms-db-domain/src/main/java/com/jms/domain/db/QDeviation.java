@@ -20,7 +20,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="q_deviation"
-    ,catalog="jms5"
 )
 public class QDeviation  implements java.io.Serializable {
 

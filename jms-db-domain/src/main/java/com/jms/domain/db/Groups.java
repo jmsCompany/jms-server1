@@ -27,7 +27,6 @@ import com.jms.domain.db.AbstractSecuredEntity;
  */
 @Entity
 @Table(name="groups"
-    ,catalog="jms5"
 )
 public class Groups extends AbstractSecuredEntity   implements java.io.Serializable {
 

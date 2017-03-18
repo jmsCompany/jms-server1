@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="p_wip"
-    ,catalog="jms5"
 )
 public class PWip  implements java.io.Serializable {
 

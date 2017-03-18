@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="q_check_list"
-    ,catalog="jms5"
 )
 public class QCheckList  implements java.io.Serializable {
 

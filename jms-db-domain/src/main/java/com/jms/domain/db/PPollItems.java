@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="p_poll_items"
-    ,catalog="jms5"
 )
 public class PPollItems  implements java.io.Serializable {
 

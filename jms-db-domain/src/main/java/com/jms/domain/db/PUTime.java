@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="p_u_time"
-    ,catalog="jms5"
 )
 public class PUTime  implements java.io.Serializable {
 

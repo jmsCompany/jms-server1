@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="q_location_dic"
-    ,catalog="jms5"
 )
 public class QLocationDic  implements java.io.Serializable {
 

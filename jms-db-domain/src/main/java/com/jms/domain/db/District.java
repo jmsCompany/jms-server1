@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="district"
-    ,catalog="jms5"
 )
 public class District  implements java.io.Serializable {
 

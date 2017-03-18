@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_currency_type"
-    ,catalog="jms5"
 )
 public class SCurrencyType  implements java.io.Serializable {
 

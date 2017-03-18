@@ -241,11 +241,12 @@ public class SStkService {
 	public WSStk findByStkName(String stkName)
 	{
 		
-		    SStk stk = sStkRepository.findByIdCompanyAndStkName(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), stkName);
+		    List<SStk> stks = sStkRepository.findByIdCompanyAndStkName(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), stkName);
 		
 			WSStk wsStk = new WSStk();
-			if(stk==null)
+			if(stks.isEmpty())
 				return wsStk;
+			SStk stk = stks.get(0);
 			wsStk.setAddress(stk.getAddress());
 			wsStk.setDes(stk.getDes());
 			wsStk.setIdStk(stk.getId());

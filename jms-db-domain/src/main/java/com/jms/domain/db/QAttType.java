@@ -21,7 +21,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="q_att_type"
-    ,catalog="jms5"
 )
 public class QAttType  implements java.io.Serializable {
 

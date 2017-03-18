@@ -21,7 +21,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="ehs_record"
-    ,catalog="jms5"
 )
 public class EhsRecord  implements java.io.Serializable {
 

@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="s_company_co_attachment"
-    ,catalog="jms5"
 )
 public class SCompanyCoAttachment  implements java.io.Serializable {
 

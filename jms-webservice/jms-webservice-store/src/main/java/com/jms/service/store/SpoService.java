@@ -3,7 +3,9 @@ package com.jms.service.store;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jms.domain.db.SComCom;
 import com.jms.domain.db.SMtfNo;
 import com.jms.domain.db.SPo;
 import com.jms.domain.db.SPoMaterial;
@@ -20,7 +23,9 @@ import com.jms.domain.ws.s.WSSpo;
 import com.jms.domain.ws.s.WSSpoMaterial;
 import com.jms.domain.ws.s.WSSpoRemark;
 import com.jms.domainadapter.BeanUtil;
+import com.jms.email.EmailSenderService;
 import com.jms.repositories.s.SAttachmentRepository;
+import com.jms.repositories.s.SComComRepository;
 import com.jms.repositories.s.SCompanyCoRepository;
 import com.jms.repositories.s.SCurrencyTypeRepository;
 import com.jms.repositories.s.SMtfNoRepository;
@@ -64,6 +69,11 @@ public class SpoService {
 	@Autowired private SMtfNoService sMtfNoService;
 	
 
+	@Autowired
+	private EmailSenderService emailSenderService;
+	@Autowired
+	private SComComRepository sComComRepository;
+	
 	public WSSpo saveSpo(WSSpo wsSpo) throws Exception {
 		
 		SPo spo;
@@ -91,6 +101,7 @@ public class SpoService {
 			
 		}
 		spo.getSPoMaterials().clear();
+		
 		spo=toDBSpo(wsSpo,spo);
 		SPo sp =sSpoRepository.save(spo);
 		wsSpo.setIdPo(sp.getIdPo());
@@ -101,7 +112,39 @@ public class SpoService {
 			wm.setLine(Long.parseLong(k.substring(4)));
 		
 			wm.setsPoId(sp.getIdPo());
-			spoMaterialService.saveSpoMaterial(wm);
+		
+				spoMaterialService.saveSpoMaterial(wm);
+		
+		}
+		
+		//是否是往来公司流转？
+		if(wsSpo.getIdComCom()!=null)
+		{
+		
+			SComCom comcom=sComComRepository.findOne(wsSpo.getIdComCom());
+			
+			
+			//sComComRepository.findMyCompanies(idCompany)
+			Map<String,Object> model = new LinkedHashMap<String,Object>();
+			String[] emails = new String[]{comcom.getEmail1(),comcom.getEmail2()};
+//			采购订单
+//			公司：$!{company}
+//			订单编码: $!{poNo}, 总价： $!{totalPrice}
+//			条目：
+//			$!{materials}
+//			备注：
+//			$!{remark}
+			String materials ="";
+			for(WSSpoMaterial pm: wsSpo.getPoItems().values())
+			{
+				materials =materials +"物料: " + pm.getsMaterial() +", 数量: " +pm.getQtyPo() +",单价: " + pm.getUprice() +", 总价： " + pm.getTotalPrice() +", 备注： " +pm.getRemark()+"\r\n";
+			}
+			model.put("company", securityUtils.getCurrentDBUser().getCompany().getCompanyName());
+			model.put("poNo", wsSpo.getCodePo());
+			model.put("totalPrice", wsSpo.getTotalAmount());
+			model.put("remarks", wsSpo.getRemark());
+			model.put("materials", materials);
+			emailSenderService.sendEmail(emails,"poTemplate.vm",  "新订单", model, null);
 		}
 		
 		return wsSpo;
@@ -215,6 +258,21 @@ public class SpoService {
 		}
 		dbSpo.setUsers(securityUtils.getCurrentDBUser());
 		dbSpo.setCompany(securityUtils.getCurrentDBUser().getCompany());
+		
+		
+		if(wsSpo.getIdComCom()!=null)
+		{
+			SComCom comcom=sComComRepository.findOne(wsSpo.getIdComCom());
+			if(comcom.getIdCompany1().equals(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
+			{
+				dbSpo.setIdCompany1(comcom.getIdCompany2());
+			}
+			else
+			{
+				dbSpo.setIdCompany1(comcom.getIdCompany1());
+			}
+			
+		}
 
 		return dbSpo;
 	}

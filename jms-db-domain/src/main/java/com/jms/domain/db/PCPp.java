@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="p_c_pp"
-    ,catalog="jms5"
 )
 public class PCPp  implements java.io.Serializable {
 
@@ -53,8 +52,7 @@ public class PCPp  implements java.io.Serializable {
     }
 
    
-     @Id @GeneratedValue(strategy=IDENTITY)
-    
+    @Id @GeneratedValue(strategy=IDENTITY)
     @Column(name="id_c_pp", unique=true, nullable=false)
     public Long getIdCPp() {
         return this.idCPp;
@@ -153,7 +151,8 @@ public class PCPp  implements java.io.Serializable {
     public void setPlanFt(Date planFt) {
         this.planFt = planFt;
     }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="PCPp")
+    
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="PCPp")
     public Set<PActualSetup> getPActualSetups() {
         return this.PActualSetups;
     }

@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="m_repair_history"
-    ,catalog="jms5"
 )
 public class MRepairHistory  implements java.io.Serializable {
 

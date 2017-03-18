@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="q_item_type"
-    ,catalog="jms5"
 )
 public class QItemType  implements java.io.Serializable {
 
