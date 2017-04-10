@@ -65,11 +65,9 @@ public class AuthenticationTokenProcessingFilter extends
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
-		//logger.debug("request: " + request.getHeader("User-Agent"));
-		//logger.debug("from: " + request.getRemoteAddr());
+	//	logger.debug("request: " + request.getHeader("User-Agent"));
+	//	logger.debug("from: " + request.getRequestURI());
 		if (req instanceof org.apache.catalina.connector.RequestFacade) {
-			//logger.debug("WTF?:  "  +res.getClass().getCanonicalName());
-		
 			chain.doFilter(request, response);
 			
 		}
@@ -79,7 +77,7 @@ public class AuthenticationTokenProcessingFilter extends
 				String token = request.getHeader("JMS-TOKEN");
 				if (token != null) {
 					if (tokenUtils.validate(token)) {
-					//	logger.debug("call fiter?:  "  +req.getClass().getCanonicalName());
+					
 						JMSUserDetails userDetails = tokenUtils
 								.getUserFromToken(token);
 						UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
@@ -93,6 +91,8 @@ public class AuthenticationTokenProcessingFilter extends
 
 						SecurityContextHolder.getContext().setAuthentication(
 								authenticated);
+						logger.debug("userid:" +userDetails.getUsername() +", ip: "+request.getRemoteAddr()+", path: "+ request.getRequestURI());
+						//System.out.println("user:" +userDetails.getUsername()+ ", call  "  +req.getClass().getCanonicalName() +", path: " +req.getLocalAddr() +","+ req.getRemoteAddr() +", " +req.getServletContext());
 					}
 				}
 

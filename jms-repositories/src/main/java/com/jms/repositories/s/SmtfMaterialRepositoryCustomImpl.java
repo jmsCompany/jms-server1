@@ -72,4 +72,53 @@ public class SmtfMaterialRepositoryCustomImpl implements SMtfMaterialRepositoryC
 		   return em.createQuery(query, SMtfMaterial.class).getResultList();
 	}
 
+	@Override
+	public List<SMtfMaterial> getCustomCSMtf(Long companyId, Long companyId1, String q, String fromDay, String toDay) {
+		
+	   String query ="select s from SMtfMaterial s where (s.SMtf.company.idCompany=" +companyId +" or s.SMtf.idToCompany=" +companyId +")";
+	   if(companyId1!=null)
+	   {
+		   query = query +" and s.SMtf.company.idCompany=" +companyId1 +" or s.SMtf.idToCompany=" +companyId1;
+	   }
+	   if(q!=null)
+	   {
+		   q="'%"+q+"%'";
+		   query = query +" and (s.SMaterial.pno like "+q +"  or s.SMaterial.rev like " +q +" or s.SMaterial.des like "+q +" or s.SMtf.mtNo like "+q +")";
+	   }
+	   if(fromDay!=null)
+	   {
+		 query = query +" and DATE(s.SMtf.creationTime)>='" +fromDay +"'";
+	   }
+	   if(toDay!=null)
+	   {
+			 query = query +" and DATE(s.SMtf.creationTime)<='" +toDay +"'";
+	   }
+	   query = query +" and s.SMtf.SMtfTypeDic.idMtfType=" +9 + " and s.SMtf.SStatusDic.id=5";
+	   System.out.println(query);
+	   return em.createQuery(query, SMtfMaterial.class).getResultList();
+	}
+
+	@Override
+	public List<SMtfMaterial> getCustomCSMtfMaterials(Long companyId, Long statusId) {
+		String query="";
+		Long typeId = -1l;
+		if(statusId.equals(4l))
+		{
+			typeId =9l;
+		    query ="select s from SMtfMaterial s where s.SMtf.idToCompany=" +companyId + " and s.SMtf.SStatusDic.id="+statusId +" and s.SMtf.SMtfTypeDic.idMtfType="+typeId;
+		}
+		else if(statusId.equals(5l))
+		{
+			typeId =10l;
+			 query ="select s from SMtfMaterial s where s.SMtf.company.idCompany=" +companyId + " and s.SMtf.SStatusDic.id="+statusId +" and s.SMtf.SMtfTypeDic.idMtfType="+typeId;
+		}
+		else
+		{
+			typeId =9l;
+			query ="select s from SMtfMaterial s where s.SMtf.idToCompany=" +companyId + " and s.SMtf.SStatusDic.id="+statusId +" and s.SMtf.SMtfTypeDic.idMtfType="+typeId;
+		}
+	//    System.out.println(query);
+		return em.createQuery(query, SMtfMaterial.class).getResultList();
+	}
+
 }

@@ -62,6 +62,22 @@ public class SsoController {
 	}
 	
 	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/findCoOrderNosByCompany2Id", method=RequestMethod.GET)
+	public List<WSSelectObj> findCoOrderNosByCompany2Id(@RequestParam("idCompany2") Long idCompany2) throws Exception {
+		List<WSSelectObj> ws =new ArrayList<WSSelectObj>();
+		for(String s: sSoRepository.findCoOrderNosByCompany2Id(idCompany2))
+		{
+			WSSelectObj w = new WSSelectObj();
+			w.setSid(s);
+			w.setName(s);
+			ws.add(w);
+		}
+		return ws;
+	}
+	
+	
+	
+	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/getSoList", method=RequestMethod.POST)
 	public WSTableData  getSoList( 
 			@RequestParam(required=false,value="q") String q,
@@ -108,6 +124,25 @@ public class SsoController {
 		}
 		return ws;
 	}
+	
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/getSoListByCompany2IdAndOrderNo", method=RequestMethod.GET)
+	public List<WSSelectObj> getSoListByCompany2IdAndOrderNo(@RequestParam("company2Id") Long company2Id,@RequestParam("orderNo") String orderNo) throws Exception {
+//		System.out.println("coId: " + companyCoId +", orderNo: " +orderNo);
+		List<WSSelectObj>  ws = new ArrayList<WSSelectObj>();
+		for(SSo s :sSoRepository.findByCompany2IdAndOrderNo(company2Id,orderNo))
+		{
+			WSSelectObj w = new WSSelectObj(s.getIdSo(),s.getCodeSo());
+			ws.add(w);
+		}
+		return ws;
+	}
+	
+	
+	
+	
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/getSoListObjs", method=RequestMethod.GET)

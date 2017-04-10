@@ -28,11 +28,9 @@ import com.jms.repositories.s.SMtfMaterialRepository;
 import com.jms.repositories.s.SMtfMaterialRepositoryCustom;
 import com.jms.repositories.s.SMtfRepository;
 import com.jms.service.store.MtfMaterialService;
-import com.jms.service.store.MtfService;
 import com.jms.service.store.SMtfCService;
 import com.jms.service.store.SMtfTypeDicService;
 import com.jms.web.security.SecurityUtils;
-import org.springframework.data.domain.PageRequest;
 
 
 @RestController
@@ -46,6 +44,7 @@ public class MtfCController {
 	@Autowired private SMtfCRepository sMtfCRepository;
 	@Autowired private CompanyRepository companyRepository;
 	@Autowired private SMtfCRepositoryCustom sMtfCRepositoryCustom;
+	@Autowired private SMtfMaterialRepositoryCustom sMtfMaterialRepositoryCustom;
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveSmtfC", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -70,40 +69,53 @@ public class MtfCController {
 	@RequestMapping(value="/s/getSmtfCList", method=RequestMethod.POST)
 	public WSTableData  getSmtfCList(
 			@RequestParam(required=false,value="q") String q,
-			@RequestParam(required=false,value="companyName") String companyName,
+			@RequestParam(required=false,value="idCompany2") Long idCompany2,
 			@RequestParam(required=false,value="fromDay") String fromDay,
 			@RequestParam(required=false,value="toDay") String toDay,
 			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length)  {	   
 		
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		List<SMtfMaterial> wsSMtfMaterials = sMtfMaterialRepositoryCustom.getCustomCSMtf(companyId, idCompany2, q, fromDay, toDay);
 	
-		List<SMtfC> sMtfCs = sMtfCRepositoryCustom.getCustomSMtfC(companyId, q,companyName, fromDay, toDay);
+		//List<SMtfC> sMtfCs = sMtfCRepositoryCustom.getCustomSMtfC(companyId, q,companyName, fromDay, toDay);
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
-		if(sMtfCs.size()<start + length)
-			end =sMtfCs.size();
+		if(wsSMtfMaterials.size()<start + length)
+			end =wsSMtfMaterials.size();
 		else
 			end =start + length;
 		for(int i=start;i<end;i++)
 		{
-			SMtfC w = sMtfCs.get(i);
 			
-			Company c1 = companyRepository.findOne(w.getIdCompany1());
-			Company c2 = companyRepository.findOne(w.getIdCompany2());
-			Date date = w.getAuditDate();
+			SMtfMaterial w = wsSMtfMaterials.get(i);
+		//	System.out.println("id_mt: " +w.getSMtf().getIdMt() );
+			Company c1 = w.getSMtf().getCompany();
+			String  c2="";
+			if(w.getSMtf().getIdToCompany()!=null)
+			{
+				Company c = companyRepository.findOne(w.getSMtf().getIdToCompany());
+				c2 =c.getCompanyName();
+			}
+			
+			Date date = w.getSMtf().getCreationTime();
 			String sDate = "";
 			if(date!=null)
 			{
 				SimpleDateFormat myFmt1=new SimpleDateFormat("yyyy-MM-dd"); 
 				sDate = myFmt1.format(date);;
 			}
+			String material ="";
+			if(w.getSMaterial()!=null)
+			{
+				material = w.getSMaterial().getPno()+"_"+w.getSMaterial().getDes();
+			}
 			String[] d = {
-					w.getCompany1(),
-					w.getCompany2(),
+					c1.getCompanyName(),
+					c2,
 					sDate,
-					w.getPno()+"_"+w.getMaterialName(),
-					""+w.getQty(),
-					w.getPno()
+					material,
+					""+w.getQty()
+					//w.
 					};
 			lst.add(d);
 		}
@@ -111,8 +123,8 @@ public class MtfCController {
 	
 		WSTableData t = new WSTableData();
 		t.setDraw(draw);
-		t.setRecordsTotal(sMtfCs.size());
-		t.setRecordsFiltered(sMtfCs.size());
+		t.setRecordsTotal(wsSMtfMaterials.size());
+		t.setRecordsFiltered(wsSMtfMaterials.size());
 	    t.setData(lst);
 	    return t;
 	}
@@ -133,12 +145,11 @@ public class MtfCController {
 			{
 				
 				String[] d = {
-						"公司",
-						"物料",
-						"期初",
-						"收",
-						"法",
-						"存"
+						"",
+						"",
+						"",
+						"",
+						""
 						
 						};
 				lst.add(d);

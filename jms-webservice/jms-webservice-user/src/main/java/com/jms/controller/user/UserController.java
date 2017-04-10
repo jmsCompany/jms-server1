@@ -548,7 +548,8 @@ public class UserController {
 	@RequestMapping(value="/login", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public WSUserProfile login(@RequestBody WSUser wsUser) throws Exception {
 		WSUserProfile userProfile = new WSUserProfile();
-		System.out.println("user: " +wsUser.getLogin() +", pass: "  +wsUser.getPassword());
+		String login = wsUser.getLogin();
+		System.out.println("user login: " +wsUser.getLogin() +", pass: "  +wsUser.getPassword());
 		String token = userService.login(wsUser.getLogin(), wsUser.getPassword());
 		if(token==null)
 		{
@@ -650,9 +651,15 @@ public class UserController {
 					}
 					
 				
-				 
-					m.setFt(cpp.getPlanFt().getTime());
+				 if(cpp.getPlanFt()!=null)
+				 {
+						m.setFt(cpp.getPlanFt().getTime()); 
+				 }
+				if(cpp.getPlanSt()!=null)
+				{
 					m.setSt(cpp.getPlanSt().getTime());
+				}
+					
 					
 				//	System.out.println("plan st: " + cpp.getPlanFt().getTime() +", plan ft: " + cpp.getPlanFt().getTime());
 					
@@ -669,7 +676,18 @@ public class UserController {
 				
 		
 					m.setOp(cpp.getUsers().getName());
-					m.setpNo(cpp.getPWo().getSSo().getSMaterial().getPno());
+					
+					if(cpp.getPWo()!=null)
+					{
+						if(cpp.getPWo().getSSo()!=null)
+						{
+							if(cpp.getPWo().getSSo().getSMaterial()!=null)
+							{
+								m.setpNo(cpp.getPWo().getSSo().getSMaterial().getPno());
+							}
+						}
+					}
+					
 					m.setQty(cpp.getQty());
 					
 					if(cpp.getPRoutineD()!=null)
@@ -686,14 +704,30 @@ public class UserController {
 							f.setName(pa.getPAttDraw().getFilename());
 							m.getFiles().add(f);
 						}
-						m.setStdWtLabor(cpp.getPRoutineD().getStdWtLabor());
-						m.setStdWtMachine(cpp.getPRoutineD().getStdWtMachine());
-						m.setStdWtSetup(cpp.getPRoutineD().getStdWtSetup());
+						if(cpp.getPRoutineD()!=null)
+						{
+							m.setStdWtLabor(cpp.getPRoutineD().getStdWtLabor());
+							m.setStdWtMachine(cpp.getPRoutineD().getStdWtMachine());
+							m.setStdWtSetup(cpp.getPRoutineD().getStdWtSetup());
+						}
+					
 					}
 				
-					m.setWoNo(cpp.getPWo().getWoNo());
-					m.setShift(cpp.getPShiftPlanD().getShift());
-					m.setSt(cpp.getPlanSt().getTime());
+					if(cpp.getPWo()!=null)
+					{
+						m.setWoNo(cpp.getPWo().getWoNo());
+					}
+				
+					if(cpp.getPShiftPlanD()!=null)
+					{
+						m.setShift(cpp.getPShiftPlanD().getShift());
+					}
+					
+					if(cpp.getPlanSt()!=null)
+					{
+						m.setSt(cpp.getPlanSt().getTime());
+					}
+					
 				
 				
 					
@@ -755,6 +789,7 @@ public class UserController {
 	@RequestMapping(value="/check/username", method=RequestMethod.GET)
 	public Valid checkLogin(@RequestParam("login") String login,@RequestParam(required=false, value="idUser") Long idUser) throws Exception {
 		Boolean returnVal = userService.checkLogin(login,idUser);
+		System.out.println("check user name: " + login);
 		Valid valid = new Valid();
 		valid.setValid(returnVal);
 		return valid;
@@ -1003,10 +1038,10 @@ public class UserController {
 			String mobile = (w.getMobile()==null)?"":w.getMobile();
 			String email = (w.getEmail()==null)?"":w.getEmail();
 			String username = (w.getUsername()==null)?"":w.getUsername();
-			if(username.contains("@@"))
-			{
-				username = username.substring(0,username.indexOf("@@"));
-			}
+//			if(username.contains("@@"))
+//			{
+//				username = username.substring(0,username.indexOf("@@"));
+//			}
 			String gender = (w.getSysDicDByGender()==null)?"":w.getSysDicDByGender().getName();
 				
 			String[] d = {name,gender,username,mobile,email,""+w.getIdUser()};

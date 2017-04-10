@@ -29,7 +29,8 @@ public class WSSso {
     private Long qtyDelivered;
     private String autoRemark;
     
-
+    private Long idCompany2;
+    
 	public Long getsCompanyCoId() {
 		return sCompanyCoId;
 	}
@@ -175,6 +176,12 @@ public class WSSso {
 	}
 	public void setUprice(Long uprice) {
 		this.uprice = uprice;
+	}
+	public Long getIdCompany2() {
+		return idCompany2;
+	}
+	public void setIdCompany2(Long idCompany2) {
+		this.idCompany2 = idCompany2;
 	}
 
 

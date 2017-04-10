@@ -186,25 +186,25 @@ public class SStkService {
 	
 	public void loadStksByCompanyId(InputStream inputStream, Long companyId) throws IOException {
 
-		Company company = companyRepository.findOne(companyId);
-		
-		CsvReader reader = new CsvReader(inputStream, ',', Charset.forName("UTF-8"));
-		reader.readHeaders();
-		while (reader.readRecord()) {
-			SStk s = new SStk();
-			s.setStkName(reader.get(0));
-			s.setDes(reader.get(1));
-			s.setCompany(company);
-			s.setSStatusDic(sStatusDicRepository.findOne(27l));//有效
-			s.setSStkTypeDic(sStkTypeDicRepository.findOne(Long.parseLong(reader.get(2))));
-			sStkRepository.save(s);
-		}
+//		Company company = companyRepository.findOne(companyId);
+//		
+//		CsvReader reader = new CsvReader(inputStream, ',', Charset.forName("UTF-8"));
+//		reader.readHeaders();
+//		while (reader.readRecord()) {
+//			SStk s = new SStk();
+//			s.setStkName(reader.get(0));
+//			s.setDes(reader.get(1));
+//			s.setCompany(company);
+//			s.setSStatusDic(sStatusDicRepository.findOne(27l));//有效
+//			s.setSStkTypeDic(sStkTypeDicRepository.findOne(Long.parseLong(reader.get(2))));
+//			sStkRepository.save(s);
+//		}
 	}
 	
 	
 	@Transactional(readOnly=true)
 	public Boolean checkStkName(String stkName, Long idStk) {
-
+      //  System.out.println("stk name: " + stkName +", idStk: " + idStk);
 		String dbStkName = "";
 		// 已有仓库修改
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
@@ -213,7 +213,7 @@ public class SStkService {
 			SStk stk =sStkRepository.findOne(idStk);
 			dbStkName= stk.getStkName();
 			if (stkName != null && !stkName.isEmpty()) {
-				if (sStkRepository.findByIdCompanyAndStkName(companyId, stkName) == null
+				if (sStkRepository.findByIdCompanyAndStkName(companyId, stkName).isEmpty()
 						|| stkName.equals(dbStkName)) {
 					return true;
 				} else {
@@ -225,7 +225,7 @@ public class SStkService {
 			if (stkName == null || stkName.isEmpty())
 				return false;
 			else {
-				if (sStkRepository.findByIdCompanyAndStkName(companyId, stkName) == null) {
+				if (sStkRepository.findByIdCompanyAndStkName(companyId, stkName).isEmpty()) {
 					return true;
 				} else {
 					return false;

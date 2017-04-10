@@ -1,0 +1,16 @@
+﻿name,des,type
+IQC,来料检验仓,5
+STK,原料仓,1
+WIP1,ROLLER线,3
+WIP2,PULLEY线,3
+QRB,不合格品仓,5
+FGI,成品仓,2
+RMA,成品退货仓,5
+SCRAP,报废仓,5
+IDI,消耗品仓,5
+EQ,设备部,5
+PO,采购单,4
+SO,销售单,4
+ACC,盘点仓,4
+IDF,消耗品来源,4
+IDT,消耗品去向,4

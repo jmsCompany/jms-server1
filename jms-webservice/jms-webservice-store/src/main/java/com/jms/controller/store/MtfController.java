@@ -5,12 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-
 import com.jms.domain.db.SMtf;
 import com.jms.domain.db.SMtfMaterial;
 import com.jms.domain.ws.Valid;
@@ -19,6 +16,7 @@ import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.s.WSMaterialChecked;
 import com.jms.domain.ws.s.WSSMtf;
 import com.jms.domain.ws.s.WSSMtfMaterial;
+import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.s.SMtfMaterialRepository;
 import com.jms.repositories.s.SMtfMaterialRepositoryCustom;
 import com.jms.repositories.s.SMtfRepository;
@@ -26,7 +24,6 @@ import com.jms.service.store.MtfMaterialService;
 import com.jms.service.store.MtfService;
 import com.jms.service.store.SMtfTypeDicService;
 import com.jms.web.security.SecurityUtils;
-import org.springframework.data.domain.PageRequest;
 
 
 @RestController
@@ -40,6 +37,7 @@ public class MtfController {
 	@Autowired private SMtfRepository sMtfRepository;
 	@Autowired private SMtfMaterialRepository sMtfMaterialRepository;
 	@Autowired private SMtfMaterialRepositoryCustom sMtfMaterialRepositoryCustom;
+	@Autowired private CompanyRepository companyRepository;
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveSmtf", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -267,6 +265,157 @@ public class MtfController {
 	    return t;
 	}
 	
+	//4待接收，5接收，6作废 友好公司
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/getSmtfMaterialListFromCom", method=RequestMethod.POST)
+	public WSTableData  getSmtfMaterialListFromCom(
+			@RequestParam(value="statusId") Long statusId,  //4待接收，5接收，6作废
+			
+			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length)  {	   
+		
+		//our companyId
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		String toCompanyName = securityUtils.getCurrentDBUser().getCompany().getCompanyName();
+	
+		
+	
+		List<SMtfMaterial> sMtfMaterials = sMtfMaterialRepositoryCustom.getCustomCSMtfMaterials(companyId, statusId);
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(sMtfMaterials.size()<start + length)
+			end =sMtfMaterials.size();
+		else
+			end =start + length;
+		for(int i=start;i<end;i++)
+		{
+			SMtfMaterial w = sMtfMaterials.get(i);
+			SMtf smtf = w.getSMtf();
+			
+			String mtNo = (smtf.getMtNo()==null)?"":smtf.getMtNo();
+			String material;
+			if(w.getSMaterial()!=null)
+			{
+				 material = (w.getSMaterial().getPno()+"_"+w.getSMaterial().getRev()+"_"+w.getSMaterial().getDes());
+			}
+			else
+			{
+				material="";
+			}
+			String lotNo = w.getLotNo();
+			String fromBin="",toBin="";
+			if(statusId==4l||statusId==6l)
+			{
+				if(w.getSBinByFromBin()!=null)
+				{
+					fromBin=w.getSBinByFromBin().getSStk().getStkName() +"_"+w.getSBinByFromBin().getBin();
+				}
+			}
+			else
+			{
+				if(w.getSBinByToBin()!=null)
+				{
+					toBin=w.getSBinByToBin().getSStk().getStkName() +"_"+w.getSBinByToBin().getBin();
+				}
+			}
+
+			String coOrderNo="";
+			if(w.getSSo()!=null)
+			{
+				coOrderNo = w.getSSo().getCoOrderNo();
+				//wsSMtf.set
+			}
+			String empUser =(w.getSMtf().getUsersByEmpMt()==null)?"":w.getSMtf().getUsersByEmpMt().getName();
+			if(empUser==null)
+				empUser="";
+			String rectUser =(w.getSMtf().getUsersByRecMt()==null)?"":w.getSMtf().getUsersByRecMt().getUsername();
+			if(rectUser==null)
+				rectUser="";
+			Date date = w.getSMtf().getCreationTime();
+			String sDate = "";
+			if(date!=null)
+			{
+				SimpleDateFormat myFmt1=new SimpleDateFormat("yyyy-MM-dd"); 
+				sDate = myFmt1.format(date);;
+			}
+			
+			Date dateq = w.getSMtf().getDateMt();
+			String sDateq = "";
+			if(dateq!=null)
+			{
+				SimpleDateFormat myFmt1=new SimpleDateFormat("yyyy-MM-dd"); 
+				sDateq = myFmt1.format(dateq);;
+			}
+			
+			String remark="";
+			if(w.getRemark()!=null)
+			{
+				remark=w.getRemark();
+			}
+		
+			String fromCompany = "";
+			if(statusId==4l||statusId==6l)
+			{
+				fromCompany=smtf.getCompany().getCompanyName();
+			}
+			else
+			{
+				if(smtf.getIdSmtfC()!=null)
+				{
+					SMtf psmtf = sMtfRepository.findOne(smtf.getIdSmtfC());
+					if(psmtf!=null)
+					{
+						fromCompany = psmtf.getCompany().getCompanyName();
+					}
+				}
+			
+			}
+			String[] d = {
+					sDate,
+					fromCompany,
+					toCompanyName,
+					lotNo,
+					fromBin,
+					toBin,
+					material,
+					""+w.getQty(),
+					coOrderNo,
+					remark,
+					sDateq,
+					mtNo,
+					""+w.getSMtf().getIdMt()
+					};
+			lst.add(d);
+		}
+
+	
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(sMtfMaterials.size());
+		t.setRecordsFiltered(sMtfMaterials.size());
+	    t.setData(lst);
+	    return t;
+	}
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/getMtfTypes", method=RequestMethod.GET)
+	public List<WSSelectObj> getMtfTypes() {
+		return  sMtfTypeDicService.getMtfTypes();
+	}
+	
+
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/findWSSMtfMaterialBySpoIdAndStkId", method=RequestMethod.GET)
+	public List<WSSMtfMaterial> findWSSMtfMaterialBySpoId(@RequestParam("spoId") Long spoId,@RequestParam("stkId") Long stkId) throws Exception {
+		return mtfMaterialService.findWSSMtfMaterialBySpoId(spoId,stkId);
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/getSmtfMaterialList", method=RequestMethod.POST)
@@ -291,6 +440,8 @@ public class MtfController {
 		for(int i=start;i<end;i++)
 		{
 			SMtfMaterial w = sMtfMaterials.get(i);
+			
+			
 			String mtNo = (w.getSMtf().getMtNo()==null)?"":w.getSMtf().getMtNo();
 			String material;
 			if(w.getSMaterial()!=null)
@@ -323,6 +474,7 @@ public class MtfController {
 				toBin="";
 			}
 
+		
 			String empUser =(w.getSMtf().getUsersByEmpMt()==null)?"":w.getSMtf().getUsersByEmpMt().getName();
 			if(empUser==null)
 				empUser="";
@@ -331,6 +483,13 @@ public class MtfController {
 				rectUser="";
 			Date date = w.getSMtf().getCreationTime();
 			String sDate = "";
+			
+			String status="";
+			if(w.getSMtf().getSStatusDic()!=null)
+			{
+				status = w.getSMtf().getSStatusDic().getName();
+			}
+
 			if(date!=null)
 			{
 				SimpleDateFormat myFmt1=new SimpleDateFormat("yyyy-MM-dd"); 
@@ -346,6 +505,7 @@ public class MtfController {
 					""+w.getQty(),
 					empUser,
 					sDate,
+					status,
 					""+w.getSMtf().getIdMt()
 					};
 			lst.add(d);
@@ -359,22 +519,5 @@ public class MtfController {
 	    t.setData(lst);
 	    return t;
 	}
-	
-	
-	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/getMtfTypes", method=RequestMethod.GET)
-	public List<WSSelectObj> getMtfTypes() {
-		return  sMtfTypeDicService.getMtfTypes();
-	}
-	
-
-	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/findWSSMtfMaterialBySpoIdAndStkId", method=RequestMethod.GET)
-	public List<WSSMtfMaterial> findWSSMtfMaterialBySpoId(@RequestParam("spoId") Long spoId,@RequestParam("stkId") Long stkId) throws Exception {
-		return mtfMaterialService.findWSSMtfMaterialBySpoId(spoId,stkId);
-	}
-	
-	
-	
 	
 }

@@ -12,12 +12,9 @@ import com.jms.service.store.CurrencyTypeService;
 @RestController
 @Transactional(readOnly=true)
 public class CurrencyTypeController {
-	
 
-	
 	@Autowired private CurrencyTypeService currencyTypeService;
 
-	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/currencyTypes", method=RequestMethod.GET)
 	public List<WSSelectObj> findCurrencyTypes() {

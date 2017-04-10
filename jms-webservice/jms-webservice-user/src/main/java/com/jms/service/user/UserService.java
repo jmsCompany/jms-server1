@@ -294,7 +294,7 @@ public class UserService extends IUserServiceImpl{
 		String defaultMsg=null;
 	//	System.out.println("user login :" +login);
 	    Users user =  usersRepository.findByUsernameOrEmailOrMobile(login);
-	  
+	    System.out.println("find user:" +user.getIdUser());
 	    if(user!=null&&user.getEnabled().longValue()==1l)
 	    {
 	    //	System.out.println("user is not null");

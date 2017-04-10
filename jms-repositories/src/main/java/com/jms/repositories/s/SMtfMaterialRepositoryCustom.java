@@ -27,4 +27,18 @@ public interface SMtfMaterialRepositoryCustom {
 			String fromDay,
 			String toDay);
 		
+	//往来公司 typeId = 9 公司流转 status=5接收
+	public List<SMtfMaterial> getCustomCSMtf(
+			Long companyId,
+			Long companyId1,
+			String q,
+			String fromDay,
+			String toDay);
+	
+	
+	//往来公司 待接收，已接收，拒绝？
+	public List<SMtfMaterial> getCustomCSMtfMaterials(
+			Long companyId,
+			Long statusId);
+	
 }

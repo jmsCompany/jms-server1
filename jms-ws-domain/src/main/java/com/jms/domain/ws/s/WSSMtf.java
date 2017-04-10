@@ -33,8 +33,12 @@ public class WSSMtf {
 	     
 	     private String coOrderNo;
 	     
-	     
+	 
 	     private boolean savePmr=false;
+	     
+	     
+	     private Long idToCompany;
+	     private Long idCustomerCompany;
 	     
 	     private Map<String,WSSMtfMaterial> smtfItems = new LinkedHashMap<String,WSSMtfMaterial>(0);
 		public Long getIdMt() {
@@ -182,6 +186,18 @@ public class WSSMtf {
 		}
 		public void setSavePmr(boolean savePmr) {
 			this.savePmr = savePmr;
+		}
+		public Long getIdToCompany() {
+			return idToCompany;
+		}
+		public void setIdToCompany(Long idToCompany) {
+			this.idToCompany = idToCompany;
+		}
+		public Long getIdCustomerCompany() {
+			return idCustomerCompany;
+		}
+		public void setIdCustomerCompany(Long idCustomerCompany) {
+			this.idCustomerCompany = idCustomerCompany;
 		}
    
 }

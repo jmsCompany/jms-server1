@@ -80,6 +80,8 @@ public class WSSMtfMaterial {
     
     private Long cppId;
     
+    private int hasMaterial;
+    
 	public Long getIdMtfMaterial() {
 		return idMtfMaterial;
 	}
@@ -392,6 +394,12 @@ public class WSSMtfMaterial {
 	}
 	public void setCppId(Long cppId) {
 		this.cppId = cppId;
+	}
+	public int getHasMaterial() {
+		return hasMaterial;
+	}
+	public void setHasMaterial(int hasMaterial) {
+		this.hasMaterial = hasMaterial;
 	}
     
   

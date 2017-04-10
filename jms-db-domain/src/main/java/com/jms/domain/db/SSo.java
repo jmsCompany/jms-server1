@@ -49,6 +49,10 @@ public class SSo  implements java.io.Serializable {
      private Long qtyDelivered;
      private String remark;
      private String autoRemark;
+     
+     
+     
+     private Long idCompany2;
      private Set<PWo> PWos = new HashSet<PWo>(0);
      private Set<SMtfMaterial> SMtfMaterials = new HashSet<SMtfMaterial>(0);
 
@@ -286,6 +290,14 @@ public class SSo  implements java.io.Serializable {
     public void setSMtfMaterials(Set<SMtfMaterial> SMtfMaterials) {
         this.SMtfMaterials = SMtfMaterials;
     }
+    @Column(name="id_company2")
+	public Long getIdCompany2() {
+		return idCompany2;
+	}
+
+	public void setIdCompany2(Long idCompany2) {
+		this.idCompany2 = idCompany2;
+	}
 
 
 

@@ -44,6 +44,13 @@ public class SMtf  implements java.io.Serializable {
      private Long idWo;
      
      private Long idSmtfC;
+     
+     
+     private Long idToCompany;
+     private Long idCustomerCompany;
+     
+     private String coOrderNo;
+     
      private Set<SMtfMaterial> SMtfMaterials = new HashSet<SMtfMaterial>(0);
 
     public SMtf() {
@@ -198,6 +205,31 @@ public class SMtf  implements java.io.Serializable {
 
 	public void setIdSmtfC(Long idSmtfC) {
 		this.idSmtfC = idSmtfC;
+	}
+	   @Column(name="id_to_company")
+	public Long getIdToCompany() {
+		return idToCompany;
+	}
+
+	public void setIdToCompany(Long idToCompany) {
+		this.idToCompany = idToCompany;
+	}
+	   @Column(name="id_customer_company")
+	public Long getIdCustomerCompany() {
+		return idCustomerCompany;
+	}
+
+	public void setIdCustomerCompany(Long idCustomerCompany) {
+		this.idCustomerCompany = idCustomerCompany;
+	}
+
+	@Column(name="co_order_no", length=64)
+	public String getCoOrderNo() {
+		return coOrderNo;
+	}
+
+	public void setCoOrderNo(String coOrderNo) {
+		this.coOrderNo = coOrderNo;
 	}
 
 

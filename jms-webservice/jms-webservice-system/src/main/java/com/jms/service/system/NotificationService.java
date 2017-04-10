@@ -366,31 +366,35 @@ public class NotificationService implements INotificationService{
 					PUnplannedStops	pUnplannedStops = pUnplannedStopsRepository.findOne(sourceId);
 					if(pUnplannedStops!=null&&pUnplannedStops.getEqFt()==null)
 					{
-						PCPp cpp = pCPpRepository.findOne(pUnplannedStops.getIdCpp());
-						if(cpp!=null)
+						if(pUnplannedStops.getIdCpp()!=null)
 						{
 							
-							model.put("reason",title);
-							model.put("woNo",cpp.getPWo().getWoNo() );
-							model.put("pNo", cpp.getPWo().getSSo().getSMaterial().getPno());
-							model.put("machine", mMachineRepository.findOne(pUnplannedStops.getIdMachine()).getCode());
-							try{
-								emailSenderService.sendEmail(toEmailAddresses,emailTemplate,title, model, null);
-								r.setMsg("sended");
-							}catch(Exception e){
-								e.printStackTrace();
-								r.setMsg("wrong email address: " + u.getEmail());
+							PCPp cpp = pCPpRepository.findOne(pUnplannedStops.getIdCpp());
+							if(cpp!=null)
+							{
+								
+								model.put("reason",title);
+								model.put("woNo",cpp.getPWo().getWoNo() );
+								model.put("pNo", cpp.getPWo().getSSo().getSMaterial().getPno());
+								model.put("machine", mMachineRepository.findOne(pUnplannedStops.getIdMachine()).getCode());
+								try{
+									emailSenderService.sendEmail(toEmailAddresses,emailTemplate,title, model, null);
+									r.setMsg("sended");
+								}catch(Exception e){
+									e.printStackTrace();
+									r.setMsg("wrong email address: " + u.getEmail());
+								}
+							}
+							else
+							{
+								r.setMsg("no CPP!");
 							}
 						}
-						else
-						{
-							r.setMsg("no CPP!");
+						else{
+							r.setMsg("solved");
 						}
-					}
-					else{
-						r.setMsg("solved");
-					}
 
+					}
 				}	
 				 
 				else if(event.getIdEvent().equals(16l))

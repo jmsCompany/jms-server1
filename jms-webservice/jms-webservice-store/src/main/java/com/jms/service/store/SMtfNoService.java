@@ -33,7 +33,7 @@ public class SMtfNoService implements ISmtfNoService{
 	@Override
 	public void loadSmtfNosByCompanyId(Long companyId) {
 		
-       for(int type=1;type<13;type++)
+       for(int type=1;type<15;type++)
        {
    		SMtfNo smtfNo = new SMtfNo();
    		smtfNo.setCompanyId(companyId);
@@ -111,6 +111,18 @@ public class SMtfNoService implements ISmtfNoService{
 		   {
 			smtfNo.setDes("日计划");
 			smtfNo.setPrefix("DP");
+			break;
+		   }
+		  case 13:
+		   {
+			smtfNo.setDes("往来发货");
+			smtfNo.setPrefix("WLFH");
+			break;
+		   }
+		  case 14:
+		   {
+			smtfNo.setDes("往来发货");
+			smtfNo.setPrefix("WLSH");
 			break;
 		   }
    		  

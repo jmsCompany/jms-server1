@@ -16,8 +16,9 @@ public class AccessControlAllowFilter implements Filter {
 	
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-		//LOGGER.info("applying accessControlAllow filter");
+		//LOGGER.debug("applying accessControlAllow filter");
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		
 		
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		httpResponse.addHeader("Access-Control-Allow-Origin", "*");

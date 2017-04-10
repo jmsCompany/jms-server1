@@ -53,6 +53,7 @@ import com.jms.repositories.user.GroupTypeRepository;
 import com.jms.repositories.user.RoleRepository;
 import com.jms.repositories.user.UsersRepository;
 import com.jms.repositories.workmanagement.ProjectRepository;
+import com.jms.s.ISBinService;
 import com.jms.s.ISmtfNoService;
 import com.jms.repositories.s.SStkRepository;
 import com.jms.system.INotificationService;
@@ -104,7 +105,8 @@ public class CompanyService {
 	@Autowired
 	private ISmtfNoService sMtfNoService;
 	
-	
+	@Autowired
+	private ISBinService sBinService;
 	
 	
 	@Autowired
@@ -118,7 +120,7 @@ public class CompanyService {
 	
 		//System.out.println("find company: " + );
 		Company company = securityUtils.getCurrentDBUser().getCompany();
-		System.out.println("find company: " +company.getCompanyName() );
+	//	System.out.println("find company: " +company.getCompanyName() );
 		if (company.getEnabled() == EnabledEnum.DISENABLED.getStatusCode())
 			return null;
 		return company;
@@ -173,6 +175,7 @@ public class CompanyService {
 		
 		
 		sMtfNoService.loadSmtfNosByCompanyId(company.getIdCompany());
+		sBinService.loadSystemBins(company.getIdCompany());
 		return true;
 
 	}
@@ -285,7 +288,7 @@ public class CompanyService {
 			g1.setGroupType(g.getGroupType());
 			g1.setDescription(g.getDescription());
 			g1.setUsers(creator);
-			System.out.println("create group: " + g.getGroupName());
+			//System.out.println("create group: " + g.getGroupName());
 			groupRepository.save(g1);
 			List<Long> idGroups = new ArrayList<Long>();
 			idGroups.add(g1.getIdGroup());
@@ -344,6 +347,7 @@ public class CompanyService {
 
 		}
 		List<Apps> appList = appsRepository.findInvs();
+		//List<Apps> appList = appsRepository.findAll();
 		Users admin = from.getUsersByCreator();
 		// copy apps
 //	Map<Apps, String> smap = securedObjectService

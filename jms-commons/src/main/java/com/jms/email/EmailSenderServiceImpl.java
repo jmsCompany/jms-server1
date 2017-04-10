@@ -57,7 +57,6 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 
 				}
 		    catch (MessagingException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		}

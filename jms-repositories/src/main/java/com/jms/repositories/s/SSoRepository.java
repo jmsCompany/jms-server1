@@ -22,6 +22,10 @@ public interface SSoRepository  extends JpaRepository<SSo, Long>{
 	public List<SSo> findByCompanyIdAndOrderNo(Long companyId,String orderNo);
 	
 	
+	
+	@Query("select s from SSo s where s.idCompany2=?1 and s.coOrderNo=?2 and s.SStatusDic.id=18")
+	public List<SSo> findByCompany2IdAndOrderNo(Long company2Id,String orderNo);
+	
 	@Query("select s from SSo s where s.SCompanyCo.id=?1 and s.SStatusDic.id=18")
 	public List<SSo> findByCompanyCoId(Long companyCoId);
 	
@@ -30,5 +34,10 @@ public interface SSoRepository  extends JpaRepository<SSo, Long>{
 	
 	@Query(value="SELECT distinct(co_order_no) FROM s_so where code_co=?1",nativeQuery=true)
 	public List<String> findCoOrderNosByCompanyCoId(Long companyCoId);
+	
+	
+	
+	@Query(value="SELECT distinct(co_order_no) FROM s_so where id_company2=?1",nativeQuery=true)
+	public List<String> findCoOrderNosByCompany2Id(Long company2Id);
 		
 }

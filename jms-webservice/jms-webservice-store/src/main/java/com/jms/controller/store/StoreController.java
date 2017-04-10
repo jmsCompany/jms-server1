@@ -138,6 +138,9 @@ public class StoreController {
 	}
 	
 	
+	
+	
+	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/getBinsByStkIdAndMaterialIdCMethod", method=RequestMethod.GET)
 	public List<WSSelectObj> getBinsByStkIdAndMaterialIdCMethod(@RequestParam Long idStk,@RequestParam Long idMaterial) {

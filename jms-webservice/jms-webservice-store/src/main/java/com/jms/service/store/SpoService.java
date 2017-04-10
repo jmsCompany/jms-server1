@@ -144,7 +144,13 @@ public class SpoService {
 			model.put("totalPrice", wsSpo.getTotalAmount());
 			model.put("remarks", wsSpo.getRemark());
 			model.put("materials", materials);
-			emailSenderService.sendEmail(emails,"poTemplate.vm",  "新订单", model, null);
+			try{
+				emailSenderService.sendEmail(emails,"poTemplate.vm",  "新订单", model, null);
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			
 		}
 		
 		return wsSpo;
@@ -197,6 +203,7 @@ public class SpoService {
 	}
 	public List<WSSelectObj> findSpoListByCodeCo(Long companyId,Long codeCo) throws Exception 
 	{
+		System.out.println("companyId: " + companyId +", codeCo: " + codeCo);
 		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
 		for(SPo s : sSpoRepository.findByCompanyIdAndCodeCo(companyId,codeCo))
 		{

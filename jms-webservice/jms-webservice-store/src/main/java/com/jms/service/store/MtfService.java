@@ -13,10 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jms.domain.NotificationMethodEnum;
+import com.jms.domain.db.Company;
 import com.jms.domain.db.EventReceiver;
 import com.jms.domain.db.PMr;
 import com.jms.domain.db.SBin;
+import com.jms.domain.db.SComCom;
 import com.jms.domain.db.SInventory;
+import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMaterialBins;
 import com.jms.domain.db.SMaterialBinsId;
 import com.jms.domain.db.SMtf;
@@ -30,11 +33,13 @@ import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.s.WSSMtf;
 import com.jms.domain.ws.s.WSSMtfMaterial;
 import com.jms.domainadapter.BeanUtil;
+import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.p.PBomRepository;
 import com.jms.repositories.p.PCPpRepository;
 import com.jms.repositories.p.PMrRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.s.SBinRepository;
+import com.jms.repositories.s.SComComRepository;
 import com.jms.repositories.s.SInventoryRepository;
 import com.jms.repositories.s.SMaterialBinsRepository;
 import com.jms.repositories.s.SMaterialRepository;
@@ -90,6 +95,8 @@ public class MtfService {
 	private SMtfNoRepository sMtfNoRepository;
 	@Autowired
 	private SMtfNoService sMtfNoService;
+	@Autowired
+	private  SBinService sBinService;
 	
 	@Autowired
 	private SMaterialBinsRepository sMaterialBinsRepository;
@@ -111,7 +118,11 @@ public class MtfService {
 	
 	@Autowired
 	private PMrRepository pMrRepository;
+	@Autowired
+	private CompanyRepository companyRepository;
 	
+	@Autowired
+	private SComComRepository sComComRepository;
 	
 	//校验
 	public Valid updateMtfStatus(WSSMtf wsSMtf)
@@ -139,21 +150,61 @@ public class MtfService {
 
 
 	public Valid saveMtf(WSSMtf wsSMtf) throws Exception {
-		Valid valid = new Valid();
-	
+		    
+		    Valid valid = new Valid();
 			Long smtfType = wsSMtf.getTypeId();
+			
+		    long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+			 boolean mcheck = true;
+	            String msg ="";
+	            if(smtfType.equals(10l))
+	            {
+	            	for (String k : wsSMtf.getSmtfItems().keySet())
+	            	{
+	            		WSSMtfMaterial wm = wsSMtf.getSmtfItems().get(k);
+		                String pno = wm.getMaterialPno();
+						SMaterial m =sMaterialRepository.getByCompanyIdAndPno(companyId, pno);
+						if(m==null)
+						{
+							mcheck =false;
+							msg =msg +"请新建物料：" +pno +"\r\n";
+						}
+	            	}
+	            	valid.setValid(mcheck);
+	            	valid.setMsg(msg);
+	            	if(!mcheck)
+	            		return valid;
+	            }
+	            
+			
 			SMtf sMtf = new SMtf();
 		//	if(wsSMtf.getTypeId())
 
 			sMtf = toDBMtf(wsSMtf, sMtf);
+			if(smtfType.equals(10l))
+	            {
+				  sMtf.setIdSmtfC(wsSMtf.getIdMt());
+				  sMtf.setCreationTime(new Date());
+				  sMtf.setDateMt(new Date());
+				  sMtf.setCoOrderNo(wsSMtf.getCoOrderNo());
+				  sMtf.setSStatusDic(sStatusDicRepository.findOne(5l));
+	            }
 			
+			if(smtfType.equals(2l))
+            {
+			  sMtf.setSStatusDic(sStatusDicRepository.findOne(6l));
+            }
 			sMtf = sMtfRepository.save(sMtf);
+			
 			boolean toIQC = false;
 			boolean finishIQC=true;
 			boolean savePmr = wsSMtf.isSavePmr();
 		
             int i=0;
             SMtf orgSmtf=null;
+            
+           
+            
 			for (String k : wsSMtf.getSmtfItems().keySet()) {
 				i++;
 
@@ -265,27 +316,31 @@ public class MtfService {
 						sFromInventory.setQty(sFromInventory.getQty() - wm.getQty());
 						sInventoryRepository.save(sFromInventory);
 						
-						sToInventory = sInventoryRepository.findByMaterialIdAndBinIdAndLotNo(wm.getMaterialId(),
-								wm.getToBinId(),wm.getLotNo());
-						if(sToInventory==null)
+						if(wm.getToBinId()!=null)
 						{
-							sToInventory = new SInventory();
-							sToInventory.setCreationTime(new Date());
-							sToInventory.setLotNo(wm.getLotNo());
-							sToInventory.setQty(wm.getQty());
-							sToInventory.setUQty(wm.getUqty());
-							sToInventory.setSBin(sBinRepository.findOne(wm.getToBinId()));
-							sToInventory.setSMaterial(sMaterialRepository.findOne(wm.getMaterialId()));
-							sToInventory.setQty( wm.getQty());
-							sInventoryRepository.save(sToInventory);
+							sToInventory = sInventoryRepository.findByMaterialIdAndBinIdAndLotNo(wm.getMaterialId(),
+									wm.getToBinId(),wm.getLotNo());
+							if(sToInventory==null)
+							{
+								sToInventory = new SInventory();
+								sToInventory.setCreationTime(new Date());
+								sToInventory.setLotNo(wm.getLotNo());
+								sToInventory.setQty(wm.getQty());
+								sToInventory.setUQty(wm.getUqty());
+								sToInventory.setSBin(sBinRepository.findOne(wm.getToBinId()));
+								sToInventory.setSMaterial(sMaterialRepository.findOne(wm.getMaterialId()));
+								sToInventory.setQty( wm.getQty());
+								sInventoryRepository.save(sToInventory);
+							}
+							else
+							{	
+								sToInventory.setQty(sToInventory.getQty() + wm.getQty());
+						    	sInventoryRepository.save(sToInventory);
+								
+							}
+						
 						}
-						else
-						{	
-							sToInventory.setQty(sToInventory.getQty() + wm.getQty());
-					    	sInventoryRepository.save(sToInventory);
-							
-						}
-					
+						
 						
 						
 					}
@@ -317,27 +372,30 @@ public class MtfService {
 				        	}
 				        }
 				        
-				        
-				    	List<SInventory> sToInventorys= sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
-				    	   if(sToInventorys!=null&&!sToInventorys.isEmpty())
-					        {
-				    		   sToInventory = sToInventorys.get(0);
-				    		   sToInventory.setQty(sToInventory.getQty() + wm.getQty());
-						       sInventoryRepository.save(sToInventory);
-					        }
-				    	   else{
+				        if(wm.getToBinId()!=null)
+						{
+				        	List<SInventory> sToInventorys= sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
+					    	   if(sToInventorys!=null&&!sToInventorys.isEmpty())
+						        {
+					    		   sToInventory = sToInventorys.get(0);
+					    		   sToInventory.setQty(sToInventory.getQty() + wm.getQty());
+							       sInventoryRepository.save(sToInventory);
+						        }
+					    	   else{
 
-								sToInventory = new SInventory();
-								sToInventory.setCreationTime(new Date());
-								sToInventory.setLotNo(wm.getLotNo());
-								sToInventory.setQty(wm.getQty());
-								sToInventory.setUQty(wm.getUqty());
-								sToInventory.setSBin(sBinRepository.findOne(wm.getToBinId()));
-								sToInventory.setSMaterial(sMaterialRepository.findOne(wm.getMaterialId()));
-//								sToInventory.setQty(wm.getQty());
-								sInventoryRepository.save(sToInventory);
-				    		   
-				    	   }
+									sToInventory = new SInventory();
+									sToInventory.setCreationTime(new Date());
+									sToInventory.setLotNo(wm.getLotNo());
+									sToInventory.setQty(wm.getQty());
+									sToInventory.setUQty(wm.getUqty());
+									sToInventory.setSBin(sBinRepository.findOne(wm.getToBinId()));
+									sToInventory.setSMaterial(sMaterialRepository.findOne(wm.getMaterialId()));
+//									sToInventory.setQty(wm.getQty());
+									sInventoryRepository.save(sToInventory);
+					    		   
+					    	   }
+						}
+				    	
 						
 					}
 				
@@ -745,6 +803,142 @@ public class MtfService {
 				}
 				
 
+				case 9: // 往来公司出货
+				{
+					SInventory fromInventory =sInventoryRepository.findOne(wm.getInventoryId());
+			        if(fromInventory!=null)
+			        {
+			        	Long fromBinId = fromInventory.getSBin().getIdBin();
+			        	wm.setFromBinId(fromBinId);
+
+					//	logger.debug("matId: " +wm.getMaterialId() +", fromBinId: " +wm.getFromBinId() +", stkId:"+wsSMtf.getFromStkId());
+						updateMaterialBins(wm.getMaterialId(),wm.getFromBinId(),wsSMtf.getFromStkId());
+			        	fromInventory.setQty(fromInventory.getQty()-wm.getQty());
+						sInventoryRepository.save(fromInventory);
+						
+					    SBin conBin = sBinService.saveSystemBin(companyId, "CON");
+					    wm.setToBinId(conBin.getIdBin());
+						updateMaterialBins(wm.getMaterialId(),conBin.getIdBin(),conBin.getSStk().getId());
+			    
+					    
+					    
+					//	SSo sSo = sSoRepository.getOne(wm.getSoId());
+					//	long rvd=0l;
+					//	if (sSo.getQtyDelivered() != null) {
+					//		rvd = sSo.getQtyDelivered() + wm.getQty();
+
+					//	} else {
+					//		rvd =wm.getQty();
+					//	}
+					//	sSo.setQtyDelivered(rvd);
+					//	if(rvd>=sSo.getQtySo()) //关闭销售单
+					//	{
+					//		sSo.setSStatusDic(sStatusDicRepository.findOne(15l)); //结束销售订单
+					//	}
+
+					//	sSoRepository.save(sSo);
+	
+						wm.setIdMt(sMtf.getIdMt());
+						wm.setFromBinId(wm.getFromBinId());
+						mtfMaterialService.saveMtfMaterial(wm);
+						   SInventory to=null;
+							
+							List<SInventory> sInventorys= sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), conBin.getIdBin());
+					        if(sInventorys!=null&&!sInventorys.isEmpty())
+					        {
+					        	to = sInventorys.get(0);
+								to.setQty(to.getQty() + wm.getQty());
+					        }
+
+					        else{
+							//	 logger.debug("can not find inventory by tobin, so create new one");
+								to = new SInventory();
+								to.setCreationTime(new Date());
+								to.setLotNo(wm.getLotNo());
+								to.setQty(wm.getQty());
+								to.setUQty(wm.getUqty());
+								to.setSBin(sBinRepository.findOne(conBin.getIdBin()));
+								// to.setSMaterial(spoMaterial.getSMaterial());
+								to.setSMaterial(sMaterialRepository.findOne(wm.getMaterialId()));
+							} 
+					       // logger.debug("save to bin: " + to.getQty());
+							sInventoryRepository.save(to);
+					
+			        }
+			        else
+					{
+			        	valid.setMsg("无库存，不能出货");
+			        	//logger.debug("无库存，不能出货");
+						break;
+					}
+					break;
+	
+				}
+		
+				case 10:  //往来公司收货
+				{
+					String pno = wm.getMaterialPno();
+					
+					SMaterial material =sMaterialRepository.getByCompanyIdAndPno(companyId, pno);
+					SBin sbin =sBinRepository.findOne(wm.getToBinId());
+					if(i==1)
+					{
+						if(sbin.getBin().equals("IQC"))
+						{
+							toIQC=true;
+						}
+						else
+						{
+							wm.setQtyChecked(wm.getQty());
+						}
+					}
+
+					SInventory sToInventory=null;
+					if (wm.getLotNo() != null&&!wm.getLotNo().isEmpty()) {
+						sToInventory = sInventoryRepository.findByMaterialIdAndBinIdAndLotNo(material.getIdMaterial(),
+								wm.getToBinId(), wm.getLotNo());
+						
+					} else {
+						List<SInventory> sToInventorys= sInventoryRepository.findByMaterialIdAndBinId(material.getIdMaterial(), wm.getToBinId());
+				        if(sToInventorys!=null&&!sToInventorys.isEmpty())
+				        {
+				        	sToInventory = sToInventorys.get(0);
+				        }
+				        
+					}
+					if (sToInventory == null) {
+					
+						sToInventory = new SInventory();
+						sToInventory.setCreationTime(new Date());
+						///sToInventory.setLotNo(wm.getLotNo());
+						sToInventory.setQty(wm.getQty());
+						///sToInventory.setUQty(wm.getUqty());
+						sToInventory.setSBin(sbin);
+						sToInventory.setSMaterial(material);
+    					logger.debug(" save to new bin: " +sbin.getBin() +", qty:" + wm.getQty());
+						sInventoryRepository.save(sToInventory);
+	
+					} else {
+						sToInventory.setQty(sToInventory.getQty() + wm.getQty());
+						logger.debug(" save to  bin: " +sbin.getBin() +", qty:" + wm.getQty());
+						sInventoryRepository.save(sToInventory);
+					}
+				//	wm.setIdMt(sMtf.getIdMt());
+					wm.setMaterialId(material.getIdMaterial());
+					wm.setIdMt(sMtf.getIdMt());
+					wm.setQtyChecked(wm.getQty());
+					mtfMaterialService.saveMtfMaterial(wm);
+					
+					
+					break;
+				
+					
+				}
+				
+				
+				
+				
+
 				}
 			}
 			
@@ -813,6 +1007,108 @@ public class MtfService {
 			
 			}
 			
+			//往来公司收货
+			 if(smtfType.equals(10l))
+	          {
+				 long idMt = wsSMtf.getIdMt();
+				 SMtf  smtf =  sMtfRepository.findOne(idMt); //公司B的往来发货
+				 smtf.setSStatusDic(sStatusDicRepository.findOne(5l));
+				 sMtfRepository.save(smtf);
+				 
+				 
+				 Long customerCompanyId = smtf.getIdCustomerCompany();
+		          if(customerCompanyId!=null) //
+		          {
+		        	 for(SPo spo: sSpoRepository.findByCompanyIdAndCodePo(customerCompanyId, smtf.getCoOrderNo()))
+		        	 {
+		        		 spo.setSStatusDic(sStatusDicRepository.findOne(8l));
+		        		 sSpoRepository.save(spo);
+		        	 }
+		          }
+		          Company  customerCompany = companyRepository.findOne(customerCompanyId);
+				  SMtf smtf1 = new SMtf();
+				  smtf1.setCompany(customerCompany);
+				  smtf1.setCreationTime(new Date());
+				  smtf1.setDateMt(new Date());
+				  smtf1.setIdSmtfC(idMt);
+				    SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(customerCompanyId,14l);
+				   if(smtfNo==null)
+				   {   
+					    smtfNo = new SMtfNo();
+					    smtfNo.setDes("往来发货");
+						smtfNo.setPrefix("WLSH");
+						smtfNo.setCompanyId(customerCompanyId);
+						smtfNo.setType(14l);
+						smtfNo.setCurrentVal(1l);
+						smtfNo =sMtfNoRepository.save(smtfNo);
+				   }
+				    long currentVal =smtfNo.getCurrentVal()+1;
+				    smtfNo.setCurrentVal(currentVal);
+				    sMtfNoRepository.save(smtfNo);
+				    String mtNo = smtfNo.getPrefix()+String.format("%08d", currentVal);
+				    smtf1.setMtNo(mtNo);
+				    smtf1.setSMtfTypeDic(sMtfTypeDicRepository.findOne(10l));
+				    smtf1.setSStatusDic(sStatusDicRepository.findOne(5l));
+				    
+				 //   smtf1.setSStkByToStk(sStkByToStk);
+				 
+				    SBin conBin = sBinService.saveSystemBin(customerCompanyId, "CON");
+				    smtf1.setSStkByToStk(conBin.getSStk());
+				   
+				    smtf1=  sMtfRepository.save(smtf1);
+				   for(SMtfMaterial sm:smtf.getSMtfMaterials())
+				   {
+					 if(sm.getSSo()!=null)
+					 {
+						 SSo sso = sm.getSSo();
+						 sso.setQtyDelivered(sm.getQty());
+						 //关闭销售订单
+						 sso.setSStatusDic(sStatusDicRepository.findOne(15l));
+						 sSoRepository.save(sso);
+					 }
+					 
+					 SMtfMaterial sm1 = new SMtfMaterial();
+					 sm1.setQty(sm.getQty());
+					 sm1.setQty3417(sm.getQty());
+					 sm1.setSBinByToBin(conBin);
+					 SMaterial sma =sMaterialRepository.getByCompanyIdAndPno(customerCompanyId, sm.getSMaterial().getPno());
+					
+					 sm1.setSMaterial(sma);
+					 sm1.setSMtf(smtf1);
+					 sm1.setSStatusDic(sStatusDicRepository.findOne(2l));
+					 sMtfMaterialRepository.save(sm1);
+					 
+					 
+					 SInventory sToInventory=null;
+					List<SInventory> sToInventorys= sInventoryRepository.findByMaterialIdAndBinId(sma.getIdMaterial(), conBin.getIdBin());
+				        if(sToInventorys!=null&&!sToInventorys.isEmpty())
+				        {
+				        	sToInventory = sToInventorys.get(0);
+				        	
+				        }
+				        
+					if (sToInventory == null) {
+					
+						sToInventory = new SInventory();
+						sToInventory.setCreationTime(new Date());
+						sToInventory.setQty(sm.getQty());
+			
+						sToInventory.setSBin(conBin);
+						sToInventory.setSMaterial(sma);
+    					//logger.debug(" save to new bin: " +sbin.getBin() +", qty:" + wm.getQty());
+						sInventoryRepository.save(sToInventory);
+	
+					} else {
+						sToInventory.setQty(sToInventory.getQty()+sm.getQty());
+						//logger.debug(" save to  bin: " +sbin.getBin() +", qty:" + wm.getQty());
+						sInventoryRepository.save(sToInventory);
+					}
+					 
+				 
+	            }
+		         
+	          }
+			
 			valid.setValid(true);
 			return valid;
 
@@ -827,7 +1123,36 @@ public class MtfService {
 	private SMtf toDBMtf(WSSMtf wsSMtf, SMtf sMtf) throws Exception {
 
 		SMtf dbSMtf = (SMtf) BeanUtil.shallowCopy(wsSMtf, SMtf.class, sMtf);
+		dbSMtf.setIdMt(null);
 		//logger.debug("mtNo: " +wsSMtf.getMtNo());
+		if(wsSMtf.getTypeId().equals(9l)||wsSMtf.getTypeId().equals(10l))
+		{
+			if(wsSMtf.getMtNo()==null||wsSMtf.getMtNo().trim().isEmpty())
+			{
+				SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), wsSMtf.getTypeId()+4);
+			   
+				   if(smtfNo==null)
+				   {   
+					    smtfNo = new SMtfNo();
+					    smtfNo.setDes("往来发货");
+						smtfNo.setPrefix("WLSH");
+						smtfNo.setCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+						smtfNo.setType(wsSMtf.getTypeId()+4);
+						smtfNo.setCurrentVal(1l);
+						smtfNo =sMtfNoRepository.save(smtfNo);
+				   }
+				
+				
+				
+				long currentVal =smtfNo.getCurrentVal()+1;
+			    smtfNo.setCurrentVal(currentVal);
+			    sMtfNoRepository.save(smtfNo);
+			    String mtNo = smtfNo.getPrefix()+String.format("%08d", currentVal);
+			    dbSMtf.setMtNo(mtNo);
+			}
+		}
+		else
+		{		
 		if(wsSMtf.getMtNo()==null||wsSMtf.getMtNo().trim().isEmpty())
 		{
 			SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), wsSMtf.getTypeId());
@@ -837,6 +1162,9 @@ public class MtfService {
 		    String mtNo = smtfNo.getPrefix()+String.format("%08d", currentVal);
 		    dbSMtf.setMtNo(mtNo);
 		}
+			
+		}
+
 				
 
 		// System.out.println("mtNo: " + wsSMtf.getMtNo());
@@ -865,6 +1193,34 @@ public class MtfService {
 			dbSMtf.setSMtfTypeDic(sMtfTypeDicRepository.findOne(wsSMtf.getTypeId()));
 		}
 		dbSMtf.setCreationTime(new Date());
+		
+		if(wsSMtf.getIdToCompany()!=null)
+		{
+			SComCom sComCom = sComComRepository.findOne(wsSMtf.getIdToCompany());
+			if(sComCom.getIdCompany1().equals(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
+			{
+				dbSMtf.setIdToCompany(sComCom.getIdCompany2());
+			}
+			else
+			{
+				dbSMtf.setIdToCompany(sComCom.getIdCompany1());
+			}
+			
+		}
+		
+		if(wsSMtf.getIdCustomerCompany()!=null)
+		{
+			SComCom sComCom = sComComRepository.findOne(wsSMtf.getIdCustomerCompany());
+			if(sComCom.getIdCompany1().equals(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
+			{
+				dbSMtf.setIdCustomerCompany(sComCom.getIdCompany2());
+			}
+			else
+			{
+				dbSMtf.setIdCustomerCompany(sComCom.getIdCompany1());
+			}
+			
+		}
 		/*
 		 * if(!wsSMtf.getSmtfItems().isEmpty()) { for(WSSMtfMaterial m:
 		 * wsSMtf.getSmtfItems().values()) { m.setIdMt(wsSMtf.getIdMt());
@@ -882,7 +1238,7 @@ public class MtfService {
 		for(SMtf smtf : smtfs)
 		{
 			    boolean active=false;
-			    if(smtfType.equals(1l)) //来料入监
+			    if(smtfType.equals(1l)) //来料入检
 			    {
 			    	
 					if(smtf.getSStatusDic()==null)
@@ -966,7 +1322,12 @@ public class MtfService {
 			}
 			if(s.getSSo()!=null)
 			{
-				wsSMtf.setCoCompanyId(s.getSSo().getSCompanyCo().getId());
+				if(s.getSSo().getSCompanyCo()!=null)
+				{
+					wsSMtf.setCoCompanyId(s.getSSo().getSCompanyCo().getId());
+				}
+				
+	
 				wsSMtf.setCoOrderNo(s.getSSo().getCoOrderNo());
 				//wsSMtf.set
 			}

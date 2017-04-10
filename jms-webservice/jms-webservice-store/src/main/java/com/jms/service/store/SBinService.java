@@ -1,17 +1,24 @@
 package com.jms.service.store;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.csvreader.CsvReader;
 import com.jms.domain.Config;
+import com.jms.domain.db.Company;
 import com.jms.domain.db.SBin;
 import com.jms.domain.db.SInventory;
 import com.jms.domain.db.SMaterialBins;
@@ -31,11 +38,12 @@ import com.jms.repositories.s.SStatusDicRepository;
 import com.jms.repositories.s.SStkRepository;
 import com.jms.repositories.s.SStkTypeDicRepository;
 import com.jms.repositories.s.SYesOrNoDicRepository;
+import com.jms.s.ISBinService;
 import com.jms.web.security.SecurityUtils;
 
 @Service
 @Transactional
-public class SBinService {
+public class SBinService implements ISBinService {
 
 	private static final Logger logger = LogManager.getLogger(SBinService.class.getCanonicalName());
 	@Autowired
@@ -60,6 +68,8 @@ public class SBinService {
 	
 	@Autowired
 	private  CompanyRepository companyRepository;
+	
+	@Autowired  private ResourceLoader resourceLoader;
 
 	public Valid saveBin(WSBin wsBin) {
 
@@ -319,8 +329,8 @@ public class SBinService {
 	
 	
 	@Transactional(readOnly = false)
-	public Valid saveSystemBin(Long companyId,String name) {
-		Valid valid = new Valid();
+	public SBin saveSystemBin(Long companyId,String name) {
+	
 		
 		List<SStk> stks = sStkRepository.findByIdCompanyAndStkName(companyId, name);
 		//System.out.println("company id: " + companyId +", stkname: " + name);
@@ -341,10 +351,86 @@ public class SBinService {
 
 			bin.setSStatusDic(sStatusDicRepository.findOne(25l));
 			bin.setSYesOrNoDic(sYesOrNoDicRepository.findOne(2l));
-			sBinRepository.save(bin);
+			bin = sBinRepository.save(bin);
+			return bin;
+		}
+		else
+		{
+			SStk stk = stks.get(0);
+			if(stk.getSBins().isEmpty())
+			{
+				SBin bin = new SBin();
+				bin.setBin(name);
+				bin.setSStk(stk);
+				bin.setDes(name);
+
+				bin.setSStatusDic(sStatusDicRepository.findOne(25l));
+				bin.setSYesOrNoDic(sYesOrNoDicRepository.findOne(2l));
+				bin = sBinRepository.save(bin);
+				return bin;
+			}
+			else
+			{
+				return stk.getSBins().iterator().next();
+			}
 		}
 
-		return valid;
+		
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void loadSystemBins(Long companyId) {
+
+//		Company company = companyRepository.findOne(companyId);
+//		 Resource resource = resourceLoader.getResource("classpath:data/sysstks.csv");
+//		CsvReader reader;
+//		try {
+//			reader = new CsvReader(resource.getInputStream(), ',', Charset.forName("UTF-8"));
+//			reader.readHeaders();
+//			while (reader.readRecord()) {
+//				SStk s = new SStk();
+//				s.setStkName(reader.get(0));
+//				s.setDes(reader.get(1));
+//				s.setCompany(company);
+//				s.setSStatusDic(sStatusDicRepository.findOne(27l));//有效
+//				s.setSStkTypeDic(sStkTypeDicRepository.findOne(Long.parseLong(reader.get(2))));
+//				s = sStkRepository.save(s);
+//				SBin bin = new SBin();
+//				bin.setBin(reader.get(0));
+//				bin.setSStk(s);
+//				bin.setDes(reader.get(1));
+//
+//				bin.setSStatusDic(sStatusDicRepository.findOne(25l));
+//				bin.setSYesOrNoDic(sYesOrNoDicRepository.findOne(2l));
+//				bin = sBinRepository.save(bin);
+//			}
+//
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+		
+		Company company = companyRepository.findOne(companyId);
+		//IQC,来料检验仓,5
+		SStk s = new SStk();
+		s.setStkName("IQC");
+		s.setDes("来料检验仓");
+		s.setCompany(company);
+		s.setSStatusDic(sStatusDicRepository.findOne(27l));//有效
+		s.setSStkTypeDic(sStkTypeDicRepository.findOne(5l));
+		s = sStkRepository.save(s);
+		SBin bin = new SBin();
+		bin.setBin("IQC");
+		bin.setSStk(s);
+		bin.setDes("来料检验仓");
+
+		bin.setSStatusDic(sStatusDicRepository.findOne(25l));
+		bin.setSYesOrNoDic(sYesOrNoDicRepository.findOne(2l));
+		bin = sBinRepository.save(bin);
+		
+	
 	}
 
 }

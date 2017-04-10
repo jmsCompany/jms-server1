@@ -282,6 +282,10 @@ public class MtfMaterialService {
 			wsSMtfMaterial.setToBin(sMtfMaterial.getSBinByToBin().getBin());
 			wsSMtfMaterial.setToBinId(sMtfMaterial.getSBinByToBin().getIdBin());
 		}
+//		if(sMtfMaterial.getSMtf().getSMtfTypeDic().getIdMtfType())
+//		{
+//			
+//		}
 	
 		if(sMtfMaterial.getSMtf()!=null)
 		{
@@ -349,7 +353,11 @@ public class MtfMaterialService {
 		{
 			wsSMtfMaterial.setSoCode(sMtfMaterial.getSSo().getCodeSo());
 			wsSMtfMaterial.setSoId(sMtfMaterial.getSSo().getIdSo());
-			wsSMtfMaterial.setCodeCo(sMtfMaterial.getSSo().getSCompanyCo().getCode());
+			if(sMtfMaterial.getSSo().getSCompanyCo()!=null)
+			{
+				wsSMtfMaterial.setCodeCo(sMtfMaterial.getSSo().getSCompanyCo().getCode());
+			}
+		
 			if(sMtfMaterial.getSSo().getSMaterial()!=null)
 			{
 				SMaterial s = sMtfMaterial.getSSo().getSMaterial();
