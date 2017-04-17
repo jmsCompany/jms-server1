@@ -138,6 +138,7 @@ public class BomService {
 		return dbPBom;
 	}
 	
+	
 	private WSPBomItem toWSPBomItem(PBom pBom) throws Exception
 	{
 		WSPBomItem pc = (WSPBomItem)BeanUtil.shallowCopy(pBom, WSPBomItem.class, null);

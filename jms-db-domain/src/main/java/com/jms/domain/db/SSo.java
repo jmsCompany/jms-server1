@@ -40,11 +40,11 @@ public class SSo  implements java.io.Serializable {
      private String codeSo;
      private String coOrderNo;
      private Date dateOrder;
-     private Long taxRate;
-     private Long exchange;
+     private Float taxRate;
+     private Float exchange;
      private Long qtySo;
-     private Long UPrice;
-     private Long totalAmount;
+     private Float UPrice;
+     private Float totalAmount;
      private Date deliveryDate;
      private Long qtyDelivered;
      private String remark;
@@ -59,30 +59,6 @@ public class SSo  implements java.io.Serializable {
     public SSo() {
     }
 
-    public SSo(Company company, SCompanyCo SCompanyCo, SStatusDic SStatusDic, Users users, SMaterial SMaterial, SAttachment SAttachment, STermDic STermDicByPaymentTerm, STermDic STermDicByFreightTerm, String codeSo, String coOrderNo, Date dateOrder, Long taxRate, Long exchange, Long qtySo, Long UPrice, Long totalAmount, Date deliveryDate, Long qtyDelivered, String remark, String autoRemark, Set<PWo> PWos, Set<SMtfMaterial> SMtfMaterials) {
-       this.company = company;
-       this.SCompanyCo = SCompanyCo;
-       this.SStatusDic = SStatusDic;
-       this.users = users;
-       this.SMaterial = SMaterial;
-       this.SAttachment = SAttachment;
-       this.STermDicByPaymentTerm = STermDicByPaymentTerm;
-       this.STermDicByFreightTerm = STermDicByFreightTerm;
-       this.codeSo = codeSo;
-       this.coOrderNo = coOrderNo;
-       this.dateOrder = dateOrder;
-       this.taxRate = taxRate;
-       this.exchange = exchange;
-       this.qtySo = qtySo;
-       this.UPrice = UPrice;
-       this.totalAmount = totalAmount;
-       this.deliveryDate = deliveryDate;
-       this.qtyDelivered = qtyDelivered;
-       this.remark = remark;
-       this.autoRemark = autoRemark;
-       this.PWos = PWos;
-       this.SMtfMaterials = SMtfMaterials;
-    }
    
      @Id @GeneratedValue(strategy=IDENTITY)
     
@@ -194,21 +170,21 @@ public class SSo  implements java.io.Serializable {
         this.dateOrder = dateOrder;
     }
     
-    @Column(name="tax_rate", precision=10, scale=0)
-    public Long getTaxRate() {
+    @Column(name="tax_rate", precision=12)
+    public Float getTaxRate() {
         return this.taxRate;
     }
     
-    public void setTaxRate(Long taxRate) {
+    public void setTaxRate(Float taxRate) {
         this.taxRate = taxRate;
     }
     
-    @Column(name="exchange", precision=10, scale=0)
-    public Long getExchange() {
+    @Column(name="exchange", precision=12)
+    public Float getExchange() {
         return this.exchange;
     }
     
-    public void setExchange(Long exchange) {
+    public void setExchange(Float exchange) {
         this.exchange = exchange;
     }
     
@@ -221,21 +197,21 @@ public class SSo  implements java.io.Serializable {
         this.qtySo = qtySo;
     }
     
-    @Column(name="u_price", precision=10, scale=0)
-    public Long getUPrice() {
+    @Column(name="u_price", precision=12)
+    public Float getUPrice() {
         return this.UPrice;
     }
     
-    public void setUPrice(Long UPrice) {
+    public void setUPrice(Float UPrice) {
         this.UPrice = UPrice;
     }
     
-    @Column(name="total_amount", precision=10, scale=0)
-    public Long getTotalAmount() {
+    @Column(name="total_amount", precision=12)
+    public Float getTotalAmount() {
         return this.totalAmount;
     }
     
-    public void setTotalAmount(Long totalAmount) {
+    public void setTotalAmount(Float totalAmount) {
         this.totalAmount = totalAmount;
     }
     @Temporal(TemporalType.DATE)

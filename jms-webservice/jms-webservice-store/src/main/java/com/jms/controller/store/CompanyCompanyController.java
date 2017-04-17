@@ -297,4 +297,27 @@ public class CompanyCompanyController {
 		
 	}
 
+	
+	//往来公司
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/myCoCompanies", method=RequestMethod.GET)
+	public List<WSSelectObj> findMyCoCompanies() {
+		List<WSSelectObj> wso = new ArrayList<WSSelectObj>();
+		Long idCompany =securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		for(SComCom c : sComComRepository.findMyCompanies(idCompany))
+		{
+			if(idCompany.equals(c.getIdCompany1()))
+			{
+				wso.add(new WSSelectObj(c.getIdCompany2(),c.getCompany2()));
+			}
+			else
+			{
+				wso.add(new WSSelectObj(c.getIdCompany1(),c.getCompany1()));
+			}
+			
+		}
+		return wso;
+		
+	}
+	
 }

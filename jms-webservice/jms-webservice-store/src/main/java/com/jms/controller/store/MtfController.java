@@ -20,6 +20,7 @@ import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.s.SMtfMaterialRepository;
 import com.jms.repositories.s.SMtfMaterialRepositoryCustom;
 import com.jms.repositories.s.SMtfRepository;
+import com.jms.repositories.s.SStatusDicRepository;
 import com.jms.service.store.MtfMaterialService;
 import com.jms.service.store.MtfService;
 import com.jms.service.store.SMtfTypeDicService;
@@ -38,6 +39,7 @@ public class MtfController {
 	@Autowired private SMtfMaterialRepository sMtfMaterialRepository;
 	@Autowired private SMtfMaterialRepositoryCustom sMtfMaterialRepositoryCustom;
 	@Autowired private CompanyRepository companyRepository;
+	@Autowired private SStatusDicRepository sStatusDicRepository;
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveSmtf", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -264,6 +266,19 @@ public class MtfController {
 	    t.setData(lst);
 	    return t;
 	}
+	
+	
+	//6作废 友好公司 拒绝接收物料
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/s/refuseSmtf", method=RequestMethod.GET)
+	public Valid refuseSmtf(@RequestParam("mtId") Long mtId){
+		Valid v = new Valid();
+		SMtf smtf = sMtfRepository.findOne(mtId);
+		smtf.setSStatusDic(sStatusDicRepository.findOne(6l)); //作废
+		sMtfRepository.save(smtf);
+		v.setValid(true);
+		return v;
+      }
 	
 	//4待接收，5接收，6作废 友好公司
 	@Transactional(readOnly = true)

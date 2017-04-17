@@ -36,9 +36,14 @@ public interface SMtfMaterialRepositoryCustom {
 			String toDay);
 	
 	
+	
+	
 	//往来公司 待接收，已接收，拒绝？
 	public List<SMtfMaterial> getCustomCSMtfMaterials(
 			Long companyId,
 			Long statusId);
+	
+
+	
 	
 }

@@ -150,13 +150,10 @@ public class SBinService implements ISBinService {
 		return wsBinList;
 	}
 	
-	
-	
-	
+
 	@Transactional(readOnly = true)
 	public List<WSSelectObj> getBinsByStkIdAndMaterialIdBMethod(Long idStk,Long idMaterial) {
-		
-		   // System.out.println("idStk: " + idStk +", idMat: " +idMaterial );
+		// System.out.println("idStk: " + idStk +", idMat: " +idMaterial );
 	    List<WSSelectObj> wsBinList = new ArrayList<WSSelectObj>();
 		    SStk stk=sStkRepository.findOne(idStk);
 		    if(stk.getSStkTypeDic().getIdStkType().equals(8l)) //CCA帐号

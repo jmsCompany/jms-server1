@@ -10,9 +10,9 @@ public class WSSso {
     private String coOrderNo;
     private Long sCompanyCoId;
     private Date dateOrder;
-    private Long totalAmount;
-    private Long taxRate;
-    private Long exchange;
+    private Float totalAmount;
+    private Float taxRate;
+    private Float exchange;
     private Long materialId;
     private String remark;
     private String freightTerm;
@@ -24,7 +24,7 @@ public class WSSso {
     private String userName;
     private Long userId;
     private Long qtySo;
-    private Long uprice;
+    private Float uprice;
     private Date deliveryDate;
     private Long qtyDelivered;
     private String autoRemark;
@@ -43,22 +43,22 @@ public class WSSso {
 	public void setDateOrder(Date dateOrder) {
 		this.dateOrder = dateOrder;
 	}
-	public Long getTotalAmount() {
+	public Float getTotalAmount() {
 		return totalAmount;
 	}
-	public void setTotalAmount(Long totalAmount) {
+	public void setTotalAmount(Float totalAmount) {
 		this.totalAmount = totalAmount;
 	}
-	public Long getTaxRate() {
+	public Float getTaxRate() {
 		return taxRate;
 	}
-	public void setTaxRate(Long taxRate) {
+	public void setTaxRate(Float taxRate) {
 		this.taxRate = taxRate;
 	}
-	public Long getExchange() {
+	public Float getExchange() {
 		return exchange;
 	}
-	public void setExchange(Long exchange) {
+	public void setExchange(Float exchange) {
 		this.exchange = exchange;
 	}
 	public String getRemark() {
@@ -171,10 +171,10 @@ public class WSSso {
 	public void setQtySo(Long qtySo) {
 		this.qtySo = qtySo;
 	}
-	public Long getUprice() {
+	public Float getUprice() {
 		return uprice;
 	}
-	public void setUprice(Long uprice) {
+	public void setUprice(Float uprice) {
 		this.uprice = uprice;
 	}
 	public Long getIdCompany2() {

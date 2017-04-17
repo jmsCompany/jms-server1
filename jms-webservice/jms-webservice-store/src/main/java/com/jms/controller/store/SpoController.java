@@ -124,11 +124,11 @@ public class SpoController {
 						codePo=null;
 					}
 					Long coCompanyId = Long.parseLong(reader.get(1)); //合作公司ID
-				    Long exchange = Long.parseLong(reader.get(2)); //汇率
-				    Long tax = Long.parseLong(reader.get(3)); //税
+				    Float exchange = Float.parseFloat(reader.get(2)); //汇率
+				    Float tax = Float.parseFloat(reader.get(3)); //税
 				    Long currTypeId = Long.parseLong(reader.get(4)); //币别
 				    Long statusId = Long.parseLong(reader.get(5)); //状态ID
-				    Long totalAmount =Long.parseLong(reader.get(6)); //总价
+				    Float totalAmount =Float.parseFloat(reader.get(6)); //总价
 				    Long materialId = Long.parseLong(reader.get(7)); //物料Id
 				    
 				    BigDecimal uprice =new BigDecimal(reader.get(8)); //单价

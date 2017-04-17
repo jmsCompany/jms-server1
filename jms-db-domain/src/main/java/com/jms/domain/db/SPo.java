@@ -40,9 +40,9 @@ public class SPo  implements java.io.Serializable {
      private STermDic STermDicByPaymentTerm;
      private String codePo;
      private Date dateOrder;
-     private Long totalAmount;
-     private Long taxRate;
-     private Long exchange;
+     private Float totalAmount;
+     private Float taxRate;
+     private Float exchange;
      private String remark;
      private Set<SPoMaterial> SPoMaterials = new HashSet<SPoMaterial>(0);
      
@@ -53,25 +53,7 @@ public class SPo  implements java.io.Serializable {
     public SPo() {
     }
 
-    public SPo(Company company, SCompanyCo SCompanyCo, SStatusDic SStatusDic, Users users, SAttachment SAttachment, SCurrencyType SCurrencyType, SPoType SPoType, STermDic STermDicByFreightTerm, STermDic STermDicByPaymentTerm, String codePo, Date dateOrder, Long totalAmount, Long taxRate, Long exchange, String remark, Set<SPoMaterial> SPoMaterials) {
-       this.company = company;
-       this.SCompanyCo = SCompanyCo;
-       this.SStatusDic = SStatusDic;
-       this.users = users;
-       this.SAttachment = SAttachment;
-       this.SCurrencyType = SCurrencyType;
-       this.SPoType = SPoType;
-       this.STermDicByFreightTerm = STermDicByFreightTerm;
-       this.STermDicByPaymentTerm = STermDicByPaymentTerm;
-       this.codePo = codePo;
-       this.dateOrder = dateOrder;
-       this.totalAmount = totalAmount;
-       this.taxRate = taxRate;
-       this.exchange = exchange;
-       this.remark = remark;
-       this.SPoMaterials = SPoMaterials;
-    }
-   
+  
      @Id @GeneratedValue(strategy=IDENTITY)
     
     @Column(name="id_po", unique=true, nullable=false)
@@ -182,30 +164,31 @@ public class SPo  implements java.io.Serializable {
         this.dateOrder = dateOrder;
     }
     
-    @Column(name="total_amount", precision=10, scale=0)
-    public Long getTotalAmount() {
+    @Column(name="total_amount", precision=12)
+    public Float getTotalAmount() {
         return this.totalAmount;
     }
     
-    public void setTotalAmount(Long totalAmount) {
+    public void setTotalAmount(Float totalAmount) {
         this.totalAmount = totalAmount;
     }
     
-    @Column(name="tax_rate", precision=10, scale=0)
-    public Long getTaxRate() {
+
+    @Column(name="tax_rate", precision=12, scale=0)
+    public Float getTaxRate() {
         return this.taxRate;
     }
     
-    public void setTaxRate(Long taxRate) {
+    public void setTaxRate(Float taxRate) {
         this.taxRate = taxRate;
     }
     
     @Column(name="exchange", precision=10, scale=0)
-    public Long getExchange() {
+    public Float getExchange() {
         return this.exchange;
     }
     
-    public void setExchange(Long exchange) {
+    public void setExchange(Float exchange) {
         this.exchange = exchange;
     }
     

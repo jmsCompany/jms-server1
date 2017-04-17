@@ -78,7 +78,7 @@ public class SmtfMaterialRepositoryCustomImpl implements SMtfMaterialRepositoryC
 	   String query ="select s from SMtfMaterial s where (s.SMtf.company.idCompany=" +companyId +" or s.SMtf.idToCompany=" +companyId +")";
 	   if(companyId1!=null)
 	   {
-		   query = query +" and s.SMtf.company.idCompany=" +companyId1 +" or s.SMtf.idToCompany=" +companyId1;
+		   query = query +" and (s.SMtf.company.idCompany=" +companyId1 +" or s.SMtf.idToCompany=" +companyId1+")";
 	   }
 	   if(q!=null)
 	   {
@@ -94,7 +94,7 @@ public class SmtfMaterialRepositoryCustomImpl implements SMtfMaterialRepositoryC
 			 query = query +" and DATE(s.SMtf.creationTime)<='" +toDay +"'";
 	   }
 	   query = query +" and s.SMtf.SMtfTypeDic.idMtfType=" +9 + " and s.SMtf.SStatusDic.id=5";
-	   System.out.println(query);
+	  // System.out.println(query);
 	   return em.createQuery(query, SMtfMaterial.class).getResultList();
 	}
 

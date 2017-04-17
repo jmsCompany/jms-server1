@@ -3,7 +3,10 @@ package com.jms.controller.store;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -11,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.jms.domain.db.Company;
+import com.jms.domain.db.SInventory;
+import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMtf;
 import com.jms.domain.db.SMtfC;
 import com.jms.domain.db.SMtfMaterial;
@@ -21,7 +26,10 @@ import com.jms.domain.ws.s.WSMaterialChecked;
 import com.jms.domain.ws.s.WSSMtf;
 import com.jms.domain.ws.s.WSSMtfC;
 import com.jms.domain.ws.s.WSSMtfMaterial;
+import com.jms.domain.ws.s.WSSmtfSum;
 import com.jms.repositories.company.CompanyRepository;
+import com.jms.repositories.s.SInventoryRepository;
+import com.jms.repositories.s.SMaterialRepository;
 import com.jms.repositories.s.SMtfCRepository;
 import com.jms.repositories.s.SMtfCRepositoryCustom;
 import com.jms.repositories.s.SMtfMaterialRepository;
@@ -45,6 +53,8 @@ public class MtfCController {
 	@Autowired private CompanyRepository companyRepository;
 	@Autowired private SMtfCRepositoryCustom sMtfCRepositoryCustom;
 	@Autowired private SMtfMaterialRepositoryCustom sMtfMaterialRepositoryCustom;
+	@Autowired private SInventoryRepository sInventoryRepository;
+	@Autowired private SMaterialRepository sMaterialRepository;
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveSmtfC", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -130,27 +140,95 @@ public class MtfCController {
 	}
 	
 	
-	//往来公司汇总
+	   //往来公司汇总
 		@Transactional(readOnly = true)
 		@RequestMapping(value="/s/getSmtfCSum", method=RequestMethod.POST)
 		public WSTableData  getSmtfCSum(
 				@RequestParam(required=false,value="q") String q,
-				@RequestParam(required=false,value="companyName") String companyName,
+				@RequestParam(required=false,value="idCompany2") Long idCompany2,
 				@RequestParam(required=false,value="fromDay") String fromDay,
 				@RequestParam(required=false,value="toDay") String toDay,
 				@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length)  {	   
+		
 			
-			List<String[]> lst = new ArrayList<String[]>();
-			for(int i=0;i<1;i++)
+			Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+			List<SMtfMaterial> wsSMtfMaterials = sMtfMaterialRepositoryCustom.getCustomCSMtf(companyId, idCompany2, q, fromDay, toDay);
+			Map<String,WSSmtfSum> sumMap = new LinkedHashMap<String,WSSmtfSum>();
+			
+			for(SMtfMaterial s:wsSMtfMaterials)
 			{
-				
+			    Long toCompanyId = s.getSMtf().getIdToCompany();
+			    Long fromCompanyId  = s.getSMtf().getCompany().getIdCompany();
+			 
+			    if(companyId.equals(fromCompanyId)) //发货
+			    {
+			    	   if(sumMap.containsKey(toCompanyId+"_"+s.getSMaterial().getIdMaterial()))
+			    	   {
+			    		   WSSmtfSum wsSmtfSum = sumMap.get(toCompanyId+"_"+s.getSMaterial().getIdMaterial());
+			    		   wsSmtfSum.setSent(wsSmtfSum.getSent()+s.getQty());
+			    		   sumMap.put(toCompanyId+"_"+s.getSMaterial().getIdMaterial(), wsSmtfSum);
+			    	   }
+			    	   else
+			    	   {
+			    		   WSSmtfSum wsSmtfSum = new WSSmtfSum();
+			    		   Company comcom = companyRepository.findOne(toCompanyId);
+			    		   wsSmtfSum.setCompanyName(comcom.getCompanyName());
+			    		   wsSmtfSum.setMaterial(s.getSMaterial().getPno() +"_"+s.getSMaterial().getRev()+"_"+s.getSMaterial().getDes());;
+			    		   wsSmtfSum.setSent(s.getQty());
+			    		   wsSmtfSum.setReceived(0l);
+			    		   SMaterial sm = sMaterialRepository.getByCompanyIdAndPno(companyId, s.getSMaterial().getPno());
+			    		   Long invQty = 0l;
+			    		   for(SInventory sInventory:sInventoryRepository.findByMaterialId(sm.getIdMaterial()))
+			    		   {
+			    			   invQty =invQty+sInventory.getQty();
+			    		   }
+			    		   wsSmtfSum.setInvQty(invQty);
+			    		   sumMap.put(toCompanyId+"_"+s.getSMaterial().getIdMaterial(), wsSmtfSum);
+			    	   }
+			    	
+			    }
+			    else //收货
+			    {
+
+			    	   if(sumMap.containsKey(fromCompanyId+"_"+s.getSMaterial().getIdMaterial()))
+			    	   {
+			    		   WSSmtfSum wsSmtfSum = sumMap.get(fromCompanyId+"_"+s.getSMaterial().getIdMaterial());
+			    		   wsSmtfSum.setReceived(wsSmtfSum.getReceived()+s.getQty());
+			    		   sumMap.put(fromCompanyId+"_"+s.getSMaterial().getIdMaterial(), wsSmtfSum);
+			    	   }
+			    	   else
+			    	   {
+			    		   WSSmtfSum wsSmtfSum = new WSSmtfSum();
+			    		   Company comcom = companyRepository.findOne(fromCompanyId);
+			    		   wsSmtfSum.setCompanyName(comcom.getCompanyName());
+			    		   wsSmtfSum.setMaterial(s.getSMaterial().getPno() +"_"+s.getSMaterial().getRev()+"_"+s.getSMaterial().getDes());;
+			    		   wsSmtfSum.setSent(0l);
+			    		   wsSmtfSum.setReceived(s.getQty());
+			    		   SMaterial sm = sMaterialRepository.getByCompanyIdAndPno(companyId, s.getSMaterial().getPno());
+			    		   Long invQty = 0l;
+			    		   for(SInventory sInventory:sInventoryRepository.findByMaterialId(sm.getIdMaterial()))
+			    		   {
+			    			   invQty =invQty+sInventory.getQty();
+			    		   }
+			    		   wsSmtfSum.setInvQty(invQty);
+			    		   sumMap.put(fromCompanyId+"_"+s.getSMaterial().getIdMaterial(), wsSmtfSum);
+			    	   }
+			    	
+			    
+			    }
+			}
+			//sumMap.
+			List<String[]> lst = new ArrayList<String[]>();
+			for(String m :sumMap.keySet())
+			{
+				WSSmtfSum w = sumMap.get(m);
+				//公司，物料，收货，发货，库存
 				String[] d = {
-						"",
-						"",
-						"",
-						"",
-						""
-						
+						w.getCompanyName(),
+						w.getMaterial(),
+						""+w.getReceived(),
+						""+w.getSent(),
+						""+w.getInvQty()
 						};
 				lst.add(d);
 			}
@@ -158,8 +236,8 @@ public class MtfCController {
 		
 			WSTableData t = new WSTableData();
 			t.setDraw(draw);
-			t.setRecordsTotal(1);
-			t.setRecordsFiltered(1);
+			t.setRecordsTotal(sumMap.size());
+			t.setRecordsFiltered(sumMap.size());
 		    t.setData(lst);
 		    return t;
 		}

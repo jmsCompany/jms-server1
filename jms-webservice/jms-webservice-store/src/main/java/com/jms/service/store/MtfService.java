@@ -2,16 +2,12 @@ package com.jms.service.store;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.jms.domain.NotificationMethodEnum;
 import com.jms.domain.db.Company;
 import com.jms.domain.db.EventReceiver;
@@ -57,6 +53,7 @@ import com.jms.repositories.user.UsersRepository;
 import com.jms.system.INotificationService;
 import com.jms.web.security.SecurityUtils;
 
+
 @Service
 @Transactional
 public class MtfService {
@@ -69,12 +66,10 @@ public class MtfService {
 	private SMtfMaterialRepository sMtfMaterialRepository;
 	@Autowired
 	private MtfMaterialService mtfMaterialService;
-
 	@Autowired
 	private SMtfRepository sMtfRepository;
 	@Autowired
 	private SecurityUtils securityUtils;
-
 	@Autowired
 	private UsersRepository usersRepository;
 	@Autowired
@@ -176,6 +171,43 @@ public class MtfService {
 	            		return valid;
 	            }
 	            
+	            
+	            
+	    		if(smtfType.equals(1l)) //来料入检，检查SPO
+				{
+					//System.out.println("来料入检:");
+					//SPo spo = sSpoRepository.findOne(wsSMtf.getPoId());
+					boolean check = true;
+					for (String k : wsSMtf.getSmtfItems().keySet()) {
+						WSSMtfMaterial wm = wsSMtf.getSmtfItems().get(k);
+						SPoMaterial spoMaterial = sSpoMaterialRepository.getOne(wm.getPoMaterialId());
+						long qtyR= (spoMaterial.getQtyReceived()==null)?0l:spoMaterial.getQtyReceived();
+						if(spoMaterial.getQtyPo()<qtyR+wm.getQty())
+						{
+							check = false;
+							break;
+						}
+						
+						
+					}
+					if(!check)
+					{
+						valid.setValid(check);
+		            	valid.setMsg("新建来料大于采购数目！");
+		            	//System.out.println("valid: " + valid);
+						return valid;
+					}
+					
+					
+				}
+	            
+	            
+	            
+	            
+	            
+	            
+	            
+	            
 			
 			SMtf sMtf = new SMtf();
 		//	if(wsSMtf.getTypeId())
@@ -258,7 +290,7 @@ public class MtfService {
 						sToInventory.setUQty(wm.getUqty());
 						sToInventory.setSBin(sbin);
 						sToInventory.setSMaterial(spoMaterial.getSMaterial());
-    					logger.debug(" save to new bin: " +sbin.getBin() +", qty:" + wm.getQty());
+    					//logger.debug(" save to new bin: " +sbin.getBin() +", qty:" + wm.getQty());
 						sInventoryRepository.save(sToInventory);
 	
 					} else {
@@ -1238,14 +1270,30 @@ public class MtfService {
 		for(SMtf smtf : smtfs)
 		{
 			    boolean active=false;
-			    if(smtfType.equals(1l)) //来料入检
+			    if(smtfType.equals(1l)||smtfType.equals(8l)) //来料入检 和入库
 			    {
 			    	
-					if(smtf.getSStatusDic()==null)
-		    		{
-		    	   		WSSelectObj w = new WSSelectObj(smtf.getIdMt(),smtf.getMtNo());
-						ws.add(w);
-		    		}
+			    	if(!smtf.getSMtfMaterials().isEmpty())
+				    	{
+				    		SMtfMaterial sm = smtf.getSMtfMaterials().iterator().next();
+				    		if(sm.getSPoMaterial()!=null)
+				    		{
+				    			SPo spo = sm.getSPoMaterial().getSPo();
+				    			if(spo.getSStatusDic()!=null&&spo.getSStatusDic().getId().equals(11l))
+				    			{
+				    				active=true;
+				    			}
+				    		}
+				    	}
+				    	if(active)
+				    	{
+				    		if(smtf.getSStatusDic()==null)
+				    		{
+				    	   		WSSelectObj w = new WSSelectObj(smtf.getIdMt(),smtf.getMtNo());
+								ws.add(w);
+				    		}
+				 
+				    	}
 			    }
 //			    	if(!smtf.getSMtfMaterials().isEmpty())
 //			    	{

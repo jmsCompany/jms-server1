@@ -84,23 +84,41 @@ public class MaterialBinsController {
 
 	@Transactional(readOnly = true)
 	@RequestMapping(value = "/s/materialBinList", method = RequestMethod.POST)
-	public WSTableData getMaterialList( @RequestParam Integer draw,
+	public WSTableData getMaterialList( 
+			 @RequestParam(required=false) Long materialId,
+			@RequestParam Integer draw,
 			@RequestParam Integer start, @RequestParam Integer length) throws Exception {
 
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 	
 		List<WSMaterialBin> wsmbs = new ArrayList<WSMaterialBin>();
+		List<SMaterialBins> mbs;
+		if(materialId==null)
+		{
+			mbs = sMaterialBinsRepository.getByIdCompany(companyId);
+		}
+		else
+		{
+			mbs = sMaterialBinsRepository.getByMaterialId(materialId);
+		}
 		
-		for(SMaterialBins mb: sMaterialBinsRepository.getByIdCompany(companyId))
+		for(SMaterialBins mb:mbs)
 		{
 			WSMaterialBin w = new WSMaterialBin();
 			w.setBinName(sBinRepository.getOne(mb.getId().getIdBin()).getBin());
 			w.setIdBin(mb.getId().getIdBin());
-			w.setPno(sMaterialRepository.findOne(mb.getId().getIdMaterial()).getPno());
-			w.setIdMaterial(mb.getId().getIdMaterial());
-			w.setStkName(sStkRepository.findOne(mb.getIdStk()).getStkName());
-			w.setIdStk(mb.getIdStk());
-			wsmbs.add(w);
+			//System.out.println("bin id: "+mb.getId().getIdBin());
+			//System.out.println("mid: "+mb.getId().getIdMaterial());
+			//System.out.println("m: "+sMaterialRepository.findOne(mb.getId().getIdMaterial()).getPno());
+			if(sMaterialRepository.findOne(mb.getId().getIdMaterial())!=null)
+			{
+				w.setPno(sMaterialRepository.findOne(mb.getId().getIdMaterial()).getPno());
+				w.setIdMaterial(mb.getId().getIdMaterial());
+				w.setStkName(sStkRepository.findOne(mb.getIdStk()).getStkName());
+				w.setIdStk(mb.getIdStk());
+				wsmbs.add(w);
+			}
+	
 		}
 		
 		

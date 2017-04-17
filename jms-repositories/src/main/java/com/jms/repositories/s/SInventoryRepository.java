@@ -41,7 +41,7 @@ public List<SInventory> findInventorySummaryByMaterial(Long idMaterial,Long comp
 @Query("select s from SInventory s where s.SMaterial.company.idCompany=?1 and s.SBin.SStk.id=?2 order by s.SBin.SStk.id, s.SMaterial.idMaterial,s.creationTime")
 public List<SInventory> findInventorySummaryByStk(Long companyId,Long stkId);
 
-@Query("select s from SInventory s where s.SMaterial.idMaterial=?1 and s.SBin.SStk.SStkTypeDic.name<>'帐号'")
+@Query("select s from SInventory s where s.SMaterial.idMaterial=?1 and  s.qty<>0 and s.SBin.SStk.SStkTypeDic.name not in ('帐号','其他','车间')")
 public List<SInventory> findByMaterialId(Long materialId);
 
 }
