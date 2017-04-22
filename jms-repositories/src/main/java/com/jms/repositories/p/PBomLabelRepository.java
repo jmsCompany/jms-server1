@@ -13,4 +13,7 @@ public interface PBomLabelRepository extends JpaRepository<PBomLabel, Long>{
 
   @Query("select p from PBomLabel p where p.company.idCompany=?1")
   public List<PBomLabel> getByCompanyId(Long companyId);
+  
+  
+
 }

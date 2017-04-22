@@ -41,6 +41,6 @@ public interface PBomRepository extends JpaRepository<PBom, Long>{
 	@Query("select p from PBom p where p.PBomLabel.idBomLabel=?1 order by p.idBom asc")
 	public List<PBom> findByBomLabelId(Long bomLabelId);
 	
-	
+
 	
 }

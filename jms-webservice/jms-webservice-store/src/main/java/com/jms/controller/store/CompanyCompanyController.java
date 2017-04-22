@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import com.jms.domain.db.Company;
 import com.jms.domain.db.SComCom;
 import com.jms.domain.db.SCompanyCo;
 import com.jms.domain.db.SCountryDic;
@@ -19,7 +20,9 @@ import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.s.WSCompanyCo;
+import com.jms.domain.ws.s.WSOverfulfill;
 import com.jms.domain.ws.s.WSSComCom;
+import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.s.SComComRepository;
 import com.jms.repositories.s.SCompanyCoRepository;
 import com.jms.repositories.s.SCountryDicRepository;
@@ -44,6 +47,7 @@ public class CompanyCompanyController {
 	@Autowired private SLevelDicRepository sLevelDicRepository;
 	@Autowired private SStatusDicRepository	sStatusDicRepository;
 	@Autowired private SCompanyCoRepository sCompanyCoRepository;
+	@Autowired private CompanyRepository companyRepository;
 	@Autowired
 	private SComComRepository sComComRepository;
 	
@@ -319,5 +323,31 @@ public class CompanyCompanyController {
 		return wso;
 		
 	}
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/s/saveOverfulfill", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSOverfulfill saveOverfulfill(@RequestBody WSOverfulfill wsOverfulfill) {
+		Company company = securityUtils.getCurrentDBUser().getCompany();
+		company.setOverfulfilRecieve(wsOverfulfill.getReceive());
+		company.setOverfulfilSend(wsOverfulfill.getSend());
+		companyRepository.save(company);
+		return wsOverfulfill;
+	}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/s/getOverfulfill", method=RequestMethod.GET)
+	public WSOverfulfill getOverfulfill() {
+		Company company = securityUtils.getCurrentDBUser().getCompany();
+		WSOverfulfill ws = new WSOverfulfill();
+		Long receive = (company.getOverfulfilRecieve()==null)?0l:company.getOverfulfilRecieve();
+		Long send = (company.getOverfulfilSend()==null)?0l:company.getOverfulfilSend();
+		ws.setReceive(receive);
+		ws.setSend(send);
+		return ws;
+	}
+	
+	
+	
 	
 }

@@ -178,6 +178,9 @@ public class BomLabelService {
 		
 	}
 
+	
+	
+
 	@Transactional(readOnly=true) 
 	public List<WSPBom> findWSPBomList() throws Exception
 	{	

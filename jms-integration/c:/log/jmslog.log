@@ -1,5 +1,0 @@
-[2017-03-21 19:32:08.429] log4j2 - 1588  INFO [main] --- Application: Starting Application on 192.168.0.107 with PID 1588 (/Users/renhongtao/gitrepos/jms-server/jms-integration/target/classes started by renhongtao in /Users/renhongtao/gitrepos/jms-server/jms-integration)
-[2017-03-21 19:32:08.445] log4j2 - 1588 DEBUG [main] --- Application: Running with Spring Boot v1.2.4.RELEASE, Spring v4.1.6.RELEASE
-[2017-03-21 19:32:32.862] log4j2 - 1588 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Initializing filter 'authenticationTokenProcessingFilter'
-[2017-03-21 19:32:32.865] log4j2 - 1588 DEBUG [localhost-startStop-1] --- AuthenticationTokenProcessingFilter: Filter 'authenticationTokenProcessingFilter' configured successfully
-[2017-03-21 19:32:39.664] log4j2 - 1588  INFO [main] --- Application: Started Application in 31.591 seconds (JVM running for 33.338)

@@ -64,12 +64,14 @@ public class BomController {
 		Valid v = new Valid();
 		
 	    Long idBom = wsBomComs.getIdBom();
-	    PBomLabel pBomLabel = pBomLabelRepository.findOne(idBom);
+	  //  PBomLabel pBomLabel = pBomLabelRepository.findOne(idBom);
 	    List<PBom> boms=   pBomRepository.findByBomLabelId(idBom);
 	    if(!boms.isEmpty())
 	    {
 		    PBom parent = boms.get(0);
+		    logger.debug("parent bom is: " + parent.getIdBom());
 		    SMaterial product = parent.getSMaterial();
+		    logger.debug("product: " + product.getPno());
 		    logger.debug("idBom: " + idBom);
 		    for(WSSelectObj o:wsBomComs.getComs())
 		    {
@@ -98,10 +100,12 @@ public class BomController {
 		    		if(p!=null) //已有BOM
 		    		{
 		    			logger.debug("company Id: " + idComCompany +"已有Bom，要删除已有bom");
-		    			PBomLabel myBomLabel = pBomLabelRepository.findOne(p.getPBomLabel().getIdBomLabel());
-		    			pBomRepository.deleteByBomLabelIdAnPidIdNotNull(myBomLabel.getIdBomLabel());
-		    			pBomRepository.deleteByBomLabelIdAnPidIdNull(myBomLabel.getIdBomLabel());
-		    			myBomLabel.getPBoms().clear();
+		    			//PBomLabel myBomLabel = pBomLabelRepository.findOne(p.getPBomLabel().getIdBomLabel());
+		    			
+		    			pBomRepository.deleteByBomLabelIdAnPidIdNotNull(p.getPBomLabel().getIdBomLabel());
+		    			pBomRepository.deleteByBomLabelIdAnPidIdNull(p.getPBomLabel().getIdBomLabel());
+		    			pBomLabelRepository.delete(p.getPBomLabel().getIdBomLabel());
+		    			//myBomLabel.getPBoms().clear();
 		    		}
 		    		PBomLabel newBomLabel = new PBomLabel();
 		    		newBomLabel.setCreationTime(new Date());
@@ -196,6 +200,20 @@ public class BomController {
 		return bomLabelService.findWSPBom(bomLabelId);
 		
 	}
+	
+	
+
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findBomByProductId", method=RequestMethod.GET)
+	public WSPBom findBomByProductId(@RequestParam("productId") Long productId) throws Exception {
+		PBom pBom = pBomRepository.findProductByMaterialId(productId);
+		return bomLabelService.findWSPBom(pBom.getPBomLabel().getIdBomLabel());
+	}
+		
+		
+	
+	
+	
 	
 	
 	@Transactional(readOnly = true)

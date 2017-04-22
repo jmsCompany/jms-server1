@@ -61,6 +61,9 @@ public class Company  extends AbstractSecuredEntity  implements java.io.Serializ
      private Long msgUsedNum;
      private Long msgAvailableNum;
      private Float space;
+     
+     private Long overfulfilRecieve;
+     private Long overfulfilSend;
      private Set<PBomLabel> PBomLabels = new HashSet<PBomLabel>(0);
      private Set<PWip> PWips = new HashSet<PWip>(0);
      private Set<QReportType> QReportTypes = new HashSet<QReportType>(0);
@@ -829,6 +832,26 @@ public class Company  extends AbstractSecuredEntity  implements java.io.Serializ
 	public String toString()
 	{
 		return "公司名: " + this.getCompanyName();
+	}
+
+	 @Column(name="overfulfil_receive")
+	public Long getOverfulfilRecieve() {
+		return overfulfilRecieve;
+	}
+
+
+	public void setOverfulfilRecieve(Long overfulfilRecieve) {
+		this.overfulfilRecieve = overfulfilRecieve;
+	}
+
+	 @Column(name="overfulfil_send")
+	public Long getOverfulfilSend() {
+		return overfulfilSend;
+	}
+
+
+	public void setOverfulfilSend(Long overfulfilSend) {
+		this.overfulfilSend = overfulfilSend;
 	}
 
 

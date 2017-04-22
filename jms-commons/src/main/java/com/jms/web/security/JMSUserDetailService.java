@@ -25,7 +25,6 @@ public class JMSUserDetailService implements Serializable,
 		
 		Users user = usersRepository.findOne(Long.parseLong(username));
 		if (user == null) {
-			
 			throw new UsernameNotFoundException("Could not find user " + username);
 		}
 		WSUser wsUser = new WSUser();

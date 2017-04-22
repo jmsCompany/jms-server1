@@ -214,7 +214,7 @@ public class SMaterial  implements java.io.Serializable {
         this.moq = moq;
     }
     
-    @Column(name="brand", length=20)
+    @Column(name="brand", length=64)
     public String getBrand() {
         return this.brand;
     }
