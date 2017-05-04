@@ -171,10 +171,10 @@ public class BomLabelService {
 
 	
 	@Transactional(readOnly=true) 
-	public WSPBom findWSPBom(Long bomLabelId) throws Exception
+	public WSPBom findWSPBom(Long bomLabelId, Long comCompanyId) throws Exception
 	{	
 		PBomLabel pBomLabel = pBomLabelRepository.findOne(bomLabelId);
-		return  toWSPBom(pBomLabel);
+		return  toWSPBom(pBomLabel,comCompanyId);
 		
 	}
 
@@ -188,7 +188,7 @@ public class BomLabelService {
 		List<PBomLabel> pBomLabels =pBomLabelRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 		for(PBomLabel pl :pBomLabels)
 		{
-			ws.add(toWSPBom(pl));
+			ws.add(toWSPBom(pl,null));
 		}
 		return  ws;
 		
@@ -217,7 +217,7 @@ public class BomLabelService {
 		return dbPBomLabel;
 	}
 	
-	private WSPBom toWSPBom(PBomLabel pBomLabel) throws Exception
+	private WSPBom toWSPBom(PBomLabel pBomLabel,Long comCompanyId) throws Exception
 	{
 		WSPBom pc = (WSPBom)BeanUtil.shallowCopy(pBomLabel, WSPBom.class, null);
 	
@@ -291,12 +291,14 @@ public class BomLabelService {
 						item.setsUnitDicByUnitInfId(p.getSMaterial().getSUnitDicByUnitInf().getId());
 					}
 					item.setWeight(p.getSMaterial().getWeight());
+					
+					if(comCompanyId!=null)
+					{
+						//item.setQtyCoPo(0l);
+					}
 				}
 			
-				
-				
-				
-				
+
 				pc.getBomItems().put("item"+i, item);
 				i++;
 			}

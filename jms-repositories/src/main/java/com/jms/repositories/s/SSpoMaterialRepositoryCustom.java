@@ -19,5 +19,11 @@ public interface SSpoMaterialRepositoryCustom {
 			String q,
 			String fromDay,
 			String toDay);
+	
+	public List<SPoMaterial> getComComSpoMaterials(Long companyId,
+			Long type,
+			String q,
+			String fromDay,
+			String toDay);
 		
 }

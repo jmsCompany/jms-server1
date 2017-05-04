@@ -13,10 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jms.domain.db.Company;
 import com.jms.domain.db.SComCom;
+import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMtfNo;
 import com.jms.domain.db.SPo;
 import com.jms.domain.db.SPoMaterial;
+import com.jms.domain.db.SSo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.s.WSSpo;
@@ -24,11 +27,15 @@ import com.jms.domain.ws.s.WSSpoMaterial;
 import com.jms.domain.ws.s.WSSpoRemark;
 import com.jms.domainadapter.BeanUtil;
 import com.jms.email.EmailSenderService;
+import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.s.SAttachmentRepository;
 import com.jms.repositories.s.SComComRepository;
 import com.jms.repositories.s.SCompanyCoRepository;
 import com.jms.repositories.s.SCurrencyTypeRepository;
+import com.jms.repositories.s.SMaterialRepository;
 import com.jms.repositories.s.SMtfNoRepository;
+import com.jms.repositories.s.SSoRepository;
+import com.jms.repositories.s.SSoRepositoryCustom;
 import com.jms.repositories.s.SSpoMaterialRepository;
 import com.jms.repositories.s.SSpoRepository;
 import com.jms.repositories.s.SStatusDicRepository;
@@ -67,6 +74,12 @@ public class SpoService {
 	@Autowired private SAttachmentRepository sAttachmentRepository;
 	@Autowired private SMtfNoRepository sMtfNoRepository;
 	@Autowired private SMtfNoService sMtfNoService;
+	
+	@Autowired private SsoService ssoService;
+	@Autowired private SSoRepository sSoRepository;
+
+	@Autowired private CompanyRepository companyRepository;
+	@Autowired private SMaterialRepository sMaterialRepository;
 	
 
 	@Autowired
@@ -113,16 +126,64 @@ public class SpoService {
 		
 			wm.setsPoId(sp.getIdPo());
 		
-				spoMaterialService.saveSpoMaterial(wm);
+			spoMaterialService.saveSpoMaterial(wm);
 		
 		}
-		
+		Long myCompanyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		//是否是往来公司流转？
 		if(wsSpo.getIdComCom()!=null)
 		{
 		
+			Long idComcompany;
 			SComCom comcom=sComComRepository.findOne(wsSpo.getIdComCom());
 			
+			if(comcom.getIdCompany1().equals(myCompanyId))
+			{
+				idComcompany=comcom.getIdCompany2();
+			}
+			else
+			{
+				idComcompany=comcom.getIdCompany1();
+			}
+			
+			Company soCompany = companyRepository.findOne(idComcompany);
+			
+			for(String k: wsSpo.getPoItems().keySet())
+			{
+			//	logger.debug("save po material: " + k);
+				WSSpoMaterial wm =wsSpo.getPoItems().get(k);
+				
+				SMaterial m = sMaterialRepository.findOne(wm.getsMaterialId());
+				SMaterial cm = sMaterialRepository.getByCompanyIdAndPno(idComcompany, m.getPno());
+				if(cm!=null)
+				{
+					//create so
+					SSo sSo = new SSo();
+					SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(idComcompany, 11l);
+				    long currentVal =smtfNo.getCurrentVal()+1;
+				    smtfNo.setCurrentVal(currentVal);
+				    sMtfNoRepository.save(smtfNo);
+				    String codeSo = smtfNo.getPrefix()+String.format("%08d", currentVal);
+				    sSo.setCodeSo(codeSo);
+				    sSo.setCompany(soCompany);
+				    sSo.setCoOrderNo(spo.getCodePo());
+				    sSo.setDateOrder(spo.getDateOrder());
+				    sSo.setDeliveryDate(wm.getDeliveryDate());
+				    sSo.setSMaterial(cm);
+				    sSo.setIdCompany2(myCompanyId);
+				    sSo.setQtySo(wm.getQtyPo());
+				    sSo.setSStatusDic(sStatusDicRepository.findOne(14l));
+				    sSo.setRemark("根据往来公司采购订单自动生成销售订单");
+				    //sSo.setQtyDelivered(wm.getQtyPo());
+				    sSo.setUPrice(wm.getUprice().floatValue());
+				    sSo.setTotalAmount(wm.getQtyPo()*wm.getUprice().floatValue());
+				    sSoRepository.save(sSo);
+				}
+				
+			
+			}
+			
+		
 			
 			//sComComRepository.findMyCompanies(idCompany)
 			Map<String,Object> model = new LinkedHashMap<String,Object>();

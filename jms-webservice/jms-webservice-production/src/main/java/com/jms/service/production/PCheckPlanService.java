@@ -85,7 +85,11 @@ public class PCheckPlanService {
 		dbPCheckPlan = pCheckPlanRepository.save(dbPCheckPlan);
 		PCPp cp = dbPCheckPlan.getPCPp();
 		List<PCheckPlan> cpCheckPlans =pCheckPlanRepository.getMaxCheckPlanByCppId(cp.getIdCPp());
-		cp.setActQty(cpCheckPlans.get(0).getFinQty());
+		if(!cpCheckPlans.isEmpty())
+		{
+			cp.setActQty(cpCheckPlans.get(0).getFinQty());
+		}
+		
 		pCPpRepository.save(cp);
 		
 		PWo pwo = cp.getPWo();

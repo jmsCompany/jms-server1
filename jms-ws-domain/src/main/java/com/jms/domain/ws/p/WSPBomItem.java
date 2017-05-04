@@ -28,6 +28,8 @@ public class WSPBomItem {
     
     private Long idRoutineD;
     
+    private Long qtyCoPo; //合作公司库存
+    
 	public Long getIdBom() {
 		return idBom;
 	}
@@ -135,6 +137,13 @@ public class WSPBomItem {
 	}
 	public void setIdRoutineD(Long idRoutineD) {
 		this.idRoutineD = idRoutineD;
+	}
+
+	public Long getQtyCoPo() {
+		return qtyCoPo;
+	}
+	public void setQtyCoPo(Long qtyCoPo) {
+		this.qtyCoPo = qtyCoPo;
 	}
 
 }

@@ -549,11 +549,11 @@ public class UserController {
 	public WSUserProfile login(@RequestBody WSUser wsUser) throws Exception {
 		WSUserProfile userProfile = new WSUserProfile();
 		String login = wsUser.getLogin();
-		System.out.println("user login: " +wsUser.getLogin() +", pass: "  +wsUser.getPassword());
+		//System.out.println("user login: " +wsUser.getLogin() +", pass: "  +wsUser.getPassword());
 		String token = userService.login(wsUser.getLogin(), wsUser.getPassword());
 		if(token==null)
 		{
-			System.out.println("token is null????");
+			//System.out.println("token is null????");
 			return userProfile;
 		}
 		if(wsUser.getLang()!=null)
@@ -1084,7 +1084,7 @@ public class UserController {
 		Users u =securityUtils.getCurrentDBUser();
 		List<WSMenu> wsMenuList = new ArrayList<WSMenu>();
 		Map<Apps, String> smap= securedObjectService.getSecuredObjectsWithPermissions(u, appList);
-		
+		boolean fileMang =false;
 	
 		for(Apps a : smap.keySet())
 		{
@@ -1104,8 +1104,22 @@ public class UserController {
 			item.setUrl(a.getUrl());
 		
 			wsMenuList.add(item);
+			if(a.getAppName().equals("文件管理"))
+			{
+				fileMang=true;
+			}
 		}
-		
+
+		if(!fileMang)
+		{
+			WSMenu item = new WSMenu();
+			item.setId(27l);
+			item.setUrl("q-inProcessingList");
+			item.setGroup("质量管理");
+			item.setName("文件管理");
+			//item.setPermission(smap.get(a));
+			wsMenuList.add(item);
+		}
 		return wsMenuList;
 	}
 	
@@ -1123,6 +1137,7 @@ public class UserController {
 		List<WSMenu> wsMenuList = new ArrayList<WSMenu>();
 		Map<Apps, String> smap= securedObjectService.getSecuredObjectsWithPermissions(g, appList);
 		
+    
 		for(Apps a : smap.keySet())
 		{
 			WSMenu item = new WSMenu();
@@ -1141,6 +1156,7 @@ public class UserController {
 			item.setUrl(a.getUrl());
 			item.setPermission(smap.get(a));
 			wsMenuList.add(item);
+		
 		}
 		
 		return wsMenuList;

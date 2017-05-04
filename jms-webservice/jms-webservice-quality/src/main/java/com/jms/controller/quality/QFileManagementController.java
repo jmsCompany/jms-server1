@@ -24,6 +24,7 @@ import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.q.WSQFileManagent;
+import com.jms.domain.ws.q.WSQFileType;
 import com.jms.file.FileMeta;
 import com.jms.file.FileUploadService;
 import com.jms.repositories.p.PRoutineDRepository;
@@ -80,6 +81,96 @@ public class QFileManagementController {
 		return ws;
 		
 	}
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/q/saveQFileType", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public Valid saveQFileType(@RequestBody WSQFileType wsQFileType) throws Exception {
+		//return qFileManagementService.saveWSQFileManagent(wsQFileManagement);
+     
+      if(wsQFileType.getIdFileType()==null||wsQFileType.getIdFileType().equals(0l))
+      {
+    	  QFileType qFileType = new QFileType();
+          qFileType.setIdCompany(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+          qFileType.setDes(wsQFileType.getDes());
+          qFileType.setType(wsQFileType.getType());
+          qFileTypeRepository.save(qFileType);
+      }
+      else
+      {
+    	  QFileType qFileType = qFileTypeRepository.findOne(wsQFileType.getIdFileType());
+    	  qFileType.setIdCompany(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+          qFileType.setDes(wsQFileType.getDes());
+          qFileType.setType(wsQFileType.getType());
+          qFileTypeRepository.save(qFileType);
+      }
+
+       Valid v = new Valid();
+       v.setValid(true);
+       return v;
+	
+	}
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/q/deleteQFileType", method=RequestMethod.GET)
+	public Valid deleteQFileType(@RequestParam("fileTypeId") Long fileTypeId) {
+		Valid v = new Valid();
+		QFileType qFileType = qFileTypeRepository.findOne(fileTypeId);
+		if(qFileType!=null&&qFileType.getQFileManagents().isEmpty())
+		{
+			qFileTypeRepository.delete(fileTypeId);
+			v.setValid(true);
+			return v;
+		}
+		else
+		{
+			v.setValid(false);
+			v.setMsg("该文件类型被使用，不能被删除");
+			return v;
+		}
+
+	}
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/q/getQFileTypeList", method=RequestMethod.POST)
+	public WSTableData  getQFileTypeList(
+			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+
+		List<QFileType> qFileTypeList =qFileTypeRepository.getByIdCompany(companyId);
+		
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(qFileTypeList.size()<start + length)
+			end =qFileTypeList.size();
+		else
+			end =start + length;
+		
+		for (int i = start; i < end; i++) {
+			QFileType w = qFileTypeList.get(i);
+			
+		String des ="";
+		if(w.getDes()!=null)
+		{
+			des= w.getDes();
+		}
+
+			String[] d = {""+w.getIdFileType(),w.getType(),des,""+w.getIdFileType()};
+			lst.add(d);
+
+		}
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(qFileTypeList.size());
+		t.setRecordsFiltered(qFileTypeList.size());
+	    t.setData(lst);
+	    return t;
+	}
+	
+	
+	
+	
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/q/saveQFileManagement", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -141,22 +232,23 @@ public class QFileManagementController {
 			QFileManagent w = qFileManagementList.get(i);
 			
 			String sMaterial="";
-			if(w.getIdMaterial()!=null)
+			if(w.getIdMaterial()!=null&&!w.getIdMaterial().equals(0l))
 			{
 				SMaterial material = sMaterialRepository.findOne(w.getIdMaterial());
+				//System.out.println(" matid: " +w.getIdMaterial() );
 				sMaterial= material.getPno()+"_"+material.getRev()+"_"+material.getDes();
 			}
 			String fileType = (w.getQFileType()==null)?"":w.getQFileType().getType();
 			String fileNo = (w.getFileNo()==null)?"":w.getFileNo();
 
 			String wo ="";
-			if(w.getIdWo()!=null){
+			if(w.getIdWo()!=null&&!w.getIdWo().equals(0l)){
 				PWo pwo = pWoRepository.findOne(w.getIdWo());
 				wo=pwo.getWoNo();
 			}
 			
 			String routineD ="";
-			if(w.getIdRoutineD()!=null){
+			if(w.getIdRoutineD()!=null&&!w.getIdRoutineD().equals(0l)){
 				PRoutineD pRoutineD = pRoutineDRepository.findOne(w.getIdRoutineD());
 				if(pRoutineD!=null){
 					routineD = pRoutineD.getRouteNo()+"_"+pRoutineD.getDes();
@@ -165,7 +257,7 @@ public class QFileManagementController {
 			}
 
 			String person ="";
-			if(w.getCreator()!=null)
+			if(w.getCreator()!=null&&!w.getCreator().equals(0l))
 			{
 				Users  u = usersRepository.findOne(w.getCreator());
 				if(u.getName()!=null)

@@ -135,7 +135,7 @@ public class RoutineService {
 			wm.setRoutineId(dbPRoutine.getIdRoutine());
 			routineDService.saveWSPRoutineD(wm);
 		}
-
+		wsPRoutine.setSaved(true);
 		wsPRoutine.setIdRoutine(dbPRoutine.getIdRoutine());
 		return wsPRoutine;		
 		

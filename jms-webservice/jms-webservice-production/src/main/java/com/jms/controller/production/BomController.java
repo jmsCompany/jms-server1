@@ -197,7 +197,7 @@ public class BomController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/findBom", method=RequestMethod.GET)
 	public WSPBom findWo(@RequestParam("bomLabelId") Long bomLabelId) throws Exception {
-		return bomLabelService.findWSPBom(bomLabelId);
+		return bomLabelService.findWSPBom(bomLabelId,null);
 		
 	}
 	
@@ -207,9 +207,19 @@ public class BomController {
 	@RequestMapping(value="/p/findBomByProductId", method=RequestMethod.GET)
 	public WSPBom findBomByProductId(@RequestParam("productId") Long productId) throws Exception {
 		PBom pBom = pBomRepository.findProductByMaterialId(productId);
-		return bomLabelService.findWSPBom(pBom.getPBomLabel().getIdBomLabel());
+		return bomLabelService.findWSPBom(pBom.getPBomLabel().getIdBomLabel(),null);
 	}
 		
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/findBomByProductIdAndComComannyId", method=RequestMethod.GET)
+	public WSPBom findBomByProductIdAndComComannyId(@RequestParam("productId") Long productId
+			,@RequestParam("comCompanyId") Long comCompanyId) throws Exception {
+		PBom pBom = pBomRepository.findProductByMaterialId(productId);
+		//Company comCompany = companyRepository.findOne(comCompanyId);
+		return bomLabelService.findWSPBom(pBom.getPBomLabel().getIdBomLabel(),comCompanyId);
+	}
 		
 	
 	

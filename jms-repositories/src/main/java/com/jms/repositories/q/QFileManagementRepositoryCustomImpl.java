@@ -55,7 +55,7 @@ public class QFileManagementRepositoryCustomImpl implements QFileManagementRepos
 		 {
 			 query=query + " and q.QFileType.idFileType=" + filetypeId;
 		 }
-		// System.out.println(query);
+		 System.out.println(query);
 		  return em.createQuery(query, QFileManagent.class).getResultList();
 	
 	}

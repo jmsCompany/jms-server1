@@ -280,6 +280,84 @@ public class SpoController {
 	    t.setData(lst);
 	    return t;
 	}
+	
+	
+	
+	
+	//往来公司采购单
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/spoMaterialListfromCom", method=RequestMethod.POST)
+	public WSTableData  spoMaterialListfromCom( 
+			@RequestParam(required=false,value="type") Long type,
+			@RequestParam(required=false,value="q") String q,
+			@RequestParam(required=false,value="fromDay") String fromDay,
+			@RequestParam(required=false,value="toDay") String toDay,
+			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+		
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		List<SPoMaterial> spoMaterials = sSpoMaterialRepositoryCustom.getComComSpoMaterials(companyId, type,q, fromDay, toDay);
+		List<String[]> lst = new ArrayList<String[]>();
+		int end=0;
+		if(spoMaterials.size()<start + length)
+			end =spoMaterials.size();
+		else
+			end =start + length;
+//		6、8、9、11
+		for (int i = start; i < end; i++) {
+			SPoMaterial w = spoMaterials.get(i);
+			String del = (w.getDeliveryDate()==null)?"":w.getDeliveryDate().toString();
+			String pno="";
+			String rev="";
+			String des="";
+			String unit="";
+			SMaterial s = w.getSMaterial();
+			if(s!=null)
+			{
+				 pno=(s.getPno()==null)?"":s.getPno();
+				 rev=(s.getRev()==null)?"":s.getRev();
+				 des=(s.getDes()==null)?"":s.getDes();
+				 if(s.getSUnitDicByUnitPur()!=null)
+				{
+					unit =s.getSUnitDicByUnitPur().getName();
+				}
+					
+			}
+	
+			String qtyPo=(w.getQtyPo()==null)?"":""+w.getQtyPo();
+			String totalPrice =(w.getTotalPrice()==null)?"":""+w.getTotalPrice();
+			String qtyRev =(w.getQtyReceived()==null)?"":""+w.getQtyReceived();
+			String userName ="";
+			if(w.getSPo().getUsers()!=null)
+			{
+				if(w.getSPo().getUsers().getUsername()!=null)
+				userName =w.getSPo().getUsers().getUsername();
+			}
+			String coShortName= "";
+			if(w.getSPo().getSCompanyCo()!=null)
+			{
+				coShortName	=w.getSPo().getSCompanyCo().getShortName();
+			}
+			String status="";
+			if(w.getSPo().getSStatusDic()!=null)
+			{
+				status= w.getSPo().getSStatusDic().getName();
+			}
+			
+		
+			String[] d = {w.getSPo().getCodePo(),""+w.getSPo().getDateOrder(),userName,coShortName,status,pno+"_"+rev+"_"+des,unit,qtyPo,totalPrice,del,qtyRev,""+w.getSPo().getIdPo()};
+			lst.add(d);
+
+		}
+		WSTableData t = new WSTableData();
+		t.setDraw(draw);
+		t.setRecordsTotal(spoMaterials.size());
+		t.setRecordsFiltered(spoMaterials.size());
+	    t.setData(lst);
+	    return t;
+	}
+	
+	
+	
 
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/spoList", method=RequestMethod.GET)
