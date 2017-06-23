@@ -25,8 +25,16 @@ public class SSpoMaterialRepositoryCustomImpl implements SSpoMaterialRepositoryC
 		 
 		 if(type!=null)
 		 {
+		
+			 if(type.equals(1000l))
+			 {
+				 query =query + " and s.SPo.SStatusDic.id <> 9 ";  
+			 }
+			 else
+			 {
+				 query =query + " and s.SPo.SStatusDic.id = " + type +" ";  
+			 }
 			 
-			 query =query + " and s.SPo.SStatusDic.id = " + type +" ";  
 		 }
 		 
 		 if(q!=null)
@@ -45,6 +53,7 @@ public class SSpoMaterialRepositoryCustomImpl implements SSpoMaterialRepositoryC
 		 query=query + " order by s.SPo.codePo desc";
 //		 System.out.println(query);
 		  return em.createQuery(query, SPoMaterial.class).getResultList();
+		
 	}
 
 
@@ -55,10 +64,17 @@ public class SSpoMaterialRepositoryCustomImpl implements SSpoMaterialRepositoryC
 		 
 		 if(type!=null)
 		 {
+		
+			 if(type.equals(1000l))
+			 {
+				 query =query + " and s.SPo.SStatusDic.id <> 9 ";  
+			 }
+			 else
+			 {
+				 query =query + " and s.SPo.SStatusDic.id = " + type +" ";  
+			 }
 			 
-			 query =query + " and s.SPo.SStatusDic.id = " + type +" ";  
 		 }
-		 
 		 if(q!=null)
 		 {
 			 q ="'%" + q + "%'";

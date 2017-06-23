@@ -136,12 +136,12 @@ public class SecuredObjectService {
 
 		        if(checkPermission( group, objectIdentity,BasePermission.READ))
 		        {
-		        	System.out.println("has perm: ");
+		        //	System.out.println("has perm: ");
 		        	pMap.put(obj, "READ");
 		        }
 		        if(checkPermission( group, objectIdentity,BasePermission.ADMINISTRATION))
 		        {
-		        	System.out.println("has perm: ");
+		        //	System.out.println("has perm: ");
 		        	pMap.put(obj, "ADMIN");
 		        }
 					

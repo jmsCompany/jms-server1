@@ -48,7 +48,6 @@ public class SCompanyCo  implements java.io.Serializable {
      private String remark;
      private String autoRemark;
      private String auditBy;
-     
      private Long idCompany1;
      private Long auditStatus;
      private String email;
@@ -93,7 +92,6 @@ public class SCompanyCo  implements java.io.Serializable {
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
-    
     @Column(name="id", unique=true, nullable=false)
     public Long getId() {
         return this.id;
@@ -102,7 +100,7 @@ public class SCompanyCo  implements java.io.Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+   @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="id_company")
     public Company getCompany() {
         return this.company;
@@ -111,7 +109,8 @@ public class SCompanyCo  implements java.io.Serializable {
     public void setCompany(Company company) {
         this.company = company;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+   
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="type")
     public STypeDic getSTypeDic() {
         return this.STypeDic;
@@ -120,7 +119,8 @@ public class SCompanyCo  implements java.io.Serializable {
     public void setSTypeDic(STypeDic STypeDic) {
         this.STypeDic = STypeDic;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+   
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="status")
     public SStatusDic getSStatusDic() {
         return this.SStatusDic;

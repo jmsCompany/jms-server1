@@ -80,7 +80,26 @@ public class MtfCController {
 			@RequestParam(required=false,value="idCompany2") Long idCompany2,
 			@RequestParam(required=false,value="fromDay") String fromDay,
 			@RequestParam(required=false,value="toDay") String toDay,
-			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length)  {	   
+			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length)  {	 
+		if(q!=null&&q.isEmpty())
+		{
+			q=null;
+		}
+		if(fromDay!=null&&fromDay.isEmpty())
+		{
+			fromDay=null;
+		}
+		if(toDay!=null&&toDay.isEmpty())
+		{
+			toDay=null;
+		}
+	
+		if(idCompany2!=null&&idCompany2.equals(0l))
+		{
+			idCompany2=null;
+		}
+		
+		System.out.println("明细q: " + q +" ,idCompany2: " + idCompany2 +", fromDay: " + fromDay +", today? " + toDay);
 		
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		List<SMtfMaterial> wsSMtfMaterials = sMtfMaterialRepositoryCustom.getCustomCSMtf(companyId, idCompany2, q, fromDay, toDay);
@@ -146,9 +165,26 @@ public class MtfCController {
 				@RequestParam(required=false,value="idCompany2") Long idCompany2,
 				@RequestParam(required=false,value="fromDay") String fromDay,
 				@RequestParam(required=false,value="toDay") String toDay,
-				@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length)  {	   
-		
+				@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length)  {	 
 			
+			if(q!=null&&q.isEmpty())
+			{
+				q=null;
+			}
+			if(fromDay!=null&&fromDay.isEmpty())
+			{
+				fromDay=null;
+			}
+			if(toDay!=null&&toDay.isEmpty())
+			{
+				toDay=null;
+			}
+		
+			if(idCompany2!=null&&idCompany2.equals(0l))
+			{
+				idCompany2=null;
+			}
+			System.out.println("汇总q: " + q +" ,idCompany2: " + idCompany2 +", fromDay: " + fromDay +", today： " + toDay);
 			Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 			List<SMtfMaterial> wsSMtfMaterials = sMtfMaterialRepositoryCustom.getCustomCSMtf(companyId, idCompany2, q, fromDay, toDay);
 			Map<String,WSSmtfSum> sumMap = new LinkedHashMap<String,WSSmtfSum>();

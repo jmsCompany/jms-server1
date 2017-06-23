@@ -444,6 +444,8 @@ public class MtfController {
 			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length)  {	   
 		
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		
+		System.out.println("companyId: " + companyId);
 	
 		List<SMtfMaterial> sMtfMaterials = sMtfMaterialRepositoryCustom.getCustomSMtf(companyId, typeId,q,fromStkId,toStkId, fromDay, toDay);
 		List<String[]> lst = new ArrayList<String[]>();

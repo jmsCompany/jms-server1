@@ -39,5 +39,9 @@ public interface SSoRepository  extends JpaRepository<SSo, Long>{
 	
 	@Query(value="SELECT distinct(co_order_no) FROM s_so where id_company2=?1",nativeQuery=true)
 	public List<String> findCoOrderNosByCompany2Id(Long company2Id);
+	
+	
+	@Query("select s from SSo s where s.company.idCompany=?1 and s.codeSo =?2")
+	public List<SSo> findByCompanyIdAndCodeSo(Long companyId,String codeSo);
 		
 }

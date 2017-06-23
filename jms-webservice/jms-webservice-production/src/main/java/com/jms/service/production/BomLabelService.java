@@ -147,7 +147,8 @@ public class BomLabelService {
 			{
 
 				PRoutineD r = pRoutineDRepository.findOne(p.getIdRoutineD());
-				if(!r.getPCPps().isEmpty())
+				
+				if(r!=null)
 				{
 					valid.setValid(false);
 					return valid;
@@ -155,7 +156,7 @@ public class BomLabelService {
 				}
 			
 			}
-			if(!p.getPMrs().isEmpty())
+			if(p.getPMrs()!=null&&!p.getPMrs().isEmpty())
 			{
 				valid.setValid(false);
 				return valid;

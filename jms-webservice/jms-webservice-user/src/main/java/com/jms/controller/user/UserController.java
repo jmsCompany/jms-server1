@@ -365,7 +365,7 @@ public class UserController {
 				List<WSPCppAndriod> cpps = new ArrayList<WSPCppAndriod>();
 			//	System.out.println("取得日计划。。。。");
 
-		int num=0;
+		       int num=0;
 				
 				Map<Long,PCPp> cppFinalMap = new LinkedHashMap<Long,PCPp>();
 				
@@ -584,7 +584,7 @@ public class UserController {
 		userProfile.setIdCompany(u.getCompany().getIdCompany());
 		userProfile.setName(u.getName());
 		userProfile.setDepartment("");
-		
+		userProfile.setCompanyName(u.getCompany().getCompanyName());
 		Boolean isOP= false;
 		userProfile.setIsAdmin(false);
 		for(GroupMembers g:u.getGroupMemberses())
@@ -758,7 +758,7 @@ public class UserController {
 		}
 		
 		userProfile.setIsOP(isOP);
-		List<Apps> appList =appsRepository.findAll();
+		List<Apps> appList =appsRepository.findAllBySeq();
 		Map<Apps, String> smap= securedObjectService.getSecuredObjectsWithPermissions(u, appList);
 		List<WSMenu> WSMenuList = new ArrayList<WSMenu>();
 		for(Apps a : smap.keySet())
@@ -1080,13 +1080,14 @@ public class UserController {
 	@RequestMapping(value="/u/getWSMenuList", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	public List<WSMenu> getWSMenuList() throws Exception
 	{
-		List<Apps> appList =appsRepository.findAll();
+		List<Apps> appList =appsRepository.findAllBySeq();
 		Users u =securityUtils.getCurrentDBUser();
 		List<WSMenu> wsMenuList = new ArrayList<WSMenu>();
 		Map<Apps, String> smap= securedObjectService.getSecuredObjectsWithPermissions(u, appList);
 		boolean fileMang =false;
 	
-		for(Apps a : smap.keySet())
+		for(Apps a : appList)
+		//for(Apps a : smap.keySet())
 		{
 			WSMenu item = new WSMenu();
 			if(u.getLang()!=null&&u.getLang().equals("en"))
@@ -1102,7 +1103,7 @@ public class UserController {
 			
 			item.setId(a.getIdApp());
 			item.setUrl(a.getUrl());
-		
+		   System.out.println("url: " + a.getUrl());
 			wsMenuList.add(item);
 			if(a.getAppName().equals("文件管理"))
 			{
@@ -1119,7 +1120,16 @@ public class UserController {
 			item.setName("文件管理");
 			//item.setPermission(smap.get(a));
 			wsMenuList.add(item);
+			
 		}
+		
+//		WSMenu item1 = new WSMenu();
+//		item1.setId(31l);
+//		item1.setUrl("mrp");
+//		item1.setGroup("进销存");
+//		item1.setName("MRP");
+//		//item.setPermission(smap.get(a));
+//		wsMenuList.add(item1);
 		return wsMenuList;
 	}
 	
@@ -1135,10 +1145,12 @@ public class UserController {
 		List<Apps> appList =appsRepository.findAll();
 		
 		List<WSMenu> wsMenuList = new ArrayList<WSMenu>();
+	
 		Map<Apps, String> smap= securedObjectService.getSecuredObjectsWithPermissions(g, appList);
 		
     
 		for(Apps a : smap.keySet())
+	//	for(Apps a : appList)
 		{
 			WSMenu item = new WSMenu();
 			if(u.getLang()!=null&&u.getLang().equals("en"))
@@ -1151,10 +1163,11 @@ public class UserController {
 				item.setGroup(a.getGroups());
 				item.setName(a.getAppName());
 			}
-			
+		    System.out.println("url: " + a.getUrl());
 			item.setId(a.getIdApp());
 			item.setUrl(a.getUrl());
 			item.setPermission(smap.get(a));
+			//item.setPermission("READ");
 			wsMenuList.add(item);
 		
 		}

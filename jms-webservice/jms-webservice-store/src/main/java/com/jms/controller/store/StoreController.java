@@ -117,6 +117,7 @@ public class StoreController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/getBins", method=RequestMethod.GET)
 	public List<WSSelectObj> geBins(@RequestParam Long idStk) {
+		System.out.println("get bins by idStk: " + idStk);
 		return sBinService.findBinsObjs(idStk);
 	}
 	
@@ -125,7 +126,7 @@ public class StoreController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/getBinsByStkIdAndMaterialIdAMethod", method=RequestMethod.GET)
 	public List<WSSelectObj> getBinsByStkIdAndMaterialIdAMethod(@RequestParam Long idStk,@RequestParam Long idMaterial) {
-	//	System.out.println("A method: idStk: " + idStk +  ", idMaterial " + idMaterial);
+		System.out.println("A method: idStk: " + idStk +  ", idMaterial " + idMaterial);
 		return sBinService.getBinsByStkIdAndMaterialIdAMethod(idStk, idMaterial);
 	}
 	
@@ -134,6 +135,7 @@ public class StoreController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/getBinsByStkIdAndMaterialIdBMethod", method=RequestMethod.GET)
 	public List<WSSelectObj> getBinsByStkIdAndMaterialIdBMethod(@RequestParam Long idStk,@RequestParam Long idMaterial) {
+		System.out.println("B method: idStk: " + idStk +  ", idMaterial " + idMaterial);
 		return sBinService.getBinsByStkIdAndMaterialIdBMethod(idStk, idMaterial);
 	}
 	
@@ -144,6 +146,7 @@ public class StoreController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/getBinsByStkIdAndMaterialIdCMethod", method=RequestMethod.GET)
 	public List<WSSelectObj> getBinsByStkIdAndMaterialIdCMethod(@RequestParam Long idStk,@RequestParam Long idMaterial) {
+		System.out.println("C method: idStk: " + idStk +  ", idMaterial " + idMaterial);
 		return sBinService.getBinsByStkIdAndMaterialIdCMethod(idStk, idMaterial);
 	}
 	

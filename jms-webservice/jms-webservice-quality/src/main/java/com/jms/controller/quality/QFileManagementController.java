@@ -244,7 +244,11 @@ public class QFileManagementController {
 			String wo ="";
 			if(w.getIdWo()!=null&&!w.getIdWo().equals(0l)){
 				PWo pwo = pWoRepository.findOne(w.getIdWo());
-				wo=pwo.getWoNo();
+				if(pwo!=null)
+				{
+					wo=pwo.getWoNo();
+				}
+				
 			}
 			
 			String routineD ="";
@@ -273,8 +277,6 @@ public class QFileManagementController {
 				date= formatter.format(w.getCreationTime());
 			}
 			
-			
-
 			String[] d = {fileNo, fileType,sMaterial,wo,routineD,date,person,""+w.getIdFile()};
 			lst.add(d);
 

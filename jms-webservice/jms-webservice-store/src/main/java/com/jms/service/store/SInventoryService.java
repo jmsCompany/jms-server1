@@ -164,8 +164,10 @@ public class SInventoryService {
 	@Transactional(readOnly=true)
 	public List<WSInventory> findInventoryDetailByMaterialAndStk(Long idMaterial,Long stkId)
 	{		
-	//	logger.debug("material id: " + idMaterial +", stkId: " + stkId);
+		
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		
+		logger.debug("companyId:" + companyId +", material id: " + idMaterial +", stkId: " + stkId);
 		List<SInventory> ls;
 		if(idMaterial==null)
 		{

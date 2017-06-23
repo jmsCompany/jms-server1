@@ -1,6 +1,5 @@
 package com.jms.controller.production;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,56 +31,59 @@ import com.jms.service.production.BomLabelService;
 import com.jms.service.production.BomService;
 import com.jms.web.security.SecurityUtils;
 
-
 @RestController
-@Transactional(readOnly=true)
+@Transactional(readOnly = true)
 public class BomController {
-	
-	@Autowired private BomService bomService;
-	@Autowired private BomLabelService bomLabelService;
-	@Autowired private PWoRepository pWoRepository;
-	@Autowired private PBomLabelRepository pBomLabelRepository;
-	@Autowired private SecurityUtils securityUtils;
-	@Autowired private PBomRepository pBomRepository;
-	@Autowired private SMaterialRepository sMaterialRepository;
-	@Autowired private CompanyRepository companyRepository;
-	@Autowired private PStatusDicRepository pStatusDicRepository;
+
+	@Autowired
+	private BomService bomService;
+	@Autowired
+	private BomLabelService bomLabelService;
+	@Autowired
+	private PWoRepository pWoRepository;
+	@Autowired
+	private PBomLabelRepository pBomLabelRepository;
+	@Autowired
+	private SecurityUtils securityUtils;
+	@Autowired
+	private PBomRepository pBomRepository;
+	@Autowired
+	private SMaterialRepository sMaterialRepository;
+	@Autowired
+	private CompanyRepository companyRepository;
+	@Autowired
+	private PStatusDicRepository pStatusDicRepository;
 	private static final Logger logger = LogManager.getLogger(BomController.class.getCanonicalName());
 
-	
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/p/saveBom", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/p/saveBom", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public WSPBom saveWSPBom(@RequestBody WSPBom wsPBom) throws Exception {
 		return bomLabelService.savePBomLabel(wsPBom);
 	}
-	
-	
-	
+
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/p/shareBom", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/p/shareBom", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Valid shareWSPBom(@RequestBody WSBomComs wsBomComs) {
-		//return bomLabelService.savePBomLabel(wsPBom);
+		// return bomLabelService.savePBomLabel(wsPBom);
 		Valid v = new Valid();
-		
-	    Long idBom = wsBomComs.getIdBom();
-	  //  PBomLabel pBomLabel = pBomLabelRepository.findOne(idBom);
-	    List<PBom> boms=   pBomRepository.findByBomLabelId(idBom);
-	    if(!boms.isEmpty())
-	    {
-		    PBom parent = boms.get(0);
-		    logger.debug("parent bom is: " + parent.getIdBom());
-		    SMaterial product = parent.getSMaterial();
-		    logger.debug("product: " + product.getPno());
-		    logger.debug("idBom: " + idBom);
-		    for(WSSelectObj o:wsBomComs.getComs())
-		    {
-		    	Long idComCompany = o.getId();
-		    	logger.debug("company Id: " + idComCompany);
-		    	Company sharedCompany =companyRepository.findOne(idComCompany);
-		    	SMaterial sm = sMaterialRepository.getByCompanyIdAndPno(idComCompany, product.getPno());
-		    	if(sm==null) //该公司无该物料
-		    	{
-		    		sm = new SMaterial();
+
+		Long idBom = wsBomComs.getIdBom();
+		// PBomLabel pBomLabel = pBomLabelRepository.findOne(idBom);
+		List<PBom> boms = pBomRepository.findByBomLabelId(idBom);
+		if (!boms.isEmpty()) {
+			PBom parent = boms.get(0);
+			logger.debug("parent bom is: " + parent.getIdBom());
+			SMaterial product = parent.getSMaterial();
+			logger.debug("product: " + product.getPno());
+			logger.debug("idBom: " + idBom);
+			for (WSSelectObj o : wsBomComs.getComs()) {
+				Long idComCompany = o.getId();
+				logger.debug("company Id: " + idComCompany);
+				Company sharedCompany = companyRepository.findOne(idComCompany);
+				SMaterial sm = sMaterialRepository.getByCompanyIdAndPno(idComCompany, product.getPno());
+				if (sm == null) // 该公司无该物料
+				{
+					sm = new SMaterial();
 					sm.setCompany(sharedCompany);
 					sm.setCycleUnit(product.getCycleUnit());
 					sm.setDes(product.getDes());
@@ -94,166 +96,167 @@ public class BomController {
 					sm.setSUnitDicByUnitPur(product.getSUnitDicByUnitPur());
 					sm.setSStatusDic(product.getSStatusDic());
 					sm.setSMaterialCategory(product.getSMaterialCategory());
+					sm.setMoq(product.getMoq());
+					sm.setMpq(product.getMpq());
+					sm.setSMaterialTypeDic(product.getSMaterialTypeDic());
 					sm = sMaterialRepository.save(sm);
-		    	}
-		    		PBom p = pBomRepository.findProductByMaterialId(sm.getIdMaterial());
-		    		if(p!=null) //已有BOM
-		    		{
-		    			logger.debug("company Id: " + idComCompany +"已有Bom，要删除已有bom");
-		    			//PBomLabel myBomLabel = pBomLabelRepository.findOne(p.getPBomLabel().getIdBomLabel());
-		    			
-		    			pBomRepository.deleteByBomLabelIdAnPidIdNotNull(p.getPBomLabel().getIdBomLabel());
-		    			pBomRepository.deleteByBomLabelIdAnPidIdNull(p.getPBomLabel().getIdBomLabel());
-		    			pBomLabelRepository.delete(p.getPBomLabel().getIdBomLabel());
-		    			//myBomLabel.getPBoms().clear();
-		    		}
-		    		PBomLabel newBomLabel = new PBomLabel();
-		    		newBomLabel.setCreationTime(new Date());
-		    		newBomLabel.setCompany(sharedCompany);
-		    		newBomLabel.setPStatusDic(pStatusDicRepository.findOne(3l));
-		    		newBomLabel = pBomLabelRepository.save(newBomLabel);
-		    		PBom parentPbom = new PBom();
-		    		parentPbom.setLvl(parent.getLvl());
-		    		parentPbom.setOrderBy(parent.getOrderBy());
-		    		parentPbom.setQpu(parent.getQpu());
-		    		parentPbom.setWastage(parent.getWastage());
-		    		parentPbom.setPBomLabel(newBomLabel);
-		    		parentPbom.setSMaterial(sm);
-		    		parentPbom = pBomRepository.save(parentPbom);
-		    		for(PBom pbom :boms )
-		    		{
-		    		
-		    			if(pbom.getPBom()!=null)
-		    			{
-		    				PBom  newPbom = new PBom();
-		    				newPbom.setPBom(parentPbom);
-		    				newPbom.setOrderBy(pbom.getOrderBy());
-		    				newPbom.setQpu(pbom.getQpu());
-		    				newPbom.setWastage(pbom.getWastage());
-		    				newPbom.setPBomLabel(newBomLabel);
-		    				SMaterial  s = pbom.getSMaterial();
-		    				SMaterial sm1 = sMaterialRepository.getByCompanyIdAndPno(idComCompany, s.getPno());
-		    				if(sm1!=null)
-		    				{
-		    					newPbom.setSMaterial(sm1);
-		    				}
-		    				else
-		    				{
-		    					SMaterial sn = new SMaterial();
-		    				
-		    					sn.setCompany(sharedCompany);
-		    					sn.setCycleUnit(s.getCycleUnit());
-		    					sn.setDes(s.getDes());
-		    					sn.setPno(s.getPno());
-		    					sn.setBrand(s.getBrand());
-		    					sn.setRemark(s.getRemark());
-		    					sn.setRev(s.getRev());
-		    					sn.setWeight(s.getWeight());
-		    					sn.setSUnitDicByUnitInf(s.getSUnitDicByUnitInf());
-		    					sn.setSUnitDicByUnitPur(s.getSUnitDicByUnitPur());
-		    					sn.setSStatusDic(s.getSStatusDic());
-		    					sn = sMaterialRepository.save(sn);
-		    					sn.setSMaterialCategory(s.getSMaterialCategory());
-		    					newPbom.setSMaterial(sn);
-		    					
-		    				}
-		    				
-		    				newPbom = pBomRepository.save(newPbom);
-		    			}
-		    	
-		    		}
-		    }
-	   }
-	   v.setValid(true);
-	   v.setMsg("Bom are shared");
-    	return v;
+				}
+				else
+				{
+					sm.setMoq(product.getMoq());
+					sm.setMpq(product.getMpq());
+					sm.setSMaterialTypeDic(product.getSMaterialTypeDic());
+					sm = sMaterialRepository.save(sm);
+				}
+				PBom p = pBomRepository.findProductByMaterialId(sm.getIdMaterial());
+				if (p != null) // 已有BOM
+				{
+					logger.debug("company Id: " + idComCompany + "已有Bom，要删除已有bom");
+					// PBomLabel myBomLabel =
+					// pBomLabelRepository.findOne(p.getPBomLabel().getIdBomLabel());
 
-}
-	
-	
+					pBomRepository.deleteByBomLabelIdAnPidIdNotNull(p.getPBomLabel().getIdBomLabel());
+					pBomRepository.deleteByBomLabelIdAnPidIdNull(p.getPBomLabel().getIdBomLabel());
+					pBomLabelRepository.delete(p.getPBomLabel().getIdBomLabel());
+					// myBomLabel.getPBoms().clear();
+				}
+				PBomLabel newBomLabel = new PBomLabel();
+				newBomLabel.setCreationTime(new Date());
+				newBomLabel.setCompany(sharedCompany);
+				newBomLabel.setPStatusDic(pStatusDicRepository.findOne(3l));
+				newBomLabel = pBomLabelRepository.save(newBomLabel);
+				PBom parentPbom = new PBom();
+				parentPbom.setLvl(parent.getLvl());
+				parentPbom.setOrderBy(parent.getOrderBy());
+				parentPbom.setQpu(parent.getQpu());
+				parentPbom.setWastage(parent.getWastage());
+				parentPbom.setPBomLabel(newBomLabel);
+				parentPbom.setSMaterial(sm);
+				parentPbom = pBomRepository.save(parentPbom);
+				for (PBom pbom : boms) {
+
+					if (pbom.getPBom() != null) {
+						PBom newPbom = new PBom();
+						newPbom.setPBom(parentPbom);
+						newPbom.setOrderBy(pbom.getOrderBy());
+						newPbom.setQpu(pbom.getQpu());
+						newPbom.setWastage(pbom.getWastage());
+						newPbom.setPBomLabel(newBomLabel);
+						SMaterial s = pbom.getSMaterial();
+						SMaterial sm1 = sMaterialRepository.getByCompanyIdAndPno(idComCompany, s.getPno());
+						if (sm1 != null) {
+							newPbom.setSMaterial(sm1);
+							sm1.setMoq(s.getMoq());
+							sm1.setMpq(s.getMpq());
+							sm1.setSMaterialTypeDic(s.getSMaterialTypeDic());
+							sMaterialRepository.save(sm1);
+						} else {
+							SMaterial sn = new SMaterial();
+
+							sn.setCompany(sharedCompany);
+							sn.setCycleUnit(s.getCycleUnit());
+							sn.setDes(s.getDes());
+							sn.setPno(s.getPno());
+							sn.setBrand(s.getBrand());
+							sn.setRemark(s.getRemark());
+							sn.setRev(s.getRev());
+							sn.setWeight(s.getWeight());
+							sn.setSUnitDicByUnitInf(s.getSUnitDicByUnitInf());
+							sn.setSUnitDicByUnitPur(s.getSUnitDicByUnitPur());
+							sn.setSStatusDic(s.getSStatusDic());
+							sn.setMoq(s.getMoq());
+							sn.setMpq(s.getMpq());
+							sn.setSMaterialTypeDic(s.getSMaterialTypeDic());
+							sn = sMaterialRepository.save(sn);
+							sn.setSMaterialCategory(s.getSMaterialCategory());
+							newPbom.setSMaterial(sn);
+
+						}
+
+						newPbom = pBomRepository.save(newPbom);
+					}
+
+				}
+			}
+		}
+		v.setValid(true);
+		v.setMsg("Bom are shared");
+		return v;
+
+	}
+
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/p/updateBomStatus", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/p/updateBomStatus", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public WSPBom updateBomStatus(@RequestBody WSPBom wsPBom) throws Exception {
 		return bomLabelService.updateBomStatus(wsPBom);
 	}
-	
-	
+
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/p/updateBomItem", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/p/updateBomItem", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public WSPBomItem updateBomItem(@RequestBody WSPBomItem wsPBomItem) throws Exception {
 		return bomService.updateWSPBomItem(wsPBomItem);
 	}
-	
-	
-	
+
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/p/deleteBom", method=RequestMethod.GET)
+	@RequestMapping(value = "/p/deleteBom", method = RequestMethod.GET)
 	public Valid deleteBom(@RequestParam("bomLabelId") Long bomLabelId) {
 		return bomLabelService.deletePWSPBom(bomLabelId);
-		
+
 	}
-	
 
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/p/findBom", method=RequestMethod.GET)
+	@RequestMapping(value = "/p/findBom", method = RequestMethod.GET)
 	public WSPBom findWo(@RequestParam("bomLabelId") Long bomLabelId) throws Exception {
-		return bomLabelService.findWSPBom(bomLabelId,null);
-		
+		return bomLabelService.findWSPBom(bomLabelId, null);
+
 	}
-	
-	
 
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/p/findBomByProductId", method=RequestMethod.GET)
+	@RequestMapping(value = "/p/findBomByProductId", method = RequestMethod.GET)
 	public WSPBom findBomByProductId(@RequestParam("productId") Long productId) throws Exception {
 		PBom pBom = pBomRepository.findProductByMaterialId(productId);
-		return bomLabelService.findWSPBom(pBom.getPBomLabel().getIdBomLabel(),null);
+		return bomLabelService.findWSPBom(pBom.getPBomLabel().getIdBomLabel(), null);
 	}
-		
-	
-	
+
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/p/findBomByProductIdAndComComannyId", method=RequestMethod.GET)
-	public WSPBom findBomByProductIdAndComComannyId(@RequestParam("productId") Long productId
-			,@RequestParam("comCompanyId") Long comCompanyId) throws Exception {
+	@RequestMapping(value = "/p/findBomByProductIdAndComComannyId", method = RequestMethod.GET)
+	public WSPBom findBomByProductIdAndComComannyId(@RequestParam("productId") Long productId,
+			@RequestParam(value="comCompanyId",required=false) Long comCompanyId) throws Exception {
 		PBom pBom = pBomRepository.findProductByMaterialId(productId);
-		//Company comCompany = companyRepository.findOne(comCompanyId);
-		return bomLabelService.findWSPBom(pBom.getPBomLabel().getIdBomLabel(),comCompanyId);
+		// Company comCompany = companyRepository.findOne(comCompanyId);
+		return bomLabelService.findWSPBom(pBom.getPBomLabel().getIdBomLabel(), comCompanyId);
 	}
-		
-	
-	
-	
-	
-	
+
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/p/findBomItem", method=RequestMethod.GET)
+	@RequestMapping(value = "/p/findBomItem", method = RequestMethod.GET)
 	public WSPBomItem findBomItem(@RequestParam("bomId") Long bomId) throws Exception {
 		return bomService.findWSPBomItem(bomId);
-		
+
 	}
 
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/p/saveBomItem", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/p/saveBomItem", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public WSPBomItem saveWSPBomItem(@RequestBody WSPBomItem wsPBomItem) throws Exception {
 		return bomService.saveWSPBomItem(wsPBomItem);
 	}
-	
+
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/p/getBomList", method=RequestMethod.POST)
-	public WSTableData  getBomList(@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
-		
-		List<WSPBom> wsPBoms =bomLabelService.findWSPBomList();
-		
+	@RequestMapping(value = "/p/getBomList", method = RequestMethod.POST)
+	public WSTableData getBomList(@RequestParam Integer draw, @RequestParam Integer start, @RequestParam Integer length)
+			throws Exception {
+
+		List<WSPBom> wsPBoms = bomLabelService.findWSPBomList();
+
 		List<String[]> lst = new ArrayList<String[]>();
-		int end=0;
-		if(wsPBoms.size()<start + length)
-			end =wsPBoms.size();
+		int end = 0;
+		if (wsPBoms.size() < start + length)
+			end = wsPBoms.size();
 		else
-			end =start + length;
+			end = start + length;
 		for (int i = start; i < end; i++) {
 			WSPBom w = wsPBoms.get(i);
-			String[] d = {w.getPno(),w.getRev(),w.getMaterial(),w.getCreationTime().toString(),""+w.getCreator(),""+w.getStatus(),""+w.getIdBomLabel()};
+			String[] d = { w.getPno(), w.getRev(), w.getMaterial(), w.getCreationTime().toString(), "" + w.getCreator(),
+					"" + w.getStatus(), "" + w.getIdBomLabel() };
 			lst.add(d);
 
 		}
@@ -261,9 +264,8 @@ public class BomController {
 		t.setDraw(draw);
 		t.setRecordsTotal(wsPBoms.size());
 		t.setRecordsFiltered(wsPBoms.size());
-	    t.setData(lst);
-	    return t;
+		t.setData(lst);
+		return t;
 	}
-	
 
 }

@@ -131,9 +131,11 @@ public class InventoryController {
 	public List<WSSelectObj> findInventoryDetailsObjsByMaterialIdAndStkId(@RequestParam(required=false,value="materialId") Long materialId,@RequestParam(required=false,value="stkId") Long stkId) throws Exception {
 
 		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
+		//System.out.println("matId: "+materialId +", stkId: " + stkId);
 		List<WSInventory> wsis = sInventoryService.findInventoryDetailByMaterialAndStk(materialId, stkId);
 		for(WSInventory i: wsis)
 		{
+			//System.out.println("invId: "+i.getInventoryId() +", bin: " + i.getBinName());
 			WSSelectObj w = new WSSelectObj(i.getInventoryId(),i.getStkName()+"_"+i.getBinName()+", 库存: " +i.getQty());
 			ws.add(w);
 		}

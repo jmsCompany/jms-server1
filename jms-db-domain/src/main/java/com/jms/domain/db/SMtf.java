@@ -51,6 +51,9 @@ public class SMtf  implements java.io.Serializable {
      
      private String coOrderNo;
      
+     private Long cRev;
+     private Long tRev;
+     
      private Set<SMtfMaterial> SMtfMaterials = new HashSet<SMtfMaterial>(0);
 
     public SMtf() {
@@ -230,6 +233,23 @@ public class SMtf  implements java.io.Serializable {
 
 	public void setCoOrderNo(String coOrderNo) {
 		this.coOrderNo = coOrderNo;
+	}
+	   @Column(name="c_rev")
+	public Long getcRev() {
+		return cRev;
+	}
+
+	public void setcRev(Long cRev) {
+		this.cRev = cRev;
+	}
+
+	   @Column(name="t_rev")
+	public Long gettRev() {
+		return tRev;
+	}
+
+	public void settRev(Long tRev) {
+		this.tRev = tRev;
 	}
 
 

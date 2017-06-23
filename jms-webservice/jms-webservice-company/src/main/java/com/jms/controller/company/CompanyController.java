@@ -23,24 +23,18 @@ import com.jms.web.security.SecurityUtils;
 @RestController
 public class CompanyController {
 	
-	@Autowired
-	private CompanyService companyService;
-	@Autowired
-	private CompanyAdapter companyAdapter;
+	@Autowired private CompanyService companyService;
+	@Autowired private CompanyAdapter companyAdapter;
 	@Autowired @Qualifier("iUserServiceImpl")
 	private IUserService iUserServiceImpl;
-	@Autowired 
-	private  SecurityUtils securityUtils;
-	@Autowired 
-	private SecuredObjectService securedObjectService;
-	@Autowired 
-	private AppsRepository appsRepository;
-	@Autowired
-	private INotificationService notificationService;
-	@Autowired
-	private SStkRepository sStkRepository;
-	@Autowired
-	private SComComRepository sComComRepository;
+	@Autowired private SecurityUtils securityUtils;
+	
+	@Autowired private SecuredObjectService securedObjectService;
+	@Autowired private AppsRepository appsRepository;
+	@Autowired private INotificationService notificationService;
+	@Autowired private SStkRepository sStkRepository;
+	
+	@Autowired private SComComRepository sComComRepository;
 	
 	private static final Logger logger = LogManager.getLogger(CompanyController.class.getCanonicalName());
 	
@@ -49,13 +43,12 @@ public class CompanyController {
 	public Boolean createCompany(@RequestBody WSCompany wsCompany) throws Exception {
 		return companyService.registCompany(wsCompany);
 	}
+	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/company/update", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public Boolean updateCompany(@RequestBody WSCompany wsCompany) throws Exception {
 		return companyService.updateCompany(wsCompany);
 	}
-	
-	
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="company/view", method=RequestMethod.GET)
@@ -71,6 +64,7 @@ public class CompanyController {
 		return companyService.cancelCompany(idCompany);
 	}
 
+
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/check/companyname", method=RequestMethod.GET)
 	public Valid checkCompanyName(@RequestParam("companyname") String companyname,@RequestParam(required=false,value="idCompany") Long idCompany) throws Exception {
@@ -80,7 +74,7 @@ public class CompanyController {
 		return valid;
 	}
 
-	
+
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/check1/existcompanyname", method=RequestMethod.GET)
 	public Valid existcompanyname(@RequestParam("companyname") String companyname,@RequestParam(required=false,value="idCompany") Long idCompany) throws Exception {
@@ -114,5 +108,5 @@ public class CompanyController {
 	
 	}
 
-	
+
 }

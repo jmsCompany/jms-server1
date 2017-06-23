@@ -15,6 +15,7 @@ import com.jms.repositories.user.GroupTypeRepository;
 public class GroupsAdapter {
 	private @Autowired  CompanyRepository companyRepository;
 	private @Autowired  GroupTypeRepository groupTypeRepository;
+	
 	public Groups toDBGroup(WSGroup wsGroup,Groups group) throws Exception
 	{
 		Groups g = (Groups)BeanUtil.shallowCopy(wsGroup,Groups.class,group);

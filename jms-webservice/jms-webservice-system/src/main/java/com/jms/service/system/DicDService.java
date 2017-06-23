@@ -33,6 +33,8 @@ public class DicDService implements IDicDService{
 		{
 			wsDics.add(sysDicDAdapter.toWSSysDicD(sysDicD));
 		}
+//		WSSysDicD wSSysDicD;
+//		wsDics.stream().filter(wSSyssDicD->wSSyssDicD.getType().contains("sss")).findFirst();
 		return wsDics;
 		
 	}

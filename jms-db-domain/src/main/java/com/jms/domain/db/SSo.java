@@ -51,8 +51,8 @@ public class SSo  implements java.io.Serializable {
      private String autoRemark;
      
      
-     
-     private Long idCompany2;
+     private Long idCompany1; //往来公司
+     private Long idCompany2; //客户
      private Set<PWo> PWos = new HashSet<PWo>(0);
      private Set<SMtfMaterial> SMtfMaterials = new HashSet<SMtfMaterial>(0);
 
@@ -273,6 +273,16 @@ public class SSo  implements java.io.Serializable {
 
 	public void setIdCompany2(Long idCompany2) {
 		this.idCompany2 = idCompany2;
+	}
+
+	@Column(name="id_company1")
+	public Long getIdCompany1() {
+		return idCompany1;
+	}
+
+
+	public void setIdCompany1(Long idCompany1) {
+		this.idCompany1 = idCompany1;
 	}
 
 

@@ -141,6 +141,7 @@ public class SsoService {
 		}
 		dbSso.setUsers(securityUtils.getCurrentDBUser());
 		dbSso.setCompany(securityUtils.getCurrentDBUser().getCompany());
+		//dbSso.setIdCompany2(idCompany2);
 		dbSso.setUPrice(wsSso.getUprice());
 		
 
@@ -174,7 +175,11 @@ public class SsoService {
 			wsSso.setsCompanyCoId(sso.getSCompanyCo().getId());
 			wsSso.setCodeCo(sso.getSCompanyCo().getCode());
 		}
-	
+//		else
+//		{
+//			if(sso.get)
+//		}
+//	
 		if(sso.getSTermDicByFreightTerm()!=null)
 		{
 			wsSso.setFreightTerm(sso.getSTermDicByFreightTerm().getName());
@@ -196,7 +201,11 @@ public class SsoService {
 		
 		}
 	
-		wsSso.setUserName(sso.getUsers().getName());
+		if(sso.getUsers()!=null)
+		{
+			wsSso.setUserName(sso.getUsers().getName());
+		}
+		
 		wsSso.setUprice(sso.getUPrice());
 		return wsSso;
 	}

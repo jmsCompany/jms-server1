@@ -12,7 +12,7 @@ import com.jms.domain.db.SComCom;
 public interface SComComRepository  extends JpaRepository<SComCom, Long>{
 	
 	//申请
-	@Query("select s from SComCom s where s.idCompany1=?1 and (s.status<>2)")
+	@Query("select s from SComCom s where s.idCompany1=?1 and (s.status<>2 and s.status<>5)")
 	public List<SComCom> findMyApplies(Long idCompany);
 	
 	//审批
@@ -32,6 +32,11 @@ public interface SComComRepository  extends JpaRepository<SComCom, Long>{
 	//往来公司
 	@Query("select s from SComCom s where (s.idCompany1=?1 or s.idCompany2=?1) and s.status=2")
 	public List<SComCom> findMyCompanies(Long idCompany);
+	
+	
+	//根据两个公司id 查SComCom
+	@Query("select s from SComCom s where ((s.idCompany1=?1 and s.idCompany2=?2) or (s.idCompany2=?1 and s.idCompany1=?2)) and s.status=2")
+	public SComCom findByTwoCompanyId(Long idCompany1,Long idCompany2);
 	
 	
 }

@@ -80,7 +80,7 @@ public class QNoProcessController {
 			QNoProcess w = qNoProcessList.get(i);
 			
 			String sMaterial="";
-			if(w.getIdMaterial()!=null)
+			if(w.getIdMaterial()!=null&&!w.getIdMaterial().equals(0l))
 			{
 				SMaterial material = sMaterialRepository.findOne(w.getIdMaterial());
 				sMaterial= material.getPno()+"_"+material.getRev()+"_"+material.getDes();

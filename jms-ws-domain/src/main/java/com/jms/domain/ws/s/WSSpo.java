@@ -39,6 +39,10 @@ public class WSSpo {
     
     private String email;
     
+    
+    private Long valid;
+    private String msg;
+    
     private Map<String,WSSpoMaterial> poItems = new LinkedHashMap<String,WSSpoMaterial>();
 	
     public Long getIdPo() {
@@ -209,6 +213,18 @@ public class WSSpo {
 	}
 	public void setIdComCom(Long idComCom) {
 		this.idComCom = idComCom;
+	}
+	public String getMsg() {
+		return msg;
+	}
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+	public Long getValid() {
+		return valid;
+	}
+	public void setValid(Long valid) {
+		this.valid = valid;
 	}
 
 

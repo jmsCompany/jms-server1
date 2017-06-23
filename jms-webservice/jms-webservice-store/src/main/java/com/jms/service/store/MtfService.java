@@ -2,7 +2,10 @@ package com.jms.service.store;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +31,9 @@ import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.s.WSSMtf;
 import com.jms.domain.ws.s.WSSMtfMaterial;
+import com.jms.domain.ws.s.WSSpoMaterial;
 import com.jms.domainadapter.BeanUtil;
+import com.jms.email.EmailSenderService;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.p.PBomRepository;
 import com.jms.repositories.p.PCPpRepository;
@@ -92,7 +97,8 @@ public class MtfService {
 	private SMtfNoService sMtfNoService;
 	@Autowired
 	private  SBinService sBinService;
-	
+	@Autowired
+	private EmailSenderService emailSenderService;
 	@Autowired
 	private SMaterialBinsRepository sMaterialBinsRepository;
 	
@@ -147,7 +153,10 @@ public class MtfService {
 	public Valid saveMtf(WSSMtf wsSMtf) throws Exception {
 		    
 		    Valid valid = new Valid();
+		    valid.setValid(true);
 			Long smtfType = wsSMtf.getTypeId();
+			
+			//wsSMtf.get
 			
 		    long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 			 boolean mcheck = true;
@@ -837,8 +846,9 @@ public class MtfService {
 
 				case 9: // 往来公司出货
 				{
+					//System.out.println("invId: "+wm.getInventoryId());
 					SInventory fromInventory =sInventoryRepository.findOne(wm.getInventoryId());
-			        if(fromInventory!=null)
+			        if(fromInventory!=null&&fromInventory.getQty()-wm.getQty()>=0l)
 			        {
 			        	Long fromBinId = fromInventory.getSBin().getIdBin();
 			        	wm.setFromBinId(fromBinId);
@@ -899,9 +909,12 @@ public class MtfService {
 			        }
 			        else
 					{
-			        	valid.setMsg("无库存，不能出货");
+			        	System.out.println("无库存或库存不足，不能出货");
+			        	valid.setValid(false);
+			        	valid.setMsg("无库存或库存不足，不能出货");
+			        	return valid;
 			        	//logger.debug("无库存，不能出货");
-						break;
+						//break;
 					}
 					break;
 	
@@ -1039,31 +1052,91 @@ public class MtfService {
 			
 			}
 			
+			 //往来公司发货
+			  if(smtfType.equals(9l)&&(valid.getValid()))
+			  {
+				     SComCom sComCom1 = sComComRepository.findOne(wsSMtf.getIdToCompany());
+				     SComCom sComCom2 = sComComRepository.findOne(wsSMtf.getIdToCompany());
+				
+				     //客户订单号
+				    // String orderNo = wsSMtf.getCoOrderNo();
+				   // List<SPo> spos = sSpoRepository.findByCompanyIdAndCodePo(companyId, orderNo);
+				     Map<String,Object> model = new LinkedHashMap<String,Object>();
+					Long myCompanyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+					String email1="";
+					if(sComCom1.getIdCompany1().equals(myCompanyId))
+					{
+						email1 = sComCom1.getEmail2();
+					}
+					else
+					{
+						email1 = sComCom1.getEmail1();
+					}
+					String email2="";
+					if(sComCom2.getIdCompany1().equals(myCompanyId))
+					{
+						email2 = sComCom2.getEmail2();
+					}
+					else
+					{
+						email2 = sComCom2.getEmail1();
+					}
+					
+					String[] emails = new String[]{email1,email2};
+//					采购订单
+//					公司：$!{company}
+//					订单编码: $!{poNo}, 总价： $!{totalPrice}
+//					条目：
+//					$!{materials}
+//					备注：
+//					$!{remark}
+					String materials ="";
+					for (String k : wsSMtf.getSmtfItems().keySet()) {
+					{
+						WSSMtfMaterial w = wsSMtf.getSmtfItems().get(k);
+						SMaterial m =sMaterialRepository.findOne(w.getMaterialId());
+						materials =materials +"物料: " + m.getPno()+"_"+m.getDes() +", 数量: " +w.getQty() +", 备注： " +w.getRemark()+"\r\n";
+					}
+			
+					model.put("company", securityUtils.getCurrentDBUser().getCompany().getCompanyName());
+					model.put("poNo", wsSMtf.getCoOrderNo());
+					
+					model.put("materials", materials);
+					try{
+						emailSenderService.sendEmail(emails,"doTemplate.vm",  "往来公司出货", model, null);
+					}catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+			  }
+			 }
 			//往来公司收货
 			 if(smtfType.equals(10l))
 	          {
+				
 				 long idMt = wsSMtf.getIdMt();
+				// System.out.println("idMt: " +idMt);
 				 SMtf  smtf =  sMtfRepository.findOne(idMt); //公司B的往来发货
+				 //if()
 				 smtf.setSStatusDic(sStatusDicRepository.findOne(5l));
 				 sMtfRepository.save(smtf);
 				 
 				 
+				 
+				 
+				 
+				 /************当往来公司收货后，客户CON又不增加了*****************/
+				 
+				
 				 Long customerCompanyId = smtf.getIdCustomerCompany();
-		          if(customerCompanyId!=null) //
-		          {
-		        	 for(SPo spo: sSpoRepository.findByCompanyIdAndCodePo(customerCompanyId, smtf.getCoOrderNo()))
-		        	 {
-		        		 spo.setSStatusDic(sStatusDicRepository.findOne(8l));
-		        		 sSpoRepository.save(spo);
-		        	 }
-		          }
+
 		          Company  customerCompany = companyRepository.findOne(customerCompanyId);
 				  SMtf smtf1 = new SMtf();
 				  smtf1.setCompany(customerCompany);
 				  smtf1.setCreationTime(new Date());
 				  smtf1.setDateMt(new Date());
 				  smtf1.setIdSmtfC(idMt);
-				    SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(customerCompanyId,14l);
+				  SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(customerCompanyId,14l);
 				   if(smtfNo==null)
 				   {   
 					    smtfNo = new SMtfNo();
@@ -1082,23 +1155,16 @@ public class MtfService {
 				    smtf1.setSMtfTypeDic(sMtfTypeDicRepository.findOne(10l));
 				    smtf1.setSStatusDic(sStatusDicRepository.findOne(5l));
 				    
-				 //   smtf1.setSStkByToStk(sStkByToStk);
 				 
 				    SBin conBin = sBinService.saveSystemBin(customerCompanyId, "CON");
 				    smtf1.setSStkByToStk(conBin.getSStk());
 				   
 				    smtf1=  sMtfRepository.save(smtf1);
+				/************当往来公司收货后，客户CON又不增加了*************/
+				 
+				 /************当往来公司收货后，客户CON又不增加了*************/
 				   for(SMtfMaterial sm:smtf.getSMtfMaterials())
 				   {
-					 if(sm.getSSo()!=null)
-					 {
-						 SSo sso = sm.getSSo();
-						 sso.setQtyDelivered(sm.getQty());
-						 //关闭销售订单
-						 sso.setSStatusDic(sStatusDicRepository.findOne(15l));
-						 sSoRepository.save(sso);
-					 }
-					 
 					 SMtfMaterial sm1 = new SMtfMaterial();
 					 sm1.setQty(sm.getQty());
 					 sm1.setQty3417(sm.getQty());
@@ -1110,8 +1176,8 @@ public class MtfService {
 					 sm1.setSStatusDic(sStatusDicRepository.findOne(2l));
 					 sMtfMaterialRepository.save(sm1);
 					 
-					 
-					 SInventory sToInventory=null;
+	
+					SInventory sToInventory=null;
 					List<SInventory> sToInventorys= sInventoryRepository.findByMaterialIdAndBinId(sma.getIdMaterial(), conBin.getIdBin());
 				        if(sToInventorys!=null&&!sToInventorys.isEmpty())
 				        {
@@ -1127,7 +1193,6 @@ public class MtfService {
 			
 						sToInventory.setSBin(conBin);
 						sToInventory.setSMaterial(sma);
-    					//logger.debug(" save to new bin: " +sbin.getBin() +", qty:" + wm.getQty());
 						sInventoryRepository.save(sToInventory);
 	
 					} else {
@@ -1138,7 +1203,141 @@ public class MtfService {
 					 
 				 
 	            }
-		         
+				   
+				   /************当往来公司收货后，客户CON又不增加了*************/
+				 
+				 
+			
+				 SPo mspo=null;
+		          if(customerCompanyId!=null) //
+		          {
+		        	// System.out.println(" customerId: "+customerCompanyId +", coOrderNo: "+wsSMtf.getCoOrderNo());
+		        	
+		        	List<SPo> spoList=sSpoRepository.findByCompanyIdAndCodePo(customerCompanyId, wsSMtf.getCoOrderNo());
+		        	if(!spoList.isEmpty())
+		        	{
+		        		mspo = spoList.get(0);
+		        	 }
+		          }
+				 
+				 /**********销售商新建转移物料，为CON减少库存 ***********/
+				   for(SMtfMaterial sm:smtf.getSMtfMaterials())
+				   {
+					 if(sm.getSSo()!=null)
+					 {
+						 SSo sso = sm.getSSo();
+						 sso.setQtyDelivered(sm.getQty());
+						 //关闭销售订单
+						 sso.setSStatusDic(sStatusDicRepository.findOne(15l));
+						 sSoRepository.save(sso);
+					 }
+		
+					 
+					 
+					  SMtf smtf2 = new SMtf();
+					  smtf2.setCompany(smtf.getCompany());
+					  smtf2.setCreationTime(new Date());
+					  smtf2.setDateMt(new Date());
+					  smtf2.setIdSmtfC(idMt);
+					  //暂时设定为手动流转
+					  SMtfNo smtfNo2 = sMtfNoRepository.getByCompanyIdAndType(smtf.getCompany().getIdCompany(),3l);
+					   if(smtfNo2==null)
+					   {   
+						    smtfNo2 = new SMtfNo();
+						    smtfNo2.setDes("手动流转");
+							smtfNo2.setPrefix("AA");
+							smtfNo2.setCompanyId(smtf.getCompany().getIdCompany());
+							smtfNo2.setType(3l);
+							smtfNo2.setCurrentVal(1l);
+							smtfNo2 =sMtfNoRepository.save(smtfNo2);
+					   }
+					    long currentVal2 =smtfNo2.getCurrentVal()+1;
+					    smtfNo2.setCurrentVal(currentVal2);
+					    sMtfNoRepository.save(smtfNo2);
+					    String mtNo2 = smtfNo.getPrefix()+String.format("%08d", currentVal2);
+					    smtf2.setMtNo(mtNo2);
+					    smtf2.setSMtfTypeDic(sMtfTypeDicRepository.findOne(3l));
+					    smtf2.setSStatusDic(sStatusDicRepository.findOne(5l));
+
+					    SBin conBin2 = sBinService.saveSystemBin(smtf.getCompany().getIdCompany(), "CON");
+					    smtf2.setSStkByFromStk(conBin2.getSStk());
+					   
+					    smtf2=  sMtfRepository.save(smtf2);
+					 
+					 
+					 SMtfMaterial sm2 = new SMtfMaterial();
+					 sm2.setQty(sm.getQty());
+					 sm2.setQty3417(sm.getQty());
+					 sm2.setSBinByFromBin(conBin2);
+					 SMaterial sma =sMaterialRepository.getByCompanyIdAndPno(smtf.getCompany().getIdCompany(), sm.getSMaterial().getPno());
+					
+					 sm2.setSMaterial(sma);
+					 sm2.setSMtf(smtf1);
+					 sm2.setSStatusDic(sStatusDicRepository.findOne(2l));
+					 sMtfMaterialRepository.save(sm2);
+					 
+					 if(mspo!=null)
+						{
+							logger.debug("spoid: " + mspo.getIdPo() +", material id: " + sma.getIdMaterial());
+							SPoMaterial sSpoMaterial = sSpoMaterialRepository.getByMaterialIdAndPoId(mspo.getIdPo(), sma.getIdMaterial());
+						   if(sSpoMaterial!=null)
+						   {
+							   sSpoMaterial.setQtyReceived(sm.getQty());
+							   sSpoMaterialRepository.save(sSpoMaterial);
+						   }
+						}
+					 
+					 System.out.println("mat Id:  " +sma.getIdMaterial() +", conBin2 id: " + conBin2.getIdBin());
+					
+					List<SInventory> fromInventorys= sInventoryRepository.findByMaterialIdAndBinId(sma.getIdMaterial(), conBin2.getIdBin());
+				      
+					System.out.println("inv size:  " +fromInventorys.size());
+					
+					if(fromInventorys!=null&&!fromInventorys.isEmpty())
+					{
+						for(SInventory s:fromInventorys)
+						{
+                         if(s.getQty()>0)
+                         {
+                        	
+                        	 if(s.getQty()>= sm.getQty())
+ 			        		{
+ 			        			s.setQty(s.getQty() - sm.getQty());
+ 								sInventoryRepository.save(s);
+ 								sm.setQty(0l);
+ 								break;
+ 			        		}
+ 			        		else
+ 			        		{	
+ 			        			sm.setQty(sm.getQty()-s.getQty());
+ 			        			s.setQty(0l);
+ 								sInventoryRepository.save(s);
+ 			        		}
+                         }
+			        		
+						}
+					    //不应该发生！！！！！！！！！
+						if(sm.getQty()>0)
+						{
+							SInventory first = fromInventorys.get(0);
+							first.setQty(first.getQty()-sm.getQty());
+							sInventoryRepository.save(first);
+						}
+					}
+
+					       
+						
+					
+			        
+				  
+				 
+	            }
+		    
+				 
+				 
+				 
+					   
+				   
 	          }
 			
 			valid.setValid(true);
@@ -1166,7 +1365,7 @@ public class MtfService {
 				   if(smtfNo==null)
 				   {   
 					    smtfNo = new SMtfNo();
-					    smtfNo.setDes("往来发货");
+					    smtfNo.setDes("往来收发货");
 						smtfNo.setPrefix("WLSH");
 						smtfNo.setCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
 						smtfNo.setType(wsSMtf.getTypeId()+4);

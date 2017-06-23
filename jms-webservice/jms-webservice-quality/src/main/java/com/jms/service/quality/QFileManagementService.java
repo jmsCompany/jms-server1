@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jms.domain.db.PRoutineD;
+import com.jms.domain.db.PWo;
 import com.jms.domain.db.QFileManagent;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.Users;
@@ -153,7 +154,12 @@ public class QFileManagementService {
 		
 		if(qFileManagent.getIdWo()!=null)
 		{
-			pc.setWoNo(pWoRepository.findOne(qFileManagent.getIdWo()).getWoNo());
+			PWo pwo = pWoRepository.findOne(qFileManagent.getIdWo());
+			if(pwo!=null)
+			{
+				pc.setWoNo(pwo.getWoNo());
+			}
+			
 		}
 		return pc;
 	}
