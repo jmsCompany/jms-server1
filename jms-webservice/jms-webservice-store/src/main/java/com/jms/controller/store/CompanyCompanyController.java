@@ -20,6 +20,7 @@ import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.s.WSCompanyCo;
+import com.jms.domain.ws.s.WSNumSet;
 import com.jms.domain.ws.s.WSOverfulfill;
 import com.jms.domain.ws.s.WSSComCom;
 import com.jms.repositories.company.CompanyRepository;
@@ -55,6 +56,13 @@ public class CompanyCompanyController {
 	@RequestMapping(value="/s/saveComCom", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public WSSComCom saveComCom(@RequestBody WSSComCom wSComCom) throws Exception {
 		return companyCompanyService.saveWSComCom(wSComCom);
+	}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/s/updateComCom", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSSComCom updateComCom(@RequestBody WSSComCom wSComCom) throws Exception {
+		return companyCompanyService.updateWSComCom(wSComCom);
 	}
 	
 
@@ -347,6 +355,36 @@ public class CompanyCompanyController {
 		return ws;
 	}
 	
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/s/saveWSNumSet", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public WSNumSet saveWSNumSet(@RequestBody WSNumSet wsNumSet) {
+		Company company = securityUtils.getCurrentDBUser().getCompany();
+		company.setAutoDo(wsNumSet.getAutoDo());
+		company.setAutoPo(wsNumSet.getAutoPo());
+		company.setAutoSo(wsNumSet.getAutoSo());
+		company.setAutoWo(wsNumSet.getAutoWo());
+		companyRepository.save(company);
+		return wsNumSet;
+	}
+	
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value="/s/getWSNumSet", method=RequestMethod.GET)
+	public WSNumSet getWSNumSet() {
+		Company company = securityUtils.getCurrentDBUser().getCompany();
+		WSNumSet ws = new WSNumSet();
+		Long autoDo = (company.getAutoDo()==null)?1l:company.getAutoDo();
+		Long autoSo = (company.getAutoSo()==null)?1l:company.getAutoSo();
+		Long autoWo = (company.getAutoWo()==null)?1l:company.getAutoWo();
+		Long autoPo = (company.getAutoPo()==null)?1l:company.getAutoPo();
+		ws.setAutoDo(autoDo);
+		ws.setAutoPo(autoPo);
+		ws.setAutoSo(autoSo);
+		ws.setAutoWo(autoWo);
+		return ws;
+	}
 	
 	
 	

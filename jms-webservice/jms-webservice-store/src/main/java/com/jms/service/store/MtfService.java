@@ -1219,16 +1219,26 @@ public class MtfService {
 		        		mspo = spoList.get(0);
 		        	 }
 		          }
-				 
+		          boolean closepo = true;
 				 /**********销售商新建转移物料，为CON减少库存 ***********/
 				   for(SMtfMaterial sm:smtf.getSMtfMaterials())
 				   {
 					 if(sm.getSSo()!=null)
 					 {
 						 SSo sso = sm.getSSo();
-						 sso.setQtyDelivered(sm.getQty());
+						 //sso.setQtyDelivered(sm.getQty());
 						 //关闭销售订单
-						 sso.setSStatusDic(sStatusDicRepository.findOne(15l));
+						  Long qty = sso.getQtySo();
+						 Long del = sso.getQtyDelivered();
+						 if(del==null)
+							 del = 0l;
+						 if (qty<=del+sm.getQty())
+						 {
+							 sso.setSStatusDic(sStatusDicRepository.findOne(15l));
+							 
+						 }
+						 sso.setQtyDelivered(del+sm.getQty());
+						 
 						 sSoRepository.save(sso);
 					 }
 		
@@ -1275,14 +1285,25 @@ public class MtfService {
 					 sm2.setSMtf(smtf1);
 					 sm2.setSStatusDic(sStatusDicRepository.findOne(2l));
 					 sMtfMaterialRepository.save(sm2);
-					 
+					
 					 if(mspo!=null)
 						{
 							logger.debug("spoid: " + mspo.getIdPo() +", material id: " + sma.getIdMaterial());
 							SPoMaterial sSpoMaterial = sSpoMaterialRepository.getByMaterialIdAndPoId(mspo.getIdPo(), sma.getIdMaterial());
 						   if(sSpoMaterial!=null)
 						   {
-							   sSpoMaterial.setQtyReceived(sm.getQty());
+							  Long qty = sSpoMaterial.getQtyPo();
+							  if(qty==null)
+								  qty=0l;
+							  Long rev = sSpoMaterial.getQtyReceived();
+							  if(rev==null)
+								  rev =0l;
+							  
+							   sSpoMaterial.setQtyReceived(rev+sm.getQty());
+							   if(rev+sm.getQty()<qty)
+							   {
+								   closepo=false;
+							   }
 							   sSpoMaterialRepository.save(sSpoMaterial);
 						   }
 						}
@@ -1319,6 +1340,7 @@ public class MtfService {
 					    //不应该发生！！！！！！！！！
 						if(sm.getQty()>0)
 						{
+							System.out.println("should not happen！");
 							SInventory first = fromInventorys.get(0);
 							first.setQty(first.getQty()-sm.getQty());
 							sInventoryRepository.save(first);
@@ -1334,7 +1356,17 @@ public class MtfService {
 	            }
 		    
 				 
-				 
+				 if(closepo)
+				 {
+						
+					 if(mspo!=null)
+						{
+							logger.debug("closepo: spoid: " + mspo.getIdPo());
+							SPo spo = sSpoRepository.findOne(mspo.getIdPo());
+							spo.setSStatusDic(sStatusDicRepository.findOne(8l));//结束
+							sSpoRepository.save(spo);
+						}
+				 }
 				 
 					   
 				   

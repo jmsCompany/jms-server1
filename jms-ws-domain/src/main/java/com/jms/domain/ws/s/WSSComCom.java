@@ -91,7 +91,7 @@ public class WSSComCom {
 	public void setMaterialId(Long materialId) {
 		this.materialId = materialId;
 	}
-		private Long id;
+		 private Long id;
 	     private Long idCompany1;
 	     private String company1;
 	     private Long idCompany2;
@@ -105,7 +105,6 @@ public class WSSComCom {
 	     private String pno;
 	     private String rev;
 	     private String des;
-	     
 	     private Long materialId;
 
 }

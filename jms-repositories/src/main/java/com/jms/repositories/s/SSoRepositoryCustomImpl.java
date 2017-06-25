@@ -15,7 +15,7 @@ public class SSoRepositoryCustomImpl implements SSoRepositoryCustom {
 
 
 	@Override
-	public List<SSo> getCustomSsos(Long companyId, String q, String fromDay, String toDay) {
+	public List<SSo> getCustomSsos(Long companyId, Long status, String q, String fromDay, String toDay) {
 		 String query ="select s from SSo s where s.company.idCompany=" +companyId +" and s.SCompanyCo is not null";
 	
 		 if(fromDay!=null)
@@ -27,6 +27,10 @@ public class SSoRepositoryCustomImpl implements SSoRepositoryCustom {
 			 query=query + " and DATE(s.dateOrder)<='" + toDay +"'";
 		 }
 		 
+		 if(status!=null)
+		 {
+			 query=query + " and s.SStatusDic.id = " + status;
+		 }
 		 if(q!=null)
 		 {
 			 q ="'%" + q + "%'";

@@ -103,17 +103,14 @@ public class SpoService {
 			spo = sSpoRepository.findOne(wsSpo.getIdPo());	
 			if(!spo.getSPoMaterials().isEmpty())
 			{
-				
 				//logger.debug("delete po material: " + spo.getSPoMaterials().size());
 				for(SPoMaterial spoMaterial: spo.getSPoMaterials())
 				{
 					sSpoMaterialRepository.delete(spoMaterial);
 				}
 				//spo.getSPoMaterials().clear();
-				
 			}
-			//spo.set
-			
+			//spo.set			
 		}
 		spo.getSPoMaterials().clear();
 		
@@ -124,19 +121,9 @@ public class SpoService {
 			wsSpo.setMsg("保存失败，已有该订单号！");
 			return wsSpo;
 		}
-		SPo sp =sSpoRepository.save(spo);
-		wsSpo.setIdPo(sp.getIdPo());
-		for(String k: wsSpo.getPoItems().keySet())
-		{
-		//	logger.debug("save po material: " + k);
-			WSSpoMaterial wm =wsSpo.getPoItems().get(k);
-			wm.setLine(Long.parseLong(k.substring(4)));
+
 		
-			wm.setsPoId(sp.getIdPo());
-		
-			spoMaterialService.saveSpoMaterial(wm);
-		
-		}
+	
 		Long myCompanyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		//是否是往来公司流转？
 		if(wsSpo.getIdComCom()!=null)
@@ -191,7 +178,7 @@ public class SpoService {
 					
 					SMaterial m = sMaterialRepository.findOne(wm.getsMaterialId());
 					SMaterial cm = sMaterialRepository.getByCompanyIdAndPno(soCompany.getIdCompany(), m.getPno());
-					if(cm!=null)
+					if(cm!=null && wm.getsStatusId().equals(11l)) //必须激活状态
 					{
 						//create so
 						//System.out.println("新建销售订单：id_company: " +soCompany.getIdCompany() );
@@ -203,8 +190,8 @@ public class SpoService {
 					    String codeSo = smtfNo.getPrefix()+String.format("%08d", currentVal);
 					    sSo.setCodeSo(codeSo);
 					    sSo.setCompany(soCompany);
-					    sSo.setCoOrderNo(spo.getCodePo());
-					    sSo.setDateOrder(spo.getDateOrder());
+					    sSo.setCoOrderNo(wsSpo.getCodePo());
+					    sSo.setDateOrder(new Date());
 					    sSo.setDeliveryDate(wm.getDeliveryDate());
 					    sSo.setSMaterial(cm);
 					    sSo.setIdCompany2(myCompanyId); //客户
@@ -400,6 +387,25 @@ public class SpoService {
 			
 		}
 		
+		
+
+		SPo sp =sSpoRepository.save(spo);
+		wsSpo.setIdPo(sp.getIdPo());
+		for(String k: wsSpo.getPoItems().keySet())
+		{
+		//	logger.debug("save po material: " + k);
+			WSSpoMaterial wm =wsSpo.getPoItems().get(k);
+			wm.setLine(Long.parseLong(k.substring(4)));
+		
+			wm.setsPoId(sp.getIdPo());
+		
+			spoMaterialService.saveSpoMaterial(wm);
+		
+		}
+		
+		
+		
+		
 		return wsSpo;
 	}
 	
@@ -413,6 +419,10 @@ public class SpoService {
 		if(wsSpoRemark.getStatusId()!=null)
 		{
 			spo.setSStatusDic(sStatusDicRepository.findOne(wsSpoRemark.getStatusId()));
+			if(wsSpoRemark.getStatusId().equals(11l)) //激活
+			{
+				//。。。。。
+			}
 		}
 
 		sSpoRepository.save(spo);

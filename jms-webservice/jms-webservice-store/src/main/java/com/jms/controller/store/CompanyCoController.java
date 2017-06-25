@@ -233,12 +233,13 @@ public class CompanyCoController {
 	@RequestMapping(value = "/s/uploadCompanyCoFile", method = RequestMethod.POST)
 	public Valid uploadCompanyCoFile(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
 
+		Long idCompany = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		// 公司编码	公司简称	公司名称	重要等级（A，B，C)	公司传真	实际地址	注册地址	注册国家	法人代表	公司网址	开户银行	银行账号	货运贷款	付款条件	检核人	状态（有效，无效）	备注	自动备注	类别（客户/供应商）
-
 		Valid v = new Valid();
 		v.setValid(true);
 		FileMeta fileMeta = new FileMeta();
 		Map<Integer,String> errorMap = new LinkedHashMap<Integer,String>();
+		Map<String,String> companyMap = new LinkedHashMap<String,String>();
 		List<WSCompanyCo> wsCompanyCos = new ArrayList<WSCompanyCo>();
 		try {
 			boolean flag = true;
@@ -283,9 +284,23 @@ public class CompanyCoController {
 					wSCompanyCo.setName(companyName);
 					wSCompanyCo.setShortName(companyName);
 					
-					
+					SCompanyCo	sCompanyCo = sCompanyCoRepository.findByCompanyIdAndNameNoStatus(idCompany, companyName);
+					if(sCompanyCo!=null||companyMap.containsKey(companyName))
+					{
+						flag =false;
+						if(errorMap.containsKey(i))
+						{
+							errorMap.put(i, errorMap.get(i) + " 该公司已经存在，");
+						}
+						else
+						{
+							errorMap.put(i,  "第" + i +"行出错，该公司已经存在， ");
+						}
+					}
+					companyMap.put(companyName, companyName);
 					String lvl = reader.get(3);
-					if((lvl!=null)&&(!lvl.equals("A")||!lvl.equals("B")||!lvl.equals("C")))
+					System.out.println("lvl:"+lvl +";" );
+					if((!lvl.isEmpty())&&(!lvl.equals("A")&&!lvl.equals("B")&&!lvl.equals("C")))
 					{
 						flag =false;
 						if(errorMap.containsKey(i))
@@ -298,9 +313,69 @@ public class CompanyCoController {
 						}
 					}
 				
+					String fax = reader.get(4);
+					wSCompanyCo.setFax(fax);
+					String realAddress = reader.get(5);
+					wSCompanyCo.setAddressAct(realAddress);
+					String regAddress = reader.get(6);
+					wSCompanyCo.setAddressReg(regAddress);
+					//注册国家	法人代表	公司网址	开户银行	银行账号	货运贷款	付款条件	检核人	状态（有效，无效）	备注	自动备注	类别（客户/供应商）
+					String country = reader.get(7);
+					wSCompanyCo.setCountry(country);
+					String faren = reader.get(8);
 					
+					String www = reader.get(9);
+					wSCompanyCo.setUrl(www);
+					String bank = reader.get(10);
+					String acc = reader.get(11);
+					wSCompanyCo.setBankAccNo(acc);
+					String loan = reader.get(12);
+					String pay = reader.get(13);
+					String checkP = reader.get(14);
+					wSCompanyCo.setAuditBy(checkP);
+					String status = reader.get(15);
+					status =status.trim();
+					System.out.println("status: " + status);
+					
+					if(status.equals("有效"))
+					{
+						System.out.println("status1: " + status);
+					}
+					else
+					{
+						System.out.println("status2: " + status);
+					}
+					if((!status.isEmpty())&&(!status.equals("有效")&&!status.equals("无效")))
+					{
+						flag =false;
+						if(errorMap.containsKey(i))
+						{
+							errorMap.put(i, errorMap.get(i) + " 状态必须是有效或无效");
+						}
+						else
+						{
+							errorMap.put(i,  "第" + i +"行出错，状态必须是有效或无效");
+						}
+					}
+					else
+					{
+						if(status.equals("有效"))
+						{
+							wSCompanyCo.setStatusId(21l);
+						}
+						else
+						{
+							wSCompanyCo.setStatusId(22l);
+						}
+					}
+					
+					String remark = reader.get(16);
+					wSCompanyCo.setRemark(remark);
+					String autoremark = reader.get(17);
+					wSCompanyCo.setAutoRemark(autoremark);
 					String type = reader.get(18);
-					if((type!=null)&&(!type.equals("供应商")||!type.equals("客户")))
+					//type.e
+					if((!type.isEmpty())&&(!type.equals("供应商")&&!type.equals("客户")))
 					{
 						flag =false;
 						if(errorMap.containsKey(i))
@@ -312,6 +387,17 @@ public class CompanyCoController {
 							errorMap.put(i,  "第" + i +"行出错，类别必须是客户或供应商");
 						}
 					}
+					else
+					{
+						if(type.equals("供应商"))
+						{
+							wSCompanyCo.setTypeId(1l);
+						}
+						else
+						{
+							wSCompanyCo.setTypeId(2l);
+						}
+					}
 					wsCompanyCos.add(wSCompanyCo);
 				}
 				
@@ -319,7 +405,7 @@ public class CompanyCoController {
 			String msg = "";
 			for(String err: errorMap.values())
 			{
-				msg = msg+ err + "\r\n";
+				msg = msg+ err + "<br/> \r\n";
 			}
 			v.setMsg(msg);
 			v.setValid(flag);

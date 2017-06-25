@@ -24,5 +24,9 @@ public interface SCompanyCoRepository  extends JpaRepository<SCompanyCo, Long>{
 	
 	@Query("select s from SCompanyCo s where s.company.idCompany=?1 and s.name=?2 and s.STypeDic.id=2")
 	public SCompanyCo findByCompanyIdAndName(Long idCompany,String name);
+	
+	@Query("select s from SCompanyCo s where s.company.idCompany=?1 and s.name=?2")
+	public SCompanyCo findByCompanyIdAndNameNoStatus(Long idCompany,String name);
+	
 		
 }

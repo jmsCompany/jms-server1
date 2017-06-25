@@ -148,6 +148,26 @@ public class CompanyCompanyService {
 	
 	
 	
+	
+	@Transactional(readOnly=false)
+	public WSSComCom updateWSComCom(WSSComCom wsComCom) {
+		SComCom companyCo = sComComRepository.findOne(wsComCom.getId());
+
+		if(companyCo!=null)
+		{
+			companyCo.setEmail1(wsComCom.getEmail1());
+			companyCo.setEmail2(wsComCom.getEmail2());
+			companyCo.setLinkman1(wsComCom.getLinkman1());
+			companyCo.setLinkman2(wsComCom.getLinkman2());
+			sComComRepository.save(companyCo);
+		}
+	
+		return wsComCom;		
+		
+	}
+	
+	
+	
 	private SComCom toDBComCom(WSSComCom wsComCom,SComCom companyCo) throws Exception
 	{
 		SComCom dbCompanyCo = (SComCom)BeanUtil.shallowCopy(wsComCom, SComCom.class, companyCo);

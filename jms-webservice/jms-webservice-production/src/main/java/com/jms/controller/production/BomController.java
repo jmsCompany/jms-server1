@@ -224,6 +224,16 @@ public class BomController {
 			@RequestParam(value="comCompanyId",required=false) Long comCompanyId) throws Exception {
 		PBom pBom = pBomRepository.findProductByMaterialId(productId);
 		// Company comCompany = companyRepository.findOne(comCompanyId);
+		if(pBom==null)
+		{
+			//System.out.println("bom is empty ");
+			return new WSPBom();
+		}
+		if(pBom.getPBomLabel()==null)
+		{
+			//System.out.println("bom label is empty ");
+			return new WSPBom();
+		}
 		return bomLabelService.findWSPBom(pBom.getPBomLabel().getIdBomLabel(), comCompanyId);
 	}
 

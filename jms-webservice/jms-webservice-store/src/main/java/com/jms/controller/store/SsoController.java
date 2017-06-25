@@ -103,14 +103,15 @@ public class SsoController {
 	@RequestMapping(value="/s/getSoList", method=RequestMethod.POST)
 	public WSTableData  getSoList( 
 			@RequestParam(required=false,value="q") String q,
+			@RequestParam(required=false,value="status") Long status,
 			@RequestParam(required=false,value="fromDay") String fromDay,
 			@RequestParam(required=false,value="toDay") String toDay,
 			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
-		List<SSo> ssos = sSoRepositoryCustom.getCustomSsos(companyId, q, fromDay, toDay);
+		List<SSo> ssos = sSoRepositoryCustom.getCustomSsos(companyId, status, q, fromDay, toDay);
 		
-		System.out.println("size: " + ssos.size());
+		//System.out.println("size: " + ssos.size());
 		
 		List<String[]> lst = new ArrayList<String[]>();
 		int end=0;
@@ -120,7 +121,7 @@ public class SsoController {
 			end =start + length;
 		for (int i = start; i < end; i++) {
 			SSo w = ssos.get(i);
-			String status=(w.getSStatusDic()==null)?"":w.getSStatusDic().getName();
+			String status1=(w.getSStatusDic()==null)?"":w.getSStatusDic().getName();
 			String unit =(w.getSMaterial().getSUnitDicByUnitPur()==null)?"":w.getSMaterial().getSUnitDicByUnitPur().getName();
 			String companyCoShortName =(w.getSCompanyCo()==null)?"":w.getSCompanyCo().getShortName();
 			String qtyDel = (w.getQtyDelivered()==null)?"":""+w.getQtyDelivered();
@@ -139,7 +140,7 @@ public class SsoController {
 			{
 				dd=w.getDeliveryDate().toString();
 			}
-			String[] d = {w.getCodeSo(),""+w.getDateOrder(),un,companyCoShortName,status,ma,unit,""+w.getQtySo(),""+w.getTotalAmount(),dd,qtyDel,""+w.getIdSo()};
+			String[] d = {w.getCodeSo(),""+w.getDateOrder(),un,companyCoShortName,status1,ma,unit,""+w.getQtySo(),""+w.getTotalAmount(),dd,qtyDel,""+w.getIdSo()};
 			lst.add(d);
 
 		}
@@ -255,6 +256,34 @@ public class SsoController {
 		return ws;
 	}
 
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/findOpenedSoListByQ", method=RequestMethod.GET)
+	public List<WSSelectObj> findOpenedSoListByQ(@RequestParam(value="q",required=false) String q) throws Exception {
+		List<WSSelectObj>  ws = new ArrayList<WSSelectObj>();
+		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		if(q==null)
+		{
+			for(SSo s :sSoRepository.findByCompanyIdAndStatusId(companyId,18l)) //激活状态
+			{
+				WSSelectObj w = new WSSelectObj(s.getIdSo(),s.getCodeSo());
+				ws.add(w);
+			}
+		}
+		else
+		{
+			q = "%"+q+"%";
+			for(SSo s :sSoRepository.findByCompanyIdAndStatusIdByQ(companyId,18l,q)) //激活状态
+			{
+				WSSelectObj w = new WSSelectObj(s.getIdSo(),s.getCodeSo());
+				ws.add(w);
+			}
+		}
+	
+		return ws;
+	}
+
+	
+	
 	
 	
 	@Transactional(readOnly = true)

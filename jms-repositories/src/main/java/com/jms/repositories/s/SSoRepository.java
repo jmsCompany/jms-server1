@@ -43,5 +43,10 @@ public interface SSoRepository  extends JpaRepository<SSo, Long>{
 	
 	@Query("select s from SSo s where s.company.idCompany=?1 and s.codeSo =?2")
 	public List<SSo> findByCompanyIdAndCodeSo(Long companyId,String codeSo);
+	
+	
+	@Query("select s from SSo s where s.company.idCompany=?1 and s.SStatusDic.id=?2 and s.codeSo like ?3")
+	public List<SSo> findByCompanyIdAndStatusIdByQ(Long companyId,Long statusId,String q);
+	
 		
 }

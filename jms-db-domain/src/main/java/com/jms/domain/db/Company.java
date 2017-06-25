@@ -64,6 +64,15 @@ public class Company  extends AbstractSecuredEntity  implements java.io.Serializ
      
      private Long overfulfilRecieve;
      private Long overfulfilSend;
+     
+     
+     
+     
+     private Long autoPo;
+     private Long autoSo;
+     private Long autoDo;
+     private Long autoWo;
+     
      private Set<PBomLabel> PBomLabels = new HashSet<PBomLabel>(0);
      private Set<PWip> PWips = new HashSet<PWip>(0);
      private Set<QReportType> QReportTypes = new HashSet<QReportType>(0);
@@ -852,6 +861,48 @@ public class Company  extends AbstractSecuredEntity  implements java.io.Serializ
 
 	public void setOverfulfilSend(Long overfulfilSend) {
 		this.overfulfilSend = overfulfilSend;
+	}
+
+
+	 @Column(name="auto_po")
+	public Long getAutoPo() {
+		return autoPo;
+	}
+
+
+	public void setAutoPo(Long autoPo) {
+		this.autoPo = autoPo;
+	}
+
+	 @Column(name="auto_so")
+	public Long getAutoSo() {
+		return autoSo;
+	}
+
+
+	public void setAutoSo(Long autoSo) {
+		this.autoSo = autoSo;
+	}
+
+
+	 @Column(name="auto_do")
+	public Long getAutoDo() {
+		return autoDo;
+	}
+
+
+	public void setAutoDo(Long autoDo) {
+		this.autoDo = autoDo;
+	}
+
+	 @Column(name="auto_wo")
+	public Long getAutoWo() {
+		return autoWo;
+	}
+
+
+	public void setAutoWo(Long autoWo) {
+		this.autoWo = autoWo;
 	}
 
 
