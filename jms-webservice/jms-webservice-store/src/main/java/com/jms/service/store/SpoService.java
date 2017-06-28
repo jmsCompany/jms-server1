@@ -122,314 +122,95 @@ public class SpoService {
 			return wsSpo;
 		}
 
-		
-	
-		Long myCompanyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		//是否是往来公司流转？
 		if(wsSpo.getIdComCom()!=null)
 		{
-		
-			Long idComcompany;
-			SComCom comcom=sComComRepository.findOne(wsSpo.getIdComCom());
-			System.out.println("往来公司comcomID: " + wsSpo.getIdComCom());
-			if(comcom!=null)
+			Valid  v = checkCompanyCoSpo(wsSpo);
+			if(!v.getValid())
 			{
-				if(comcom.getIdCompany1().equals(myCompanyId))
+				wsSpo.setValid(0l);
+				wsSpo.setMsg(v.getMsg());
+				return wsSpo;
+			}
+			else
+			{
+				//发邮件，创建销售订单
+				Valid v1 =  generateSo(wsSpo);
+				if(!v1.getValid())
 				{
-					idComcompany=comcom.getIdCompany2();
+					wsSpo.setValid(0l);
+					wsSpo.setMsg(v.getMsg());
+					return wsSpo;
 				}
 				else
 				{
-					idComcompany=comcom.getIdCompany1();
-				}
-				
-				Company wanglaiCompany = companyRepository.findOne(idComcompany);
-				
-				Long sCompanyCoId = wsSpo.getsCompanyCoId();
-				
-				SCompanyCo sCompanyCo = sCompanyCoRepository.findOne(sCompanyCoId);
-				Company soCompany =companyRepository.findByCompanyName(sCompanyCo.getName());
-				
-				if(soCompany==null)
-				{
-			
-						wsSpo.setValid(0l);
-						wsSpo.setMsg("保存失败，供应商必须是往来公司");
-						return wsSpo;
-		
-				}
-				
-				SComCom comcom1 = sComComRepository.findByTwoCompanyId(myCompanyId, soCompany.getIdCompany());
-				
-			
-					if(comcom1==null)
-					{
-				
-							wsSpo.setValid(0l);
-							wsSpo.setMsg("保存失败，供应商必须是往来公司");
-							return wsSpo;
-			
-					}
-				boolean sendemail=false;
-				for(String k: wsSpo.getPoItems().keySet())
-				{
-				//	logger.debug("save po material: " + k);
-					WSSpoMaterial wm =wsSpo.getPoItems().get(k);
-					
-					SMaterial m = sMaterialRepository.findOne(wm.getsMaterialId());
-					SMaterial cm = sMaterialRepository.getByCompanyIdAndPno(soCompany.getIdCompany(), m.getPno());
-					if(cm!=null && wm.getsStatusId().equals(11l)) //必须激活状态
-					{
-						//create so
-						//System.out.println("新建销售订单：id_company: " +soCompany.getIdCompany() );
-						SSo sSo = new SSo();
-						SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(soCompany.getIdCompany(), 11l);
-					    long currentVal =smtfNo.getCurrentVal()+1;
-					    smtfNo.setCurrentVal(currentVal);
-					    sMtfNoRepository.save(smtfNo);
-					    String codeSo = smtfNo.getPrefix()+String.format("%08d", currentVal);
-					    sSo.setCodeSo(codeSo);
-					    sSo.setCompany(soCompany);
-					    sSo.setCoOrderNo(wsSpo.getCodePo());
-					    sSo.setDateOrder(new Date());
-					    sSo.setDeliveryDate(wm.getDeliveryDate());
-					    sSo.setSMaterial(cm);
-					    sSo.setIdCompany2(myCompanyId); //客户
-					    sSo.setQtySo(wm.getQtyPo());
-					    sSo.setIdCompany1(idComcompany); //往来公司，需要发给下一家的公司
-					    try
-					    {
-					    	  SCompanyCo sCompanyCo1=sCompanyCoRepository.findByCompanyIdAndName(soCompany.getIdCompany(), securityUtils.getCurrentDBUser().getCompany().getCompanyName());
-					    	  sSo.setSCompanyCo(sCompanyCo1);
-					    }catch(Exception e)
-					    {
-					    	e.printStackTrace();
-					    }
 
-					    sSo.setSStatusDic(sStatusDicRepository.findOne(14l)); //编辑
-					    sSo.setRemark("客户: " +securityUtils.getCurrentDBUser().getCompany().getCompanyName() +", 合作公司： " +wanglaiCompany.getCompanyName());
-					    //sSo.setQtyDelivered(wm.getQtyPo());
-					    sSo.setUPrice(wm.getUprice().floatValue());
-					    sSo.setTotalAmount(wm.getQtyPo()*wm.getUprice().floatValue());
-					    sSoRepository.save(sSo);
-					    sendemail = true;
-					}
+					SPo sp =sSpoRepository.save(spo);
+					wsSpo.setIdPo(sp.getIdPo());
+					for(String k: wsSpo.getPoItems().keySet())
+					{
+					//	logger.debug("save po material: " + k);
+						WSSpoMaterial wm =wsSpo.getPoItems().get(k);
+						wm.setLine(Long.parseLong(k.substring(4)));
 					
-				
+						wm.setsPoId(sp.getIdPo());
+					
+						spoMaterialService.saveSpoMaterial(wm);
+					
+					}
 				}
-				
-				
-				if(sendemail)
-				{
-					 String email="";
-						
-						if(comcom1.getIdCompany1().equals(myCompanyId))
-						{
-							email = comcom1.getEmail2();
-						}
-						else
-						{
-							email = comcom1.getEmail1();
-						}
-						//sComComRepository.findMyCompanies(idCompany)
-						Map<String,Object> model = new LinkedHashMap<String,Object>();
-						String[] emails = new String[]{email};
-//						采购订单
-//						公司：$!{company}
-//						订单编码: $!{poNo}, 总价： $!{totalPrice}
-//						条目：
-//						$!{materials}
-//						备注：
-//						$!{remark}
-						String materials ="";
-						for(WSSpoMaterial pm: wsSpo.getPoItems().values())
-						{
-							materials =materials +"物料: " + pm.getsMaterial() +", 数量: " +pm.getQtyPo() +",单价: " + pm.getUprice() +", 总价： " + pm.getTotalPrice() +", 备注： " +pm.getRemark()+"\r\n";
-						}
-						model.put("company", securityUtils.getCurrentDBUser().getCompany().getCompanyName());
-						model.put("poNo", wsSpo.getCodePo());
-						model.put("totalPrice", wsSpo.getTotalAmount());
-						model.put("remarks", wsSpo.getRemark());
-						model.put("materials", materials);
-						System.out.println("matertials: " + materials);
-						try{
-							emailSenderService.sendEmail(emails,"poTemplate.vm",  "新订单", model, null);
-						}catch(Exception e)
-						{
-							e.printStackTrace();
-						}
-				}
-			  
 			}
-			
-			else
-			{
-					
-				Long sCompanyCoId = wsSpo.getsCompanyCoId();
-				
-				SCompanyCo sCompanyCo = sCompanyCoRepository.findOne(sCompanyCoId);
-				Company soCompany =companyRepository.findByCompanyName(sCompanyCo.getName());
-				
-				if(soCompany==null)
-				{
-			
-						wsSpo.setValid(0l);
-						wsSpo.setMsg("保存失败，供应商必须是往来公司");
-						return wsSpo;
-		
-				}
-				
-				SComCom comcom1 = sComComRepository.findByTwoCompanyId(myCompanyId, soCompany.getIdCompany());
-				
-			
-					if(comcom1==null)
-					{
-				
-							wsSpo.setValid(0l);
-							wsSpo.setMsg("保存失败，供应商必须是往来公司");
-							return wsSpo;
-			
-					}
-				boolean sendemail=false;
-				for(String k: wsSpo.getPoItems().keySet())
-				{
-				//	logger.debug("save po material: " + k);
-					WSSpoMaterial wm =wsSpo.getPoItems().get(k);
-					
-					SMaterial m = sMaterialRepository.findOne(wm.getsMaterialId());
-					SMaterial cm = sMaterialRepository.getByCompanyIdAndPno(soCompany.getIdCompany(), m.getPno());
-					if(cm!=null)
-					{
-						//create so
-						//System.out.println("新建销售订单：id_company: " +soCompany.getIdCompany() );
-						SSo sSo = new SSo();
-						SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(soCompany.getIdCompany(), 11l);
-					    long currentVal =smtfNo.getCurrentVal()+1;
-					    smtfNo.setCurrentVal(currentVal);
-					    sMtfNoRepository.save(smtfNo);
-					    String codeSo = smtfNo.getPrefix()+String.format("%08d", currentVal);
-					    sSo.setCodeSo(codeSo);
-					    sSo.setCompany(soCompany);
-					    sSo.setCoOrderNo(spo.getCodePo());
-					    sSo.setDateOrder(spo.getDateOrder());
-					    sSo.setDeliveryDate(wm.getDeliveryDate());
-					    sSo.setSMaterial(cm);
-					    sSo.setIdCompany2(myCompanyId); //客户
-					    sSo.setQtySo(wm.getQtyPo());
-					  //  sSo.setIdCompany1(idComcompany); //往来公司，需要发给下一家的公司
-					    try
-					    {
-					    	  SCompanyCo sCompanyCo1=sCompanyCoRepository.findByCompanyIdAndName(soCompany.getIdCompany(), securityUtils.getCurrentDBUser().getCompany().getCompanyName());
-					    	  sSo.setSCompanyCo(sCompanyCo1);
-					    }catch(Exception e)
-					    {
-					    	e.printStackTrace();
-					    }
-
-					    sSo.setSStatusDic(sStatusDicRepository.findOne(14l)); //编辑
-					    sSo.setRemark("客户: " +securityUtils.getCurrentDBUser().getCompany().getCompanyName() +", 无合作公司： ");
-					    //sSo.setQtyDelivered(wm.getQtyPo());
-					    sSo.setUPrice(wm.getUprice().floatValue());
-					    sSo.setTotalAmount(wm.getQtyPo()*wm.getUprice().floatValue());
-					    sSoRepository.save(sSo);
-					    sendemail = true;
-					}
-					
-				
-				}
-				
-				if(sendemail)
-				{
-					   String email="";
-						
-						if(comcom1.getIdCompany1().equals(myCompanyId))
-						{
-							email = comcom1.getEmail2();
-						}
-						else
-						{
-							email = comcom1.getEmail1();
-						}
-						//sComComRepository.findMyCompanies(idCompany)
-						Map<String,Object> model = new LinkedHashMap<String,Object>();
-						String[] emails = new String[]{email};
-//						采购订单
-//						公司：$!{company}
-//						订单编码: $!{poNo}, 总价： $!{totalPrice}
-//						条目：
-//						$!{materials}
-//						备注：
-//						$!{remark}
-						String materials ="";
-						for(WSSpoMaterial pm: wsSpo.getPoItems().values())
-						{
-							materials =materials +"物料: " + pm.getsMaterial() +", 数量: " +pm.getQtyPo() +",单价: " + pm.getUprice() +", 总价： " + pm.getTotalPrice() +", 备注： " +pm.getRemark()+"\r\n";
-						}
-						model.put("company", securityUtils.getCurrentDBUser().getCompany().getCompanyName());
-						model.put("poNo", wsSpo.getCodePo());
-						model.put("totalPrice", wsSpo.getTotalAmount());
-						model.put("remarks", wsSpo.getRemark());
-						model.put("materials", materials);
-						System.out.println("matertials: " + materials);
-						try{
-							emailSenderService.sendEmail(emails,"poTemplate.vm",  "新订单", model, null);
-						}catch(Exception e)
-						{
-							e.printStackTrace();
-						}
-					
-				}
-
-				
-			}
-	
-	
-			
 		}
-		
-		
 
-		SPo sp =sSpoRepository.save(spo);
-		wsSpo.setIdPo(sp.getIdPo());
-		for(String k: wsSpo.getPoItems().keySet())
-		{
-		//	logger.debug("save po material: " + k);
-			WSSpoMaterial wm =wsSpo.getPoItems().get(k);
-			wm.setLine(Long.parseLong(k.substring(4)));
-		
-			wm.setsPoId(sp.getIdPo());
-		
-			spoMaterialService.saveSpoMaterial(wm);
-		
-		}
-		
-		
-		
 		
 		return wsSpo;
 	}
 	
 
 	
+	
+	
 
 	public Valid saveSpoRemark(WSSpoRemark wsSpoRemark) {
 		
 		SPo spo = sSpoRepository.findOne(wsSpoRemark.getIdPo());	
 		spo.setRemark(wsSpoRemark.getRemark());
-		if(wsSpoRemark.getStatusId()!=null)
+		if(!spo.getSStatusDic().getId().equals(wsSpoRemark.getStatusId()))
 		{
-			spo.setSStatusDic(sStatusDicRepository.findOne(wsSpoRemark.getStatusId()));
+			if(wsSpoRemark.getStatusId()!=null)
+			{
+				spo.setSStatusDic(sStatusDicRepository.findOne(wsSpoRemark.getStatusId()));
+			}
+			if(wsSpoRemark.getStatusId().equals(9l)) // 作废
+			{
+				Long id = securityUtils.getCurrentDBUser().getCompany().getAutoPo();
+				Long autoPo = (id==null)?1l:id;
+				if(autoPo.equals(0l))
+				{
+					String co = spo.getCodePo();
+					spo.setCodePo(co+"-void");
+				}
+			
+			}
+			//todo
 			if(wsSpoRemark.getStatusId().equals(11l)) //激活
 			{
-				//。。。。。
+				//todo
 			}
+		
 		}
-
+	
+		
 		sSpoRepository.save(spo);
 		
 		Valid valid = new Valid();
 		valid.setValid(true);
 		return valid;
+	
+		
+		
+		
+		
 	}
 	
 	
@@ -536,7 +317,7 @@ public class SpoService {
 		{
 			
 			SComCom comcom=sComComRepository.findOne(wsSpo.getIdComCom());
-			System.out.println("comcomid: " + wsSpo.getIdComCom() );
+			//System.out.println("comcomid: " + wsSpo.getIdComCom() );
 			if(comcom!=null)
 			{
 				if(comcom.getIdCompany1().equals(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
@@ -596,5 +377,216 @@ public class SpoService {
 		return wsSpo;
 	}
 
+	
+	//检查往来公司采购条件
+		private Valid checkCompanyCoSpo(WSSpo wsSpo)
+		{
+			Valid v = new Valid();
+			v.setValid(true);
+			String msg = "";
+			//1.必须是激活状态
+			if(!wsSpo.getsStatusId().equals(11l)) 
+			{
+				v.setValid(false);
+				msg = msg + "在合作公司下采购，采购订单必须是激活状态。<br/>";
+			}
+			//2.供应商必须是注册公司
+	         Long sCompanyCoId = wsSpo.getsCompanyCoId();
+	         SCompanyCo sCompanyCo = sCompanyCoRepository.findOne(sCompanyCoId);
+			 Company soCompany =companyRepository.findByCompanyName(sCompanyCo.getName());
+			 if(soCompany==null)
+			 {
+				v.setValid(false);
+				msg = msg + "在合作公司下采购，供应商必须是注册的往来公司。<br/>";
+			 }
+			 else
+			 {
+				 //3.供应商必须是往来公司
+				SComCom comcom = sComComRepository.findByTwoCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), soCompany.getIdCompany());
+		        if(comcom==null)
+				{
+		    	   v.setValid(false);
+				   msg = msg + "在合作公司下采购，供应商必须是注册的往来公司。<br/>";
+				}
+					
+				 //4.供应商的客户必须是当前公司
+				 String customerName = securityUtils.getCurrentDBUser().getCompany().getCompanyName();
+				 SCompanyCo sCompanyCoA = sCompanyCoRepository.findByCompanyIdAndName(soCompany.getIdCompany(), customerName);
+				 if(sCompanyCoA==null)
+				 {
+					v.setValid(false);
+					msg = msg + "在合作公司下采购，供应商必须设置您公司为客户。<br/>";
+				 }
+			 }
+
+			  Long myCompanyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+			  Long idWanglai;
+				if(wsSpo.getIdComCom().equals(0l)) //往来公司是本公司
+				{
+					idWanglai = myCompanyId;
+				}
+				else
+				{
+					SComCom comcom=sComComRepository.findOne(wsSpo.getIdComCom());
+
+					if(comcom.getIdCompany1().equals(myCompanyId))
+					{
+						idWanglai=comcom.getIdCompany2();
+					}
+					else
+					{
+						idWanglai=comcom.getIdCompany1();
+					}
+				}
+				
+			 //5.是否共享bom
+			 if(soCompany!=null)
+			 {
+				for(String k: wsSpo.getPoItems().keySet())
+				{
+					WSSpoMaterial wm =wsSpo.getPoItems().get(k);
+					SMaterial m = sMaterialRepository.findOne(wm.getsMaterialId());
+					SMaterial cm = sMaterialRepository.getByCompanyIdAndPno(soCompany.getIdCompany(), m.getPno());
+					SMaterial cm1 = sMaterialRepository.getByCompanyIdAndPno(idWanglai, m.getPno());
+					if(cm==null ||cm1==null) 
+					{
+						v.setValid(false);
+						msg = msg + "在合作公司下采购，bom必须在往来公司和供应商之间共享： " +m.getPno() +" <br/>";
+					}
+				}
+				
+			 }
+			 v.setMsg(msg);
+			 System.out.println(" valid: " + v.getValid() + ", msg: " + msg);
+			 return v;
+		}
+		
+		
+		
+		//检查往来公司采购条件
+		private Valid generateSo(WSSpo wsSpo)
+		{
+			Valid v = new Valid();
+			v.setValid(true);
+			String msg = "";
+			Long myCompanyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+			Long idWanglai;
+			if(wsSpo.getIdComCom().equals(0l)) //往来公司是本公司
+			{
+				idWanglai = myCompanyId;
+			}
+			else
+			{
+				SComCom comcom=sComComRepository.findOne(wsSpo.getIdComCom());
+
+				if(comcom.getIdCompany1().equals(myCompanyId))
+				{
+					idWanglai=comcom.getIdCompany2();
+				}
+				else
+				{
+					idWanglai=comcom.getIdCompany1();
+				}
+			}
+			
+			 Long sCompanyCoId = wsSpo.getsCompanyCoId();
+		     SCompanyCo sCompanyCo = sCompanyCoRepository.findOne(sCompanyCoId);
+		     Company soCompany =companyRepository.findByCompanyName(sCompanyCo.getName());
+			SComCom comcom1 = sComComRepository.findByTwoCompanyId(myCompanyId, soCompany.getIdCompany());
+			boolean sendemail=false;
+			for(String k: wsSpo.getPoItems().keySet())
+			{
+			//	logger.debug("save po material: " + k);
+				WSSpoMaterial wm =wsSpo.getPoItems().get(k);
+				
+				SMaterial m = sMaterialRepository.findOne(wm.getsMaterialId());
+				SMaterial cm = sMaterialRepository.getByCompanyIdAndPno(soCompany.getIdCompany(), m.getPno());
+				if(cm!=null) //必须激活状态
+				{
+					//create so
+					//System.out.println("新建销售订单：id_company: " +soCompany.getIdCompany() );
+					SSo sSo = new SSo();
+					SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(soCompany.getIdCompany(), 11l);
+				    long currentVal =smtfNo.getCurrentVal()+1;
+				    smtfNo.setCurrentVal(currentVal);
+				    sMtfNoRepository.save(smtfNo);
+				    String codeSo = smtfNo.getPrefix()+String.format("%08d", currentVal);
+				    sSo.setCodeSo(codeSo);
+				    sSo.setCompany(soCompany);
+				    sSo.setCoOrderNo(wsSpo.getCodePo());
+				    sSo.setDateOrder(new Date());
+				    sSo.setDeliveryDate(wm.getDeliveryDate());
+				    sSo.setSMaterial(cm);
+				    sSo.setIdCompany2(myCompanyId); //客户
+				    sSo.setQtySo(wm.getQtyPo());
+				    sSo.setIdCompany1(idWanglai); //往来公司，需要发给下一家的公司
+				    try
+				    {
+				    	SCompanyCo sCompanyCo1=sCompanyCoRepository.findByCompanyIdAndName(soCompany.getIdCompany(), securityUtils.getCurrentDBUser().getCompany().getCompanyName());
+				         sSo.setSCompanyCo(sCompanyCo1);
+				    }catch(Exception e)
+				    {
+				    	e.printStackTrace();
+				    }
+
+				    sSo.setSStatusDic(sStatusDicRepository.findOne(14l)); //编辑
+				    sSo.setRemark("客户: " +securityUtils.getCurrentDBUser().getCompany().getCompanyName() +", 合作公司Id： " +idWanglai);
+				    //sSo.setQtyDelivered(wm.getQtyPo());
+				    sSo.setUPrice(wm.getUprice().floatValue());
+				    sSo.setTotalAmount(wm.getQtyPo()*wm.getUprice().floatValue());
+				    sSoRepository.save(sSo);
+				    sendemail = true;
+				}
+				
+			
+			}
+			
+			
+			if(sendemail)
+			{
+				   String email="";
+					
+					if(comcom1.getIdCompany1().equals(myCompanyId))
+					{
+						email = comcom1.getEmail2();
+					}
+					else
+					{
+						email = comcom1.getEmail1();
+					}
+					//sComComRepository.findMyCompanies(idCompany)
+					Map<String,Object> model = new LinkedHashMap<String,Object>();
+					String[] emails = new String[]{email};
+//					采购订单
+//					公司：$!{company}
+//					订单编码: $!{poNo}, 总价： $!{totalPrice}
+//					条目：
+//					$!{materials}
+//					备注：
+//					$!{remark}
+					String materials ="";
+					for(WSSpoMaterial pm: wsSpo.getPoItems().values())
+					{
+						materials =materials +"物料: " + pm.getsMaterial() +", 数量: " +pm.getQtyPo() +",单价: " + pm.getUprice() +", 总价： " + pm.getTotalPrice() +", 备注： " +pm.getRemark()+"\r\n";
+					}
+					model.put("company", securityUtils.getCurrentDBUser().getCompany().getCompanyName());
+					model.put("poNo", wsSpo.getCodePo());
+					model.put("totalPrice", wsSpo.getTotalAmount());
+					model.put("remarks", wsSpo.getRemark());
+					model.put("materials", materials);
+				//	System.out.println("matertials: " + materials);
+					try{
+						emailSenderService.sendEmail(emails,"poTemplate.vm",  "新订单", model, null);
+					}catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+				
+			}
+			
+			 v.setMsg(msg);
+			 System.out.println(" valid: " + v.getValid() + ", msg: " + msg);
+			 return v;
+		}
 
 }

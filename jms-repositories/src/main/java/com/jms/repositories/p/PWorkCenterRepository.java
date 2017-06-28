@@ -12,4 +12,8 @@ public interface PWorkCenterRepository extends JpaRepository<PWorkCenter, Long>{
 
 @Query("select p from PWorkCenter p where p.company.idCompany=?1")
 public List<PWorkCenter> getByCompanyId(Long companyId);
+
+
+@Query("select p from PWorkCenter p where p.company.idCompany=?1 and p.workCenter=?2")
+public PWorkCenter getByCompanyIdAndWorkCenter(Long companyId,String workCenter);
 }

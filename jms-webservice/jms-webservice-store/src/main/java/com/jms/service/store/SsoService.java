@@ -154,9 +154,24 @@ public class SsoService {
 		
 		SSo sso = sSoRepository.findOne(wsSSoRemark.getIdSo());	
 		sso.setAutoRemark(wsSSoRemark.getAutoRemark());
-		if(wsSSoRemark.getStatusId()!=null)
+		if(!sso.getSStatusDic().getId().equals(wsSSoRemark.getStatusId()))
 		{
-			sso.setSStatusDic(sStatusDicRepository.findOne(wsSSoRemark.getStatusId()));
+			if(wsSSoRemark.getStatusId()!=null)
+			{
+				sso.setSStatusDic(sStatusDicRepository.findOne(wsSSoRemark.getStatusId()));
+			}
+			if(wsSSoRemark.getStatusId().equals(16l)) // 作废
+			{
+				Long id = securityUtils.getCurrentDBUser().getCompany().getAutoSo();
+				Long autoSo = (id==null)?1l:id;
+				if(autoSo.equals(0l))
+				{
+					String co = sso.getCodeSo();
+					sso.setCodeSo(co+"-void");
+				}
+			
+			}
+		
 		}
 	
 		

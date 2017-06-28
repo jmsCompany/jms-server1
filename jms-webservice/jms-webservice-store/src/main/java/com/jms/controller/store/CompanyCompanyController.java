@@ -293,6 +293,8 @@ public class CompanyCompanyController {
 	public List<WSSelectObj> findMyCompanies() {
 		List<WSSelectObj> wso = new ArrayList<WSSelectObj>();
 		Long idCompany =securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		//添加本身 
+		wso.add(new WSSelectObj(0l,securityUtils.getCurrentDBUser().getCompany().getCompanyName()));
 		for(SComCom c : sComComRepository.findMyCompanies(idCompany))
 		{
 			if(idCompany.equals(c.getIdCompany1()))

@@ -78,15 +78,15 @@ public class SsoController {
 		{
 			idCompanytwo = c.getIdCompany2();
 			
-			System.out.println("idCompanytwo1: " + idCompanytwo); //119
+			//System.out.println("idCompanytwo1: " + idCompanytwo); //119
 		}
 		else
 		{
 			idCompanytwo=c.getIdCompany1();
-			System.out.println("idCompanytwo2: " + idCompanytwo); //119
+			//System.out.println("idCompanytwo2: " + idCompanytwo); //119
 		}
 		//116
-		 System.out.println("idCompanytwo: " + idCompanytwo);
+		 //System.out.println("idCompanytwo: " + idCompanytwo);
 		for(String s: sSoRepository.findCoOrderNosByCompany2Id(idCompanytwo))
 		{
 			WSSelectObj w = new WSSelectObj();
@@ -109,6 +109,7 @@ public class SsoController {
 			@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 		
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+	//	System.out.println("get so list : " + status);
 		List<SSo> ssos = sSoRepositoryCustom.getCustomSsos(companyId, status, q, fromDay, toDay);
 		
 		//System.out.println("size: " + ssos.size());

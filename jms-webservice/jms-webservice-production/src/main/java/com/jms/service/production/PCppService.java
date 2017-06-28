@@ -639,7 +639,9 @@ public class PCppService {
 								Long shouldQty = 0l;
 								if(p.getQpu()!=null)
 								{
-									shouldQty = p.getQpu()*cpp.getQty();
+									float a  = (float)cpp.getQty();
+									float t = a * p.getQpu();
+									shouldQty = (long)t;
 								}
 								w.setShouldQty(shouldQty);
 								w.setWip(cpp.getMMachine().getSBin().getSStk().getStkName());

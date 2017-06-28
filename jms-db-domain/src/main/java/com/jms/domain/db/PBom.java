@@ -30,10 +30,10 @@ public class PBom  implements java.io.Serializable {
      private SMaterial SMaterial;
      private PBomLabel PBomLabel;
      private PBom PBom;
-     private Long qpu;
+     private Float qpu;
      private Long orderBy;
      private Long lvl;
-     private Long wastage;
+     private Float wastage;
      
      private Long idRoutineD;
      private Set<PMr> PMrs = new HashSet<PMr>(0);
@@ -43,20 +43,6 @@ public class PBom  implements java.io.Serializable {
     public PBom() {
     }
 
-    public PBom(PWorkCenter PWorkCenter, SMaterial SMaterial, PBomLabel PBomLabel, PBom PBom, Long qpu, Long orderBy, Long lvl, Long wastage, Set<PMr> PMrs, Set<PWoBom> PWoBoms, Set<PBom> PBoms) {
-       this.PWorkCenter = PWorkCenter;
-       this.SMaterial = SMaterial;
-       this.PBomLabel = PBomLabel;
-       this.PBom = PBom;
-       this.qpu = qpu;
-       this.orderBy = orderBy;
-       this.lvl = lvl;
-       this.wastage = wastage;
-       this.PMrs = PMrs;
-       this.PWoBoms = PWoBoms;
-       this.PBoms = PBoms;
-    }
-   
      @Id @GeneratedValue(strategy=IDENTITY)
     
     @Column(name="id_bom", unique=true, nullable=false)
@@ -105,11 +91,11 @@ public class PBom  implements java.io.Serializable {
     }
     
     @Column(name="qpu")
-    public Long getQpu() {
+    public Float getQpu() {
         return this.qpu;
     }
     
-    public void setQpu(Long qpu) {
+    public void setQpu(Float qpu) {
         this.qpu = qpu;
     }
     
@@ -132,11 +118,11 @@ public class PBom  implements java.io.Serializable {
     }
     
     @Column(name="wastage", precision=10, scale=0)
-    public Long getWastage() {
+    public Float getWastage() {
         return this.wastage;
     }
     
-    public void setWastage(Long wastage) {
+    public void setWastage(Float wastage) {
         this.wastage = wastage;
     }
 @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="PBom")

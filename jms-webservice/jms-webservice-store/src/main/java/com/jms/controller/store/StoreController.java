@@ -1,24 +1,39 @@
 package com.jms.controller.store;
 
+import java.io.FileInputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.csvreader.CsvReader;
 import com.jms.domain.db.SBin;
+import com.jms.domain.db.SCompanyCo;
 import com.jms.domain.db.SStk;
 import com.jms.domain.db.SYesOrNoDic;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.s.WSBin;
+import com.jms.domain.ws.s.WSCompanyCo;
 import com.jms.domain.ws.s.WSMaterialCategory;
 import com.jms.domain.ws.s.WSSStatus;
 import com.jms.domain.ws.s.WSStk;
 import com.jms.domain.ws.s.WSStkType;
 import com.jms.domain.ws.s.WSYesAndNoType;
+import com.jms.file.FileMeta;
+import com.jms.file.FileUploadService;
+import com.jms.repositories.s.SBinRepository;
 import com.jms.repositories.s.SStkRepository;
 import com.jms.repositories.s.SYesOrNoDicRepository;
 import com.jms.service.store.MaterialCategoryService;
@@ -40,6 +55,10 @@ public class StoreController {
 	@Autowired private SStkRepository sStkRepository;
 	@Autowired private SecurityUtils securityUtils;
 	@Autowired private SBinService sBinService;
+	@Autowired private SBinRepository sBinRepository;
+	@Autowired private FileUploadService fileUploadService;
+	@Value("${filePath}")
+	private String filePath;
 	
 
 	@Autowired private SYesOrNoDicRepository sYesOrNoDicRepository;
@@ -313,4 +332,176 @@ public class StoreController {
 	}
 
 
+	//仓库名	货架名	描述	是否是退货货架（是，否）	状态（有效，无效）
+	@Transactional(readOnly = false)
+	@RequestMapping(value = "/s/uploadBinsFile", method = RequestMethod.POST)
+	public Valid uploadBinsFile(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		Long idCompany = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+
+		Valid v = new Valid();
+		v.setValid(true);
+		FileMeta fileMeta = new FileMeta();
+		Map<Integer,String> errorMap = new LinkedHashMap<Integer,String>();
+		Map<String,String> binsMap = new LinkedHashMap<String,String>();
+		List<WSBin> wsBins = new ArrayList<WSBin>();
+		try {
+			boolean flag = true;
+			if (request.getFileNames().hasNext()) {
+				fileMeta = fileUploadService.upload(request, response, true);
+				FileInputStream inputStream = new FileInputStream(filePath + fileMeta.getFileName());
+				CsvReader reader = new CsvReader(inputStream, ',', Charset.forName("UTF-8"));
+				reader.readHeaders();
+			
+				Integer i = 1;
+				while (reader.readRecord()) {
+					i++;
+					WSBin wsBin = new WSBin();
+					String stk = reader.get(0);
+					List<SStk> dbstks  = sStkRepository.findByIdCompanyAndStkName(idCompany, stk);
+					if(dbstks.isEmpty())
+					{
+						flag =false;
+						if(errorMap.containsKey(i))
+						{
+							errorMap.put(i, errorMap.get(i) + " 无此仓库名: " +stk);
+						}
+						else
+						{
+							errorMap.put(i,  "第" + i +"行出错，无此仓库名:  " +stk);
+						}
+					}
+					else
+					{
+						wsBin.setIdStk(dbstks.get(0).getId());
+					}
+					String bin = reader.get(1);
+					
+					
+					if(bin==null||bin.isEmpty()||bin.length()>64||bin.length()<2)
+					{
+						flag =false;
+						if(errorMap.containsKey(i))
+						{
+							errorMap.put(i, errorMap.get(i) + " 货架名称长度必须在2-64之间: " + bin);
+						}
+						else
+						{
+							errorMap.put(i,  "第" + i +"行出错，货架名称长度必须在2-64之间:  " + bin);
+						}
+					}
+					
+					
+					if(!sBinService.checkBinName(bin,null)||binsMap.containsKey(bin))
+					{
+
+						flag =false;
+						if(errorMap.containsKey(i))
+						{
+							errorMap.put(i, errorMap.get(i) + " 货架名称已经存在: " + bin);
+						}
+						else
+						{
+							errorMap.put(i,  "第" + i +"行出错，货架名称已经存在:  " + bin);
+						}
+					
+					}
+					wsBin.setBin(bin);
+					binsMap.put(bin, bin);
+					
+					String des = reader.get(2);
+					wsBin.setDes(des);
+					
+				
+					String isReturn = reader.get(3);
+					isReturn =isReturn.trim();
+					
+					if((!isReturn.isEmpty())&&(!isReturn.equals("是")&&!isReturn.equals("否")))
+					{
+						flag =false;
+						if(errorMap.containsKey(i))
+						{
+							errorMap.put(i, errorMap.get(i) + " 退货架必须是 是或否: " +isReturn);
+						}
+						else
+						{
+							errorMap.put(i,  "第" + i +"行出错，退货架必须是 是或否: "+isReturn);
+						}
+					}
+					else
+					{
+						if(isReturn.equals("是"))
+						{
+							wsBin.setIsReturnShelf(1l);
+						}
+						else
+						{
+							wsBin.setIsReturnShelf(2l);
+						}
+					}
+					
+			
+					
+					String status = reader.get(4);
+					status =status.trim();
+			
+					if((!status.isEmpty())&&(!status.equals("有效")&&!status.equals("无效")))
+					{
+						flag =false;
+						if(errorMap.containsKey(i))
+						{
+							errorMap.put(i, errorMap.get(i) + " 状态必须是有效或无效: " +status);
+						}
+						else
+						{
+							errorMap.put(i,  "第" + i +"行出错，状态必须是有效或无效: "+status);
+						}
+					}
+					else
+					{
+						if(status.equals("有效"))
+						{
+							wsBin.setStatus(27l);
+						}
+						else
+						{
+							wsBin.setStatus(28l);
+						}
+					}
+					
+					
+					wsBins.add(wsBin);
+				}
+				
+			}
+			String msg = "";
+			for(String err: errorMap.values())
+			{
+				msg = msg+ err + "<br/> \r\n";
+			}
+			v.setMsg(msg);
+			v.setValid(flag);
+			//return v;
+		} catch (Exception e) {
+			e.printStackTrace();
+			v.setMsg("上传货架文件失败，请检查文件格式：必须是csv类型文件,必须用utf-8编码。");
+			v.setValid(false);
+			//return v;
+		}
+		
+		if(v.getValid())
+		{
+			
+			for(WSBin wsBin: wsBins)
+			{
+				System.out.println("save bin: " + wsBin.getBin() +", stk: " + wsBin.getIdStk());
+				sBinService.saveBin(wsBin);
+			}
+			
+			
+		}
+		
+		return v;
+	
+	}
 }

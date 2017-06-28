@@ -259,11 +259,11 @@ public class CompanyCoController {
 						flag =false;
 						if(errorMap.containsKey(i))
 						{
-							errorMap.put(i, errorMap.get(i) + " 公司编码长度必须在0-20之间，");
+							errorMap.put(i, errorMap.get(i) + " 公司编码长度必须在0-20之间: " +code);
 						}
 						else
 						{
-							errorMap.put(i,  "第" + i +"行出错，公司编码长度必须在0-20之间， ");
+							errorMap.put(i,  "第" + i +"行出错，公司编码长度必须在0-20之间:  " +code);
 						}
 					}
 					wSCompanyCo.setCode(code);
@@ -274,11 +274,11 @@ public class CompanyCoController {
 						flag =false;
 						if(errorMap.containsKey(i))
 						{
-							errorMap.put(i, errorMap.get(i) + " 公司名称长度必须在2-64之间，");
+							errorMap.put(i, errorMap.get(i) + " 公司名称长度必须在2-64之间: " + companyName);
 						}
 						else
 						{
-							errorMap.put(i,  "第" + i +"行出错，公司名称长度必须在2-64之间， ");
+							errorMap.put(i,  "第" + i +"行出错，公司名称长度必须在2-64之间:  " + companyName);
 						}
 					}
 					wSCompanyCo.setName(companyName);
@@ -290,26 +290,26 @@ public class CompanyCoController {
 						flag =false;
 						if(errorMap.containsKey(i))
 						{
-							errorMap.put(i, errorMap.get(i) + " 该公司已经存在，");
+							errorMap.put(i, errorMap.get(i) + " 该公司已经存在: " + companyName);
 						}
 						else
 						{
-							errorMap.put(i,  "第" + i +"行出错，该公司已经存在， ");
+							errorMap.put(i,  "第" + i +"行出错，该公司已经存在: " + companyName);
 						}
 					}
 					companyMap.put(companyName, companyName);
 					String lvl = reader.get(3);
-					System.out.println("lvl:"+lvl +";" );
+					//System.out.println("lvl:"+lvl +";" );
 					if((!lvl.isEmpty())&&(!lvl.equals("A")&&!lvl.equals("B")&&!lvl.equals("C")))
 					{
 						flag =false;
 						if(errorMap.containsKey(i))
 						{
-							errorMap.put(i, errorMap.get(i) + " 公司重要等级必须是A，B，C，");
+							errorMap.put(i, errorMap.get(i) + " 公司重要等级必须是A，B，C: " + lvl);
 						}
 						else
 						{
-							errorMap.put(i,  "第" + i +"行出错，公司重要等级必须是A，B，C， ");
+							errorMap.put(i,  "第" + i +"行出错，公司重要等级必须是A，B，C:  " +lvl);
 						}
 					}
 				
@@ -335,26 +335,17 @@ public class CompanyCoController {
 					wSCompanyCo.setAuditBy(checkP);
 					String status = reader.get(15);
 					status =status.trim();
-					System.out.println("status: " + status);
-					
-					if(status.equals("有效"))
-					{
-						System.out.println("status1: " + status);
-					}
-					else
-					{
-						System.out.println("status2: " + status);
-					}
+			
 					if((!status.isEmpty())&&(!status.equals("有效")&&!status.equals("无效")))
 					{
 						flag =false;
 						if(errorMap.containsKey(i))
 						{
-							errorMap.put(i, errorMap.get(i) + " 状态必须是有效或无效");
+							errorMap.put(i, errorMap.get(i) + " 状态必须是有效或无效: " +status);
 						}
 						else
 						{
-							errorMap.put(i,  "第" + i +"行出错，状态必须是有效或无效");
+							errorMap.put(i,  "第" + i +"行出错，状态必须是有效或无效: "+status);
 						}
 					}
 					else
@@ -380,11 +371,11 @@ public class CompanyCoController {
 						flag =false;
 						if(errorMap.containsKey(i))
 						{
-							errorMap.put(i, errorMap.get(i) + " 类别必须是客户或供应商");
+							errorMap.put(i, errorMap.get(i) + " 类别必须是客户或供应商: " +type);
 						}
 						else
 						{
-							errorMap.put(i,  "第" + i +"行出错，类别必须是客户或供应商");
+							errorMap.put(i,  "第" + i +"行出错，类别必须是客户或供应商: "+type);
 						}
 					}
 					else
@@ -412,7 +403,7 @@ public class CompanyCoController {
 			//return v;
 		} catch (Exception e) {
 			e.printStackTrace();
-			v.setMsg("上传合作公司失败，请检查文件格式：必须是csv类型文件");
+			v.setMsg("上传合作公司失败，请检查文件格式：必须是csv类型文件,必须用utf-8编码。");
 			v.setValid(false);
 			//return v;
 		}

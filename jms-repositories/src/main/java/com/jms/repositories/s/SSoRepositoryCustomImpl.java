@@ -27,20 +27,25 @@ public class SSoRepositoryCustomImpl implements SSoRepositoryCustom {
 			 query=query + " and DATE(s.dateOrder)<='" + toDay +"'";
 		 }
 		 
-		 if(status!=null)
+		 if(status!=null&&!status.equals(1000l))
 		 {
 			 query=query + " and s.SStatusDic.id = " + status;
+		 }
+		 if(status!=null&&status.equals(1000l))
+		 {
+			 query=query + " and s.SStatusDic.id <> 16"; //16 作废
 		 }
 		 if(q!=null)
 		 {
 			 q ="'%" + q + "%'";
-			 query =query + " and (s.SCompanyCo.shortName like " +q + " or s.codeSo like " +q +" or s.SMaterial.pno like " + q + " or s.SMaterial.rev like " +q +" or s.SMaterial.des like " +q +")"; 
-			 //query =query + " and (s.codeSo like " +q +" or s.SMaterial.pno like " + q + " or s.SMaterial.rev like " +q +" or s.SMaterial.des like " +q +")";  
-			 
+			// query =query + " and (s.SCompanyCo.shortName like " +q + " or s.codeSo like " +q +" or s.SMaterial.pno like " + q + " or s.SMaterial.rev like " +q +" or s.SMaterial.des like " +q +")"; 
+			// query =query + " and (s.codeSo like " +q +" or s.SMaterial.pno like " + q + " or s.SMaterial.rev like " +q +" or s.SMaterial.des like " +q +")";  
+			 // query =query + " and (s.SCompanyCo.shortName like " +q+")"; 
 			// query =query + " or s.SCompanyCo is null";
+			 query =query + " and (s.SCompanyCo.shortName like " +q + " or s.SMaterial.pno like " + q + " or s.SMaterial.rev like " +q +" or s.SMaterial.des like " +q +" or s.codeSo like " +q +")";  
 		 }
 
-		 System.out.println("query: " + query);
+		  System.out.println("query: " + query);
 		  return em.createQuery(query, SSo.class).getResultList();
 	}
 

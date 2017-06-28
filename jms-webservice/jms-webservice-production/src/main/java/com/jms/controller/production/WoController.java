@@ -130,9 +130,9 @@ public class WoController {
 
 		for (int i = start; i < end; i++) {
 			PBom w = pBomList.get(i);
-			Long qpu = (w.getQpu()==null)?0l:w.getQpu();
-			Long wasted = (w.getWastage()==null)?0l:w.getWastage();
-			Long total = (qpu+wasted)*pWo.getQty(); //应发数量
+			Float qpu = (w.getQpu()==null)?0f:w.getQpu();
+			Float wasted = (w.getWastage()==null)?0f:w.getWastage();
+			Long total =(long) (qpu+wasted)*pWo.getQty(); //应发数量
 			List<SMtfMaterial> mats = sMtfMaterialRepository.getByWoIdAndMaterialId(woId, w.getSMaterial().getIdMaterial());
             Long delivered = 0l; //已发数量
 			if(mats!=null&&!mats.isEmpty())

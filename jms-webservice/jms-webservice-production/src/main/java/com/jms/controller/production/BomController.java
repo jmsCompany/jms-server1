@@ -1,31 +1,52 @@
 package com.jms.controller.production;
 
+import java.io.FileInputStream;
+import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.csvreader.CsvReader;
 import com.jms.domain.db.Company;
 import com.jms.domain.db.PBom;
 import com.jms.domain.db.PBomLabel;
+import com.jms.domain.db.PRoutineD;
+import com.jms.domain.db.PWorkCenter;
 import com.jms.domain.db.SMaterial;
+import com.jms.domain.db.SMaterialCategory;
+import com.jms.domain.db.SMaterialTypeDic;
+import com.jms.domain.db.SUnitDic;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.p.WSPBom;
 import com.jms.domain.ws.p.WSPBomItem;
 import com.jms.domain.ws.s.WSBomComs;
+import com.jms.domain.ws.s.WSMaterial;
+import com.jms.file.FileMeta;
+import com.jms.file.FileUploadService;
 import com.jms.repositories.company.CompanyRepository;
+import com.jms.repositories.f.FCostCenterRepository;
 import com.jms.repositories.p.PBomLabelRepository;
 import com.jms.repositories.p.PBomRepository;
+import com.jms.repositories.p.PRoutineDRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PWoRepository;
+import com.jms.repositories.p.PWorkCenterRepository;
 import com.jms.repositories.s.SMaterialRepository;
 import com.jms.service.production.BomLabelService;
 import com.jms.service.production.BomService;
@@ -34,7 +55,7 @@ import com.jms.web.security.SecurityUtils;
 @RestController
 @Transactional(readOnly = true)
 public class BomController {
-
+	
 	@Autowired
 	private BomService bomService;
 	@Autowired
@@ -53,6 +74,19 @@ public class BomController {
 	private CompanyRepository companyRepository;
 	@Autowired
 	private PStatusDicRepository pStatusDicRepository;
+	@Autowired
+	private	PRoutineDRepository pRoutineDRepository;
+	
+	@Autowired
+	private FCostCenterRepository fCostCenterRepository;
+	
+	
+	@Autowired
+	private PWorkCenterRepository pWorkCenterRepository;
+	
+    @Value("${filePath}") private String filePath;
+	@Autowired private FileUploadService fileUploadService;
+	
 	private static final Logger logger = LogManager.getLogger(BomController.class.getCanonicalName());
 
 	@Transactional(readOnly = false)
@@ -200,6 +234,7 @@ public class BomController {
 	@Transactional(readOnly = false)
 	@RequestMapping(value = "/p/deleteBom", method = RequestMethod.GET)
 	public Valid deleteBom(@RequestParam("bomLabelId") Long bomLabelId) {
+		System.out.println("delete bomLabelId: " + bomLabelId);
 		return bomLabelService.deletePWSPBom(bomLabelId);
 
 	}
@@ -277,5 +312,345 @@ public class BomController {
 		t.setData(lst);
 		return t;
 	}
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value = "/s/uploadBomFile", method = RequestMethod.POST)
+	public Valid uploadBomFile(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
 
+		Long idCompany = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+		// 产品编码	产品版本	物料编码	物料版本 工序编号（010,020..) 工作中心	级别	排序	单位用料	损耗
+		
+		
+		//WSPBom 
+		Valid v = new Valid();
+		v.setValid(true);
+		FileMeta fileMeta = new FileMeta();
+		Map<Integer,String> errorMap = new LinkedHashMap<Integer,String>();
+		Map<String,WSPBom> bomLabelMap = new LinkedHashMap<String,WSPBom>();
+		//Map<String,String> bomLabelMap = new LinkedHashMap<String,String>();
+		List<WSMaterial> wsMaterials = new ArrayList<WSMaterial>();
+		try {
+			boolean flag = true;
+			if (request.getFileNames().hasNext()) {
+				fileMeta = fileUploadService.upload(request, response, true);
+				FileInputStream inputStream = new FileInputStream(filePath + fileMeta.getFileName());
+				CsvReader reader = new CsvReader(inputStream, ',', Charset.forName("UTF-8"));
+				reader.readHeaders();
+			
+				Integer i = 1;
+				String currentProduct ="";
+				Long currentProductId =0l;
+				while (reader.readRecord()) {
+					i++;
+					WSMaterial wsMaterial = new WSMaterial();
+					String pno = reader.get(0);
+					if(pno==null||pno.isEmpty())
+					{
+						flag =false;
+						if(errorMap.containsKey(i))
+						{
+							errorMap.put(i, errorMap.get(i) + "  产品编码长度必须在0-64之间： " + pno);
+						}
+						else
+						{
+							errorMap.put(i,  "第" + i +"行出错，产品编码长度必须在0-64之间：  " +pno);
+						}
+					}
+					else
+					{
+						//成品
+					   SMaterial mat =	sMaterialRepository.getByCompanyIdAndPno(idCompany, pno);
+					   if(mat ==null)
+					   {
+							flag =false;
+							if(errorMap.containsKey(i))
+							{
+								errorMap.put(i, errorMap.get(i) + "  无此产品编码： " + pno);
+							}
+							else
+							{
+								errorMap.put(i,  "第" + i +"行出错，无此产品编码：  " +pno);
+							}
+					   }
+					   else
+					   {
+							List<PBom> pBoms= pBomRepository.findProductsByMaterialId(mat.getIdMaterial());
+							if(!pBoms.isEmpty())
+							{
+								flag =false;
+								if(errorMap.containsKey(i))
+								{
+									errorMap.put(i, errorMap.get(i) + "  该产品已有物料清单： " +mat.getPno());
+								}
+								else
+								{
+									errorMap.put(i,  "第" + i +"行出错，该产品已有物料清单： " +mat.getPno());
+								}
+							}
+							else
+							{
+								  if( !bomLabelMap.containsKey(mat.getPno()))
+								  {
+									  WSPBom w = new WSPBom();
+									  w.setCompanyId(idCompany);
+									  w.setCreationTime(new Date());
+									  w.setMaterialId(mat.getIdMaterial());
+									  w.setStatusId(3l); //有效 4 无效
+									  bomLabelMap.put(mat.getPno(), w);
+									  currentProduct = mat.getPno();
+									  currentProductId = mat.getIdMaterial();
+								  }
+							}
+						   
+						   
+					
+					   }
+					}
+					String mpno = reader.get(2);
+					if(mpno==null||mpno.isEmpty())
+					{
+						flag =false;
+						if(errorMap.containsKey(i))
+						{
+							errorMap.put(i, errorMap.get(i) + "  物料编码长度必须在0-64之间:  " + mpno);
+						}
+						
+						{
+							errorMap.put(i,  "第" + i +"行出错，物料编码长度必须在0-64之间:  " +mpno);
+						}
+					}
+					else
+					{
+						 SMaterial matr =	sMaterialRepository.getByCompanyIdAndPno(idCompany, mpno);
+						 if(matr ==null)
+						   {
+								flag =false;
+								if(errorMap.containsKey(i))
+								{
+									errorMap.put(i, errorMap.get(i) + "  无此物料编码: " +mpno);
+								}
+								else
+								{
+									errorMap.put(i,  "第" + i +"行出错，无此物料编码:  " +mpno);
+								}
+						   }
+						   else
+						   {
+							     WSPBom wsPom =   bomLabelMap.get(currentProduct);
+							     if(wsPom !=null)
+							     {
+							    	 Map<String, WSPBomItem> bomItemMap =  wsPom.getBomItems();
+							    	 WSPBomItem w = new WSPBomItem();
+							    	 w.setMaterialId(matr.getIdMaterial());
+							    	
+							    	 //工序
+							    	 String routeNo = reader.get(4);
+							    	 if(routeNo!=null&&!routeNo.isEmpty())
+							    	 {
+							    		 PRoutineD pRoutineD =  pRoutineDRepository.findByMaterialIdAndRouteNo(currentProductId, routeNo);
+							    		 if(pRoutineD==null)
+							    		 {
+
+												flag =false;
+												if(errorMap.containsKey(i))
+												{
+													errorMap.put(i, errorMap.get(i) + " 无此工序：" +routeNo);
+												}
+												else
+												{
+													errorMap.put(i,  "第" + i +"行出错，无此工序： " +routeNo);
+												}
+											
+											
+							    		 }
+							    		 else
+							    		 {
+							    			 w.setIdRoutineD(pRoutineD.getIdRoutineD());
+							    		 }
+							    	 }
+							    	
+							    	 //工作中心
+							    	 String workCenter = reader.get(5);
+							    	 workCenter = workCenter.trim();
+							    	 if(workCenter!=null&&!workCenter.isEmpty())
+							    	 {
+							    		 PWorkCenter pWorkCenter =  pWorkCenterRepository.getByCompanyIdAndWorkCenter(idCompany, workCenter);
+							    		 if(pWorkCenter==null)
+							    		 {
+
+												flag =false;
+												if(errorMap.containsKey(i))
+												{
+													errorMap.put(i, errorMap.get(i) + " 无此工作中心：" +workCenter);
+												}
+												else
+												{
+													errorMap.put(i,  "第" + i +"行出错，无此工作中心： " +workCenter);
+												}
+											
+											
+							    		 }
+							    		 else
+							    		 {
+							    			 w.setWorkCenterId(pWorkCenter.getIdWc());
+							    		 }
+							    	 }
+							    	
+							    	//级别
+							    	 String lvl = reader.get(6);
+							    	 
+							    	 if(lvl!=null&&!lvl.isEmpty())
+										{
+											try
+											{
+												w.setLvl(Long.parseLong(lvl));
+												
+											}
+											catch (Exception e)
+											{
+
+												
+												flag =false;
+												if(errorMap.containsKey(i))
+												{
+													errorMap.put(i, errorMap.get(i) + " 级别必须是数字: " + lvl);
+												}
+												else
+												{
+													errorMap.put(i,  "第" + i +"行出错，级别必须是数字: "+lvl);
+												}
+											
+											}
+										}
+									
+							    	 
+							    	//排序
+							    	 String seq = reader.get(7);
+							    	 if(seq!=null&&!seq.isEmpty())
+										{
+											try
+											{
+												w.setOrderBy(Long.parseLong(seq));
+												
+											}
+											catch (Exception e)
+											{
+
+												
+												flag =false;
+												if(errorMap.containsKey(i))
+												{
+													errorMap.put(i, errorMap.get(i) + " 单位用料必须是数字: " +seq);
+												}
+												else
+												{
+													errorMap.put(i,  "第" + i +"行出错，单位用料必须是数字: " +seq);
+												}
+											
+											}
+										}
+										
+							    	 
+							    	   	//单位用料
+							    	 String pqu = reader.get(8);
+							    		if(pqu!=null&&!pqu.isEmpty())
+										{
+											try
+											{
+												
+												w.setQpu(Float.parseFloat(pqu));
+											}
+											catch (Exception e)
+											{
+
+												
+												flag =false;
+												if(errorMap.containsKey(i))
+												{
+													errorMap.put(i, errorMap.get(i) + " 单位用料必须是数字: " +pqu);
+												}
+												else
+												{
+													errorMap.put(i,  "第" + i +"行出错，单位用料必须是数字: " +pqu);
+												}
+											
+											}
+										}
+										
+							    	 
+							    	   	//损耗
+							    	 String wastage = reader.get(9);
+							    	 
+							    	 if(wastage!=null&&!wastage.isEmpty())
+										{
+											try
+											{
+												
+												w.setWastage(Float.parseFloat(wastage));
+											}
+											catch (Exception e)
+											{
+
+												
+												flag =false;
+												if(errorMap.containsKey(i))
+												{
+													errorMap.put(i, errorMap.get(i) + " 单位损耗必须是数字: " +wastage);
+												}
+												else
+												{
+													errorMap.put(i,  "第" + i +"行出错，单位损耗必须是数字: "+wastage);
+												}
+											
+											}
+										}
+										
+							    	 
+							    	 bomItemMap.put(w.getPno(), w);
+							    	
+							     }
+						   }
+					
+					
+					}
+				}
+				
+			}
+			String msg = "";
+			for(String err: errorMap.values())
+			{
+				msg = msg+ err + "<br/> \r\n";
+			}
+			v.setMsg(msg);
+			v.setValid(flag);
+			//return v;
+		} catch (Exception e) {
+			e.printStackTrace();
+			v.setMsg("上传BOM 失败，请检查文件格式：必须是csv类型文件，必须用utf-8编码。");
+			v.setValid(false);
+			//return v;
+		}
+		
+		if(v.getValid())
+		{
+			
+			for(WSPBom wsPBom: bomLabelMap.values())
+			{
+				 bomLabelService.savePBomLabel(wsPBom);
+				//materialService.saveMaterial(wsMaterial);
+				System.out.println(" save: wsPom  pno: " + wsPBom.getMaterialId());
+			}
+	
+		}
+		
+		return v;
+	
+	}
+
+	
+	
+	
+	
+	
+	
 }

@@ -74,6 +74,7 @@ public class BomLabelService {
 		{
 			wsPBom.setIdBomLabel(0l);
 			wsPBom.setSaved(false);
+			
 			return wsPBom;
 		}
 			
@@ -126,6 +127,8 @@ public class BomLabelService {
 		
 	}
 	
+	
+	
 	@Transactional(readOnly=false)
 	public WSPBom updateBomStatus(WSPBom wsPBom) throws Exception {
 		PBomLabel pBomLabel = pBomLabelRepository.findOne(wsPBom.getIdBomLabel());
@@ -141,8 +144,10 @@ public class BomLabelService {
 		
 		PBomLabel pBomLabel = pBomLabelRepository.findOne(bomLabelId);
 		
+		
 		for(PBom p: pBomLabel.getPBoms())
 		{
+			//p.get
 			if(p.getIdRoutineD()!=null)
 			{
 
@@ -204,7 +209,7 @@ public class BomLabelService {
 		{
 			dbPBomLabel.setIdBomLabel(wsPBom.getIdBomLabel());
 		}
-	
+		//dbPBomLabel.se
         if(wsPBom.getCompanyId()!=null)
         	dbPBomLabel.setCompany(companyRepository.findOne(wsPBom.getCompanyId()));
         else

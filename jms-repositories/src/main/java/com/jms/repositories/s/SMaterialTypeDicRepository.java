@@ -10,4 +10,5 @@ import com.jms.domain.db.SStk;
 @Repository
 public interface SMaterialTypeDicRepository  extends JpaRepository<SMaterialTypeDic, Long>{
 		
+	public SMaterialTypeDic findByName(String name);
 }

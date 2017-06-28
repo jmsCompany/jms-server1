@@ -19,10 +19,10 @@ public class WSPBomItem {
     private BigDecimal cost;
    
     private Long idBomLabel;
-    private Long qpu;
+    private Float qpu;
     private Long orderBy;
     private Long lvl;
-    private Long wastage;
+    private Float wastage;
     
     private Long idParentBom;
     
@@ -66,10 +66,10 @@ public class WSPBomItem {
 	public void setIdBomLabel(Long idBomLabel) {
 		this.idBomLabel = idBomLabel;
 	}
-	public Long getQpu() {
+	public Float getQpu() {
 		return qpu;
 	}
-	public void setQpu(Long qpu) {
+	public void setQpu(Float qpu) {
 		this.qpu = qpu;
 	}
 	public Long getOrderBy() {
@@ -84,10 +84,10 @@ public class WSPBomItem {
 	public void setLvl(Long lvl) {
 		this.lvl = lvl;
 	}
-	public Long getWastage() {
+	public Float getWastage() {
 		return wastage;
 	}
-	public void setWastage(Long wastage) {
+	public void setWastage(Float wastage) {
 		this.wastage = wastage;
 	}
 	public Long getIdParentBom() {
