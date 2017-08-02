@@ -32,6 +32,9 @@ public class WSPWo {
     private Long typeId;
     private String orgWo;
     
+    private Date st;
+    private Date ft;
+    
     List<WSPRoutineD> routines = new ArrayList<WSPRoutineD>();
 
 	public Long getIdWo() {
@@ -153,6 +156,18 @@ public class WSPWo {
 	}
 	public void setOrgWo(String orgWo) {
 		this.orgWo = orgWo;
+	}
+	public Date getSt() {
+		return st;
+	}
+	public void setSt(Date st) {
+		this.st = st;
+	}
+	public Date getFt() {
+		return ft;
+	}
+	public void setFt(Date ft) {
+		this.ft = ft;
 	}
 
 

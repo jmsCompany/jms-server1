@@ -127,14 +127,17 @@ public class SInventoryService {
 	    	//	currentQty=s.getQty();
 	    		if(!currentQty.equals(0l))
 	    		{
+	    			SMaterial b = before.getSMaterial();
 	    			WSInventoryInfo i = new WSInventoryInfo();
-	    			i.setDes(before.getSMaterial().getDes());
-	    			i.setPno(before.getSMaterial().getPno());
-	    			i.setRev(before.getSMaterial().getRev());
-	    			i.setIdMaterial(before.getSMaterial().getIdMaterial());
+	    			i.setDes(b.getDes());
+	    			i.setPno(b.getPno());
+	    			i.setRev(b.getRev());
+	    			i.setIdMaterial(b.getIdMaterial());
 	    			i.setStkId(before.getSBin().getSStk().getId());
 	    			i.setStkName(before.getSBin().getSStk().getStkName());
 	    			i.setQty(currentQty);
+	    			String invUnit = (b.getSUnitDicByUnitInf()==null)?"":b.getSUnitDicByUnitInf().getName();
+	    			i.setInvUnit(invUnit);
 	    			infos.add(i);
 	    		}
 	    		currentQty = s.getQty();
@@ -144,14 +147,17 @@ public class SInventoryService {
 	    	num++;
 	    	if(num==ls.size()&&!currentQty.equals(0l))
 	    	{
+	    		SMaterial b = before.getSMaterial();
 	    		WSInventoryInfo i = new WSInventoryInfo();
-    			i.setDes(before.getSMaterial().getDes());
-    			i.setPno(before.getSMaterial().getPno());
-    			i.setRev(before.getSMaterial().getRev());
-    			i.setIdMaterial(before.getSMaterial().getIdMaterial());
+    			i.setDes(b.getDes());
+    			i.setPno(b.getPno());
+    			i.setRev(b.getRev());
+    			i.setIdMaterial(b.getIdMaterial());
     			i.setStkId(before.getSBin().getSStk().getId());
     			i.setStkName(before.getSBin().getSStk().getStkName());
     			i.setQty(currentQty);
+    			String invUnit = (b.getSUnitDicByUnitInf()==null)?"":b.getSUnitDicByUnitInf().getName();
+    			i.setInvUnit(invUnit);
     			infos.add(i);
 	    	}
 	    }

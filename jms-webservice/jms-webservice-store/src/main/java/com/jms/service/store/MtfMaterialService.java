@@ -258,7 +258,7 @@ public class MtfMaterialService {
 		{
 			dbSMtfMaterial.setQty3417(wsSMtfMaterial.getQtyChecked());
 		}
-		
+		dbSMtfMaterial.setQty(wsSMtfMaterial.getQty());
 		return dbSMtfMaterial;
 	}
 	
@@ -329,8 +329,8 @@ public class MtfMaterialService {
 		if(sMtfMaterial.getSPoMaterial()!=null)
 		{
 			wsSMtfMaterial.setPoMaterialId(sMtfMaterial.getSPoMaterial().getIdPoMaterial());
-			wsSMtfMaterial.setCodeCo(sMtfMaterial.getSPoMaterial().getSPo().getSCompanyCo().getCode());
-		//	logger.debug("set codeCo: " +sMtfMaterial.getSPoMaterial().getSPo().getSCompanyCo().getCode());
+			wsSMtfMaterial.setCodeCo(sMtfMaterial.getSPoMaterial().getSPo().getSCompanyCo().getShortName());
+			//logger.debug("set codeCo from po: " +sMtfMaterial.getSPoMaterial().getSPo().getSCompanyCo().getName());
 			wsSMtfMaterial.setCodePo(sMtfMaterial.getSPoMaterial().getSPo().getCodePo());
 		//	logger.debug("set codePo: " +sMtfMaterial.getSPoMaterial().getSPo().getCodePo());
 			wsSMtfMaterial.setDeliveryDate(sMtfMaterial.getSPoMaterial().getDeliveryDate());
@@ -355,7 +355,8 @@ public class MtfMaterialService {
 			wsSMtfMaterial.setSoId(sMtfMaterial.getSSo().getIdSo());
 			if(sMtfMaterial.getSSo().getSCompanyCo()!=null)
 			{
-				wsSMtfMaterial.setCodeCo(sMtfMaterial.getSSo().getSCompanyCo().getCode());
+				wsSMtfMaterial.setCodeCo(sMtfMaterial.getSSo().getSCompanyCo().getShortName());
+				//logger.debug("set codeCo from so: " +sMtfMaterial.getSSo().getSCompanyCo().getName());
 			}
 		
 			if(sMtfMaterial.getSSo().getSMaterial()!=null)

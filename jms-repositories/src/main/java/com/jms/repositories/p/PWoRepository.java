@@ -27,4 +27,8 @@ public interface PWoRepository extends JpaRepository<PWo, Long>{
     public List<PWo> getByCompanyIdAndQuery(Long companyId,String q);
     
     
+    @Query("select p from PWo p where p.SSo.company.idCompany=?1 and p.SSo.SMaterial.idMaterial=?2 and p.PStatusDic.idPstatus=12")
+    public List<PWo> findOpenWoByCompanyIdAndProductId(Long companyId,Long productId);
+    
+    
 }

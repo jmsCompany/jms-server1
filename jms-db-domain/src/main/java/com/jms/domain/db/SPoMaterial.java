@@ -36,7 +36,7 @@ public class SPoMaterial  implements java.io.Serializable {
      private Long line;
      private Long qtyPo;
      private BigDecimal UPrice;
-     private Long totalPrice;
+     private Float totalPrice;
      private String remark;
      private Date deliveryDate;
      private Long qtyReceived;
@@ -47,21 +47,7 @@ public class SPoMaterial  implements java.io.Serializable {
     public SPoMaterial() {
     }
 
-    public SPoMaterial(SStatusDic SStatusDic, SPo SPo, SMaterial SMaterial, Long line, Long qtyPo, BigDecimal UPrice, Long totalPrice, String remark, Date deliveryDate, Long qtyReceived, String autoRemark, Set<QDimensionReport> QDimensionReports, Set<SMtfMaterial> SMtfMaterials) {
-       this.SStatusDic = SStatusDic;
-       this.SPo = SPo;
-       this.SMaterial = SMaterial;
-       this.line = line;
-       this.qtyPo = qtyPo;
-       this.UPrice = UPrice;
-       this.totalPrice = totalPrice;
-       this.remark = remark;
-       this.deliveryDate = deliveryDate;
-       this.qtyReceived = qtyReceived;
-       this.autoRemark = autoRemark;
-       this.QDimensionReports = QDimensionReports;
-       this.SMtfMaterials = SMtfMaterials;
-    }
+ 
    
      @Id @GeneratedValue(strategy=IDENTITY)
     
@@ -128,12 +114,12 @@ public class SPoMaterial  implements java.io.Serializable {
         this.UPrice = UPrice;
     }
     
-    @Column(name="total_price", precision=10, scale=0)
-    public Long getTotalPrice() {
+    @Column(name="total_price", precision=22)
+    public Float getTotalPrice() {
         return this.totalPrice;
     }
     
-    public void setTotalPrice(Long totalPrice) {
+    public void setTotalPrice(Float totalPrice) {
         this.totalPrice = totalPrice;
     }
     

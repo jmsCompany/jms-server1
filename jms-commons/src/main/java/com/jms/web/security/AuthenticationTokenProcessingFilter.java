@@ -73,7 +73,7 @@ public class AuthenticationTokenProcessingFilter extends
 		}
 		else
 		{
-			if (SecurityContextHolder.getContext().getAuthentication() == null) {
+			//if (SecurityContextHolder.getContext().getAuthentication() == null) {
 				String token = request.getHeader("JMS-TOKEN");
 				if (token != null) {
 					if (tokenUtils.validate(token)) {
@@ -91,13 +91,13 @@ public class AuthenticationTokenProcessingFilter extends
 
 						SecurityContextHolder.getContext().setAuthentication(
 								authenticated);
-						logger.debug("userid:" +userDetails.getUsername() +", ip: "+request.getRemoteAddr()+", path: "+ request.getRequestURI());
+						//logger.debug("userid:" +userDetails.getUsername() +", ip: "+request.getRemoteAddr()+", path: "+ request.getRequestURI());
 						//System.out.println("user:" +userDetails.getUsername()+ ", call  "  +req.getClass().getCanonicalName() +", path: " +req.getLocalAddr() +","+ req.getRemoteAddr() +", " +req.getServletContext());
 					}
 				}
 
 				
-			}
+			//}
 			chain.doFilter(request, response);
 		}
 	}

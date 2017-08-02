@@ -1,21 +1,23 @@
 package com.jms.service.store;
 
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.jms.domain.db.Company;
 import com.jms.domain.db.SComCom;
 import com.jms.domain.db.SCompanyCo;
+import com.jms.domain.db.SLinkman;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMtfNo;
 import com.jms.domain.db.SPo;
@@ -23,6 +25,8 @@ import com.jms.domain.db.SPoMaterial;
 import com.jms.domain.db.SSo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
+import com.jms.domain.ws.s.WSPoItem;
+import com.jms.domain.ws.s.WSPoPrint;
 import com.jms.domain.ws.s.WSSpo;
 import com.jms.domain.ws.s.WSSpoMaterial;
 import com.jms.domain.ws.s.WSSpoRemark;
@@ -43,6 +47,7 @@ import com.jms.repositories.s.SStatusDicRepository;
 import com.jms.repositories.s.SStermDicRepository;
 import com.jms.repositories.s.SStkTypeDicRepository;
 import com.jms.web.security.SecurityUtils;
+
 
 
 @Service
@@ -90,6 +95,7 @@ public class SpoService {
 	
 	public WSSpo saveSpo(WSSpo wsSpo) throws Exception {
 		
+		//System.out.println("新建采购订单： ");
 		SPo spo;
 		//create
 		if(wsSpo.getIdPo()==null||wsSpo.getIdPo().equals(0l))
@@ -135,6 +141,7 @@ public class SpoService {
 			else
 			{
 				//发邮件，创建销售订单
+				wsSpo.setCodePo(spo.getCodePo());
 				Valid v1 =  generateSo(wsSpo);
 				if(!v1.getValid())
 				{
@@ -162,7 +169,22 @@ public class SpoService {
 			}
 		}
 
-		
+		else  //正常采购订单
+		{
+			
+					SPo sp =sSpoRepository.save(spo);
+					wsSpo.setIdPo(sp.getIdPo());
+					for(String k: wsSpo.getPoItems().keySet())
+					{
+					//	logger.debug("save po material: " + k);
+						WSSpoMaterial wm =wsSpo.getPoItems().get(k);
+						wm.setLine(Long.parseLong(k.substring(4)));			
+						wm.setsPoId(sp.getIdPo());
+						spoMaterialService.saveSpoMaterial(wm);
+					
+					}
+				}
+	
 		return wsSpo;
 	}
 	
@@ -229,6 +251,82 @@ public class SpoService {
 	}
 	
 	
+	public WSPoPrint printSpo(Long spoId) 
+	{
+		Company company = securityUtils.getCurrentDBUser().getCompany();
+		SPo spo = sSpoRepository.findOne(spoId);
+		WSPoPrint wsPoPrint = new  WSPoPrint();
+		wsPoPrint.setAddress(company.getAddress()==null?"":company.getAddress());
+		SCompanyCo sco = spo.getSCompanyCo();
+		wsPoPrint.setCoAddress(sco.getAddressAct()==null?"":sco.getAddressAct());
+		wsPoPrint.setCompanyName(company.getCompanyName());
+		wsPoPrint.setCoName(sco.getName());
+		wsPoPrint.setPoDate(formatDate(spo.getDateOrder()));
+		
+		wsPoPrint.setFax(company.getFax()==null?"":company.getFax());
+		wsPoPrint.setTelephone(company.getTelephone()==null?"":company.getTelephone());
+		wsPoPrint.setPoCode(spo.getCodePo());
+		if(spo.getUsers()!=null)
+		{
+			wsPoPrint.setLinkMan(spo.getUsers().getName()==null?"":spo.getUsers().getName());
+			wsPoPrint.setLinkTel(spo.getUsers().getMobile()==null?"":spo.getUsers().getMobile());
+		}
+		
+		if(!sco.getSLinkmans().isEmpty())
+		{
+			SLinkman s =sco.getSLinkmans().iterator().next();
+			wsPoPrint.setLinkMan1(s.getName());
+			wsPoPrint.setLinkTel1(s.getPhoneNo());
+		}
+		wsPoPrint.setUrl(company.getUrl()==null?"":company.getUrl());
+		
+		
+	   List<WSPoItem> items = new ArrayList<WSPoItem>();
+	   int seq = 1;
+	   Float tot = 0f;
+		for(SPoMaterial s: spo.getSPoMaterials())
+		{
+			WSPoItem item = new WSPoItem();
+			item.setC1(""+seq);
+			SMaterial m = s.getSMaterial();
+			item.setC2(m.getPno());
+			item.setC3(m.getDes());
+			item.setC4(m.getBrand());
+			if(m.getSUnitDicByUnitPur()!=null)
+			{
+				item.setC5(m.getSUnitDicByUnitPur().getName());
+			}
+			else
+			{
+				item.setC5("");
+			}
+			item.setC6(""+s.getQtyPo());
+			item.setC7(s.getUPrice().toString());
+			item.setC8(""+s.getTotalPrice());
+			tot = tot+ s.getTotalPrice();
+			item.setC9(s.getRemark());
+			item.setC10(formatDate(s.getDeliveryDate()));
+			items.add(item);
+			
+			seq++;
+		}
+		wsPoPrint.setItems(items);
+		
+	    wsPoPrint.setPrice(""+tot);
+		
+		wsPoPrint.setPriceCap(NumberToCN.number2CNMontrayUnit(new BigDecimal(tot)));
+	
+		return wsPoPrint;
+	}
+	
+	private String formatDate(Date d) {
+		if (d == null)
+			return "";
+		SimpleDateFormat myFmt1 = new SimpleDateFormat("yyyy-MM-dd");
+		return myFmt1.format(d);
+	}
+	
+	
 	public List<WSSpo> findSpoList(Long companyId) throws Exception 
 	{
 		List<WSSpo> ws = new ArrayList<WSSpo>();
@@ -265,11 +363,28 @@ public class SpoService {
 		{
 			if(wsSpo.getCodePo()==null)
 			{
-				SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 10l);
-			    long currentVal =smtfNo.getCurrentVal()+1;
+				//Date d = new Date();
+				String d=new SimpleDateFormat("yyyyMM").format(Calendar.getInstance().getTime());
+				//System.out.println("现在年月: " + d);
+				//SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 10l);
+				SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndPrefix(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), "PO"+d);
+				
+			if(smtfNo==null)
+			{
+				smtfNo  = new SMtfNo();
+				smtfNo.setPrefix("PO" + d);
+				smtfNo.setType(10l);
+				smtfNo.setCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+				smtfNo.setCurrentVal(0l);
+				smtfNo.setToday(new Date());
+				smtfNo.setDes(d +"的销售订单");
+				smtfNo = sMtfNoRepository.save(smtfNo);
+			}
+				
+				long currentVal =smtfNo.getCurrentVal()+1;
 			    smtfNo.setCurrentVal(currentVal);
 			    sMtfNoRepository.save(smtfNo);
-			    String codePo = smtfNo.getPrefix()+String.format("%08d", currentVal);
+			    String codePo = smtfNo.getPrefix()+String.format("%03d", currentVal);
 				dbSpo.setCodePo(codePo);
 			}
 			else
@@ -295,7 +410,16 @@ public class SpoService {
 		}
 		if(wsSpo.getsCompanyCoId()!=null)
 		{
-			dbSpo.setSCompanyCo(sCompanyCoRepository.findOne(wsSpo.getsCompanyCoId()));
+			 SCompanyCo sCompanyCo = sCompanyCoRepository.findOne(wsSpo.getsCompanyCoId());
+			 dbSpo.setSCompanyCo(sCompanyCo);
+			
+
+			 Company soCompany =companyRepository.findByCompanyName(sCompanyCo.getName());
+			 if(soCompany!=null)
+			 {
+				 dbSpo.setIdCompany2(soCompany.getIdCompany());
+			 }
+
 		}
 		if(wsSpo.getsCurrencyTypeId()!=null)
 		{
@@ -329,10 +453,16 @@ public class SpoService {
 					dbSpo.setIdCompany1(comcom.getIdCompany1());
 				}
 			}
+			else //往来公司是自己
+			{
+				dbSpo.setIdCompany1(securityUtils.getCurrentDBUser().getCompany().getIdCompany());
+			}
 	
 			
 		}
-
+		
+		
+		
 		return dbSpo;
 	}
 	
@@ -411,7 +541,7 @@ public class SpoService {
 					
 				 //4.供应商的客户必须是当前公司
 				 String customerName = securityUtils.getCurrentDBUser().getCompany().getCompanyName();
-				 SCompanyCo sCompanyCoA = sCompanyCoRepository.findByCompanyIdAndName(soCompany.getIdCompany(), customerName);
+				 SCompanyCo sCompanyCoA = sCompanyCoRepository.findByCompanyIdAndNameAndType(soCompany.getIdCompany(), customerName,2l);
 				 if(sCompanyCoA==null)
 				 {
 					v.setValid(false);
@@ -501,7 +631,7 @@ public class SpoService {
 				
 				SMaterial m = sMaterialRepository.findOne(wm.getsMaterialId());
 				SMaterial cm = sMaterialRepository.getByCompanyIdAndPno(soCompany.getIdCompany(), m.getPno());
-				if(cm!=null) //必须激活状态
+				if(cm!=null) //
 				{
 					//create so
 					//System.out.println("新建销售订单：id_company: " +soCompany.getIdCompany() );
@@ -522,7 +652,8 @@ public class SpoService {
 				    sSo.setIdCompany1(idWanglai); //往来公司，需要发给下一家的公司
 				    try
 				    {
-				    	SCompanyCo sCompanyCo1=sCompanyCoRepository.findByCompanyIdAndName(soCompany.getIdCompany(), securityUtils.getCurrentDBUser().getCompany().getCompanyName());
+				    	SCompanyCo sCompanyCo1=sCompanyCoRepository.findByCompanyIdAndNameAndType
+				    			(soCompany.getIdCompany(), securityUtils.getCurrentDBUser().getCompany().getCompanyName(),2l);
 				         sSo.setSCompanyCo(sCompanyCo1);
 				    }catch(Exception e)
 				    {
@@ -585,7 +716,7 @@ public class SpoService {
 			}
 			
 			 v.setMsg(msg);
-			 System.out.println(" valid: " + v.getValid() + ", msg: " + msg);
+			// System.out.println(" valid: " + v.getValid() + ", msg: " + msg);
 			 return v;
 		}
 

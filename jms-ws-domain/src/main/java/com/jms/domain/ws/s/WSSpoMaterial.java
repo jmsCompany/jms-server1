@@ -27,7 +27,7 @@ public class WSSpoMaterial {
     private Long line;
     private Long qtyPo;
     private BigDecimal uprice;
-    private Long totalPrice;
+    private Float totalPrice;
     private String remark;
     private Date deliveryDate;
     private Long qtyReceived;
@@ -81,10 +81,10 @@ public class WSSpoMaterial {
 		this.qtyPo = qtyPo;
 	}
 
-	public Long getTotalPrice() {
+	public Float getTotalPrice() {
 		return totalPrice;
 	}
-	public void setTotalPrice(Long totalPrice) {
+	public void setTotalPrice(Float totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 	public String getRemark() {

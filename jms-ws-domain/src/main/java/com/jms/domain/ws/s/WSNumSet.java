@@ -7,6 +7,7 @@ public class WSNumSet {
 	private Long autoSo;
 	private Long autoDo;
 	private Long autoWo;
+	private Long soWo;
 	
 	public Long getAutoDo() {
 		return autoDo;
@@ -31,6 +32,12 @@ public class WSNumSet {
 	}
 	public void setAutoWo(Long autoWo) {
 		this.autoWo = autoWo;
+	}
+	public Long getSoWo() {
+		return soWo;
+	}
+	public void setSoWo(Long soWo) {
+		this.soWo = soWo;
 	}
 
    

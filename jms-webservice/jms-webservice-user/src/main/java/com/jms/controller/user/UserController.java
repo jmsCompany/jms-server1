@@ -587,6 +587,10 @@ public class UserController {
 		userProfile.setCompanyName(u.getCompany().getCompanyName());
 		Boolean isOP= false;
 		userProfile.setIsAdmin(false);
+		userProfile.setAutoDo(u.getCompany().getAutoDo()); //出货
+		userProfile.setAutoPo(u.getCompany().getAutoPo());
+		userProfile.setAutoSo(u.getCompany().getAutoSo());
+		userProfile.setAutoWo(u.getCompany().getAutoWo());
 		for(GroupMembers g:u.getGroupMemberses())
 		{
 			//System.out.println("g: " + g.getGroups().getGroupName());
@@ -1086,8 +1090,8 @@ public class UserController {
 		Map<Apps, String> smap= securedObjectService.getSecuredObjectsWithPermissions(u, appList);
 		boolean fileMang =false;
 	
-		for(Apps a : appList)
-		//for(Apps a : smap.keySet())
+		//for(Apps a : appList)
+		for(Apps a : smap.keySet())
 		{
 			WSMenu item = new WSMenu();
 			if(u.getLang()!=null&&u.getLang().equals("en"))

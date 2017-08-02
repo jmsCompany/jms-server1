@@ -13,7 +13,12 @@
 	<packaging>jar</packaging>
 	<name>jms-domain-adapter</name>
 	<description>jms-domain-adapter</description>
-
+    <properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+	</properties>
+	
 	<developers>
 		<developer>
 			<name>Hongtao Ren</name>

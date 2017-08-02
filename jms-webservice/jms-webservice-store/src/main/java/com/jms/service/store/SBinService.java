@@ -117,7 +117,7 @@ public class SBinService implements ISBinService {
 		List<WSSelectObj> wsBinList = new ArrayList<WSSelectObj>();
 		for (SBin bin : sBinRepository.getByIdStk(idStk)) {
 			WSSelectObj o = new WSSelectObj(bin.getIdBin(), bin.getBin());
-			System.out.println("bin: " + bin.getBin());
+			//System.out.println("bin: " + bin.getBin());
 			wsBinList.add(o);
 		}
 

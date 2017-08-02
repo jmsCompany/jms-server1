@@ -7,6 +7,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.jms.domain.db.Company;
+import com.jms.domain.db.PWo;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMtfNo;
 import com.jms.domain.db.SPic;
@@ -16,6 +19,8 @@ import com.jms.domain.ws.s.WSMaterial;
 import com.jms.domain.ws.s.WSSSoRemark;
 import com.jms.domain.ws.s.WSSso;
 import com.jms.domainadapter.BeanUtil;
+import com.jms.repositories.p.PStatusDicRepository;
+import com.jms.repositories.p.PWoRepository;
 import com.jms.repositories.s.SCompanyCoRepository;
 import com.jms.repositories.s.SCurrencyTypeRepository;
 import com.jms.repositories.s.SMaterialRepository;
@@ -40,7 +45,8 @@ public class SsoService {
 	private SStatusDicRepository  sStatusDicRepository;
 	@Autowired
 	private SStkTypeDicRepository sStkTypeDicRepository;
-
+	@Autowired
+	private PWoRepository pWoRepository;
 	@Autowired 
 	private  SecurityUtils securityUtils;
 	@Autowired 
@@ -61,9 +67,12 @@ public class SsoService {
 	
 	@Autowired private SMtfNoRepository sMtfNoRepository;
 	@Autowired private SMtfNoService sMtfNoService;
+	@Autowired private PStatusDicRepository pStatusDicRepository;
+	@Autowired private MrpService mrpService;
 
 	public Valid saveSSo(WSSso wsSso) throws Exception {
 		
+		Company company = securityUtils.getCurrentDBUser().getCompany();
 		SSo sso;
 		//create
 		if(wsSso.getIdSo()==null||wsSso.getIdSo().equals(0l))
@@ -78,7 +87,14 @@ public class SsoService {
 		}
 		
 		sso=toDBSso(wsSso,sso);
-		SSo sp =sSoRepository.save(sso);
+		sso =sSoRepository.save(sso);
+		//System.out.println("status: " + wsSso.getsStatusId() +", sowo: " + company.getSoWo());
+		if(wsSso.getsStatusId().equals(18l)&&company.getSoWo()!=null&&company.getSoWo().equals(1l))//激活状态
+		{
+			//System.out.println("生成工单！");
+			genertorWoBySo(sso);
+		}
+		
 		
 		Valid valid = new Valid();
 		valid.setValid(true);
@@ -101,6 +117,7 @@ public class SsoService {
 	private SSo toDBSso(WSSso wsSso,SSo sso) throws Exception
 	{
 	
+		//System.out.println("xxxx: " + wsSso.getsCompanyCoId());
 		SSo dbSso = (SSo)BeanUtil.shallowCopy(wsSso, SSo.class, sso);
 		
 		if(wsSso.getIdSo()==null||wsSso.getIdSo().equals(0l))
@@ -131,6 +148,10 @@ public class SsoService {
 			dbSso.setSCompanyCo(sCompanyCoRepository.findOne(wsSso.getsCompanyCoId()));
 		}
 		
+//		if(wsSso.getIdCompany2()!=null)
+//		{
+//			Co
+//		}
 		if(wsSso.getsStatusId()!=null)
 		{
 			dbSso.setSStatusDic(sStatusDicRepository.findOne(wsSso.getsStatusId()));
@@ -151,7 +172,7 @@ public class SsoService {
 	
 
 	public Valid saveSoAutoRemark(WSSSoRemark wsSSoRemark) {
-		
+		Company company = securityUtils.getCurrentDBUser().getCompany();
 		SSo sso = sSoRepository.findOne(wsSSoRemark.getIdSo());	
 		sso.setAutoRemark(wsSSoRemark.getAutoRemark());
 		if(!sso.getSStatusDic().getId().equals(wsSSoRemark.getStatusId()))
@@ -159,6 +180,12 @@ public class SsoService {
 			if(wsSSoRemark.getStatusId()!=null)
 			{
 				sso.setSStatusDic(sStatusDicRepository.findOne(wsSSoRemark.getStatusId()));
+				
+				if(wsSSoRemark.getStatusId().equals(18l)&&company.getSoWo()!=null&&company.getSoWo().equals(1l))//激活状态
+				{
+					genertorWoBySo(sso);
+				}
+				
 			}
 			if(wsSSoRemark.getStatusId().equals(16l)) // 作废
 			{
@@ -249,7 +276,49 @@ public class SsoService {
 
 	}
 
-	
+	@Transactional(readOnly=false)
+	public Valid genertorWoBySo(SSo so)
+	{
+
+	 
+	    Long materialId = so.getSMaterial().getIdMaterial();
+	   // Long qtySo =so.getQtySo();
+	    //todo:v
+	    Long inv = mrpService.getInv(materialId);
+	    Long openSo = mrpService.getOpenSo(materialId);
+	    Long openPo = mrpService.getOpenPo(materialId);
+	    Long openWo = mrpService.getOpenWo(materialId);
+	    
+	    Long qty = openSo-inv-openPo-openWo;
+	  
+	    
+	 //   System.out.println("open so: " + openSo +", inv: " + inv +", openPo: " + openPo +", open Wo: " + openWo);
+	    
+	    if(qty>0)
+	    {
+			PWo wo = new PWo();
+			SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 9l);
+		    long currentVal =smtfNo.getCurrentVal()+1;
+		    smtfNo.setCurrentVal(currentVal);
+		    sMtfNoRepository.save(smtfNo);
+		    String codePo = smtfNo.getPrefix()+String.format("%08d", currentVal);
+		    wo.setWoNo(codePo);
+		    
+		    wo.setCreationTime(new Date());
+		    wo.setUsers(securityUtils.getCurrentDBUser());
+		    wo.setSSo(so);
+		    wo.setSt(new Date());
+		    wo.setFt(so.getDeliveryDate());
+		    wo.setPStatusDic(pStatusDicRepository.findOne(12l)); //开放状态
+		    wo.setQty(qty);
+	    	pWoRepository.save(wo);
+	    }
+	   
+	   // wo.set
+		Valid v = new Valid();
+		v.setValid(true);
+		return v;
+	}
 	
 
 }

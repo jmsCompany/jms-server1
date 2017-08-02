@@ -1,6 +1,7 @@
 package com.jms.repositories.s;
 
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,5 +35,18 @@ public interface SSpoMaterialRepository  extends JpaRepository<SPoMaterial, Long
 	@Query("select s from SPoMaterial s where s.SPo.idPo=?1 and s.SMaterial.idMaterial=?2")
 	public SPoMaterial getByMaterialIdAndPoId(Long spoId,Long materialId);
 	
+	
+	@Query("select s from SPoMaterial s where s.SPo.idPo=?1 and s.SMaterial.pno=?2")
+	public SPoMaterial getByPnoAndPoId(Long spoId,String pno);
+	
+	
+	//激活
+	@Query("select s from SPoMaterial s where s.SMaterial.idMaterial=?1 and s.SPo.SStatusDic.id=11")
+	public List<SPoMaterial> findOpenSposByMaterialId(Long materialId);
+	
+	
+	//激活
+	@Query("select s from SPoMaterial s where s.SMaterial.idMaterial=?1 and s.SPo.SStatusDic.id=11  and s.deliveryDate<=?2")
+	public List<SPoMaterial> findOpenSposByMaterialIdBeforeDate(Long materialId,Date d);
 
 }

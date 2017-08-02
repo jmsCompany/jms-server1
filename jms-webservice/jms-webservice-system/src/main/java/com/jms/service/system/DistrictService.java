@@ -1,5 +1,8 @@
 package com.jms.service.system;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.csvreader.CsvReader;
+
 import com.jms.domain.db.City;
 import com.jms.domain.db.District;
 import com.jms.domain.db.Province;
@@ -96,6 +100,12 @@ public class DistrictService {
 		}
 	}
 	
+	
+	
+	
+	
+	
+	
 	public void loadCitiesFromCSV(InputStream inputStream) throws IOException{
 		CsvReader reader = new CsvReader(inputStream,',', Charset.forName("UTF-8"));
       //  reader.readHeaders();  //Parent,  Name,     Description
@@ -125,7 +135,6 @@ public class DistrictService {
 		{
 			Long idDistrict = Long.parseLong(reader.get(0).trim());
 			String sdistrict = reader.get(1).trim();
-			
 			Long idCity = Long.parseLong(reader.get(2).trim());
 			City city = cityRepository.findOne(idCity);
 			District  district = new District();
@@ -136,4 +145,68 @@ public class DistrictService {
 	
 		}
 	}
+	
+	
+	
+//	
+//	
+//	public void loadYadongFromCSV(InputStream inputStream) throws IOException{
+//		CsvReader reader = new CsvReader(inputStream,',', Charset.forName("UTF-8"));
+//        reader.readHeaders();  //Parent,  Name,     Description
+//        
+//     
+//        CsvReader reader1 = new CsvReader(inputStream,',', Charset.forName("UTF-8"));
+//        reader1.readHeaders();  //Parent,  Name,     Description
+//        
+//        List<String> nodeList = new ArrayList<String>();
+//      //  File node = new File("/Users/renhongtao/yadong/node.csv");
+//   //     BufferedWriter bw = new BufferedWriter(new FileWriter(node, false)); // 附加   
+//         
+//        //生成节点文件
+//       // reader.getr
+//        int line=0;
+//		while(reader.readRecord())
+//		{
+//			nodeList.add(reader.get(0).trim());
+//		//	bw.write(reader.get(0).trim());
+//		 //   bw.newLine(); 
+//		    System.out.println("line: " +line +", val: " + reader.get(0).trim());
+//		    line++;
+//	
+//		}
+//	//	bw.close();
+//		
+//		System.out.println("size: " +nodeList.size() );
+//		 File edge = new File("/Users/renhongtao/yadong/edge.csv");
+//	     BufferedWriter be = new BufferedWriter(new FileWriter(edge, true)); // 附加   
+//	     //生成边
+//	    int i=0;
+//		while(reader1.readRecord())
+//		{
+//		
+//			for(int j=1;j<nodeList.size()+1;j++)
+//			{
+//				System.out.println("i: " + i +", j: " + j);
+//				String v = reader1.get(j);
+//				String va = v.trim().isEmpty()?"":v.trim();
+//				if(!va.equals("0")||!va.startsWith("-"))
+//				{
+//					be.write(nodeList.get(i) +""+nodeList.get(j)+"," +va);
+//				    be.newLine(); 
+//				}
+//				
+//			}
+//		    i++;
+//		
+//		}
+//		//	bw.close();
+//			 be.close(); 
+//	        
+//	        
+//	        
+//	}
+//	
+//	
+	
+	
 }

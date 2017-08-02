@@ -27,11 +27,12 @@
                     <property name="initialSize" value="10"/>  
                     <property name="maxWait" value="10000"/>  
                     <property name="removeAbandoned" value="true" />
-                    <property name="removeAbandonedTimeout" value="60"/>  
-                    <property name="minEvictableIdleTimeMillis" value="30000"/>  
+                    <property name="removeAbandonedTimeout" value="600"/>  
+                    <property name="minEvictableIdleTimeMillis" value="300000"/>  
                     <property name="minIdle" value="10"/>  
                     <property name="logAbandoned" value="true"/>  
-                    <property name="jdbcInterceptors" value="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer"/>  
+                    <property name="jdbcInterceptors" value="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer;org.apache.tomcat.jdbc.pool.interceptor.ResetAbandonedTimer"/>
+                    
                 </bean>  
             </property>  
         </bean>  

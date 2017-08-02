@@ -23,6 +23,13 @@ public class WSUserProfile implements java.io.Serializable{
 	private String companyName;
 	
 	private String department;
+	
+    private Long autoPo;
+    private Long autoSo;
+    private Long autoDo;
+    private Long autoWo;
+    private Long soWo;
+	
 	private List<WSPCppAndriod> pcppList =new ArrayList<WSPCppAndriod>();
 	
 	
@@ -107,6 +114,36 @@ public class WSUserProfile implements java.io.Serializable{
 	}
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
+	}
+	public Long getAutoPo() {
+		return autoPo;
+	}
+	public void setAutoPo(Long autoPo) {
+		this.autoPo = autoPo;
+	}
+	public Long getAutoSo() {
+		return autoSo;
+	}
+	public void setAutoSo(Long autoSo) {
+		this.autoSo = autoSo;
+	}
+	public Long getAutoDo() {
+		return autoDo;
+	}
+	public void setAutoDo(Long autoDo) {
+		this.autoDo = autoDo;
+	}
+	public Long getAutoWo() {
+		return autoWo;
+	}
+	public void setAutoWo(Long autoWo) {
+		this.autoWo = autoWo;
+	}
+	public Long getSoWo() {
+		return soWo;
+	}
+	public void setSoWo(Long soWo) {
+		this.soWo = soWo;
 	}
 
 

@@ -13,6 +13,8 @@ import com.jms.domain.db.SMtfMaterial;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
+import com.jms.domain.ws.s.WSDoPrint;
+import com.jms.domain.ws.s.WSIqcPrint;
 import com.jms.domain.ws.s.WSMaterialChecked;
 import com.jms.domain.ws.s.WSSMtf;
 import com.jms.domain.ws.s.WSSMtfMaterial;
@@ -53,6 +55,25 @@ public class MtfController {
 		return mtfService.findSMtf(smtfId);
 	}
 	
+	
+	
+	//出货打印
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/printDoSmtf", method=RequestMethod.GET)
+	public WSDoPrint printDoSmtf(@RequestParam("smtfId") Long smtfId) throws Exception {
+		
+		return  mtfService.printDoSmtf(smtfId);
+	}
+	
+	
+	//打印入库单
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/printIqcSmtf", method=RequestMethod.GET)
+	public WSIqcPrint printIqcSmtf(@RequestParam("smtfId") Long smtfId) throws Exception {
+		return  mtfService.printIqcSmtf(smtfId);
+	}
+	
+	
 
 	
 	@Transactional(readOnly = true)
@@ -68,6 +89,7 @@ public class MtfController {
 			WSSelectObj w = new WSSelectObj();
 			w.setSid(sm.getIdMtfMaterial()+"_"+sm.getSMaterial().getIdMaterial());
 			w.setName(sm.getSMaterial().getPno()+"_"+sm.getSMaterial().getRev()+"_"+sm.getSMaterial().getDes()+", 批号: "+lotNo+ ", 数量: " +qty+", 已检: " + qtyChecked);
+			//w.setName(sm.getSMaterial().getPno()+"_"+sm.getSMaterial().getRev()+"_"+sm.getSMaterial().getDes()+", 批号: "+lotNo+ ", 数量: " +qty);
 		    ws.add(w);
 		}
 		return ws;
@@ -445,7 +467,7 @@ public class MtfController {
 		
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		
-		System.out.println("companyId: " + companyId);
+		//System.out.println("companyId: " + companyId);
 	
 		List<SMtfMaterial> sMtfMaterials = sMtfMaterialRepositoryCustom.getCustomSMtf(companyId, typeId,q,fromStkId,toStkId, fromDay, toDay);
 		List<String[]> lst = new ArrayList<String[]>();

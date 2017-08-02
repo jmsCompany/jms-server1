@@ -64,7 +64,15 @@ public class FilesController {
 	public void getImage(@PathVariable("fileName") String fileName,  HttpServletRequest request,  
           HttpServletResponse response) throws IOException {
 		 String ext = fileName.substring(fileName.lastIndexOf(".")+1);
-		 response.setContentType("image/" +ext);  
+		// response.setContentType("image/" +ext);  
+		 if(ext.equals("jpg"))
+			{
+				response.setContentType("image/jpeg");
+			}
+			else
+			{
+				response.setContentType("image/" + ext);
+			}
 	  //   request.setCharacterEncoding("UTF-8");
 	     File f = new File(filePath + fileName);
 	     long fileLength =f.length();  

@@ -45,6 +45,13 @@ public class SMaterial  implements java.io.Serializable {
      private BigDecimal cost;
      private Long mpq;
      private Long safetyInv;
+     
+     private String lvl;
+     private Float calc;
+     
+
+     
+     
      private Set<SSo> SSos = new HashSet<SSo>(0);
      private Set<QNcr> QNcrs = new HashSet<QNcr>(0);
      private Set<PRoutine> PRoutines = new HashSet<PRoutine>(0);
@@ -406,6 +413,24 @@ public class SMaterial  implements java.io.Serializable {
 
 	public void setEmailSended(Long emailSended) {
 		this.emailSended = emailSended;
+	}
+
+	@Column(name="lvl", length=45)
+	public String getLvl() {
+		return lvl;
+	}
+
+	public void setLvl(String lvl) {
+		this.lvl = lvl;
+	}
+
+	@Column(name="calc")
+	public Float getCalc() {
+		return calc;
+	}
+
+	public void setCalc(Float calc) {
+		this.calc = calc;
 	}
 
 

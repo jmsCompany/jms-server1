@@ -89,7 +89,7 @@ public class SSpoMaterialRepositoryCustomImpl implements SSpoMaterialRepositoryC
 			 query=query + " and DATE(s.SPo.dateOrder)<='" + toDay +"'";
 		 }
 		 query=query + " order by s.SPo.codePo desc";
-//		 System.out.println(query);
+		 System.out.println(query);
 		  return em.createQuery(query, SPoMaterial.class).getResultList();
 	}
 

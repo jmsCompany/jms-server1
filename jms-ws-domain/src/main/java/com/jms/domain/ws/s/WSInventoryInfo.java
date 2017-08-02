@@ -12,6 +12,9 @@ public class WSInventoryInfo {
     private Long qty;
     private Long stkId;
     private String stkName;
+    
+    
+    private String invUnit;
 
     
     public Long getIdMaterial() {
@@ -61,6 +64,12 @@ public class WSInventoryInfo {
 	}
 	public void setInventoryId(Long inventoryId) {
 		this.inventoryId = inventoryId;
+	}
+	public String getInvUnit() {
+		return invUnit;
+	}
+	public void setInvUnit(String invUnit) {
+		this.invUnit = invUnit;
 	}
 
 }

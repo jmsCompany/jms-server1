@@ -54,6 +54,9 @@ public class SMtf  implements java.io.Serializable {
      private Long cRev;
      private Long tRev;
      
+     
+     private Long idR;
+     
      private Set<SMtfMaterial> SMtfMaterials = new HashSet<SMtfMaterial>(0);
 
     public SMtf() {
@@ -250,6 +253,15 @@ public class SMtf  implements java.io.Serializable {
 
 	public void settRev(Long tRev) {
 		this.tRev = tRev;
+	}
+
+	 @Column(name="id_r")
+	public Long getIdR() {
+		return idR;
+	}
+
+	public void setIdR(Long idR) {
+		this.idR = idR;
 	}
 
 

@@ -68,16 +68,15 @@ public class SsoController {
 	@RequestMapping(value="/s/findCoOrderNosByCompany2Id", method=RequestMethod.GET)
 	public List<WSSelectObj> findCoOrderNosByCompany2Id(@RequestParam("idCompany2") Long idCompany2) throws Exception {
 		List<WSSelectObj> ws =new ArrayList<WSSelectObj>();
-	    System.out.println("idCompany2: " + idCompany2); //32
+	    //System.out.println("idCompany2: " + idCompany2); //32
 	    //here is idComCom!!!!!!!
 	    SComCom c = sComComRepository.findOne(idCompany2);
 		Long idCompany =securityUtils.getCurrentDBUser().getCompany().getIdCompany();
-		System.out.println("mycompany: " + idCompany); //116
+		//System.out.println("mycompany: " + idCompany); //116
 		Long idCompanytwo;
 		if(idCompany.equals(c.getIdCompany1()))
 		{
 			idCompanytwo = c.getIdCompany2();
-			
 			//System.out.println("idCompanytwo1: " + idCompanytwo); //119
 		}
 		else
@@ -217,12 +216,12 @@ public class SsoController {
 			idCompanytwo=c.getIdCompany1();
 		}
  		
- 		System.out.println("company2:" + idCompanytwo);
+ 		//System.out.println("company2:" + idCompanytwo);
 		List<WSSelectObj>  ws = new ArrayList<WSSelectObj>();
 		for(SSo s :sSoRepository.findByCompany2IdAndOrderNo(idCompanytwo,orderNo))
 		{
 			WSSelectObj w = new WSSelectObj(s.getIdSo(),s.getCodeSo());
-			System.out.println("idSo: " + s.getIdSo() +"codeSo: " +s.getCodeSo());
+			//System.out.println("idSo: " + s.getIdSo() +"codeSo: " +s.getCodeSo());
 			ws.add(w);
 		}
 		return ws;

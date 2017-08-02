@@ -27,12 +27,13 @@
    
     </appenders>
     <loggers>
-    
+    <!--  <Logger name="org.springframework.boot.actuate" level="debug" /> -->
+    <Logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="debug" />
       <Logger name="com.jms" level="debug" />
-        <Root level="warn">
+       <Root level="warn">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="File" />
             <AppenderRef ref="log" />
-        </Root>
+        </Root> 
     </loggers>
 </configuration>

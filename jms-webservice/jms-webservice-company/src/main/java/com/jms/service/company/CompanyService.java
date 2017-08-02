@@ -267,7 +267,7 @@ public class CompanyService {
 			
 			GroupMembers gm1 = new GroupMembers();
 			GroupMembersId id1 = new GroupMembersId();
-			System.out.println("admin group: " +g.getIdGroup() );
+			//System.out.println("admin group: " +g.getIdGroup() );
 			id1.setIdGroup(g.getIdGroup());
 			id1.setIdUser(securityUtils.getCurrentDBUser().getIdUser());
 			gm1.setId(id1);

@@ -75,7 +75,7 @@ public class SpoMaterialService {
 		
 		SPoMaterial spoMaterial;
 		//create
-		if(wsSpoMaterial==null||wsSpoMaterial.getIdPoMaterial().equals(0l))
+		if(wsSpoMaterial.getIdPoMaterial()==null||wsSpoMaterial.getIdPoMaterial().equals(0l))
 		{
 			spoMaterial=new SPoMaterial();
 		}

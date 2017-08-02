@@ -17,6 +17,10 @@ public class WSInventory {
     private String lotNo;
     private Long UQty;
     private Long box;
+    
+    private String remark; //盘点说明
+    
+    private Long newQty; //盘点库存量
 
     
     public Long getIdMaterial() {
@@ -96,6 +100,18 @@ public class WSInventory {
 	}
 	public void setInventoryId(Long inventoryId) {
 		this.inventoryId = inventoryId;
+	}
+	public Long getNewQty() {
+		return newQty;
+	}
+	public void setNewQty(Long newQty) {
+		this.newQty = newQty;
+	}
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 }

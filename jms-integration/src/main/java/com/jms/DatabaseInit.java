@@ -208,6 +208,9 @@ public class DatabaseInit {
 		districtService.loadCitiesFromCSV(cityRes.getInputStream());
 		districtService.loadDistrictsFromCSV(districtRes.getInputStream());
 
+
+
+
 		UserDetails userDetails = userDetailService.loadUserByUsername(""+usersRepository.findByUsername("admin").getIdUser());
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 				userDetails.getUsername(), userDetails.getPassword());
@@ -344,6 +347,10 @@ public class DatabaseInit {
 //		Authentication authenticated = authenticationManager
 //				.authenticate(authentication);
 //		SecurityContextHolder.getContext().setAuthentication(authenticated);
+		
+		
+	//	Resource districtRes = ctx.getResource("classpath:data/123061.csv");
+	//	districtService.loadYadongFromCSV(districtRes.getInputStream());
 		
 	}
 	

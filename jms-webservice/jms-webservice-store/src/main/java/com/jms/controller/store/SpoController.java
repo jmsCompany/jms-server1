@@ -6,7 +6,9 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
@@ -19,19 +21,27 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.csvreader.CsvReader;
+import com.jms.domain.db.Company;
 import com.jms.domain.db.SAttachment;
+import com.jms.domain.db.SCompanyCo;
+import com.jms.domain.db.SCurrencyType;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SPo;
 import com.jms.domain.db.SPoMaterial;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
+import com.jms.domain.ws.p.WSPBom;
+import com.jms.domain.ws.s.WSPoPrint;
 import com.jms.domain.ws.s.WSSpo;
 import com.jms.domain.ws.s.WSSpoMaterial;
 import com.jms.domain.ws.s.WSSpoRemark;
 import com.jms.file.FileMeta;
 import com.jms.file.FileUploadService;
 import com.jms.repositories.s.SAttachmentRepository;
+import com.jms.repositories.s.SCompanyCoRepository;
+import com.jms.repositories.s.SCurrencyTypeRepository;
+import com.jms.repositories.s.SMaterialRepository;
 import com.jms.repositories.s.SSpoMaterialRepositoryCustom;
 import com.jms.repositories.s.SSpoRepository;
 import com.jms.service.store.SpoMaterialService;
@@ -47,10 +57,14 @@ public class SpoController {
 	@Autowired private SpoService spoService;
 	@Autowired private SSpoRepository sSpoRepository;
 	@Autowired private SpoMaterialService spoMaterialService;
-	@Autowired private FileUploadService fileUploadService;
+	
 	@Autowired private SAttachmentRepository sAttachmentRepository;
 	@Autowired private SSpoMaterialRepositoryCustom sSpoMaterialRepositoryCustom;
+	@Autowired private SCompanyCoRepository sCompanyCoRepository;
 	
+	@Autowired private SCurrencyTypeRepository sCurrencyTypeRepository;
+	@Autowired private SMaterialRepository sMaterialRepository;
+	@Autowired private FileUploadService fileUploadService;
 	@Value("${filePath}")
 	private String filePath;
 	private static final Logger logger = LogManager.getLogger(SpoController.class.getCanonicalName());
@@ -94,79 +108,352 @@ public class SpoController {
 
 	@Transactional(readOnly = false)
 	@RequestMapping(value = "/s/uploadSpoFile", method = RequestMethod.POST)
-	public Valid uploadSpoFile(MultipartHttpServletRequest request, HttpServletResponse response) {
+	public Valid uploadSpoFile(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
 
+		//1采购单号，2供应商名称（全称），3汇率，4税率，5币别（不填写默认人民币），6物料编码，7版本，8单价，9采购单位，10数量，11交货日期，12备注
 		// poNo,coComId,exchange,tax,currTypeId,statusId,totalprice,materialId,unitprice,unit,qtyNum,price,deliveryDate,remark,sno
-
+	    Company c=	securityUtils.getCurrentDBUser().getCompany();
+		Long myCompanyId = c.getIdCompany();
 		Valid v = new Valid();
+		v.setValid(true);
+
+		Map<Integer,String> errorMap = new LinkedHashMap<Integer,String>();
+		Map<String,WSSpo> spoMap = new LinkedHashMap<String,WSSpo>();
 		FileMeta fileMeta = new FileMeta();
 		try {
+			 boolean flag = true;
 			if (request.getFileNames().hasNext()) {
 				fileMeta = fileUploadService.upload(request, response, true);
 				FileInputStream inputStream = new FileInputStream(filePath + fileMeta.getFileName());
 				CsvReader reader = new CsvReader(inputStream, ',', Charset.forName("UTF-8"));
 				reader.readHeaders();
-				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-				WSSpo spo = new WSSpo();
-				int i = 0;
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+				String currentPoNo = "";
+				Long currentPoId =0l;
+				WSSpo currentPo;
+				float totalAmount = 0f;
+				float totalPrice = 0f;
+				//WSSpo spo = new WSSpo();
+			    Map<String,WSSpoMaterial> poItems = new LinkedHashMap<String,WSSpoMaterial>();
+			   
+				Integer i = 1;
+				int line =0;
 				while (reader.readRecord()) {
 					i++;
+					line++;
+					 WSSpoMaterial wsSpoMaterial =  new WSSpoMaterial();
+					
 					// System.out.println("woId:" + reader.get(0));
+					 ////1采购单号，2供应商名称（全称），3汇率，4税率，5币别（不填写默认人民币），6物料编码，7版本，8单价，9采购单位，10数量，11交货日期，12备注
 					String codePo = reader.get(0);// 订单编码
-					if (codePo.isEmpty()) {
-						codePo = null;
+					codePo =codePo.trim();
+					currentPo = new WSSpo();
+					if(codePo==null||codePo.isEmpty())
+					{
+						flag =false;
+						if(errorMap.containsKey(i))
+						{
+							errorMap.put(i, errorMap.get(i) + "  订单编码不能为空： " + codePo);
+						}
+						else
+						{
+							errorMap.put(i,  "第" + i +"行出错，订单编码不能为空：：  " +codePo);
+						}
 					}
-					Long coCompanyId = Long.parseLong(reader.get(1)); // 供应商公司ID
-					Float exchange = Float.parseFloat(reader.get(2)); // 汇率
-					Float tax = Float.parseFloat(reader.get(3)); // 税
-					Long currTypeId = Long.parseLong(reader.get(4)); // 币别
-					Long statusId = Long.parseLong(reader.get(5)); // 状态ID
-					Float totalAmount = Float.parseFloat(reader.get(6)); // 总价
-					Long materialId = Long.parseLong(reader.get(7)); // 物料Id
-
-					BigDecimal uprice = new BigDecimal(reader.get(8)); // 单价
-					String unit = reader.get(9); // 单价
-					Long qty = Long.parseLong(reader.get(10)); // 数量
-					Long price = Long.parseLong(reader.get(11)); // 价格
-					Date deliveryDate = formatter.parse(reader.get(12));// 运货日期
-					String remark = reader.get(13);//
-
-					String sno = reader.get(14);// 缺货单号
-
-					if (i == 1) {
-						spo.setCodePo(codePo);
-						spo.setsCompanyCoId(coCompanyId);
-						spo.setExchange(exchange);
-						spo.setsCurrencyTypeId(currTypeId);
-						spo.setTaxRate(tax);
-						spo.setRemark(remark);
-						spo.setsStatusId(statusId);// 编辑状态
-						spo.setTotalAmount(totalAmount);
-						// spo.set
-					}
-
-					WSSpoMaterial pm = new WSSpoMaterial();
-					pm.setQtyPo(qty);
-					pm.setUnit(unit);
-					pm.setUprice(uprice);
-					pm.setTotalPrice(price);
-					pm.setDeliveryDate(deliveryDate);
-					pm.setsMaterialId(materialId);
-					// pm.set
-					// pm.setDes(des);
-					spo.getPoItems().put("item" + i, pm);
-
+					else
+					{
+						if(spoMap.containsKey(codePo))
+						{
+							currentPo = spoMap.get(codePo);
+							//currentPo.setDateOrder(new Date());
+						}
+						else
+						{
+							currentPo = new WSSpo();
+							currentPo.setCodePo(codePo);
+							poItems = new LinkedHashMap<String,WSSpoMaterial>();
+							currentPo.setPoItems(poItems);
+							currentPo.setDateOrder(new Date());
+							currentPo.setsStatusId(7l);//编辑状态
+							
+							System.out.println(" 新建订单： " + codePo);
+							spoMap.put(codePo, currentPo);
+							line =1;
+							//currentPo.ge
+						}
+					 }
+					////1采购单号，2供应商名称（全称），3汇率，4税率，5币别（不填写默认人民币），6物料编码，7版本，8单价，9采购单位，10数量，11交货日期，12备注
+				String coCompanyName = reader.get(1); // 供应商公司名称
+				coCompanyName =coCompanyName.trim();
+   				SCompanyCo sCompanyCo = sCompanyCoRepository.findByCompanyIdAndNameAndType(myCompanyId, coCompanyName,1l);
+				if(sCompanyCo==null)
+				{
+		             flag =false;
+					 if(errorMap.containsKey(i))
+						{
+								errorMap.put(i, errorMap.get(i) + " 无此供应商名称: " + coCompanyName);
+						}
+						else
+						{
+								errorMap.put(i,  "第" + i +"行出错，无此供应商名称:  " + coCompanyName);
+						}
+				 }
+				else
+				{
+					currentPo.setsCompanyCoId(sCompanyCo.getId());
+					
 				}
-				spoService.saveSpo(spo);
+
+				
+				//1采购单号，2供应商名称（全称），3汇率，4税率，5币别（不填写默认人民币），6物料编码，7版本，8单价，9采购单位，10数量，11交货日期，12备注
+				String exchanges =  reader.get(2);
+				exchanges =exchanges.trim();
+				if(exchanges!=null&&!exchanges.isEmpty())
+				{
+					try
+					{
+					
+						currentPo.setExchange(Float.parseFloat(exchanges));
+				
+					}
+					catch (Exception e)
+					{
+
+						flag =false;
+						if(errorMap.containsKey(i))
+						{
+							errorMap.put(i, errorMap.get(i) + " 汇率必须是数字: " + exchanges);
+						}
+						else
+						{
+							errorMap.put(i,  "第" + i +"行出错，汇率必须是数字: "+exchanges);
+						}
+					
+					
+					}
+				}
+
+				//1采购单号，2供应商名称（全称），3汇率，4税率，5币别（不填写默认人民币），6物料编码，7版本，8单价，9采购单位，10数量，11交货日期，12备注
+				String tax =  reader.get(3);
+				tax = tax.trim();
+				if(tax!=null&&!tax.isEmpty())
+				{
+					try
+					{
+					
+						currentPo.setTaxRate(Float.parseFloat(tax));
+				
+					}
+					catch (Exception e)
+					{
+
+
+						
+						flag =false;
+						if(errorMap.containsKey(i))
+						{
+							errorMap.put(i, errorMap.get(i) + " 税率必须是数字: " + exchanges);
+						}
+						else
+						{
+							errorMap.put(i,  "第" + i +"行出错，税率必须是数字: "+exchanges);
+						}
+					
+					
+					}
+				}
+				//1采购单号，2供应商名称（全称），3汇率，4税率，5币别（不填写默认人民币），6物料编码，7版本，8单价，9采购单位，10数量，11交货日期，12备注
+				String currType = reader.get(4);
+				currType = currType.trim();
+				if(currType!=null&&!currType.isEmpty())
+				{
+					SCurrencyType	sCurrencyType = sCurrencyTypeRepository.findByCurrency(currType);
+					if(sCurrencyType==null)
+					{
+						flag =false;
+						if(errorMap.containsKey(i))
+						{
+							errorMap.put(i, errorMap.get(i) + " 币别出错: " + currType);
+						}
+						else
+						{
+							errorMap.put(i,  "第" + i +"行出错，币别: "+currType);
+						}
+					
+					}
+				}
+				else
+				{
+					currentPo.setsCurrencyTypeId(1l);
+				}
+				
+			
+				//1采购单号，2供应商名称（全称），3汇率，4税率，5币别（不填写默认人民币），6物料编码，7版本，8单价，9采购单位，10数量，11交货日期，12备注
+				String pno = reader.get(5);
+				pno = pno.trim();
+				if(pno==null||pno.isEmpty())
+				{
+					flag =false;
+					if(errorMap.containsKey(i))
+					{
+						errorMap.put(i, errorMap.get(i) + "  物料编码长度必须在0-64之间： " + pno);
+					}
+					else
+					{
+						errorMap.put(i,  "第" + i +"行出错，物料编码长度必须在0-64之间：  " +pno);
+					}
+				}
+				else
+				{
+					//采购的物料
+				   SMaterial mat =	sMaterialRepository.getByCompanyIdAndPno(myCompanyId, pno);
+				   if(mat ==null)
+				   {
+						flag =false;
+						if(errorMap.containsKey(i))
+						{
+							errorMap.put(i, errorMap.get(i) + "  无此物料编码： " + pno);
+						}
+						else
+						{
+							errorMap.put(i,  "第" + i +"行出错，无此物料编码：  " +pno);
+						}
+				
+				   }
+				   else
+				   {
+					  // currentPo.getPoItems();
+					   wsSpoMaterial.setCodePo(codePo);
+					   wsSpoMaterial.setsMaterialId(mat.getIdMaterial());
+					   System.out.println("输入物料： item"+line   + " id: " +mat.getIdMaterial() );
+					   poItems.put("item"+line, wsSpoMaterial);
+				   }
+				   }
+				//1采购单号，2供应商名称（全称），3汇率，4税率，5币别（不填写默认人民币），6物料编码，7版本，8单价，9采购单位，10数量，11交货日期，12备注
+				try{
+					String s = reader.get(7);
+					s = s.trim();
+					BigDecimal uprice = new BigDecimal(s); //单位价格
+					
+					wsSpoMaterial.setUprice(uprice);
+				}
+				catch (Exception e)
+				{
+
+					flag =false;
+					if(errorMap.containsKey(i))
+					{
+						errorMap.put(i, errorMap.get(i) + "  单位价格输入错误： " + reader.get(7));
+					}
+					else
+					{
+						errorMap.put(i,  "第" + i +"行出错，单位价格输入错误：  " +reader.get(7));
+					}
+			
+			   
+				}
+				//1采购单号，2供应商名称（全称），3汇率，4税率，5币别（不填写默认人民币），6物料编码，7版本，8单价，9采购单位，10数量，11交货日期，12备注
+				String unit = reader.get(8); // 采购单位
+				wsSpoMaterial.setUnit(unit);
+				
+				
+				try{
+					String s  = reader.get(9);
+					s = s.trim();
+					Long qty = Long.parseLong(s); // 数量
+					
+					wsSpoMaterial.setQtyPo(qty);
+				}
+				catch (Exception e)
+				{
+
+					e.printStackTrace();
+					flag =false;
+					if(errorMap.containsKey(i))
+					{
+						errorMap.put(i, errorMap.get(i) + "  数量输入错误： " + reader.get(9));
+					}
+					else
+					{
+						errorMap.put(i,  "第" + i +"行出错，数量输入错误：：  " +reader.get(9));
+					}
+			
+			   
+				}
+				
+				if(wsSpoMaterial.getQtyPo()!=null&&wsSpoMaterial.getUprice()!=null)
+				{
+					totalPrice = wsSpoMaterial.getQtyPo()*wsSpoMaterial.getUprice().floatValue();
+					wsSpoMaterial.setTotalPrice(totalPrice);
+					totalAmount = totalAmount + totalPrice;
+					currentPo.setTotalAmount(totalAmount);
+					
+				}
+			
+				try{
+					String s  = reader.get(10);
+					s = s.trim();
+					Date deliveryDate = formatter.parse(s);// 运货日期
+					
+					wsSpoMaterial.setDeliveryDate(deliveryDate);
+					//wsSpoMaterial.setQtyPo(qty);
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+
+					flag =false;
+					if(errorMap.containsKey(i))
+					{
+						errorMap.put(i, errorMap.get(i) + "  日期输入错误： " + reader.get(10));
+					}
+					else
+					{
+						errorMap.put(i,  "第" + i +"行出错，日期输入错误：：  " +reader.get(10));
+					}
+			
+			   
+				}
+
+				String remark = reader.get(12);//
+				wsSpoMaterial.setRemark(remark);
+				}
 			}
+			String msg = "";
+			for(String err: errorMap.values())
+			{
+				msg = msg+ err + "<br/> \r\n";
+			}
+			v.setMsg(msg);
+			v.setValid(flag);
 		} catch (Exception e) {
 			e.printStackTrace();
 			v.setMsg("上传采购订单失败！");
 			v.setValid(false);
 			return v;
 		}
-		v.setMsg("成功");
-		v.setValid(true);
+		if(v.getValid())
+		{
+			
+			for(WSSpo wsSPo: spoMap.values())
+			{
+				// bomLabelService.savePBomLabel(wsPBom);
+				//materialService.saveMaterial(wsMaterial);
+				System.out.println(" save: wsSpo  spno: " + wsSPo.getCodePo() +" spo size: " + wsSPo.getPoItems().size());
+				
+				if(c.getAutoPo()!=null&&c.getAutoPo().equals(1l))//自动增
+				{
+					wsSPo.setCodePo(null);
+				}
+				for(WSSpoMaterial wpm: wsSPo.getPoItems().values())
+				{
+					System.out.println(" mat: " + wpm.getsMaterialId());
+				}
+				spoService.saveSpo(wsSPo);
+			}
+	
+		}
+		
 		return v;
 	}
 
@@ -187,6 +474,13 @@ public class SpoController {
 	public WSSpo findWSSpo(@RequestParam("spoId") Long spoId) throws Exception {
 		return spoService.findSpo(spoId);
 	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value = "/s/spoPrint", method = RequestMethod.GET)
+	public WSPoPrint spoPrint(@RequestParam("spoId") Long spoId)  {
+		return spoService.printSpo(spoId);
+	}
+	
 
 	@Transactional(readOnly = true)
 	@RequestMapping(value = "/s/spoMaterialList", method = RequestMethod.POST)
@@ -327,118 +621,6 @@ public class SpoController {
 		return spoService.findSpoListByCodeCo(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), codeCo);
 	}
 
-	// 采购价格列表fake
-	@Transactional(readOnly = true)
-	@RequestMapping(value = "/s/spoprice", method = RequestMethod.POST)
-	public WSTableData spoprice(@RequestParam Integer draw, @RequestParam Integer start, @RequestParam Integer length)
-			throws Exception {
-
-		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
-
-		List<String[]> lst = new ArrayList<String[]>();
-		int end = 0;
-		if (1 < start + length)
-			end = 1;
-		else
-			end = start + length;
-		// 6、8、9、11
-		// for (int i = start; i < end; i++) {
-		String[] d = { "1", "2", "3", "4", "5", "6", "7", "是", "9" };
-		lst.add(d);
-
-		// }
-		WSTableData t = new WSTableData();
-		t.setDraw(draw);
-		t.setRecordsTotal(1);
-		t.setRecordsFiltered(1);
-		t.setData(lst);
-		return t;
-	}
-
-	// 采购价格列表fake
-	@Transactional(readOnly = true)
-	@RequestMapping(value = "/s/shortmaterials", method = RequestMethod.POST)
-	public WSTableData shortmaterials(@RequestParam(required = false, value = "materialId") Integer materialId,
-			@RequestParam Integer draw, @RequestParam Integer start, @RequestParam Integer length) throws Exception {
-
-		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
-
-		List<String[]> lst = new ArrayList<String[]>();
-		int end = 0;
-		if (1 < start + length)
-			end = 1;
-		else
-			end = start + length;
-		// 6、8、9、11
-		// for (int i = start; i < end; i++) {
-		String[] d = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17" };
-		lst.add(d);
-
-		// }
-		WSTableData t = new WSTableData();
-		t.setDraw(draw);
-		t.setRecordsTotal(1);
-		t.setRecordsFiltered(1);
-		t.setData(lst);
-		return t;
-	}
-
-	
-	// 采购价格列表fake
-	@Transactional(readOnly = true)
-	@RequestMapping(value = "/s/shortmaterilasTotal", method = RequestMethod.POST)
-	public WSTableData shortmaterilas(@RequestParam(required = false, value = "materialId") Integer materialId,
-			@RequestParam Integer draw, @RequestParam Integer start, @RequestParam Integer length) throws Exception {
-
-		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
-
-		List<String[]> lst = new ArrayList<String[]>();
-		int end = 0;
-		if (1 < start + length)
-			end = 1;
-		else
-			end = start + length;
-		// 6、8、9、11
-		// for (int i = start; i < end; i++) {
-		String[] d = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
-		lst.add(d);
-
-		// }
-		WSTableData t = new WSTableData();
-		t.setDraw(draw);
-		t.setRecordsTotal(1);
-		t.setRecordsFiltered(1);
-		t.setData(lst);
-		return t;
-	}
-
-	
-	// 采购价格列表fake
-	@Transactional(readOnly = true)
-	@RequestMapping(value = "/s/tmpspo", method = RequestMethod.POST)
-	public WSTableData tmpspo(@RequestParam(required = false, value = "materialId") Integer materialId,
-			@RequestParam Integer draw, @RequestParam Integer start, @RequestParam Integer length) throws Exception {
-
-		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
-
-		List<String[]> lst = new ArrayList<String[]>();
-		int end = 0;
-		if (1 < start + length)
-			end = 1;
-		else
-			end = start + length;
-		// 6、8、9、11
-		// for (int i = start; i < end; i++) {
-		String[] d = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14" };
-		lst.add(d);
-		// }
-		WSTableData t = new WSTableData();
-		t.setDraw(draw);
-		t.setRecordsTotal(1);
-		t.setRecordsFiltered(1);
-		t.setData(lst);
-		return t;
-	}
 
 	
 	@Transactional(readOnly = true)
@@ -446,7 +628,7 @@ public class SpoController {
 	public Valid checkCodePo(@RequestParam("codePo") String codePo) {
 		Valid valid = new Valid();
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
-		List<SPo> spos = sSpoRepository.findByCompanyIdAndCodePo(companyId, codePo);
+		List<SPo> spos = sSpoRepository.findByCompanyIdAndCodePoAll(companyId, codePo);
 		if(spos.isEmpty())
 		{
 			valid.setValid(true);

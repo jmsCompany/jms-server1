@@ -15,12 +15,16 @@ public interface SSpoRepository  extends JpaRepository<SPo, Long>{
 	public List<SPo> findByCompanyId(Long companyId);
 	
 	
-	@Query("select s from SPo s where s.company.idCompany=?1 and s.SCompanyCo.id=?2")
+	@Query("select s from SPo s where s.company.idCompany=?1 and s.SCompanyCo.id=?2 and s.SStatusDic.id=11")
 	public List<SPo> findByCompanyIdAndCodeCo(Long companyId,Long codeCo);
 	
 	
 	@Query("select s from SPo s where s.company.idCompany=?1 and s.codePo=?2 and s.SStatusDic.id=11 order by s.idPo desc")
 	public List<SPo> findByCompanyIdAndCodePo(Long companyId,String codePo);
+	
+	
+	@Query("select s from SPo s where s.company.idCompany=?1 and s.codePo=?2")
+	public List<SPo> findByCompanyIdAndCodePoAll(Long companyId,String codePo);
 	
 
 }

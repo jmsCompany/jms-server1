@@ -15,6 +15,9 @@ public interface SMaterialRepository  extends JpaRepository<SMaterial, Long>{
   @Query("select s from SMaterial s where s.company.idCompany=?1 order by s.pno")
   public List<SMaterial> getByCompanyId(Long companyId);
   
+  @Query("select s from SMaterial s where s.company.idCompany=?1 and s.lvl=?2 order by s.pno")
+  public List<SMaterial> getByCompanyIdAndLvl(Long companyId,String lvl);
+  
   @Query("select s from SMaterial s where s.company.idCompany=?1 and s.SMaterialTypeDic.id=?2")
   public List<SMaterial> getByCompanyIdAndMaterialType(Long companyId,Long materialTypeId);
   

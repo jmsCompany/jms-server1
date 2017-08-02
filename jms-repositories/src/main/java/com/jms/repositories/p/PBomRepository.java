@@ -43,4 +43,8 @@ public interface PBomRepository extends JpaRepository<PBom, Long>{
 	
 
 	
+	@Query("select p from PBom p where p.SMaterial.idMaterial=?1 and p.PBom is not null")
+	public List<PBom> findBomsByMaterialId(Long materialId);
+	
+	
 }

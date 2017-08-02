@@ -99,7 +99,7 @@ public class MtfCController {
 			idCompany2=null;
 		}
 		
-		System.out.println("明细q: " + q +" ,idCompany2: " + idCompany2 +", fromDay: " + fromDay +", today? " + toDay);
+		//System.out.println("明细q: " + q +" ,idCompany2: " + idCompany2 +", fromDay: " + fromDay +", today? " + toDay);
 		
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		List<SMtfMaterial> wsSMtfMaterials = sMtfMaterialRepositoryCustom.getCustomCSMtf(companyId, idCompany2, q, fromDay, toDay);
@@ -115,7 +115,7 @@ public class MtfCController {
 		{
 			
 			SMtfMaterial w = wsSMtfMaterials.get(i);
-		//	System.out.println("id_mt: " +w.getSMtf().getIdMt() );
+		  //  System.out.println("id_mt: " +w.getSMtf().getIdMt() );
 			Company c1 = w.getSMtf().getCompany();
 			String  c2="";
 			if(w.getSMtf().getIdToCompany()!=null)
@@ -124,27 +124,31 @@ public class MtfCController {
 				c2 =c.getCompanyName();
 			}
 			
+			
 			Date date = w.getSMtf().getCreationTime();
-			String sDate = "";
+		    String sDate = "";
 			if(date!=null)
 			{
 				SimpleDateFormat myFmt1=new SimpleDateFormat("yyyy-MM-dd"); 
 				sDate = myFmt1.format(date);;
 			}
+			
+			
 			String material ="";
 			if(w.getSMaterial()!=null)
 			{
 				material = w.getSMaterial().getPno()+"_"+w.getSMaterial().getDes();
 			}
+			
 			String[] d = {
 					c1.getCompanyName(),
 					c2,
 					sDate,
 					material,
 					""+w.getQty()
-					//w.
 					};
 			lst.add(d);
+			
 		}
 
 	

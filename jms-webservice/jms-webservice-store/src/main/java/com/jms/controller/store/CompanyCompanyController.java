@@ -367,6 +367,7 @@ public class CompanyCompanyController {
 		company.setAutoPo(wsNumSet.getAutoPo());
 		company.setAutoSo(wsNumSet.getAutoSo());
 		company.setAutoWo(wsNumSet.getAutoWo());
+		company.setSoWo(wsNumSet.getSoWo());
 		companyRepository.save(company);
 		return wsNumSet;
 	}
@@ -381,10 +382,12 @@ public class CompanyCompanyController {
 		Long autoSo = (company.getAutoSo()==null)?1l:company.getAutoSo();
 		Long autoWo = (company.getAutoWo()==null)?1l:company.getAutoWo();
 		Long autoPo = (company.getAutoPo()==null)?1l:company.getAutoPo();
+		Long soWo = (company.getSoWo()==null)?0l:company.getSoWo();
 		ws.setAutoDo(autoDo);
 		ws.setAutoPo(autoPo);
 		ws.setAutoSo(autoSo);
 		ws.setAutoWo(autoWo);
+		ws.setSoWo(soWo);
 		return ws;
 	}
 	

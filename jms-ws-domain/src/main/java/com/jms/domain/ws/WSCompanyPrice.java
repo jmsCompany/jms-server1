@@ -9,10 +9,10 @@ public class WSCompanyPrice implements java.io.Serializable{
 	private Long idCocompany;
     private String companyName;
     private Float price;
-    private Integer isPrim;
+    private Long isPrim;
     private Float perc;
-    private Integer days;
-    private String meth;
+    private Long days;
+    private Float carriage;
     private Long materialId;
 	public Long getId() {
 		return id;
@@ -38,10 +38,10 @@ public class WSCompanyPrice implements java.io.Serializable{
 	public void setPrice(Float price) {
 		this.price = price;
 	}
-	public Integer getIsPrim() {
+	public Long getIsPrim() {
 		return isPrim;
 	}
-	public void setIsPrim(Integer isPrim) {
+	public void setIsPrim(Long isPrim) {
 		this.isPrim = isPrim;
 	}
 	public Float getPerc() {
@@ -50,18 +50,13 @@ public class WSCompanyPrice implements java.io.Serializable{
 	public void setPerc(Float perc) {
 		this.perc = perc;
 	}
-	public Integer getDays() {
+	public Long getDays() {
 		return days;
 	}
-	public void setDays(Integer days) {
+	public void setDays(Long days) {
 		this.days = days;
 	}
-	public String getMeth() {
-		return meth;
-	}
-	public void setMeth(String meth) {
-		this.meth = meth;
-	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -70,5 +65,11 @@ public class WSCompanyPrice implements java.io.Serializable{
 	}
 	public void setMaterialId(Long materialId) {
 		this.materialId = materialId;
+	}
+	public Float getCarriage() {
+		return carriage;
+	}
+	public void setCarriage(Float carriage) {
+		this.carriage = carriage;
 	}  
 }

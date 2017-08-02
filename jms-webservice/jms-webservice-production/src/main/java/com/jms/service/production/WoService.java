@@ -624,16 +624,21 @@ public class WoService {
 	{
 	
 		PWo dbPWo = (PWo)BeanUtil.shallowCopy(wsPWo, PWo.class, pWo);
+		if(wsPWo.getIdWo()==null||wsPWo.getIdWo().equals(0l))
+		{
 		
-//		SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 9l);
-//	    long currentVal =smtfNo.getCurrentVal()+1;
-//	    smtfNo.setCurrentVal(currentVal);
-//	    sMtfNoRepository.save(smtfNo);
-//		
-//	    String codeWo = smtfNo.getPrefix()+String.format("%08d", currentVal);
-//	    dbPWo.setWoNo(codeWo);
+		if(wsPWo.getWoNo()==null)
+		{
+			SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 9l);
+		    long currentVal =smtfNo.getCurrentVal()+1;
+		    smtfNo.setCurrentVal(currentVal);
+		    sMtfNoRepository.save(smtfNo);
+		    String codePo = smtfNo.getPrefix()+String.format("%08d", currentVal);
+		    dbPWo.setWoNo(codePo);
+		}
+		}
 		
-	//	dbPWo.setWoNo(wsPWo.getWoNo());
+		
 
         if(wsPWo.getSoId()!=null)
         	dbPWo.setSSo(sSoRepository.findOne(wsPWo.getSoId()));

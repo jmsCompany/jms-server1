@@ -12,5 +12,8 @@ import com.jms.domain.db.SCurrencyType;
 @Repository
 public interface SCurrencyTypeRepository  extends JpaRepository<SCurrencyType, Long>{
 	
+	
+	public SCurrencyType findByCurrency(String currency);
+	
 		
 }

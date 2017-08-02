@@ -41,6 +41,10 @@ public class PWo  implements java.io.Serializable {
      private Set<PWoRoute> PWoRoutes = new HashSet<PWoRoute>(0);
      private Set<PCPp> PCPps = new HashSet<PCPp>(0);
      
+     
+     private Date st;
+     private Date ft;
+     
      private Date actSt;
      private Date actFt;
      private Long actQty;
@@ -203,6 +207,30 @@ public class PWo  implements java.io.Serializable {
 
 	public void setOrgWo(String orgWo) {
 		this.orgWo = orgWo;
+	}
+
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="st", length=19)
+	public Date getSt() {
+		return st;
+	}
+
+
+	public void setSt(Date st) {
+		this.st = st;
+	}
+
+
+	  @Temporal(TemporalType.TIMESTAMP)
+	    @Column(name="ft", length=19)
+	public Date getFt() {
+		return ft;
+	}
+
+
+	public void setFt(Date ft) {
+		this.ft = ft;
 	}
 
 

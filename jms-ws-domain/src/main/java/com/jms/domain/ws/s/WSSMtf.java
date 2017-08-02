@@ -33,6 +33,7 @@ public class WSSMtf {
 	     
 	     private String coOrderNo;
 	     
+	     private Long idR; //上一次smtf
 	 
 	     private boolean savePmr=false;
 	     
@@ -198,6 +199,12 @@ public class WSSMtf {
 		}
 		public void setIdCustomerCompany(Long idCustomerCompany) {
 			this.idCustomerCompany = idCustomerCompany;
+		}
+		public Long getIdR() {
+			return idR;
+		}
+		public void setIdR(Long idR) {
+			this.idR = idR;
 		}
    
 }

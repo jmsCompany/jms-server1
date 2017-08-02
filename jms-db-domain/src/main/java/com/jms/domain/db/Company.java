@@ -72,6 +72,7 @@ public class Company  extends AbstractSecuredEntity  implements java.io.Serializ
      private Long autoSo;
      private Long autoDo;
      private Long autoWo;
+     private Long soWo;
      
      private Set<PBomLabel> PBomLabels = new HashSet<PBomLabel>(0);
      private Set<PWip> PWips = new HashSet<PWip>(0);
@@ -903,6 +904,16 @@ public class Company  extends AbstractSecuredEntity  implements java.io.Serializ
 
 	public void setAutoWo(Long autoWo) {
 		this.autoWo = autoWo;
+	}
+
+	 @Column(name="so_wo")
+	public Long getSoWo() {
+		return soWo;
+	}
+
+
+	public void setSoWo(Long soWo) {
+		this.soWo = soWo;
 	}
 
 

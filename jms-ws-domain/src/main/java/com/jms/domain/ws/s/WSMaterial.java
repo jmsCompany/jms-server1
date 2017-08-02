@@ -42,6 +42,10 @@ public class WSMaterial {
     private Long checkCycle;
     private Long cycleUnit;
     
+    private String lvl;
+    private Float calc;
+    
+    
 	public Long getIdMaterial() {
 		return idMaterial;
 	}
@@ -222,6 +226,18 @@ public class WSMaterial {
 	}
 	public void setCycleUnit(Long cycleUnit) {
 		this.cycleUnit = cycleUnit;
+	}
+	public String getLvl() {
+		return lvl;
+	}
+	public void setLvl(String lvl) {
+		this.lvl = lvl;
+	}
+	public Float getCalc() {
+		return calc;
+	}
+	public void setCalc(Float calc) {
+		this.calc = calc;
 	}
 
 }

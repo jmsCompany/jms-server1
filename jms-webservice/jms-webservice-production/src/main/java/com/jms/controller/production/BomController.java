@@ -328,7 +328,7 @@ public class BomController {
 		Map<Integer,String> errorMap = new LinkedHashMap<Integer,String>();
 		Map<String,WSPBom> bomLabelMap = new LinkedHashMap<String,WSPBom>();
 		//Map<String,String> bomLabelMap = new LinkedHashMap<String,String>();
-		List<WSMaterial> wsMaterials = new ArrayList<WSMaterial>();
+		//List<WSMaterial> wsMaterials = new ArrayList<WSMaterial>();
 		try {
 			boolean flag = true;
 			if (request.getFileNames().hasNext()) {
@@ -340,9 +340,10 @@ public class BomController {
 				Integer i = 1;
 				String currentProduct ="";
 				Long currentProductId =0l;
+			    Map<String,WSPBomItem> currentBomItems = new LinkedHashMap<String,WSPBomItem>(0);
 				while (reader.readRecord()) {
 					i++;
-					WSMaterial wsMaterial = new WSMaterial();
+				//	WSMaterial wsMaterial = new WSMaterial();
 					String pno = reader.get(0);
 					if(pno==null||pno.isEmpty())
 					{
@@ -396,10 +397,14 @@ public class BomController {
 									  w.setCreationTime(new Date());
 									  w.setMaterialId(mat.getIdMaterial());
 									  w.setStatusId(3l); //有效 4 无效
+									  currentBomItems = new LinkedHashMap<String,WSPBomItem>(0);
+									  w.setBomItems(currentBomItems);
 									  bomLabelMap.put(mat.getPno(), w);
 									  currentProduct = mat.getPno();
 									  currentProductId = mat.getIdMaterial();
+									  System.out.println("新增");
 								  }
+								  
 							}
 						   
 						   
@@ -606,7 +611,12 @@ public class BomController {
 										}
 										
 							    	 
-							    	 bomItemMap.put(w.getPno(), w);
+							    	 bomItemMap.put(""+matr.getIdMaterial(), w);
+							    	 wsPom.setBomItems(bomItemMap);
+							    	 bomLabelMap.put(currentProduct, wsPom);
+							    	 
+							    	 
+							    	 System.out.println("bom size: " + bomLabelMap.size() + ", current product: " + currentProduct +", item size: " + bomItemMap.size() + "," +", 物料ID： " +matr.getIdMaterial() );
 							    	
 							     }
 						   }

@@ -67,10 +67,12 @@ public class MaterialService {
 	public List<WSMaterial> getMaterials(Long idCompany,Long idMaterialType,String q) throws Exception {
 	
 		
+		System.out.println("idCom: " + idCompany + ", q: " + q);
 		List<WSMaterial> wsMaterialList = new ArrayList<WSMaterial>();
 		List<SMaterial> sMaterialList;
 		if(idMaterialType==null)
 		{
+			System.out.println("type is null");
 			if(q==null)
 			{
 				sMaterialList =sMaterialRepository.getByCompanyId(idCompany);
