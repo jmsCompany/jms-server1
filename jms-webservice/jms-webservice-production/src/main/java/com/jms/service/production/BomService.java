@@ -14,6 +14,7 @@ import com.jms.domain.db.FCostCenter;
 import com.jms.domain.db.PBom;
 import com.jms.domain.db.PWo;
 import com.jms.domain.db.PWorkCenter;
+import com.jms.domain.db.SBin;
 import com.jms.domain.db.SStk;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
@@ -30,6 +31,7 @@ import com.jms.repositories.p.PBomRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PWoRepository;
 import com.jms.repositories.p.PWorkCenterRepository;
+import com.jms.repositories.s.SBinRepository;
 import com.jms.repositories.s.SMaterialRepository;
 import com.jms.repositories.s.SSoRepository;
 import com.jms.web.security.SecurityUtils;
@@ -55,7 +57,8 @@ public class BomService {
 	private CompanyRepository companyRepository;
 	@Autowired 
 	private PStatusDicRepository pStatusDicRepository;
-	
+	@Autowired 
+	private  SBinRepository sBinRepository;
 
 	@Autowired
 	private SecurityUtils securityUtils;
@@ -123,8 +126,8 @@ public class BomService {
 		PBom dbPBom = (PBom)BeanUtil.shallowCopy(wsPBomItem, PBom.class, pBom);
 
         if(wsPBomItem.getWorkCenterId()!=null)
-		dbPBom.setPWorkCenter(pWorkCenterRepository.findOne(wsPBomItem.getWorkCenterId()));
-		
+		//dbPBom.setPWorkCenter(pWorkCenterRepository.findOne(wsPBomItem.getWorkCenterId()));
+        dbPBom.setWip(wsPBomItem.getWorkCenterId());
 		if(wsPBomItem.getMaterialId()!=null)
 			dbPBom.setSMaterial(sMaterialRepository.findOne(wsPBomItem.getMaterialId()));
 		if(wsPBomItem.getIdBomLabel()!=null)
@@ -146,11 +149,19 @@ public class BomService {
 	    {
 	    	pc.setIdBomLabel(pBom.getPBomLabel().getIdBomLabel());
 	    }
-	    if(pBom.getPWorkCenter()!=null)
+//	    if(pBom.getPWorkCenter()!=null)
+//	    {
+//	    	pc.setWorkCenter(pBom.getPWorkCenter().getWorkCenter());
+//	    	pc.setWorkCenterId(pBom.getPWorkCenter().getIdWc());
+//	    }
+	    
+	    if(pBom.getWip()!=null)
 	    {
-	    	pc.setWorkCenter(pBom.getPWorkCenter().getWorkCenter());
-	    	pc.setWorkCenterId(pBom.getPWorkCenter().getIdWc());
+	    	SBin bin = sBinRepository.findOne(pBom.getWip());
+	    	pc.setWorkCenter(bin.getBin());
+	    	pc.setWorkCenterId(bin.getIdBin());
 	    }
+	    
 	    if(pBom.getSMaterial()!=null)
 	    {
 	    	pc.setMaterial(pBom.getSMaterial().getDes());

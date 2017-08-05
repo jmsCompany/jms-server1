@@ -26,6 +26,7 @@ import com.jms.domain.db.PBom;
 import com.jms.domain.db.PBomLabel;
 import com.jms.domain.db.PRoutineD;
 import com.jms.domain.db.PWorkCenter;
+import com.jms.domain.db.SBin;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMaterialCategory;
 import com.jms.domain.db.SMaterialTypeDic;
@@ -47,6 +48,7 @@ import com.jms.repositories.p.PRoutineDRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PWoRepository;
 import com.jms.repositories.p.PWorkCenterRepository;
+import com.jms.repositories.s.SBinRepository;
 import com.jms.repositories.s.SMaterialRepository;
 import com.jms.service.production.BomLabelService;
 import com.jms.service.production.BomService;
@@ -86,6 +88,7 @@ public class BomController {
 	
     @Value("${filePath}") private String filePath;
 	@Autowired private FileUploadService fileUploadService;
+	@Autowired private SBinRepository sBinRepository;
 	
 	private static final Logger logger = LogManager.getLogger(BomController.class.getCanonicalName());
 
@@ -479,8 +482,9 @@ public class BomController {
 							    	 workCenter = workCenter.trim();
 							    	 if(workCenter!=null&&!workCenter.isEmpty())
 							    	 {
-							    		 PWorkCenter pWorkCenter =  pWorkCenterRepository.getByCompanyIdAndWorkCenter(idCompany, workCenter);
-							    		 if(pWorkCenter==null)
+							    	//PWorkCenter pWorkCenter =  pWorkCenterRepository.getByCompanyIdAndWorkCenter(idCompany, workCenter);
+							    		SBin pWorkCenter = sBinRepository.getByCompanyIdAndStkTypeAndBinName(idCompany,2l,workCenter);
+							    		if(pWorkCenter==null)
 							    		 {
 
 												flag =false;
@@ -497,7 +501,7 @@ public class BomController {
 							    		 }
 							    		 else
 							    		 {
-							    			 w.setWorkCenterId(pWorkCenter.getIdWc());
+							    			 w.setWorkCenterId(pWorkCenter.getIdBin());
 							    		 }
 							    	 }
 							    	

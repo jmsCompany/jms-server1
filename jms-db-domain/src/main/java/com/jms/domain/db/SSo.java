@@ -53,6 +53,10 @@ public class SSo  implements java.io.Serializable {
      
      private Long idCompany1; //往来公司
      private Long idCompany2; //客户
+     
+     private Long so_num;
+     private Float tot;
+     
      private Set<PWo> PWos = new HashSet<PWo>(0);
      private Set<SMtfMaterial> SMtfMaterials = new HashSet<SMtfMaterial>(0);
 
@@ -283,6 +287,28 @@ public class SSo  implements java.io.Serializable {
 
 	public void setIdCompany1(Long idCompany1) {
 		this.idCompany1 = idCompany1;
+	}
+
+
+	@Column(name="so_num")
+	public Long getSo_num() {
+		return so_num;
+	}
+
+
+	public void setSo_num(Long so_num) {
+		this.so_num = so_num;
+	}
+
+
+    @Column(name="tot", precision=12)
+	public Float getTot() {
+		return tot;
+	}
+
+
+	public void setTot(Float tot) {
+		this.tot = tot;
 	}
 
 

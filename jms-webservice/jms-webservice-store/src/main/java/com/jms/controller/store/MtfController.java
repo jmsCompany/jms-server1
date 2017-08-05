@@ -95,6 +95,7 @@ public class MtfController {
 		return ws;
 	}
 	
+	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/findSmtfMaterialChecked", method=RequestMethod.GET)
 	public List<WSMaterialChecked> findSmtfMaterialChecked(@RequestParam("smtfId") Long smtfId) throws Exception {

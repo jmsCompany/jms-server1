@@ -43,6 +43,7 @@ public class PRoutineD  implements java.io.Serializable {
      private Set<PCPp> PCPps = new HashSet<PCPp>(0);
      
      private Long isFinished;
+     private Long wip;
 
     public PRoutineD() {
     }
@@ -196,6 +197,16 @@ public class PRoutineD  implements java.io.Serializable {
 
 	public void setIsFinished(Long isFinished) {
 		this.isFinished = isFinished;
+	}
+
+    @Column(name="wip")
+	public Long getWip() {
+		return wip;
+	}
+
+
+	public void setWip(Long wip) {
+		this.wip = wip;
 	}
 
 

@@ -17,7 +17,7 @@ public interface SBinRepository  extends JpaRepository<SBin, Long>{
 	
 	
 	@Query("select s from SBin s where s.SStk.company.idCompany=?1 and s.SStk.SStkTypeDic.idStkType=?2")
-	public SBin getByCompanyIdAndStkType(Long companyId,Long stkTypeId);
+	public List<SBin> getByCompanyIdAndStkType(Long companyId,Long stkTypeId);
 	
 	
 	@Query("select s from SBin s where s.SStk.company.idCompany=?1 and s.SStk.SStkTypeDic.idStkType=?2 and s.SStk.stkName=?3 and s.bin=?3")

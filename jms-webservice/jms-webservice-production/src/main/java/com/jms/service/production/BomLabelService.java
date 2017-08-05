@@ -15,6 +15,7 @@ import com.jms.domain.db.FCostCenter;
 import com.jms.domain.db.PBom;
 import com.jms.domain.db.PBomLabel;
 import com.jms.domain.db.PRoutineD;
+import com.jms.domain.db.SBin;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.p.WSPBom;
 import com.jms.domain.ws.p.WSPBomItem;
@@ -30,6 +31,7 @@ import com.jms.repositories.p.PRoutineDRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PWoRepository;
 import com.jms.repositories.p.PWorkCenterRepository;
+import com.jms.repositories.s.SBinRepository;
 import com.jms.repositories.s.SSoRepository;
 import com.jms.web.security.SecurityUtils;
 
@@ -57,6 +59,8 @@ public class BomLabelService {
 	
 	@Autowired
 	private BomService bomService;
+	@Autowired
+	private SBinRepository sBinRepository;
 	
 	@Transactional(readOnly=false)
 	public WSPBom savePBomLabel(WSPBom wsPBom) throws Exception {
@@ -106,7 +110,7 @@ public class BomLabelService {
 		wsPBomItem.setLvl(1l);
 		wsPBomItem.setMaterial(wsPBom.getMaterial());
 		wsPBomItem.setMaterialId(wsPBom.getMaterialId());
-	//	wsPBomItem.setWorkCenterId(workCenterId);
+		//wsPBomItem.setWorkCenterId(wsPBom.get);
 
 	
 	
@@ -272,11 +276,17 @@ public class BomLabelService {
 		
 				item.setIdRoutineD(p.getIdRoutineD());
 				item.setQpu(p.getQpu());
-				if(p.getPWorkCenter()!=null)
-				{
-					item.setWorkCenter(p.getPWorkCenter().getWorkCenter());
-					item.setWorkCenterId(p.getPWorkCenter().getIdWc());
-				}
+			    if(p.getWip()!=null)
+			    {
+			    	SBin bin = sBinRepository.findOne(p.getWip());
+			    	item.setWorkCenter(bin.getBin());
+			    	item.setWorkCenterId(bin.getIdBin());
+			    }
+//				if(p.getPWorkCenter()!=null)
+//				{
+//					item.setWorkCenter(p.getPWorkCenter().getWorkCenter());
+//					item.setWorkCenterId(p.getPWorkCenter().getIdWc());
+//				}
 	
 				item.setOrderBy(p.getOrderBy());
 				item.setWastage(p.getWastage());

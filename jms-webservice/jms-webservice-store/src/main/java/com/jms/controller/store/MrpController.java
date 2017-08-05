@@ -97,7 +97,7 @@ public class MrpController {
 	private MrpService mrpService;
 	@Autowired
 	private SpoService spoService;
-	
+
 	@Autowired
 	private SNomaterialReportSumRepositoryCustom sNomaterialReportSumRepositoryCustom;
 
@@ -112,28 +112,33 @@ public class MrpController {
 			@RequestParam Integer start, @RequestParam Integer length) throws Exception {
 
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
-
+		List<SComMatPrice> sComMatPriceList = new ArrayList<SComMatPrice>();
 		Long idCom = null;
 		if (q != null && !q.isEmpty()) {
 			SCompanyCo sCompanyCo = sCompanyCoRepository.findByCompanyIdAndNameAndType(companyId, q, 1l);
 			if (sCompanyCo != null) {
 				idCom = sCompanyCo.getId();
 			}
-
-		}
-		List<SComMatPrice> sComMatPriceList = null;
-		if (materialId != null) {
-
-			if (idCom != null) {
-				sComMatPriceList = sComMatPriceRepository.findByIdCompanyAndIdComAndIdMat(companyId, idCom, materialId);
+			if (materialId != null) {
+				if (idCom != null) {
+					sComMatPriceList = sComMatPriceRepository.findByIdCompanyAndIdComAndIdMat(companyId, idCom,
+							materialId);
+				}
 			} else {
-				sComMatPriceList = sComMatPriceRepository.findByIdMat(materialId);
+				if (idCom != null) {
+					sComMatPriceList = sComMatPriceRepository.findByIdCompanyAndIdCom(companyId, idCom);
+				}
 			}
+
 		} else {
-			if (idCom != null) {
-				sComMatPriceList = sComMatPriceRepository.findByIdCompanyAndIdCom(companyId, idCom);
+			if (materialId != null) {
+
+				sComMatPriceList = sComMatPriceRepository.findByIdMat(materialId);
+
 			} else {
+
 				sComMatPriceList = sComMatPriceRepository.findByIdCompany(companyId);
+
 			}
 
 		}
@@ -277,7 +282,8 @@ public class MrpController {
 
 		Long idCompany = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 
-		//System.out.println("idMat: " + idMat + ", type: " + type + ", q: " + q);
+		// System.out.println("idMat: " + idMat + ", type: " + type + ", q: " +
+		// q);
 		List<SNomaterialReport> lsss = null;
 		if (idMat != null) {
 			if (type != null) {
@@ -296,15 +302,13 @@ public class MrpController {
 
 		// sNomaterialReporRepository.findByIdCompany(idCompany)
 
-		//List<SNomaterialReport> lsz = 
-		//		new ArrayList<SNomaterialReport>();
-		//boolean woFilter=false;
-		if(q!=null&&!q.isEmpty())
-		{
-			lsss=lsss.stream().filter(w->w.getPWNo().equals(q)).
-			 collect(Collectors.toList());
+		// List<SNomaterialReport> lsz =
+		// new ArrayList<SNomaterialReport>();
+		// boolean woFilter=false;
+		if (q != null && !q.isEmpty()) {
+			lsss = lsss.stream().filter(w -> w.getPWNo().equals(q)).collect(Collectors.toList());
 		}
-		
+
 		List<String[]> lst = new ArrayList<String[]>();
 		int end = 0;
 		if (lsss.size() < start + length)
@@ -347,11 +351,12 @@ public class MrpController {
 	public Valid handleNoMatReportSum(@RequestBody WSMrpNo ws) {
 		Long idCompany = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		Valid v = new Valid();
-		//System.out.println("type: " + ws.getType() +", poType: " + ws.getPoType());
-		
+		// System.out.println("type: " + ws.getType() +", poType: " +
+		// ws.getPoType());
+
 		List<Long> aqtys = ws.getAqtys();
 		if (ws.getType().equals(1l) || ws.getType().equals(2l)) {
-			int i =0;
+			int i = 0;
 			for (Long id : ws.getIds()) {
 				// System.out.println("id: " + id +", type: " + ws.getType());
 				SNomaterialReportSum sNomaterialReportSum = sNomaterialReportSumRepository.findOne(id);
@@ -359,7 +364,7 @@ public class MrpController {
 				sNomaterialReportSum.setPQty(aqtys.get(i));
 				sNomaterialReportSumRepository.save(sNomaterialReportSum);
 				i++;
-			
+
 			}
 			v.setValid(true);
 			return v;
@@ -367,11 +372,11 @@ public class MrpController {
 		} else {
 
 			Boolean check = true;
-			int i =0;
+			int i = 0;
 			for (Long id : ws.getIds()) {
 				// System.out.println("id: " + id +", type: " + ws.getType());
 				SNomaterialReportSum sNomaterialReportSum = sNomaterialReportSumRepository.findOne(id);
-		
+
 				SComMatPrice sComMatPrice = sComMatPriceRepository.findByIdMatAndIsPrim(sNomaterialReportSum.getIdMat(),
 						1l);
 				if (sComMatPrice == null) {
@@ -385,178 +390,165 @@ public class MrpController {
 
 			if (check) {
 
-
 				for (Long id : ws.getIds()) {
-				
-					//System.out.println("id: " + id);
-				if(ws.getPoType().equals(0l))  //主供应商
-				{
-					//System.out.println("xhuid: " + id);
-					SNomaterialReportSum sNomaterialReportSum = sNomaterialReportSumRepository.findOne(id);
 
-					sNomaterialReportSum.setStatus(3l);
-					sNomaterialReportSum.setPQty(aqtys.get(i));
-					//System.out.println("i : " + i + ", v: "  +aqtys.get(i));
-				//	sNomaterialReportSumRepository.save(sNomaterialReportSum);
-					i++;
-					sNomaterialReportSumRepository.save(sNomaterialReportSum);
-					SComMatPrice sComMatPrice = sComMatPriceRepository
-							.findByIdMatAndIsPrim(sNomaterialReportSum.getIdMat(), 1l);
-					SPoTemp spoTemp = new SPoTemp();
-					spoTemp.setIdMat(sNomaterialReportSum.getIdMat());
-					spoTemp.setMaterial(sNomaterialReportSum.getMaterial());
-					spoTemp.setRDate(sNomaterialReportSum.getRDate());
-					spoTemp.setSQty(-sNomaterialReportSum.getSQty());
-					spoTemp.setInvUnit(sNomaterialReportSum.getInvUnit());
-					
-					
-				//	Float yc = -sNomaterialReportSum.getSQty();
-					Long ycl =sNomaterialReportSum.getPQty();
-					
-					
-					spoTemp.setSPoQty(ycl);  //应采购
-					
-					SMaterial mt = sMaterialRepository.findOne(sNomaterialReportSum.getIdMat());
-					
-					Long moq = mt.getMoq()==null?0l:mt.getMoq();
-					Long mpq = mt.getMpq()==null?0l:mt.getMpq();
-					spoTemp.setMoq(moq);
-					spoTemp.setMpq(mpq);
-					Long j =ycl; //实际采购
-					if(j<moq)
+					// System.out.println("id: " + id);
+					if (ws.getPoType().equals(0l)) // 主供应商
 					{
-						 j= moq;
-					}
-					if(mpq>0)
-					{
-						if(j%mpq!=0)
-						{
-							j=(j/mpq+1)*mpq;
+						// System.out.println("xhuid: " + id);
+						SNomaterialReportSum sNomaterialReportSum = sNomaterialReportSumRepository.findOne(id);
+
+						sNomaterialReportSum.setStatus(3l);
+						sNomaterialReportSum.setPQty(aqtys.get(i));
+						// System.out.println("i : " + i + ", v: "
+						// +aqtys.get(i));
+						// sNomaterialReportSumRepository.save(sNomaterialReportSum);
+						i++;
+						sNomaterialReportSumRepository.save(sNomaterialReportSum);
+						SComMatPrice sComMatPrice = sComMatPriceRepository
+								.findByIdMatAndIsPrim(sNomaterialReportSum.getIdMat(), 1l);
+						SPoTemp spoTemp = new SPoTemp();
+						spoTemp.setIdMat(sNomaterialReportSum.getIdMat());
+						spoTemp.setMaterial(sNomaterialReportSum.getMaterial());
+						spoTemp.setRDate(sNomaterialReportSum.getRDate());
+						spoTemp.setSQty(-sNomaterialReportSum.getSQty());
+						spoTemp.setInvUnit(sNomaterialReportSum.getInvUnit());
+
+						// Float yc = -sNomaterialReportSum.getSQty();
+						Long ycl = sNomaterialReportSum.getPQty();
+
+						spoTemp.setSPoQty(ycl); // 应采购
+
+						SMaterial mt = sMaterialRepository.findOne(sNomaterialReportSum.getIdMat());
+
+						Long moq = mt.getMoq() == null ? 0l : mt.getMoq();
+						Long mpq = mt.getMpq() == null ? 0l : mt.getMpq();
+						spoTemp.setMoq(moq);
+						spoTemp.setMpq(mpq);
+						Long j = ycl; // 实际采购
+						if (j < moq) {
+							j = moq;
 						}
-					}
-				//	System.out.println("实际采购：" +j);
-					spoTemp.setAPoQty(j);
-
-					spoTemp.setUPrice(sComMatPrice.getPrice()); // 单价
-					spoTemp.setAUPrice(sComMatPrice.getPrice()); // 本次单价
-					spoTemp.setPrice(j * sComMatPrice.getPrice());
-					spoTemp.setYsDiff(ycl-j);
-					spoTemp.setDiff((ycl-j)*sComMatPrice.getPrice());
-					spoTemp.setDura(sComMatPrice.getDura()); // 货运期
-
-					Date d = sNomaterialReportSum.getRDate(); // 需求时间
-					Long days = sComMatPrice.getDura();
-					Calendar calendar = new GregorianCalendar();
-					calendar.setTime(d);
-					calendar.add(calendar.DATE, -days.intValue());// 把日期往后增加一天.整数往后推,负数往前移动
-					spoTemp.setLateDate(calendar.getTime()); // 最晚下单
-
-					Date d1 = new Date(); // 需求时间
-					Calendar calendar1 = new GregorianCalendar();
-					calendar1.setTime(d1);
-					calendar1.add(calendar1.DATE, days.intValue());// 把日期往后增加一天.整数往后推,负数往前移动
-
-					spoTemp.setEDate(calendar1.getTime()); // 最早到货
-
-					spoTemp.setCPrice(sComMatPrice.getUnitPrice()); // 运费单价
-					spoTemp.setCUPrice(j * sComMatPrice.getUnitPrice()); // 运费总价
-					spoTemp.setPurUnit(sNomaterialReportSum.getInvUnit());
-					
-					SCompanyCo sCompanyCo = sCompanyCoRepository.findOne(sComMatPrice.getIdCom());
-					spoTemp.setComCo(sCompanyCo.getName());
-					spoTemp.setIsPrim(1l);
-					spoTemp.setIdCompany(idCompany);
-					spoTemp.setIdComCo(sComMatPrice.getIdCom());
-					spoTemp.setStatus(0l);
-					spoTemp.setPrec(100f);
-					sPoTempRepository.save(spoTemp);
-				}
-				else  //按百分比
-				{
-					
-
-					SNomaterialReportSum sNomaterialReportSum = sNomaterialReportSumRepository.findOne(id);
-
-					sNomaterialReportSum.setStatus(3l);
-					
-					sNomaterialReportSum.setPQty(aqtys.get(i));
-					System.out.println("i : " + i + ", v: "  +aqtys.get(i));
-					sNomaterialReportSumRepository.save(sNomaterialReportSum);
-					i++;
-					List<SComMatPrice> sComMatPrices = sComMatPriceRepository
-							.findByIdMat(sNomaterialReportSum.getIdMat());
-					for(SComMatPrice sComMatPrice:sComMatPrices)
-					{
-					SPoTemp spoTemp = new SPoTemp();
-					spoTemp.setIdMat(sNomaterialReportSum.getIdMat());
-					spoTemp.setMaterial(sNomaterialReportSum.getMaterial());
-					spoTemp.setRDate(sNomaterialReportSum.getRDate());
-			
-					spoTemp.setSQty(-sNomaterialReportSum.getSQty());
-					spoTemp.setInvUnit(sNomaterialReportSum.getInvUnit());
-					Float yc = sNomaterialReportSum.getPQty()*sComMatPrice.getPrec()/100;
-					Long ycl = (long)Math.ceil(yc);
-					spoTemp.setSPoQty(ycl);  //应采购
-					
-					SMaterial mt = sMaterialRepository.findOne(sNomaterialReportSum.getIdMat());
-					Long moq = mt.getMoq()==null?0l:mt.getMoq();
-					Long mpq = mt.getMpq()==null?0l:mt.getMpq();
-					spoTemp.setMoq(moq);
-					spoTemp.setMpq(mpq);
-					Long j =ycl; //实际采购
-					if(j<moq)
-					{
-						 j= moq;
-					}
-					if(mpq>0)
-					{
-						if(j%mpq!=0)
-						{
-							j=(j/mpq+1)*mpq;
+						if (mpq > 0) {
+							if (j % mpq != 0) {
+								j = (j / mpq + 1) * mpq;
+							}
 						}
+						// System.out.println("实际采购：" +j);
+						spoTemp.setAPoQty(j);
+
+						spoTemp.setUPrice(sComMatPrice.getPrice()); // 单价
+						spoTemp.setAUPrice(sComMatPrice.getPrice()); // 本次单价
+						spoTemp.setPrice(j * sComMatPrice.getPrice());
+						spoTemp.setYsDiff(ycl - j);
+						spoTemp.setDiff((ycl - j) * sComMatPrice.getPrice());
+						spoTemp.setDura(sComMatPrice.getDura()); // 货运期
+
+						Date d = sNomaterialReportSum.getRDate(); // 需求时间
+						Long days = sComMatPrice.getDura();
+						Calendar calendar = new GregorianCalendar();
+						calendar.setTime(d);
+						calendar.add(calendar.DATE, -days.intValue());// 把日期往后增加一天.整数往后推,负数往前移动
+						spoTemp.setLateDate(calendar.getTime()); // 最晚下单
+
+						Date d1 = new Date(); // 需求时间
+						Calendar calendar1 = new GregorianCalendar();
+						calendar1.setTime(d1);
+						calendar1.add(calendar1.DATE, days.intValue());// 把日期往后增加一天.整数往后推,负数往前移动
+
+						spoTemp.setEDate(calendar1.getTime()); // 最早到货
+
+						spoTemp.setCPrice(sComMatPrice.getUnitPrice()); // 运费单价
+						spoTemp.setCUPrice(j * sComMatPrice.getUnitPrice()); // 运费总价
+						spoTemp.setPurUnit(sNomaterialReportSum.getInvUnit());
+
+						SCompanyCo sCompanyCo = sCompanyCoRepository.findOne(sComMatPrice.getIdCom());
+						spoTemp.setComCo(sCompanyCo.getName());
+						spoTemp.setIsPrim(1l);
+						spoTemp.setIdCompany(idCompany);
+						spoTemp.setIdComCo(sComMatPrice.getIdCom());
+						spoTemp.setStatus(0l);
+						spoTemp.setPrec(100f);
+						sPoTempRepository.save(spoTemp);
+					} else // 按百分比
+					{
+
+						SNomaterialReportSum sNomaterialReportSum = sNomaterialReportSumRepository.findOne(id);
+
+						sNomaterialReportSum.setStatus(3l);
+
+						sNomaterialReportSum.setPQty(aqtys.get(i));
+						System.out.println("i : " + i + ", v: " + aqtys.get(i));
+						sNomaterialReportSumRepository.save(sNomaterialReportSum);
+						i++;
+						List<SComMatPrice> sComMatPrices = sComMatPriceRepository
+								.findByIdMat(sNomaterialReportSum.getIdMat());
+						for (SComMatPrice sComMatPrice : sComMatPrices) {
+							SPoTemp spoTemp = new SPoTemp();
+							spoTemp.setIdMat(sNomaterialReportSum.getIdMat());
+							spoTemp.setMaterial(sNomaterialReportSum.getMaterial());
+							spoTemp.setRDate(sNomaterialReportSum.getRDate());
+
+							spoTemp.setSQty(-sNomaterialReportSum.getSQty());
+							spoTemp.setInvUnit(sNomaterialReportSum.getInvUnit());
+							Float yc = sNomaterialReportSum.getPQty() * sComMatPrice.getPrec() / 100;
+							Long ycl = (long) Math.ceil(yc);
+							spoTemp.setSPoQty(ycl); // 应采购
+
+							SMaterial mt = sMaterialRepository.findOne(sNomaterialReportSum.getIdMat());
+							Long moq = mt.getMoq() == null ? 0l : mt.getMoq();
+							Long mpq = mt.getMpq() == null ? 0l : mt.getMpq();
+							spoTemp.setMoq(moq);
+							spoTemp.setMpq(mpq);
+							Long j = ycl; // 实际采购
+							if (j < moq) {
+								j = moq;
+							}
+							if (mpq > 0) {
+								if (j % mpq != 0) {
+									j = (j / mpq + 1) * mpq;
+								}
+							}
+
+							spoTemp.setAPoQty(j); // 实际采购
+							// System.out.println("bili实际采购：" +j);
+							spoTemp.setUPrice(sComMatPrice.getPrice()); // 单价
+							spoTemp.setAUPrice(sComMatPrice.getPrice()); // 本次单价
+							spoTemp.setPrice(j * sComMatPrice.getPrice());
+							spoTemp.setYsDiff(ycl - j);
+							spoTemp.setDiff((ycl - j) * sComMatPrice.getPrice());
+							spoTemp.setDura(sComMatPrice.getDura()); // 货运期
+
+							Date d = sNomaterialReportSum.getRDate(); // 需求时间
+							Long days = sComMatPrice.getDura();
+							Calendar calendar = new GregorianCalendar();
+							calendar.setTime(d);
+							calendar.add(calendar.DATE, -days.intValue());// 把日期往后增加一天.整数往后推,负数往前移动
+							spoTemp.setLateDate(calendar.getTime()); // 最晚下单
+
+							Date d1 = new Date(); // 需求时间
+							Calendar calendar1 = new GregorianCalendar();
+							calendar1.setTime(d1);
+							calendar1.add(calendar1.DATE, days.intValue());// 把日期往后增加一天.整数往后推,负数往前移动
+
+							spoTemp.setEDate(calendar1.getTime()); // 最早到货
+
+							spoTemp.setCPrice(sComMatPrice.getUnitPrice()); // 运费单价
+							// sss
+							spoTemp.setCUPrice(j * sComMatPrice.getUnitPrice()); // 运费总价
+							spoTemp.setPurUnit(sNomaterialReportSum.getInvUnit());
+
+							SCompanyCo sCompanyCo = sCompanyCoRepository.findOne(sComMatPrice.getIdCom());
+							spoTemp.setComCo(sCompanyCo.getName());
+							spoTemp.setIsPrim(sComMatPrice.getIsPrim());
+							spoTemp.setIdCompany(idCompany);
+							spoTemp.setIdComCo(sComMatPrice.getIdCom());
+							spoTemp.setStatus(0l);
+							spoTemp.setPrec(sComMatPrice.getPrec());
+							sPoTempRepository.save(spoTemp);
+						}
+
 					}
-				
-					spoTemp.setAPoQty(j); //实际采购
-					//System.out.println("bili实际采购：" +j);
-					spoTemp.setUPrice(sComMatPrice.getPrice()); // 单价
-					spoTemp.setAUPrice(sComMatPrice.getPrice()); // 本次单价
-					spoTemp.setPrice(j * sComMatPrice.getPrice());
-					spoTemp.setYsDiff(ycl-j);
-					spoTemp.setDiff((ycl-j)*sComMatPrice.getPrice());
-					spoTemp.setDura(sComMatPrice.getDura()); // 货运期
-
-					Date d = sNomaterialReportSum.getRDate(); // 需求时间
-					Long days = sComMatPrice.getDura();
-					Calendar calendar = new GregorianCalendar();
-					calendar.setTime(d);
-					calendar.add(calendar.DATE, -days.intValue());// 把日期往后增加一天.整数往后推,负数往前移动
-					spoTemp.setLateDate(calendar.getTime()); // 最晚下单
-
-					Date d1 = new Date(); // 需求时间
-					Calendar calendar1 = new GregorianCalendar();
-					calendar1.setTime(d1);
-					calendar1.add(calendar1.DATE, days.intValue());// 把日期往后增加一天.整数往后推,负数往前移动
-
-					spoTemp.setEDate(calendar1.getTime()); // 最早到货
-
-					spoTemp.setCPrice(sComMatPrice.getUnitPrice()); // 运费单价
-					//sss
-					spoTemp.setCUPrice(j * sComMatPrice.getUnitPrice()); // 运费总价
-					spoTemp.setPurUnit(sNomaterialReportSum.getInvUnit());
-		
-					SCompanyCo sCompanyCo = sCompanyCoRepository.findOne(sComMatPrice.getIdCom());
-					spoTemp.setComCo(sCompanyCo.getName());
-					spoTemp.setIsPrim(sComMatPrice.getIsPrim());
-					spoTemp.setIdCompany(idCompany);
-					spoTemp.setIdComCo(sComMatPrice.getIdCom());
-					spoTemp.setStatus(0l);
-					spoTemp.setPrec(sComMatPrice.getPrec());
-					sPoTempRepository.save(spoTemp);
-					}
-				
-				}
-
-					
 
 				}
 
@@ -565,7 +557,6 @@ public class MrpController {
 			return v;
 		}
 
-		
 	}
 
 	//
@@ -589,9 +580,11 @@ public class MrpController {
 
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 
-		List<SNomaterialReportSum> ws = sNomaterialReportSumRepositoryCustom.findByIdCompany(companyId, fromDay, toDay, materialId);
+		List<SNomaterialReportSum> ws = sNomaterialReportSumRepositoryCustom.findByIdCompany(companyId, fromDay, toDay,
+				materialId);
 
-		//System.out.println(" fromDay: " + fromDay + ", toDay:  " + toDay + ", materialId: " + materialId);
+		// System.out.println(" fromDay: " + fromDay + ", toDay: " + toDay + ",
+		// materialId: " + materialId);
 		List<String[]> lst = new ArrayList<String[]>();
 		int end = 0;
 		if (ws.size() < start + length)
@@ -622,16 +615,45 @@ public class MrpController {
 		return t;
 	}
 
-	// shuaxin
+	// time type
+	// <option value="1">天</option>
+	// <option value="2">周</option>
+	// <option value="3">月</option>
+	// <option value="4">季</option>
+	// <option value="5">年</option>
+
 	@Transactional(readOnly = false)
 	@RequestMapping(value = "/s/mrp/refreshMatReportList")
 	public Valid refreshMatReportList(@RequestParam(required = false, value = "timeType") Long timetype,
-			@RequestParam(required = false, value = "time") Integer time, // 采购分期
-																			// 年月。。。。
+			@RequestParam(required = false, value = "time") Long time, // 采购分期
+																		// //
+																		// 年月。。。。
 			@RequestParam(required = false, value = "level") String level // 分期物料级别
 	) {
-		mrpService.loadComprice(level);
+		// System.out.println("timetype: " + timetype +", time: " + time);
+		Long days = null;
+		if (timetype != null && time != null) {
+			// System.out.println("not null ");
+			if (timetype.equals(1l)) {
+				// System.out.println("1");
+				days = time;
+			} else if (timetype.equals(2l)) {
+				days = time * 7;
+			} else if (timetype.equals(3l)) {
+				days = time * 30;
+			} else if (timetype.equals(4l)) {
+				days = time * 90;
+			} else if (timetype.equals(5l)) {
+				days = time * 365;
+			} else {
+				days = null;
+			}
+		}
+		// mrpService.loadComprice(level);
 		// mrpService.loadNoMaterialReportSum(timetype, time);
+		if (days != null) {
+			System.out.print("days: " + days);
+		}
 		Valid v = new Valid();
 		v.setMsg("");
 		v.setValid(true);
@@ -639,79 +661,71 @@ public class MrpController {
 
 	}
 
-	
-	
-	
 	@Transactional(readOnly = false)
 	@RequestMapping(value = "/s/mrp/generatePo")
 	public Valid generatePo(@RequestBody WSMrpPo ps) throws Exception {
 		Valid v = new Valid();
-		//System.out.println("poType: " + ps.getPoType());
-		//有多少个供应商，就生成多少个订单
-		Map<Long,List<SPoTemp>> map = new HashMap<Long,List<SPoTemp> >();
-		//List<Long> qtys = ps.getQtys();
+		// System.out.println("poType: " + ps.getPoType());
+		// 有多少个供应商，就生成多少个订单
+		Map<Long, List<SPoTemp>> map = new HashMap<Long, List<SPoTemp>>();
+		// List<Long> qtys = ps.getQtys();
 		for (Long i : ps.getIds()) {
-		//	System.out.println("id: " + i);
+			// System.out.println("id: " + i);
 			SPoTemp t = sPoTempRepository.findOne(i);
 			List<SPoTemp> ls = map.get(t.getIdComCo());
-			if(ls == null)
-			{
+			if (ls == null) {
 				ls = new ArrayList<SPoTemp>();
 			}
 			ls.add(t);
-		//	System.out.println("tmp po id: " + i +  "coId: " + t.getIdComCo() + " , ls sizeL " + ls.size());
+			// System.out.println("tmp po id: " + i + "coId: " + t.getIdComCo()
+			// + " , ls sizeL " + ls.size());
 			map.put(t.getIdComCo(), ls);
 		}
-		for(Long idCom: map.keySet())
-		{
-			//System.out.println("idCom: " + idCom);
+		for (Long idCom : map.keySet()) {
+			// System.out.println("idCom: " + idCom);
 			WSSpo wsSpo = new WSSpo();
 			wsSpo.setDateOrder(new Date());
 			wsSpo.setsCompanyCoId(idCom);
 			wsSpo.setsStatusId(7l);
-			//wsSpo.setCodeCo(codeCo);
-			List<SPoTemp> ls =map.get(idCom);
-			Map<String,WSSpoMaterial> poItems = new LinkedHashMap<String,WSSpoMaterial>();
-			Long i=1l;
-			for(SPoTemp l:ls)
-			{
+			// wsSpo.setCodeCo(codeCo);
+			List<SPoTemp> ls = map.get(idCom);
+			Map<String, WSSpoMaterial> poItems = new LinkedHashMap<String, WSSpoMaterial>();
+			Long i = 1l;
+			for (SPoTemp l : ls) {
 				WSSpoMaterial w = new WSSpoMaterial();
 				w.setDeliveryDate(l.getRDate());
-				w.setLine(i-1);
+				w.setLine(i - 1);
 				w.setQtyPo(l.getSQty());
 				w.setsMaterialId(l.getIdMat());
 				w.setUprice(new BigDecimal(l.getUPrice()));
-				w.setTotalPrice(l.getUPrice()*l.getSQty());
-				poItems.put("line"+i, w);
+				w.setTotalPrice(l.getUPrice() * l.getSQty());
+				poItems.put("line" + i, w);
 				i++;
 				l.setStatus(1l);
 				System.out.println("close temp Po: " + l.getId());
 				sPoTempRepository.save(l);
 			}
-			
-			
-			 wsSpo.setPoItems(poItems);
-			 spoService.saveSpo(wsSpo);
-			
+
+			wsSpo.setPoItems(poItems);
+			spoService.saveSpo(wsSpo);
+
 		}
 		v.setValid(true);
 		return v;
 	}
 
-	
 	@Transactional(readOnly = true)
 	@RequestMapping(value = "/s/mrp/tempSourcingList")
-	public WSTableData tempSourcingList(@RequestParam(required = false, value = "q") Long q,
-			@RequestParam Integer draw, @RequestParam Integer start, @RequestParam Integer length) throws Exception {
+	public WSTableData tempSourcingList(@RequestParam(required = false, value = "q") Long q, @RequestParam Integer draw,
+			@RequestParam Integer start, @RequestParam Integer length) throws Exception {
 
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 
 		List<SPoTemp> tt = sPoTempRepository.findByIdCompany(companyId);
 		System.out.println("q: " + q);
-		if(q!=null)
-		{
+		if (q != null) {
 			//
-			tt = tt.stream().filter(w->w.getIdMat().equals(q)).collect(Collectors.toList());
+			tt = tt.stream().filter(w -> w.getIdMat().equals(q)).collect(Collectors.toList());
 		}
 
 		List<String[]> lst = new ArrayList<String[]>();
@@ -724,7 +738,7 @@ public class MrpController {
 		for (int i = start; i < end; i++) {
 			SPoTemp t = tt.get(i);
 			Long isP = t.getIsPrim();
-			String isPrim = isP.equals(1l)?"是":"否";
+			String isPrim = isP.equals(1l) ? "是" : "否";
 			String[] d = { "" + t.getId(), t.getMaterial(), formatDate(t.getRDate()), "" + t.getSQty(), t.getInvUnit(),
 					"" + t.getSPoQty(), "" + t.getAPoQty(), "" + t.getUPrice(), "" + t.getAUPrice(), "" + t.getPrice(),
 					"" + t.getYsDiff(), "" + t.getDiff(), "" + t.getDura(), formatDate(t.getLateDate()),

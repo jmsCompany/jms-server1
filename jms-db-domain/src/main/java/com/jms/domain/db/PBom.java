@@ -36,6 +36,7 @@ public class PBom  implements java.io.Serializable {
      private Float wastage;
      
      private Long idRoutineD;
+     private Long wip;
      private Set<PMr> PMrs = new HashSet<PMr>(0);
      private Set<PWoBom> PWoBoms = new HashSet<PWoBom>(0);
      private Set<PBom> PBoms = new HashSet<PBom>(0);
@@ -157,6 +158,15 @@ public class PBom  implements java.io.Serializable {
 
 	public void setIdRoutineD(Long idRoutineD) {
 		this.idRoutineD = idRoutineD;
+	}
+
+	 @Column(name="wip")
+	public Long getWip() {
+		return wip;
+	}
+
+	public void setWip(Long wip) {
+		this.wip = wip;
 	}
 
 

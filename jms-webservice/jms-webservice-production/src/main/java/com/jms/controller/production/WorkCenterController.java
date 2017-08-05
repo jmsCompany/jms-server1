@@ -10,11 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.jms.domain.db.PWorkCenter;
+import com.jms.domain.db.SBin;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
 import com.jms.domain.ws.p.WSPWorkCenter;
 import com.jms.repositories.p.PWorkCenterRepository;
+import com.jms.repositories.s.SBinRepository;
 import com.jms.service.production.WorkCenterService;
 import com.jms.web.security.SecurityUtils;
 
@@ -29,7 +31,7 @@ public class WorkCenterController {
 	@Autowired private PWorkCenterRepository pWorkCenterRepository;
 	@Autowired private SecurityUtils securityUtils;
 
-	
+	@Autowired private SBinRepository sBinRepository;
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/p/saveWorkCenter", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public WSPWorkCenter saveWSFCostCenter(@RequestBody WSPWorkCenter wsPWorkCenter) throws Exception {
@@ -91,12 +93,19 @@ public class WorkCenterController {
 	@RequestMapping(value="/p/getWorkCenterList", method=RequestMethod.GET)
 	public List<WSSelectObj>  getWorkCenterList() throws Exception {	   
 		List<WSSelectObj> ws = new ArrayList<WSSelectObj>();
-		for(PWorkCenter p: pWorkCenterRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
-		 {
-			WSSelectObj w = new WSSelectObj(p.getIdWc(),p.getWorkCenter());
-			ws.add(w);
-		 }
 		
+//		for(PWorkCenter p: pWorkCenterRepository.getByCompanyId(securityUtils.getCurrentDBUser().getCompany().getIdCompany()))
+//		 {
+//			WSSelectObj w = new WSSelectObj(p.getIdWc(),p.getWorkCenter());
+//			ws.add(w);
+//		 }
+		
+		for(SBin bin:sBinRepository.getByCompanyIdAndStkType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 2l))
+		
+		{
+			WSSelectObj w = new WSSelectObj(bin.getIdBin(),bin.getBin());
+			ws.add(w);
+		}
 	    return ws;
 	}
 

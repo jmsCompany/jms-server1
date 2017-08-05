@@ -18,6 +18,7 @@ import com.jms.domain.db.PShiftPlan;
 import com.jms.domain.db.PShiftPlanD;
 import com.jms.domain.db.PWo;
 import com.jms.domain.db.PWorkCenter;
+import com.jms.domain.db.SBin;
 import com.jms.domain.db.SStk;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
@@ -42,6 +43,7 @@ import com.jms.repositories.p.PShiftPlanRepository;
 import com.jms.repositories.p.PStatusDicRepository;
 import com.jms.repositories.p.PWoRepository;
 import com.jms.repositories.p.PWorkCenterRepository;
+import com.jms.repositories.s.SBinRepository;
 import com.jms.repositories.s.SMaterialRepository;
 import com.jms.repositories.s.SSoRepository;
 import com.jms.repositories.user.UsersRepository;
@@ -73,7 +75,7 @@ public class RoutineDService {
 	@Autowired 
 	private PStatusDicRepository pStatusDicRepository;
 	
-
+	@Autowired private SBinRepository sBinRepository;
 	@Autowired
 	private SecurityUtils securityUtils;
 	
@@ -142,7 +144,8 @@ public class RoutineDService {
         }
         if(wsPRoutineD.getWorkCenterId()!=null)
         {
-        	dbPRoutineD.setPWorkCenter(pWorkCenterRepository.findOne(wsPRoutineD.getWorkCenterId()));
+        	dbPRoutineD.setWip(wsPRoutineD.getWorkCenterId());
+        	//dbPRoutineD.setPWorkCenter(pWorkCenterRepository.findOne(wsPRoutineD.getWorkCenterId()));
         }
 
 		return dbPRoutineD;
@@ -162,11 +165,17 @@ public class RoutineDService {
 	    	pc.setpAttDrawId(pRoutineD.getPAttDraw().getIdAttDraw());
 	    
 	    }
-	    if(pRoutineD.getPWorkCenter()!=null)
+	    if(pRoutineD.getWip()!=null)
 	    {
-	    	pc.setWorkCenter(pRoutineD.getPWorkCenter().getWorkCenter());
-	    	pc.setWorkCenterId(pRoutineD.getPWorkCenter().getIdWc());
+	    	SBin bin = sBinRepository.findOne(pRoutineD.getWip());
+	    	pc.setWorkCenter(bin.getBin());
+	    	pc.setWorkCenterId(bin.getIdBin());
 	    }
+//	    else
+//	    {
+//	    	//pc.setWorkCenter(0l);
+//	    	pc.setWorkCenterId(86l);
+//	    }
 	    if(pRoutineD.getUsers()!=null)
 	    {
 	    	pc.setOrderBy(pRoutineD.getUsers().getName());

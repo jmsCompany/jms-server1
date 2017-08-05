@@ -118,11 +118,11 @@ public class SsoService {
 	{
 	
 		//System.out.println("xxxx: " + wsSso.getsCompanyCoId());
-		SSo dbSso = (SSo)BeanUtil.shallowCopy(wsSso, SSo.class, sso);
+		 SSo dbSso = (SSo)BeanUtil.shallowCopy(wsSso, SSo.class, sso);
 		
-		if(wsSso.getIdSo()==null||wsSso.getIdSo().equals(0l))
+		 if(wsSso.getIdSo()==null||wsSso.getIdSo().equals(0l))
 	
-		{
+		 {
 			if(wsSso.getCodeSo()==null)
 			{
 				SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(securityUtils.getCurrentDBUser().getCompany().getIdCompany(), 11l);

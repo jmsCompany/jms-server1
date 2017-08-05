@@ -963,6 +963,7 @@ public class MtfService {
 		}
 
 		if (smtfType.equals(8l)) {
+		//	dd
 			for (SMtfMaterial s : sMtfMaterialRepository.getBySmtfId(orgSmtf.getIdMt())) {
 				if (s.getQty3417() == null || s.getQty3417() < s.getQty()) {
 					finishIQC = false;
@@ -1426,7 +1427,7 @@ public class MtfService {
 		else if(sMtf.getSMtfTypeDic().getIdMtfType().equals(8l))//入库
 		{
 			lailiao = false;
-			System.out.println("入库: 查找　 id ： " +  sMtf.getIdR());
+			//System.out.println("入库: 查找　 id ： " +  sMtf.getIdR());
 			sm = sMtfRepository.findOne(sMtf.getIdR());
 			if(sm.getSMtfMaterials().iterator().hasNext())
 			{
@@ -1466,7 +1467,7 @@ public class MtfService {
 	   List<WSIqcItem> items = new ArrayList<WSIqcItem>();
 	   
 	 
-	    	  int seq = 0;
+	    	 int seq = 0;
 	  		for (SMtfMaterial s : sMtfMaterialRepository.getBySmtfId(sMtf.getIdMt())) {
 	  		
 	  			WSIqcItem ws = new WSIqcItem();
