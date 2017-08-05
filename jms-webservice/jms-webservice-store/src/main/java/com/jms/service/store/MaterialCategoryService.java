@@ -94,10 +94,12 @@ public class MaterialCategoryService {
 		if(!mc.getSMaterials().isEmpty())
 		{
 			valid.setValid(false);
+			valid.setMsg("该物料分类已经被使用，不能删除！");
 		}
 		else
 		{
 			sMaterialCategoryRepository.delete(catgegoryId);
+			valid.setMsg("删除成功！");
 			valid.setValid(true);
 		}
 		

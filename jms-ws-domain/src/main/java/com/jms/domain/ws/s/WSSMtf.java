@@ -28,6 +28,7 @@ public class WSSMtf {
 	     
 	     private Long coCompanyId;
 	     private Long poId;
+	     private String poCode;
 	     
 	     private Long idWo;
 	     
@@ -40,6 +41,12 @@ public class WSSMtf {
 	     
 	     private Long idToCompany;
 	     private Long idCustomerCompany;
+	     
+	     
+	     
+	     private String toCompany;
+	     private String customerCompany;
+	     
 	     
 	     private Map<String,WSSMtfMaterial> smtfItems = new LinkedHashMap<String,WSSMtfMaterial>(0);
 		public Long getIdMt() {
@@ -205,6 +212,24 @@ public class WSSMtf {
 		}
 		public void setIdR(Long idR) {
 			this.idR = idR;
+		}
+		public String getPoCode() {
+			return poCode;
+		}
+		public void setPoCode(String poCode) {
+			this.poCode = poCode;
+		}
+		public String getToCompany() {
+			return toCompany;
+		}
+		public void setToCompany(String toCompany) {
+			this.toCompany = toCompany;
+		}
+		public String getCustomerCompany() {
+			return customerCompany;
+		}
+		public void setCustomerCompany(String customerCompany) {
+			this.customerCompany = customerCompany;
 		}
    
 }

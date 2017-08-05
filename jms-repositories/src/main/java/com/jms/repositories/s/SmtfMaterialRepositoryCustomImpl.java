@@ -44,7 +44,7 @@ public class SmtfMaterialRepositoryCustomImpl implements SMtfMaterialRepositoryC
 		   q="'%"+q+"%'";
 		   query = query +" and (s.SMaterial.pno like "+q +"  or s.SMaterial.rev like " +q +" or s.SMaterial.des like "+q +" or s.SMtf.mtNo like "+q +")";
 	   }
-	  // System.out.println(query);
+	   System.out.println(query);
 	   return em.createQuery(query, SMtfMaterial.class).getResultList();
 	}
 

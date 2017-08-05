@@ -1717,6 +1717,7 @@ public class MtfService {
 
 				wsSMtf.setCoCompanyId(s.getSPoMaterial().getSPo().getSCompanyCo().getId());
 				wsSMtf.setPoId(s.getSPoMaterial().getSPo().getIdPo());
+				wsSMtf.setPoCode(s.getSPoMaterial().getSPo().getCodePo());
 				// break;
 			}
 			if (s.getSSo() != null) {
@@ -1727,6 +1728,16 @@ public class MtfService {
 				wsSMtf.setCoOrderNo(s.getSSo().getCoOrderNo());
 				// wsSMtf.set
 			}
+		}
+		//客户
+		if(sMtf.getIdCustomerCompany()!=null)
+		{
+			wsSMtf.setCustomerCompany(companyRepository.findOne(sMtf.getIdCustomerCompany()).getCompanyName());
+		}
+		//wanglai
+		if(sMtf.getIdToCompany()!=null)
+		{
+			wsSMtf.setToCompany(companyRepository.findOne(sMtf.getIdToCompany()).getCompanyName());
 		}
 		// wsSMtf.setCoCompanyId(coCompanyId);
 		// wsSMtf.setma

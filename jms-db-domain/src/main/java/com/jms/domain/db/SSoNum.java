@@ -33,7 +33,9 @@ public class SSoNum  implements java.io.Serializable {
 
     public SSoNum() {
     }
-
+    public SSoNum(String nam) {
+     this.nam = nam;
+    }
    
      @Id @GeneratedValue(strategy=IDENTITY)
     
