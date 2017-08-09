@@ -108,6 +108,9 @@ public class MrpService {
 		List<SNomaterialReportSum> sums1 = sNomaterialReportSumRepository.findByIdCompanyAndStatus(companyId,3l);
 		sNomaterialReportSumRepository.delete(sums1);
 		
+		
+		List<SPoTemp> sPoTemps1 = sPoTempRepository.findByIdCompany(companyId);
+		sPoTempRepository.delete(sPoTemps1);
 		 //以前工单
 		 Map<Long, List<SNomaterialReport>> yiqiangongdan = new HashMap<Long,List<SNomaterialReport>>();
 		   
