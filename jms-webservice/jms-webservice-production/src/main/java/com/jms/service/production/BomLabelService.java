@@ -279,8 +279,12 @@ public class BomLabelService {
 			    if(p.getWip()!=null)
 			    {
 			    	SBin bin = sBinRepository.findOne(p.getWip());
-			    	item.setWorkCenter(bin.getBin());
-			    	item.setWorkCenterId(bin.getIdBin());
+			    	if(bin!=null)
+			    	{
+			    		item.setWorkCenter(bin.getBin());
+				    	item.setWorkCenterId(bin.getIdBin());
+			    	}
+			    	
 			    }
 //				if(p.getPWorkCenter()!=null)
 //				{

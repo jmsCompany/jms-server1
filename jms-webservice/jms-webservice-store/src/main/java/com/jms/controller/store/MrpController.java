@@ -649,7 +649,7 @@ public class MrpController {
 				days = null;
 			}
 		}
-		// mrpService.loadComprice(level);
+		 mrpService.loadComprice(level);
 		// mrpService.loadNoMaterialReportSum(timetype, time);
 		if (days != null) {
 			System.out.print("days: " + days);

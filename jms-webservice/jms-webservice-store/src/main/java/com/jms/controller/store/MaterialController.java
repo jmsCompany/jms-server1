@@ -328,7 +328,8 @@ public class MaterialController {
 	public Valid uploadMaterialCoFile(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		Long idCompany = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
-		//物料编码	版本	描述	大类（原料，成品，半成品，消耗品，量具）	小类	品牌	重量	采购单位（个，千只，…）	库存单位（个，千只）	成本	状态（有效，无效）	最小起订量	最小包装量	安全库存	成本中心	检测周期	检测周期单位	备注	自动备注
+		//0物料编码	1版本	2描述	3大类（原料，成品，半成品，消耗品，量具）	4小类	5品牌	6重量	7采购单位（个，千只，…）	
+	  //	8库存单位（个，千只）	9成本	10状态（有效，无效）	11最小起订量	12最小包装量	13安全库存	14成本中心	15检测周期	16检测周期单位	17备注	18自动备注
 		Valid v = new Valid();
 		v.setValid(true);
 		FileMeta fileMeta = new FileMeta();
@@ -593,7 +594,7 @@ public class MaterialController {
 					
 					
 					
-					String mpq = reader.get(11);
+					String mpq = reader.get(12);
 					if(mpq!=null&&!mpq.isEmpty())
 					{
 						try
@@ -620,7 +621,7 @@ public class MaterialController {
 					
 					
 					
-					String saftyInv = reader.get(12);
+					String saftyInv = reader.get(13);
 					if(saftyInv!=null&&!saftyInv.isEmpty())
 					{
 						try
@@ -646,9 +647,9 @@ public class MaterialController {
 					}
 					
 					//
-					String costCenter = reader.get(13);
+					String costCenter = reader.get(14);
 					
-					String checkCycle = reader.get(14);
+					String checkCycle = reader.get(15);
 					if(checkCycle!=null&&!checkCycle.isEmpty())
 					{
 						try
@@ -676,7 +677,7 @@ public class MaterialController {
 					
 				
 					
-					String checkCycleUnit = reader.get(15);
+					String checkCycleUnit = reader.get(16);
 					if(checkCycleUnit!=null&&!checkCycleUnit.isEmpty())
 					{
 						try
@@ -703,8 +704,8 @@ public class MaterialController {
 					
 					
 		
-					wsMaterial.setRemark(reader.get(16));
-					wsMaterial.setAutoRemark(reader.get(17));
+					wsMaterial.setRemark(reader.get(17));
+					wsMaterial.setAutoRemark(reader.get(18));
 					
 					
 					wsMaterials.add(wsMaterial);

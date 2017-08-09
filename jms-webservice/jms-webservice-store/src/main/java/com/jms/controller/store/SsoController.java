@@ -122,7 +122,9 @@ public class SsoController {
 		for (int i = start; i < end; i++) {
 			SSo w = ssos.get(i);
 			String status1=(w.getSStatusDic()==null)?"":w.getSStatusDic().getName();
-			String unit =(w.getSMaterial().getSUnitDicByUnitPur()==null)?"":w.getSMaterial().getSUnitDicByUnitPur().getName();
+			
+		
+			
 			String companyCoShortName =(w.getSCompanyCo()==null)?"":w.getSCompanyCo().getShortName();
 			String qtyDel = (w.getQtyDelivered()==null)?"":""+w.getQtyDelivered();
 			String un="";
@@ -131,9 +133,11 @@ public class SsoController {
 				un = w.getUsers().getName();
 			}
 			String ma ="";
+			String unit="";
 			if(w.getSMaterial()!=null)
 			{
 				ma=w.getSMaterial().getPno()+"_"+w.getSMaterial().getRev()+"_"+w.getSMaterial().getDes();
+			    unit =(w.getSMaterial().getSUnitDicByUnitPur()==null)?"":w.getSMaterial().getSUnitDicByUnitPur().getName();
 			}
 			String dd ="";
 			if(w.getDeliveryDate()!=null)

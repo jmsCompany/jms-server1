@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.jms.domain.db.SComCom;
 import com.jms.domain.db.SMaterial;
-import com.jms.domain.db.SPo;
 import com.jms.domain.db.SSo;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
@@ -24,36 +23,36 @@ import com.jms.domain.ws.s.WSSso;
 import com.jms.repositories.s.SComComRepository;
 import com.jms.repositories.s.SSoRepository;
 import com.jms.repositories.s.SSoRepositoryCustom;
-import com.jms.service.store.SsoService;
+import com.jms.service.store.SsoService1;
 import com.jms.web.security.SecurityUtils;
 
 
 @RestController
 @Transactional(readOnly=true)
-public class SsoController {
+public class SsoController1 {
 	
 
 	@Autowired private SecurityUtils securityUtils;
-	@Autowired private SsoService ssoService;
+	@Autowired private SsoService1 ssoService;
 	@Autowired private SSoRepository sSoRepository;
 	@Autowired private SSoRepositoryCustom sSoRepositoryCustom;
 	@Autowired private SComComRepository sComComRepository;
 	
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/s/saveSo", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/s/saveSo1", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public Valid saveSo(@RequestBody WSSso wsSso) throws Exception {
 		return ssoService.saveSSo(wsSso);
 	}
 	
 
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/findSo", method=RequestMethod.GET)
+	@RequestMapping(value="/s/findSo1", method=RequestMethod.GET)
 	public WSSso findWSSso(@RequestParam("soId") Long soId) throws Exception {
 		return ssoService.findSso(soId);
 	}
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/findCoOrderNosByCompanyCoId", method=RequestMethod.GET)
+	@RequestMapping(value="/s/findCoOrderNosByCompanyCoId1", method=RequestMethod.GET)
 	public List<WSSelectObj> findCoOrderNosByCompanyCoId(@RequestParam("coId") Long coId) throws Exception {
 		List<WSSelectObj> ws =new ArrayList<WSSelectObj>();
 		for(String s: sSoRepository.findCoOrderNosByCompanyCoId(coId))
@@ -67,7 +66,7 @@ public class SsoController {
 	}
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/findCoOrderNosByCompany2Id", method=RequestMethod.GET)
+	@RequestMapping(value="/s/findCoOrderNosByCompany2Id1", method=RequestMethod.GET)
 	public List<WSSelectObj> findCoOrderNosByCompany2Id(@RequestParam("idCompany2") Long idCompany2) throws Exception {
 		List<WSSelectObj> ws =new ArrayList<WSSelectObj>();
 	    //System.out.println("idCompany2: " + idCompany2); //32
@@ -101,7 +100,7 @@ public class SsoController {
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/getSoList", method=RequestMethod.POST)
+	@RequestMapping(value="/s/getSoList1", method=RequestMethod.POST)
 	public WSTableData  getSoList( 
 			@RequestParam(required=false,value="q") String q,
 			@RequestParam(required=false,value="status") Long status,
@@ -156,7 +155,7 @@ public class SsoController {
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/getSoListByCompanyCoIdAndOrderNo", method=RequestMethod.GET)
+	@RequestMapping(value="/s/getSoListByCompanyCoIdAndOrderNo1", method=RequestMethod.GET)
 	public List<WSSelectObj> getSoListByCompanyCoIdAndOrderNo(@RequestParam("companyCoId") Long companyCoId,@RequestParam("orderNo") String orderNo) throws Exception {
 //		System.out.println("coId: " + companyCoId +", orderNo: " +orderNo);
 		List<WSSelectObj>  ws = new ArrayList<WSSelectObj>();
@@ -175,9 +174,9 @@ public class SsoController {
 	}
 	
 	
-	
+	//原来s/getSoListByCompany2IdAndOrderNo
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/getSoListByCompany2IdAndOrderNo", method=RequestMethod.GET)
+	@RequestMapping(value="/s/getSoListByCompany2IdAndOrderNo_1", method=RequestMethod.GET)
 	public List<WSSelectObj> getSoListByCompany2IdAndOrderNo(@RequestParam("company2Id") Long company2Id,@RequestParam("orderNo") String orderNo) throws Exception {
     //	System.out.println("coId: " + company2Id +", orderNo: " +orderNo);
     	// SComCom c = sComComRepository.findOne(company2Id);
@@ -214,7 +213,7 @@ public class SsoController {
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/getSoListByCompany2IdAndOrderNo1", method=RequestMethod.GET)
+	@RequestMapping(value="/s/getSoListByCompany2IdAndOrderNo11", method=RequestMethod.GET)
 	public List<WSSelectObj> getSoListByCompany2IdAndOrderNo1(@RequestParam("company2Id") Long company2Id,@RequestParam("orderNo") String orderNo) throws Exception {
     	System.out.println("coId: " + company2Id +", orderNo: " +orderNo);
     	 SComCom c = sComComRepository.findOne(company2Id);
@@ -249,7 +248,7 @@ public class SsoController {
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/getSoListObjs", method=RequestMethod.GET)
+	@RequestMapping(value="/s/getSoListObjs1", method=RequestMethod.GET)
 	public List<WSSelectObj> getSoList() throws Exception {
 		List<WSSelectObj>  ws = new ArrayList<WSSelectObj>();
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
@@ -268,7 +267,7 @@ public class SsoController {
 
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/findOpenedSoList", method=RequestMethod.GET)
+	@RequestMapping(value="/s/findOpenedSoList1", method=RequestMethod.GET)
 	public List<WSSelectObj> findOpenedSoList() throws Exception {
 		List<WSSelectObj>  ws = new ArrayList<WSSelectObj>();
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
@@ -286,7 +285,7 @@ public class SsoController {
 	}
 
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/findOpenedSoListByQ", method=RequestMethod.GET)
+	@RequestMapping(value="/s/findOpenedSoListByQ1", method=RequestMethod.GET)
 	public List<WSSelectObj> findOpenedSoListByQ(@RequestParam(value="q",required=false) String q) throws Exception {
 		List<WSSelectObj>  ws = new ArrayList<WSSelectObj>();
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
@@ -327,7 +326,7 @@ public class SsoController {
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/getMaterialDeliveredBySoId", method=RequestMethod.GET)
+	@RequestMapping(value="/s/getMaterialDeliveredBySoId1", method=RequestMethod.GET)
 	public WSMaterialDelivered getMaterialDeliveredBySoId(@RequestParam("soId") Long soId) throws Exception {
 		
 	//	System.out.println("soId: " + soId);
@@ -359,7 +358,7 @@ public class SsoController {
 
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value = "/s/getMaterialBySoId", method = RequestMethod.GET)
+	@RequestMapping(value = "/s/getMaterialBySoId1", method = RequestMethod.GET)
 	public WSMaterial findWSMaterial(@RequestParam("soId") Long soId) throws Exception {
 		return ssoService.getMaterialBySoId(soId);
 
@@ -367,14 +366,14 @@ public class SsoController {
 	
 	
 	@Transactional(readOnly = false)
-	@RequestMapping(value="/s/saveSSoAutoRemark", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/s/saveSSoAutoRemark1", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public Valid saveSSoRemark(@RequestBody WSSSoRemark wsSSoRemark) throws Exception {
 		return ssoService.saveSoAutoRemark(wsSSoRemark);
 	}
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/check/ssoCode", method=RequestMethod.GET)
+	@RequestMapping(value="/check/ssoCode1", method=RequestMethod.GET)
 	public Valid checkCodeSo(@RequestParam("codeSo") String codeSo) {
 		Valid valid = new Valid();
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();

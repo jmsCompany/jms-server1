@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import com.jms.domain.db.SMtf;
 import com.jms.domain.db.SMtfMaterial;
+import com.jms.domain.db.SStk;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.WSTableData;
@@ -23,6 +24,7 @@ import com.jms.repositories.s.SMtfMaterialRepository;
 import com.jms.repositories.s.SMtfMaterialRepositoryCustom;
 import com.jms.repositories.s.SMtfRepository;
 import com.jms.repositories.s.SStatusDicRepository;
+import com.jms.repositories.s.SStkRepository;
 import com.jms.service.store.MtfMaterialService;
 import com.jms.service.store.MtfService;
 import com.jms.service.store.SMtfTypeDicService;
@@ -37,11 +39,12 @@ public class MtfController {
 	@Autowired private MtfService mtfService;
 	@Autowired private MtfMaterialService mtfMaterialService;
 	@Autowired private SMtfTypeDicService sMtfTypeDicService;
-	@Autowired private SMtfRepository sMtfRepository;
+	@Autowired private SStkRepository sStkRepository;
 	@Autowired private SMtfMaterialRepository sMtfMaterialRepository;
 	@Autowired private SMtfMaterialRepositoryCustom sMtfMaterialRepositoryCustom;
 	@Autowired private CompanyRepository companyRepository;
 	@Autowired private SStatusDicRepository sStatusDicRepository;
+	@Autowired private SMtfRepository sMtfRepository;
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/s/saveSmtf", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -469,6 +472,15 @@ public class MtfController {
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		
 		//System.out.println("companyId: " + companyId);
+		if(typeId.equals(9l)&&toStkId!=null)
+		{
+
+			SStk stk = sStkRepository.findOne(toStkId);
+			if(stk!=null&&stk.getStkName().equals("CON"))
+			{
+				toStkId=null;
+			}
+		}
 	
 		List<SMtfMaterial> sMtfMaterials = sMtfMaterialRepositoryCustom.getCustomSMtf(companyId, typeId,q,fromStkId,toStkId, fromDay, toDay);
 		List<String[]> lst = new ArrayList<String[]>();

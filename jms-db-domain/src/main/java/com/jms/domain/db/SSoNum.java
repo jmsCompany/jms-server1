@@ -50,11 +50,11 @@ public class SSoNum  implements java.io.Serializable {
 
     
     @Column(name="nam", length=45)
-    public String getName() {
+    public String getNam() {
         return this.nam;
     }
     
-    public void setName(String nam) {
+    public void setNam(String nam) {
         this.nam = nam;
     }
 
