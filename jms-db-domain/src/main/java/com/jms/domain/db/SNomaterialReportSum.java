@@ -34,6 +34,7 @@ public class SNomaterialReportSum  implements java.io.Serializable {
      private String invUnit;
      private Long creator;
 
+     private Long alert;
     public SNomaterialReportSum() {
     }
 
@@ -150,6 +151,15 @@ public class SNomaterialReportSum  implements java.io.Serializable {
     public void setCreator(Long creator) {
         this.creator = creator;
     }
+
+    @Column(name="alert")
+	public Long getAlert() {
+		return alert;
+	}
+
+	public void setAlert(Long alert) {
+		this.alert = alert;
+	}
 
 
 

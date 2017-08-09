@@ -87,7 +87,7 @@ public class MrpService {
 	
 	//生成缺料详情
 	@Transactional(readOnly=false)
-	public Valid loadComprice(String lvl)
+	public Valid loadComprice(String lvl,Long ignoreProductDate)
 	{	
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		List<SMaterial> mats = null;
@@ -102,6 +102,12 @@ public class MrpService {
 		List<SNomaterialReport>  ss = sNomaterialReportRepository.findByIdCompany(companyId);//未确认的
 		sNomaterialReportRepository.delete(ss);
 		   
+		//status 1未确认，2已确认，3临时po
+		List<SNomaterialReportSum> sums = sNomaterialReportSumRepository.findByIdCompanyAndStatus(companyId,1l);
+		sNomaterialReportSumRepository.delete(sums);
+		List<SNomaterialReportSum> sums1 = sNomaterialReportSumRepository.findByIdCompanyAndStatus(companyId,3l);
+		sNomaterialReportSumRepository.delete(sums1);
+		
 		 //以前工单
 		 Map<Long, List<SNomaterialReport>> yiqiangongdan = new HashMap<Long,List<SNomaterialReport>>();
 		   
@@ -283,108 +289,234 @@ public class MrpService {
 			
 		}
 		
-		
-		
-		Map<Long,List<SNomaterialReportSum>> sumMap = new HashMap<Long,List<SNomaterialReportSum>>();
-		
-		//status 1未确认，2已确认，3临时po
-		List<SNomaterialReportSum> sums = sNomaterialReportSumRepository.findByIdCompanyAndStatus(companyId,1l);
-		sNomaterialReportSumRepository.delete(sums);
-		List<SNomaterialReportSum> sums1 = sNomaterialReportSumRepository.findByIdCompanyAndStatus(companyId,3l);
-		sNomaterialReportSumRepository.delete(sums1);
-		List<SPoTemp> spos = sPoTempRepository.findByIdCompany(companyId);
-		sPoTempRepository.delete(spos);
-		//生产汇总
-		List<SNomaterialReport> ws = sNomaterialReportRepository.findByIdCompanyAndTypeOrderByProDateAsc(companyId, 1l);
-	//	Long noMa = 0l;  //上次结转
-		
-		
-		for(SNomaterialReport s :ws)
+		if(ignoreProductDate!=null)
 		{
-		
-		    //System.out.println(" 缺料： " + s.getMaterial() +", 时间： "  +s.getProDate() +", 完成时间： " +s.getWoFinishDate());
-		  // noMa = noMa + s.getQty();
-		   
-		   Long invQty= getInv( s.getIdMat() );
-		   Long safeQty = 0l;
-		   SMaterial mat = sMaterialRepository.findOne(s.getIdMat());
-		   if(mat.getSafetyInv()!=null)
-		   {
-			   safeQty = mat.getSafetyInv();
-		   }
-		   Long openPo = getOpenPoBefore(s.getIdMat(),s.getProDate());
-		   
-		   Long sureNoMat=0l;
-		   List<SNomaterialReportSum> sNomaterialReportSums = sNomaterialReportSumRepository.findByIdCompanyAndIdMatAndStatus(companyId, s.getIdMat(), 2l);
-		   
-		  for(SNomaterialReportSum srm:sNomaterialReportSums)
-		  {
-			  if(srm.getRDate().before(s.getProDate())||srm.getRDate().equals(s.getProDate()))
-			  {
-				  sureNoMat = sureNoMat+ srm.getPQty();
-			  }
-		  }
-		   
-		  
-		  Long tmpPo = 0l;
-		     List<SPoTemp> sPoTemps = sPoTempRepository.findByIdCompanyAndIdMat(companyId, s.getIdMat());
+			Map<Long,List<SNomaterialReportSum>> sumMap = new HashMap<Long,List<SNomaterialReportSum>>();
 			
-			 for(SPoTemp spo: sPoTemps)
-			 {
-				 if(spo.getRDate().before(s.getProDate())||spo.getRDate().equals(s.getProDate()))
-				 {
-					 tmpPo = tmpPo + spo.getSPoQty();
-				 }
-			 }
-		  
-			System.out.println("以前工单： mat: " + s.getMaterial() +", date:  " + s.getProDate());
-			Long openWo =  getOpenWoBefore( s.getIdMat(),s.getProDate(),yiqiangongdan); //以前工单数
-		  
-//		  System.out.println(" 物料： " +s.getMaterial() +", wo: " +s.getPWNo() +", 需料日期: " + s.getProDate() +", 工单数量: "+ s.getQty()
-//		  +",  安全库存： " + safeQty +", 库存 : " + invQty +", openPo: " + openPo +", 确认缺料: " + sureNoMat +", 临时PO： " + tmpPo +", 以前工单数：  " + openWo);
-//		  
-		 
-		  Long jiezhuan = 0l;
-		  if(sumMap.get(s.getIdMat())!=null)
-		  {
-			  for(SNomaterialReportSum k: sumMap.get(s.getIdMat()))
-			  {
-				  jiezhuan = jiezhuan+ k.getPQty();
-			  }
-		  }
-		  
-		  //计算缺料状况    
-		  Long qty = s.getQty() + invQty + sureNoMat + tmpPo -safeQty + openWo +jiezhuan +openPo;
-		  
-		  System.out.println("上次结转： " + jiezhuan);
-		  System.out.println("缺料状况: " + qty);
-		  
-		   if(qty<0l)
-		   {
-			   SNomaterialReportSum sr = new  SNomaterialReportSum();
-			   sr.setPQty(-qty);
-			   sr.setSQty(qty);
-			   sr.setIdCompany(companyId);
-			   sr.setMaterial(s.getMaterial());
-			   sr.setIdMat(s.getIdMat());
-			   sr.setInvUnit(s.getInvUnit());
-			   sr.setFDate(s.getWoFinishDate());
-			   sr.setRDate(s.getProDate());
-			   sr.setStatus(1l);
-			   sNomaterialReportSumRepository.save(sr);
-			   //noMa = -qty;
-			   
-			  List<SNomaterialReportSum>  sss = sumMap.get(s.getIdMat());
-			  if(sss==null)
-			  {
-				  sss = new ArrayList<SNomaterialReportSum>();
-			  }
-			  sss.add(sr);
-			  sumMap.put(s.getIdMat(), sss);
-		   }
-		   
 		
+			
+			//生产汇总
+			List<SNomaterialReport> ws = sNomaterialReportRepository.findByIdCompanyAndTypeOrderByProDateAsc(companyId, 1l);
+		//	Long noMa = 0l;  //上次结转
+			
+			
+			for(SNomaterialReport s :ws)
+			{
+			
+			    //System.out.println(" 缺料： " + s.getMaterial() +", 时间： "  +s.getProDate() +", 完成时间： " +s.getWoFinishDate());
+			  // noMa = noMa + s.getQty();
+			   
+			   Long invQty= getInv( s.getIdMat() );
+			   Long safeQty = 0l;
+			   SMaterial mat = sMaterialRepository.findOne(s.getIdMat());
+			   if(mat.getSafetyInv()!=null)
+			   {
+				   safeQty = mat.getSafetyInv();
+			   }
+			   Long openPo = getOpenPoBefore(s.getIdMat(),s.getProDate());
+			   
+			   Long sureNoMat=0l;
+			   Long sureNoMat1=0l;
+			   List<SNomaterialReportSum> sNomaterialReportSums = sNomaterialReportSumRepository.findByIdCompanyAndIdMatAndStatus(companyId, s.getIdMat(), 2l);
+			   
+			  for(SNomaterialReportSum srm:sNomaterialReportSums)
+			  {
+				  if(srm.getRDate().before(s.getProDate())||srm.getRDate().equals(s.getProDate()))
+				  {
+					  sureNoMat = sureNoMat+ srm.getPQty();
+				  }
+				  sureNoMat1 = sureNoMat1+ srm.getPQty();
+			  }
+			   
+			  
+			  Long tmpPo = 0l;
+			  Long tmpPo1 = 0l;
+			     List<SPoTemp> sPoTemps = sPoTempRepository.findByIdCompanyAndIdMat(companyId, s.getIdMat());
+				
+				 for(SPoTemp spo: sPoTemps)
+				 {
+					 if(spo.getRDate().before(s.getProDate())||spo.getRDate().equals(s.getProDate()))
+					 {
+						 tmpPo = tmpPo + spo.getSPoQty();
+					 }
+					 tmpPo1 = tmpPo1 + spo.getSPoQty();
+				 }
+			  
+				System.out.println("以前工单： mat: " + s.getMaterial() +", date:  " + s.getProDate());
+				Long openWo =  getOpenWoBefore( s.getIdMat(),s.getProDate(),yiqiangongdan); //以前工单数
+			  
+//			  System.out.println(" 物料： " +s.getMaterial() +", wo: " +s.getPWNo() +", 需料日期: " + s.getProDate() +", 工单数量: "+ s.getQty()
+//			  +",  安全库存： " + safeQty +", 库存 : " + invQty +", openPo: " + openPo +", 确认缺料: " + sureNoMat +", 临时PO： " + tmpPo +", 以前工单数：  " + openWo);
+//			  
+			 
+			  Long jiezhuan = 0l;
+			  if(sumMap.get(s.getIdMat())!=null)
+			  {
+				  for(SNomaterialReportSum k: sumMap.get(s.getIdMat()))
+				  {
+					  jiezhuan = jiezhuan+ k.getPQty();
+				  }
+			  }
+			  
+			  //计算缺料状况    
+			  Long qty = s.getQty() + invQty + sureNoMat + tmpPo -safeQty + openWo +jiezhuan +openPo;
+			  Long qty1 = s.getQty() + invQty + sureNoMat1 + tmpPo1 -safeQty + openWo +jiezhuan +openPo;
+			  
+			  System.out.println("上次结转： " + jiezhuan);
+			  System.out.println("缺料状况: " + qty);
+			  
+			   if(qty<0l)
+			   {
+				   SNomaterialReportSum sr = new  SNomaterialReportSum();
+				   sr.setPQty(-qty);
+				   sr.setSQty(qty);
+				   sr.setIdCompany(companyId);
+				   sr.setMaterial(s.getMaterial());
+				   sr.setIdMat(s.getIdMat());
+				   sr.setInvUnit(s.getInvUnit());
+				   sr.setFDate(s.getWoFinishDate());
+				   sr.setRDate(s.getProDate());
+				   sr.setStatus(1l);
+				   if(qty1>=0)
+				   {
+					   sr.setAlert(1l);
+				   }
+				   sNomaterialReportSumRepository.save(sr);
+				   //noMa = -qty;
+				   
+				  List<SNomaterialReportSum>  sss = sumMap.get(s.getIdMat());
+				  if(sss==null)
+				  {
+					  sss = new ArrayList<SNomaterialReportSum>();
+				  }
+				  sss.add(sr);
+				  sumMap.put(s.getIdMat(), sss);
+			   }
+			   
+			
+			}
+			
 		}
+		else
+		{
+			
+		
+			
+			Map<Long,List<SNomaterialReportSum>> sumMap = new HashMap<Long,List<SNomaterialReportSum>>();
+			
+			//status 1未确认，2已确认，3临时po
+			//生产汇总
+			List<SNomaterialReport> ws = sNomaterialReportRepository.findByIdCompanyAndTypeOrderByProDateAsc(companyId, 1l);
+		//	Long noMa = 0l;  //上次结转
+			
+			
+			for(SNomaterialReport s :ws)
+			{
+			
+			    //System.out.println(" 缺料： " + s.getMaterial() +", 时间： "  +s.getProDate() +", 完成时间： " +s.getWoFinishDate());
+			  // noMa = noMa + s.getQty();
+			   
+			   Long invQty= getInv( s.getIdMat() );
+			   Long safeQty = 0l;
+			   SMaterial mat = sMaterialRepository.findOne(s.getIdMat());
+			   if(mat.getSafetyInv()!=null)
+			   {
+				   safeQty = mat.getSafetyInv();
+			   }
+			   Long openPo = getOpenPoBefore(s.getIdMat(),s.getProDate());
+			   
+			   Long sureNoMat=0l;
+			   Long sureNoMat1=0l;
+			   List<SNomaterialReportSum> sNomaterialReportSums = sNomaterialReportSumRepository.findByIdCompanyAndIdMatAndStatus(companyId, s.getIdMat(), 2l);
+			   
+			  for(SNomaterialReportSum srm:sNomaterialReportSums)
+			  {
+				  if(srm.getRDate().before(s.getProDate())||srm.getRDate().equals(s.getProDate()))
+				  {
+					  sureNoMat = sureNoMat+ srm.getPQty();
+				  }
+				  sureNoMat1 = sureNoMat1+ srm.getPQty();
+			  }
+			   
+			  
+			  Long tmpPo = 0l;
+			  Long tmpPo1 = 0l;
+			     List<SPoTemp> sPoTemps = sPoTempRepository.findByIdCompanyAndIdMat(companyId, s.getIdMat());
+				
+				 for(SPoTemp spo: sPoTemps)
+				 {
+					 if(spo.getRDate().before(s.getProDate())||spo.getRDate().equals(s.getProDate()))
+					 {
+						 tmpPo = tmpPo + spo.getSPoQty();
+					 }
+					 tmpPo1 = tmpPo1 + spo.getSPoQty();
+				 }
+				 
+			  
+				System.out.println("以前工单： mat: " + s.getMaterial() +", date:  " + s.getProDate());
+				Long openWo =  getOpenWoBefore( s.getIdMat(),s.getProDate(),yiqiangongdan); //以前工单数
+			  
+//			  System.out.println(" 物料： " +s.getMaterial() +", wo: " +s.getPWNo() +", 需料日期: " + s.getProDate() +", 工单数量: "+ s.getQty()
+//			  +",  安全库存： " + safeQty +", 库存 : " + invQty +", openPo: " + openPo +", 确认缺料: " + sureNoMat +", 临时PO： " + tmpPo +", 以前工单数：  " + openWo);
+//			  
+			 
+			  Long jiezhuan = 0l;
+			  if(sumMap.get(s.getIdMat())!=null)
+			  {
+				  for(SNomaterialReportSum k: sumMap.get(s.getIdMat()))
+				  {
+					  jiezhuan = jiezhuan+ k.getPQty();
+				  }
+			  }
+			  
+			  //计算缺料状况    
+			  Long qty = s.getQty() + invQty + sureNoMat + tmpPo -safeQty + openWo +jiezhuan +openPo;
+			  
+			  Long qty1 = s.getQty() + invQty + sureNoMat1 + tmpPo1 -safeQty + openWo +jiezhuan +openPo;
+			  
+			  System.out.println("上次结转： " + jiezhuan);
+			  System.out.println("缺料状况: " + qty);
+			  
+			   if(qty1<0l)
+			   {
+				   SNomaterialReportSum sr = new  SNomaterialReportSum();
+				   sr.setPQty(-qty1);
+				   sr.setSQty(qty1);
+				   sr.setIdCompany(companyId);
+				   sr.setMaterial(s.getMaterial());
+				   sr.setIdMat(s.getIdMat());
+				   sr.setInvUnit(s.getInvUnit());
+				   sr.setFDate(s.getWoFinishDate());
+				   sr.setRDate(s.getProDate());
+				   sr.setStatus(1l);
+				   
+				  
+				   sNomaterialReportSumRepository.save(sr);
+				   //noMa = -qty;
+				   
+				  List<SNomaterialReportSum>  sss = sumMap.get(s.getIdMat());
+				  if(sss==null)
+				  {
+					  sss = new ArrayList<SNomaterialReportSum>();
+				  }
+				  sss.add(sr);
+				  sumMap.put(s.getIdMat(), sss);
+			   }
+			   
+			
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		}
+		
+		
 
 		Valid v = new Valid();
 		v.setValid(true);

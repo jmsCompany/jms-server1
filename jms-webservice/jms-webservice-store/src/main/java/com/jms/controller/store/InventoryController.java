@@ -149,8 +149,10 @@ public class InventoryController {
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value = "/s/inventorySummary", method = RequestMethod.POST)
-	public WSTableData inventorySummary(@RequestParam(required=false,value="materialId") Long materialId,
+	public WSTableData inventorySummary(
+			@RequestParam(required=false,value="materialId") Long materialId,
 			@RequestParam(required=false,value="stkId") Long stkId, 
+			@RequestParam(required=false,value="noMat") Long noMat, 
 			@RequestParam Integer draw,
 			@RequestParam Integer start,
 			@RequestParam Integer length) throws Exception {

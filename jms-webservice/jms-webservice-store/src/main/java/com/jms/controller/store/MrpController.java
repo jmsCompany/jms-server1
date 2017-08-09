@@ -629,6 +629,8 @@ public class MrpController {
 																		// //
 																		// 年月。。。。
 			@RequestParam(required = false, value = "level") String level // 分期物料级别
+			
+			,@RequestParam(required = false, value = "ignoreProductDate") Long ignoreProductDate // 是否忽略到货日期
 	) {
 		// System.out.println("timetype: " + timetype +", time: " + time);
 		Long days = null;
@@ -649,10 +651,10 @@ public class MrpController {
 				days = null;
 			}
 		}
-		 mrpService.loadComprice(level);
+		 mrpService.loadComprice(level,ignoreProductDate);
 		// mrpService.loadNoMaterialReportSum(timetype, time);
 		if (days != null) {
-			System.out.print("days: " + days);
+			//System.out.print("days: " + days);
 		}
 		Valid v = new Valid();
 		v.setMsg("");
