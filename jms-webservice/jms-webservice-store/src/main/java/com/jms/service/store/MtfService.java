@@ -1252,7 +1252,7 @@ public class MtfService {
 				SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(customerCompanyId, 14l);
 				if (smtfNo == null) {
 					smtfNo = new SMtfNo();
-					smtfNo.setDes("往来发货");
+					smtfNo.setDes("往来收货");
 					smtfNo.setPrefix("WLSH");
 					smtfNo.setCompanyId(customerCompanyId);
 					smtfNo.setType(14l);
@@ -1271,6 +1271,51 @@ public class MtfService {
 				smtf1.setSStkByToStk(conBin.getSStk());
 
 				smtf1 = sMtfRepository.save(smtf1);
+				
+				
+				
+				Map<String, Object> model = new LinkedHashMap<String, Object>();
+				Long myCompanyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+				String email1 = ""; // 往来公司邮件
+				SComCom sComCom1 = sComComRepository.findByTwoCompanyId(smtf.getCompany().getIdCompany(), customerCompanyId);
+				if (sComCom1.getIdCompany1().equals(myCompanyId)) {
+					email1 = sComCom1.getEmail2();
+				} else {
+					email1 = sComCom1.getEmail1();
+				}
+				
+			
+				
+				String[] emails = new String[] { email1 };
+				// String[] emails = new String[]{email1,email2};
+				// 采购订单
+				// 公司：$!{company}
+				// 订单编码: $!{poNo}, 总价： $!{totalPrice}
+				// 条目：
+				// $!{materials}
+				// 备注：
+				// $!{remark}
+				String materials = "";
+				for (String k : wsSMtf.getSmtfItems().keySet()) {
+					{
+						WSSMtfMaterial w = wsSMtf.getSmtfItems().get(k);
+						SMaterial m = sMaterialRepository.findOne(w.getMaterialId());
+						materials = materials + "物料: " + m.getPno() + "_" + m.getDes() + ", 数量: " + w.getQty() + ", 备注： "
+								+ w.getRemark() + "\r\n";
+					}
+
+					model.put("company", securityUtils.getCurrentDBUser().getCompany().getCompanyName());
+					model.put("poNo", wsSMtf.getCoOrderNo());
+
+					model.put("materials", materials);
+					try {
+						emailSenderService.sendEmail(emails, "revTemplate.vm", "往来公司收货", model, null);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				
+				
 				
 			}
 			

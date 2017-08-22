@@ -383,28 +383,32 @@ public class SsoService1 {
 	    	
 	    	
 			PBom pbom = pBomRepository.findProductByMaterialId(materialId);
-			
-			List<PBom> boms = pBomRepository.findMaterialsByProductId(pbom.getIdBom());
-			//Long qty = wo.getQty();
-			for(PBom bom:boms)
+			if(pbom!=null)
 			{
-				PWoBom woBom = new PWoBom();
-				woBom.setIdMat(bom.getSMaterial().getIdMaterial());
-				woBom.setIdBomLabel(pbom.getPBomLabel().getIdBomLabel());
-				woBom.setLvl(bom.getLvl());
-				woBom.setOrderBy(bom.getOrderBy());
-				woBom.setPWo(wo);
-				woBom.setQpu(bom.getQpu());
-				woBom.setWastage(bom.getWastage());
-				woBom.setWip(bom.getWip());
-				Float waste = bom.getWastage()==null?0f: bom.getWastage();
-				Float q = bom.getQpu()==null?1l:bom.getQpu(); 
-                double a = (qty*q)/(1-waste);
-				double b = Math.ceil(a);
-				woBom.setQty((long)(b));
-				woBom.setQtyRev(0l);
-				pWoBomRepository.save(woBom);
+				List<PBom> boms = pBomRepository.findMaterialsByProductId(pbom.getIdBom());
+				//Long qty = wo.getQty();
+				for(PBom bom:boms)
+				{
+					PWoBom woBom = new PWoBom();
+					woBom.setIdMat(bom.getSMaterial().getIdMaterial());
+					woBom.setIdBomLabel(pbom.getPBomLabel().getIdBomLabel());
+					woBom.setLvl(bom.getLvl());
+					woBom.setOrderBy(bom.getOrderBy());
+					woBom.setPWo(wo);
+					woBom.setQpu(bom.getQpu());
+					woBom.setWastage(bom.getWastage());
+					woBom.setWip(bom.getWip());
+					Float waste = bom.getWastage()==null?0f: bom.getWastage();
+					Float q = bom.getQpu()==null?1l:bom.getQpu(); 
+	                double a = (qty*q)/(1-waste);
+					double b = Math.ceil(a);
+					woBom.setQty((long)(b));
+					woBom.setQtyRev(0l);
+					pWoBomRepository.save(woBom);
+				}
 			}
+			
+			
 	    			
 	    }
 	   

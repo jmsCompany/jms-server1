@@ -1,0 +1,5 @@
+往来收货
+公司：$!{company}
+订单编码: $!{poNo}
+条目：
+$!{materials}
