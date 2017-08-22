@@ -16,6 +16,8 @@ import com.jms.domain.NotificationMethodEnum;
 import com.jms.domain.db.Company;
 import com.jms.domain.db.EventReceiver;
 import com.jms.domain.db.PMr;
+import com.jms.domain.db.PWo;
+import com.jms.domain.db.PWoBom;
 import com.jms.domain.db.SBin;
 import com.jms.domain.db.SComCom;
 import com.jms.domain.db.SInventory;
@@ -28,6 +30,7 @@ import com.jms.domain.db.SMtfNo;
 import com.jms.domain.db.SPo;
 import com.jms.domain.db.SPoMaterial;
 import com.jms.domain.db.SSo;
+import com.jms.domain.db.SStk;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.s.WSDoItem;
@@ -43,6 +46,8 @@ import com.jms.repositories.p.PBomRepository;
 import com.jms.repositories.p.PCPpRepository;
 import com.jms.repositories.p.PMrRepository;
 import com.jms.repositories.p.PStatusDicRepository;
+import com.jms.repositories.p.PWoBomRepository;
+import com.jms.repositories.p.PWoRepository;
 import com.jms.repositories.s.SBinRepository;
 import com.jms.repositories.s.SComComRepository;
 import com.jms.repositories.s.SInventoryRepository;
@@ -107,6 +112,10 @@ public class MtfService {
 
 	@Autowired
 	private PBomRepository pBomRepository;
+	
+	@Autowired
+	private PWoRepository pWoRepository;
+	
 	@Autowired
 	private SSpoRepository sSpoRepository;
 
@@ -114,6 +123,9 @@ public class MtfService {
 	private INotificationService notificationService;
 	@Autowired
 	private EventReceiverRepository eventReceiverRepository;
+	
+	@Autowired
+	private PWoBomRepository pWoBomRepository;
 
 	@Autowired
 	private PCPpRepository pCPpRepository;
@@ -122,6 +134,8 @@ public class MtfService {
 
 	@Autowired
 	private PMrRepository pMrRepository;
+
+	
 	@Autowired
 	private CompanyRepository companyRepository;
 
@@ -403,25 +417,177 @@ public class MtfService {
 					}
 
 				}
+				
+				//System.out.println("toStk: " + wsSMtf.getToStkId());
+				
+				if(wsSMtf.getToStkId()!=null)
+				{
+					SStk toStk = sStkRepository.findOne(wsSMtf.getToStkId());
+					if(toStk!=null)
+					{
+						if(toStk.getSStkTypeDic().getIdStkType().equals(5l)) //RTV 就扣减
+						{
+							SPoMaterial sPoMaterial = sSpoMaterialRepository.getOne(wm.getPoMaterialId());
+							if (sPoMaterial.getQtyReceived() != null) {
+								sPoMaterial.setQtyReceived(sPoMaterial.getQtyReceived() - wm.getQty());
+							}
+							sSpoMaterialRepository.save(sPoMaterial);
+						}
+					}
+				}
+				
+				if(wsSMtf.getFromStkId()!=null)
+				{
+					SStk fromStk = sStkRepository.findOne(wsSMtf.getFromStkId());
+					SStk toStk = sStkRepository.findOne(wsSMtf.getToStkId());
+					//不是 RTV的仓库到 PO， 扣减
+				 
+					if(!fromStk.getSStkTypeDic().getIdStkType().equals(5l)&&toStk.getSStkTypeDic().getIdStkType().equals(11l))
+					{
 
-				SPoMaterial sPoMaterial = sSpoMaterialRepository.getOne(wm.getPoMaterialId());
-				if (sPoMaterial.getQtyReceived() != null) {
-					sPoMaterial.setQtyReceived(sPoMaterial.getQtyReceived() - wm.getQty());
-
+							SPoMaterial sPoMaterial = sSpoMaterialRepository.getOne(wm.getPoMaterialId());
+							if (sPoMaterial.getQtyReceived() != null) {
+								sPoMaterial.setQtyReceived(sPoMaterial.getQtyReceived() - wm.getQty());
+							}
+							sSpoMaterialRepository.save(sPoMaterial);
+						
+					}
 				}
 
-				sSpoMaterialRepository.save(sPoMaterial);
+			
 				// update SPo
-
 				wm.setIdMt(sMtf.getIdMt());
 				mtfMaterialService.saveMtfMaterial(wm);
 				break;
 			}
 
 			case 3: // 手动流转
+			{
+
+				wm.setIdMt(sMtf.getIdMt());
+				mtfMaterialService.saveMtfMaterial(wm);
+				updateMaterialBins(wm.getMaterialId(), wm.getFromBinId(), wsSMtf.getFromStkId());
+				updateMaterialBins(wm.getMaterialId(), wm.getToBinId(), wsSMtf.getToStkId());
+				logger.debug(" case 3 or 4:  to:  wm.getToBinId(): " + wm.getToBinId() + ", from :" + wm.getFromBinId()
+						+ ", material id: " + wm.getMaterialId() + ", qty: " + wm.getQty());
+				SInventory to = null;
+				List<SInventory> sInventorys = null;
+				if (wm.getLotNo() != null) {
+					logger.debug("lotNo: " + wm.getLotNo());
+					SInventory sInventory = sInventoryRepository.findByMaterialIdAndBinIdAndLotNo(wm.getMaterialId(),
+							wm.getToBinId(), wm.getLotNo());
+					if (sInventory != null) {
+						logger.debug("find from inv: " + sInventory.getIdInv());
+						sInventorys = new ArrayList<SInventory>();
+						sInventorys.add(sInventory);
+					}
+				} else {
+					sInventorys = sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(), wm.getToBinId());
+				}
+
+				if (sInventorys != null && !sInventorys.isEmpty()) {
+					to = sInventorys.get(0);
+					logger.debug("set to: " + to.getQty() + wm.getQty());
+					to.setQty(to.getQty() + wm.getQty());
+				}
+
+				else {
+					logger.debug("can not find inventory, so create new one");
+					to = new SInventory();
+					to.setCreationTime(new Date());
+					to.setLotNo(wm.getLotNo());
+					to.setQty(wm.getQty());
+					to.setUQty(wm.getUqty());
+					to.setSBin(sBinRepository.findOne(wm.getToBinId()));
+					to.setLotNo(wm.getLotNo());
+					to.setSMaterial(sMaterialRepository.findOne(wm.getMaterialId()));
+				}
+				// logger.debug("save to bin: " + to.getQty());
+				sInventoryRepository.save(to);
+
+				SInventory from = null;
+				List<SInventory> fromInventorys = new ArrayList<SInventory>();
+				if (wm.getLotNo() != null) {
+
+					SInventory sInventory = sInventoryRepository.findByMaterialIdAndBinIdAndLotNo(wm.getMaterialId(),
+							wm.getFromBinId(), wm.getLotNo());
+					if (sInventory != null) {
+						logger.debug("find from inv: " + sInventory.getIdInv());
+						fromInventorys.add(sInventory);
+					}
+				} else {
+					fromInventorys = sInventoryRepository.findByMaterialIdAndBinId(wm.getMaterialId(),
+							wm.getFromBinId());
+				}
+
+				if (fromInventorys != null && !fromInventorys.isEmpty()) {
+
+					for (SInventory s : fromInventorys) {
+						if (s.getQty() > 0) {
+							logger.debug("sqty: " + s.getQty() + ", wmqty: " + wm.getQty());
+							if (s.getQty() >= wm.getQty()) {
+								s.setQty(s.getQty() - wm.getQty());
+								sInventoryRepository.save(s);
+								wm.setQty(0l);
+								break;
+							} else {
+								wm.setQty(wm.getQty() - s.getQty());
+								s.setQty(0l);
+								sInventoryRepository.save(s);
+							}
+						}
+
+					}
+					if (wm.getQty() > 0) {
+						SInventory first = fromInventorys.get(0);
+						first.setQty(first.getQty() - wm.getQty());
+						sInventoryRepository.save(first);
+					}
+
+				} else {
+					logger.debug("找不到发料扣减仓位？？？？？");
+					from = new SInventory();
+					from.setCreationTime(new Date());
+					from.setLotNo(wm.getLotNo());
+					from.setQty(0 - wm.getQty());
+					from.setUQty(wm.getUqty());
+					from.setSBin(sBinRepository.findOne(wm.getFromBinId()));
+					// to.setSMaterial(spoMaterial.getSMaterial());
+					from.setSMaterial(sMaterialRepository.findOne(wm.getMaterialId()));
+					sInventoryRepository.save(from);
+				}
+
+				break;
+			
+			}
 			case 4: // 工单流转
 			{
 				wm.setIdMt(sMtf.getIdMt());
+				System.out.println("idWo: " + wsSMtf.getIdWo());
+				
+				PWo wo =pWoRepository.findOne(wsSMtf.getIdWo());
+				//产品
+				if(wo.getSSo().getSMaterial().getIdMaterial().equals(wm.getMaterialId()))
+				{
+					Long actQty = wo.getActQty()==null?0:wo.getActQty();
+					actQty = actQty+wm.getQty();
+					wo.setActQty(actQty);
+					pWoRepository.save(wo);
+				}
+				else //原料
+				{
+					PWoBom pWoBom = pWoBomRepository.findByIdWoAndIdMaterial(wsSMtf.getIdWo(),wm.getMaterialId());
+					SStk stk = sStkRepository.findOne(wsSMtf.getToStkId());
+					if(stk.getSStkTypeDic().getName().equals("车间")) //到车间已发数量变多
+					{
+						Long qtyRev = pWoBom.getQtyRev()==null?0l:pWoBom.getQtyRev();
+						qtyRev =qtyRev+wm.getQty();
+						pWoBom.setQtyRev(qtyRev);
+						pWoBomRepository.save(pWoBom);
+					}
+				  
+				}
+				
 				mtfMaterialService.saveMtfMaterial(wm);
 				updateMaterialBins(wm.getMaterialId(), wm.getFromBinId(), wsSMtf.getFromStkId());
 				updateMaterialBins(wm.getMaterialId(), wm.getToBinId(), wsSMtf.getToStkId());
@@ -772,7 +938,6 @@ public class MtfService {
 					// return valid;
 				}
 				sInventoryRepository.save(from);
-
 				break;
 			}
 

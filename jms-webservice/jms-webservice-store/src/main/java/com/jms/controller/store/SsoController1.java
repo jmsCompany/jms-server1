@@ -2,6 +2,7 @@ package com.jms.controller.store;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,13 +47,41 @@ public class SsoController1 {
 	
 
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/findSo1", method=RequestMethod.GET)
+	@RequestMapping(value="/s/findSo", method=RequestMethod.GET)
 	public WSSso findWSSso(@RequestParam("soId") Long soId) throws Exception {
+		return ssoService.findSso(soId);
+	}
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/findSo1", method=RequestMethod.GET)
+	public WSSso findWSSso1(@RequestParam("soId") Long soId) throws Exception {
 		return ssoService.findSso(soId);
 	}
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/findCoOrderNosByCompanyCoId1", method=RequestMethod.GET)
+	@RequestMapping(value="/s/findSoBySoNum", method=RequestMethod.GET)
+	public WSSso findWSSsoBySoNum(@RequestParam("soNum") Long soNum) throws Exception {
+		
+		List<SSo> soList = sSoRepository.findBySoNum(soNum);
+		System.out.println("soNum: " + soNum);
+		WSSso wsSo = new WSSso();
+		if(!soList.isEmpty())
+		{
+			System.out.println("list is not empty: ");
+			SSo so = soList.get(0);
+			wsSo.setIdSo(so.getSoNum());
+			wsSo.setCodeSo(so.getCodeSo());
+			wsSo.setsStatusId(so.getSStatusDic()==null?null:so.getSStatusDic().getId());
+			return wsSo;
+			//return ssoService.findSso(soId);
+			
+		}
+		else
+			return wsSo;
+		//return ssoService.findSso(soId);
+	}
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/findCoOrderNosByCompanyCoId", method=RequestMethod.GET)
 	public List<WSSelectObj> findCoOrderNosByCompanyCoId(@RequestParam("coId") Long coId) throws Exception {
 		List<WSSelectObj> ws =new ArrayList<WSSelectObj>();
 		for(String s: sSoRepository.findCoOrderNosByCompanyCoId(coId))
@@ -66,7 +95,7 @@ public class SsoController1 {
 	}
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/findCoOrderNosByCompany2Id1", method=RequestMethod.GET)
+	@RequestMapping(value="/s/findCoOrderNosByCompany2Id", method=RequestMethod.GET)
 	public List<WSSelectObj> findCoOrderNosByCompany2Id(@RequestParam("idCompany2") Long idCompany2) throws Exception {
 		List<WSSelectObj> ws =new ArrayList<WSSelectObj>();
 	    //System.out.println("idCompany2: " + idCompany2); //32
@@ -154,93 +183,72 @@ public class SsoController1 {
 	}
 	
 	
+	
+	
+	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/getSoListByCompanyCoIdAndOrderNo1", method=RequestMethod.GET)
+	@RequestMapping(value="/s/getSoListByCompanyCoIdAndOrderNo", method=RequestMethod.GET)
 	public List<WSSelectObj> getSoListByCompanyCoIdAndOrderNo(@RequestParam("companyCoId") Long companyCoId,@RequestParam("orderNo") String orderNo) throws Exception {
 //		System.out.println("coId: " + companyCoId +", orderNo: " +orderNo);
 		List<WSSelectObj>  ws = new ArrayList<WSSelectObj>();
-		Map<String,String> map = new HashMap<String,String>();
 		for(SSo s :sSoRepository.findByCompanyIdAndOrderNo(companyCoId,orderNo))
 		{
-			if(!map.containsKey(s.getCodeSo()))
-			{
-				WSSelectObj w = new WSSelectObj(s.getSoNum(),s.getCodeSo());
-				ws.add(w);
-				map.put(s.getCodeSo(), s.getCodeSo());
-			}
 		
+				WSSelectObj w = new WSSelectObj(s.getIdSo(),s.getCodeSo()+"_"+s.getSMaterial().getPno());
+				ws.add(w);
 		}
 		return ws;
 	}
+	
 	
 	
 	//原来s/getSoListByCompany2IdAndOrderNo
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/getSoListByCompany2IdAndOrderNo_1", method=RequestMethod.GET)
+	@RequestMapping(value="/s/getSoListByCompany2IdAndOrderNo", method=RequestMethod.GET)
 	public List<WSSelectObj> getSoListByCompany2IdAndOrderNo(@RequestParam("company2Id") Long company2Id,@RequestParam("orderNo") String orderNo) throws Exception {
-    //	System.out.println("coId: " + company2Id +", orderNo: " +orderNo);
-    	// SComCom c = sComComRepository.findOne(company2Id);
-    	// xxx
-    	 
-//    	 SComCom c = sComComRepository.findByTwoCompanyId(idCompany, company2Id);
-// 		Long idCompany =securityUtils.getCurrentDBUser().getCompany().getIdCompany();
-// 		Long idCompanytwo;
-// 		if(idCompany.equals(c.getIdCompany1()))
-// 		{
-// 			idCompanytwo = c.getIdCompany2();
-// 		}
-// 		else
-// 		{
-// 			idCompanytwo=c.getIdCompany1();
-// 		}
-// 		
- 	//	System.out.println("company2:" + idCompanytwo);
+
 		List<WSSelectObj>  ws = new ArrayList<WSSelectObj>();
 		
-		Map<String,String> map = new HashMap<String,String>();
-
 		for(SSo s :sSoRepository.findByCompany2IdAndOrderNo(company2Id,orderNo))
 		{
-			if(!map.containsKey(s.getCodeSo()))
-			{
-			WSSelectObj w = new WSSelectObj(s.getSoNum(),s.getCodeSo());
+		
+			WSSelectObj w = new WSSelectObj(s.getIdSo(),s.getCodeSo()+"_"+s.getSMaterial().getPno());
 			ws.add(w);
-			map.put(s.getCodeSo(), s.getCodeSo());
-			}
+			
 		}
 		return ws;
 	}
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/getSoListByCompany2IdAndOrderNo11", method=RequestMethod.GET)
+	@RequestMapping(value="/s/getSoListByCompany2IdAndOrderNo1", method=RequestMethod.GET)
 	public List<WSSelectObj> getSoListByCompany2IdAndOrderNo1(@RequestParam("company2Id") Long company2Id,@RequestParam("orderNo") String orderNo) throws Exception {
     	System.out.println("coId: " + company2Id +", orderNo: " +orderNo);
-    	 SComCom c = sComComRepository.findOne(company2Id);
-    	// xxx
-    	 
-    	// SComCom c = sComComRepository.findByTwoCompanyId(idCompany, company2Id); 	
-    	 
-    	 Long idCompany =securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+    	SComCom c = sComComRepository.findOne(company2Id); 
+    	List<WSSelectObj>  ws = new ArrayList<WSSelectObj>();
+    	if(c==null)
+    	{
+    		return ws;
+    	}
+    	Long idCompany =securityUtils.getCurrentDBUser().getCompany().getIdCompany();
  		Long idCompanytwo;
  		if(idCompany.equals(c.getIdCompany1()))
  		{
-			idCompanytwo = c.getIdCompany2(); } 	
+			idCompanytwo = c.getIdCompany2(); 
+			} 	
  		else		{
 			idCompanytwo=c.getIdCompany1();
 		}
  		
  		//System.out.println("company2:" + idCompanytwo);
-		List<WSSelectObj>  ws = new ArrayList<WSSelectObj>();
-		Map<String,String> map = new HashMap<String,String>();
+	
+		//Map<String,String> map = new HashMap<String,String>();
 		for(SSo s :sSoRepository.findByCompany2IdAndOrderNo(idCompanytwo,orderNo))
 		{
-			if(!map.containsKey(s.getCodeSo()))
-			{
-			WSSelectObj w = new WSSelectObj(s.getSoNum(),s.getCodeSo());
+		
+			WSSelectObj w = new WSSelectObj(s.getIdSo(),s.getCodeSo()+"_"+s.getSMaterial().getPno());
 			ws.add(w);
-			map.put(s.getCodeSo(), s.getCodeSo());
-			}
+			
 		}
 		return ws;
 	}
@@ -248,73 +256,60 @@ public class SsoController1 {
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/getSoListObjs1", method=RequestMethod.GET)
+	@RequestMapping(value="/s/getSoListObjs", method=RequestMethod.GET)
 	public List<WSSelectObj> getSoList() throws Exception {
 		List<WSSelectObj>  ws = new ArrayList<WSSelectObj>();
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
-		Map<String,String> map = new HashMap<String,String>();
+		
 		for(SSo s :sSoRepository.findByCompanyId(companyId))
 		{
-			if(!map.containsKey(s.getCodeSo()))
-			{
-			WSSelectObj w = new WSSelectObj(s.getSoNum(),s.getCodeSo());
+			WSSelectObj w = new WSSelectObj(s.getIdSo(),s.getCodeSo()+"_"+s.getSMaterial().getPno());
 			ws.add(w);
-			map.put(s.getCodeSo(), s.getCodeSo());
-			}
+			
 		}
 		return ws;
 	}
 
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/findOpenedSoList1", method=RequestMethod.GET)
+	@RequestMapping(value="/s/findOpenedSoList", method=RequestMethod.GET)
 	public List<WSSelectObj> findOpenedSoList() throws Exception {
 		List<WSSelectObj>  ws = new ArrayList<WSSelectObj>();
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
-		Map<String,String> map = new HashMap<String,String>();
 		for(SSo s :sSoRepository.findByCompanyIdAndStatusId(companyId,18l)) //激活状态
 		{
-			if(!map.containsKey(s.getCodeSo()))
-			{
-			WSSelectObj w = new WSSelectObj(s.getSoNum(),s.getCodeSo());
+		
+			WSSelectObj w = new WSSelectObj(s.getIdSo(),s.getCodeSo()+"_"+s.getSMaterial().getPno());
 			ws.add(w);
-			map.put(s.getCodeSo(), s.getCodeSo());
-			}
+		
 		}
 		return ws;
 	}
 
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/findOpenedSoListByQ1", method=RequestMethod.GET)
+	@RequestMapping(value="/s/findOpenedSoListByQ", method=RequestMethod.GET)
 	public List<WSSelectObj> findOpenedSoListByQ(@RequestParam(value="q",required=false) String q) throws Exception {
 		List<WSSelectObj>  ws = new ArrayList<WSSelectObj>();
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		if(q==null)
 		{
-			Map<String,String> map = new HashMap<String,String>();
+			
 			for(SSo s :sSoRepository.findByCompanyIdAndStatusId(companyId,18l)) //激活状态
 			{
-				if(!map.containsKey(s.getCodeSo()))
-				{
-				WSSelectObj w = new WSSelectObj(s.getSoNum(),s.getCodeSo());
+			
+				WSSelectObj w = new WSSelectObj(s.getIdSo(),s.getCodeSo()+"_"+s.getSMaterial().getPno());
 				ws.add(w);
-				map.put(s.getCodeSo(), s.getCodeSo());
-				}
+				
 			}
 		}
 		else
 		{
 			q = "%"+q+"%";
-			Map<String,String> map = new HashMap<String,String>();
 			for(SSo s :sSoRepository.findByCompanyIdAndStatusIdByQ(companyId,18l,q)) //激活状态
 			{
-
-				if(!map.containsKey(s.getCodeSo()))
-				{
-				WSSelectObj w = new WSSelectObj(s.getSoNum(),s.getCodeSo());
+				WSSelectObj w = new WSSelectObj(s.getIdSo(),s.getCodeSo()+"_"+s.getSMaterial().getPno());
 				ws.add(w);
-				map.put(s.getCodeSo(), s.getCodeSo());
-				}
+				
 			}
 		}
 	
@@ -326,7 +321,7 @@ public class SsoController1 {
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/s/getMaterialDeliveredBySoId1", method=RequestMethod.GET)
+	@RequestMapping(value="/s/getMaterialDeliveredBySoId", method=RequestMethod.GET)
 	public WSMaterialDelivered getMaterialDeliveredBySoId(@RequestParam("soId") Long soId) throws Exception {
 		
 	//	System.out.println("soId: " + soId);
@@ -358,7 +353,7 @@ public class SsoController1 {
 
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value = "/s/getMaterialBySoId1", method = RequestMethod.GET)
+	@RequestMapping(value = "/s/getMaterialBySoId", method = RequestMethod.GET)
 	public WSMaterial findWSMaterial(@RequestParam("soId") Long soId) throws Exception {
 		return ssoService.getMaterialBySoId(soId);
 
@@ -373,7 +368,7 @@ public class SsoController1 {
 	
 	
 	@Transactional(readOnly = true)
-	@RequestMapping(value="/check/ssoCode1", method=RequestMethod.GET)
+	@RequestMapping(value="/check/ssoCode", method=RequestMethod.GET)
 	public Valid checkCodeSo(@RequestParam("codeSo") String codeSo) {
 		Valid valid = new Valid();
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();

@@ -117,7 +117,7 @@ public class SmtfMaterialRepositoryCustomImpl implements SMtfMaterialRepositoryC
 			typeId =9l;
 			query ="select s from SMtfMaterial s where s.SMtf.idToCompany=" +companyId + " and s.SMtf.SStatusDic.id="+statusId +" and s.SMtf.SMtfTypeDic.idMtfType="+typeId;
 		}
-	//    System.out.println(query);
+	    System.out.println(query);
 		return em.createQuery(query, SMtfMaterial.class).getResultList();
 	}
 

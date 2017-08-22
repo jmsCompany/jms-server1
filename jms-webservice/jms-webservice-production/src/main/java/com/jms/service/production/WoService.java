@@ -23,10 +23,12 @@ import com.jms.domain.db.PCheckPlan;
 import com.jms.domain.db.PRoutine;
 import com.jms.domain.db.PRoutineD;
 import com.jms.domain.db.PWo;
+import com.jms.domain.db.PWoBom;
 import com.jms.domain.db.PWoRoute;
 import com.jms.domain.db.PWorkCenter;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMtfNo;
+import com.jms.domain.db.SSo;
 import com.jms.domain.db.SStk;
 import com.jms.domain.db.Users;
 import com.jms.domain.ws.Valid;
@@ -47,6 +49,7 @@ import com.jms.repositories.p.PCheckPlanRepository;
 import com.jms.repositories.p.PRoutineDRepository;
 import com.jms.repositories.p.PRoutineRepository;
 import com.jms.repositories.p.PStatusDicRepository;
+import com.jms.repositories.p.PWoBomRepository;
 import com.jms.repositories.p.PWoRepository;
 import com.jms.repositories.p.PWorkCenterRepository;
 import com.jms.repositories.s.SMtfNoRepository;
@@ -85,6 +88,7 @@ public class WoService {
 	@Autowired private SMtfNoRepository sMtfNoRepository;
 	@Autowired private PRoutineRepository pRoutineRepository;
 	@Autowired private PRoutineDRepository pRoutineDRepository;
+	@Autowired private PWoBomRepository pWoBomRepository;
 	
 	
 
@@ -92,9 +96,14 @@ public class WoService {
 	@Transactional(readOnly=false)
 	public WSPWo saveWSPWo(WSPWo wsPWo) throws Exception {
 	    PWo pWo;
+	    boolean isNew=true;
+	    Long sQty =0l;
 		if(wsPWo.getIdWo()!=null&&!wsPWo.getIdWo().equals(0l))
 		{
+			//System.out.println("woId: " + wsPWo.getIdWo());
 			pWo = pWoRepository.findOne(wsPWo.getIdWo());
+			sQty = pWo.getQty();
+			isNew = false;
 		}
 		else
 		{
@@ -103,6 +112,63 @@ public class WoService {
 		}
 		PWo dbPWo= toDBPWo(wsPWo,pWo);
 		dbPWo = pWoRepository.save(dbPWo);
+		
+		
+		SSo so = dbPWo.getSSo();
+		if(so!=null)
+		{
+			SMaterial mat = so.getSMaterial();
+			if(mat!=null)
+			{
+				if(isNew)
+				{
+					
+					PBom pbom = pBomRepository.findProductByMaterialId(mat.getIdMaterial());
+					
+					List<PBom> boms = pBomRepository.findMaterialsByProductId(pbom.getIdBom());
+					Long qty = dbPWo.getQty();
+					for(PBom bom:boms)
+					{
+						PWoBom woBom = new PWoBom();
+						woBom.setIdMat(bom.getSMaterial().getIdMaterial());
+						woBom.setIdBomLabel(pbom.getPBomLabel().getIdBomLabel());
+						woBom.setLvl(bom.getLvl());
+						woBom.setOrderBy(bom.getOrderBy());
+						woBom.setPWo(dbPWo);
+						woBom.setQpu(bom.getQpu());
+						woBom.setWastage(bom.getWastage());
+						woBom.setWip(bom.getWip());
+						Float waste = bom.getWastage()==null?0f: bom.getWastage();
+						Float q = bom.getQpu()==null?1l:bom.getQpu(); 
+                        double a = (qty*q)/(1-waste);
+						double b = Math.ceil(a);
+						woBom.setQty((long)(b));
+						woBom.setQtyRev(0l);
+						pWoBomRepository.save(woBom);
+					}
+				}
+				else
+				{
+					if(!wsPWo.getQty().equals(sQty))
+					{
+						List<PWoBom> boms =pWoBomRepository.findByIdWo(dbPWo.getIdWo());
+						Long qty = wsPWo.getQty();
+						for(PWoBom bom: boms)
+						{
+							Float waste = bom.getWastage()==null?0f: bom.getWastage();
+							Float q = bom.getQpu()==null?1l:bom.getQpu(); 
+	                        double a = (qty*q)/(1-waste);
+							double b = Math.ceil(a);
+							bom.setQty((long)(b));
+							pWoBomRepository.save(bom);
+						}
+								
+					}
+				}
+			}
+		
+		}
+		
 		wsPWo.setIdWo(dbPWo.getIdWo());
 		return wsPWo;		
 		

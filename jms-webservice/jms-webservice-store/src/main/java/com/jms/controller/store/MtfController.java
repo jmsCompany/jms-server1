@@ -55,6 +55,7 @@ public class MtfController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/findSmtf", method=RequestMethod.GET)
 	public WSSMtf findWSSMtf(@RequestParam("smtfId") Long smtfId) throws Exception {
+		//System.out.println("find smtf: " + smtfId);
 		return mtfService.findSMtf(smtfId);
 	}
 	

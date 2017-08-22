@@ -41,26 +41,14 @@ public class BomLabelService {
 
 	private static final Logger logger = LogManager.getLogger(BomLabelService.class
 			.getCanonicalName());
-	@Autowired
-	private PBomRepository pBomRepository;
-	@Autowired
-	private PBomLabelRepository pBomLabelRepository;
-	
-	
-	@Autowired 
-	private CompanyRepository companyRepository;
-	@Autowired 
-	private PStatusDicRepository pStatusDicRepository;
-	@Autowired
-	private PRoutineDRepository pRoutineDRepository;
-
-	@Autowired
-	private SecurityUtils securityUtils;
-	
-	@Autowired
-	private BomService bomService;
-	@Autowired
-	private SBinRepository sBinRepository;
+	@Autowired private PBomRepository pBomRepository;
+	@Autowired private PBomLabelRepository pBomLabelRepository;
+	@Autowired private CompanyRepository companyRepository;
+	@Autowired private PStatusDicRepository pStatusDicRepository;
+	@Autowired private PRoutineDRepository pRoutineDRepository;
+	@Autowired private SecurityUtils securityUtils;
+	@Autowired private BomService bomService;
+	@Autowired private SBinRepository sBinRepository;
 	
 	@Transactional(readOnly=false)
 	public WSPBom savePBomLabel(WSPBom wsPBom) throws Exception {
@@ -317,8 +305,6 @@ public class BomLabelService {
 						//item.setQtyCoPo(0l);
 					}
 				}
-			
-
 				pc.getBomItems().put("item"+i, item);
 				i++;
 			}

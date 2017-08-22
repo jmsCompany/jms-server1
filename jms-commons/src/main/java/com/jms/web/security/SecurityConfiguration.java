@@ -25,6 +25,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
+		http.headers().frameOptions().disable();
 		http
 		.authorizeRequests().antMatchers("/company/create").permitAll()
 		.antMatchers("/error").permitAll()
@@ -39,6 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //		.antMatchers("/p/findWSPwoStatus").permitAll()
 		//.antMatchers("/download/**").permitAll()
 		.antMatchers("/login").permitAll()
+		.antMatchers("/s/inventorySummary/export").permitAll()
 		.antMatchers(HttpMethod.OPTIONS,"/**").permitAll();
 		http.addFilter(authenticationTokenProcessingFilter);
 	    http.authorizeRequests().anyRequest().authenticated();

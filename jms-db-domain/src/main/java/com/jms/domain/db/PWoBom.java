@@ -28,6 +28,24 @@ public class PWoBom  implements java.io.Serializable {
      private Long idWoBom;
      private PBom PBom;
      private PWo PWo;
+     
+     private Long idBomLabel;
+     private Long lvl;
+     private Long idWc;
+     private Long idRoutineD;
+     private Long wip;
+     private Long idMat;
+     private Long orderBy;
+     private Float qpu;
+     private Float wastage;
+
+     private Long qty;
+     private Long qtyRev;
+
+     
+     
+     
+     
      private Set<SMtfMaterial> SMtfMaterials = new HashSet<SMtfMaterial>(0);
 
     public PWoBom() {
@@ -75,6 +93,100 @@ public class PWoBom  implements java.io.Serializable {
     public void setSMtfMaterials(Set<SMtfMaterial> SMtfMaterials) {
         this.SMtfMaterials = SMtfMaterials;
     }
+
+    @Column(name="id_bom_label")
+	public Long getIdBomLabel() {
+		return idBomLabel;
+	}
+
+	public void setIdBomLabel(Long idBomLabel) {
+		this.idBomLabel = idBomLabel;
+	}
+
+	 @Column(name="lvl")
+	public Long getLvl() {
+		return lvl;
+	}
+
+	public void setLvl(Long lvl) {
+		this.lvl = lvl;
+	}
+	 @Column(name="idWc")
+	public Long getIdWc() {
+		return idWc;
+	}
+
+	public void setIdWc(Long idWc) {
+		this.idWc = idWc;
+	}
+	 @Column(name="id_routine_d")
+	public Long getIdRoutineD() {
+		return idRoutineD;
+	}
+
+	public void setIdRoutineD(Long idRoutineD) {
+		this.idRoutineD = idRoutineD;
+	}
+
+	 @Column(name="wip")
+	public Long getWip() {
+		return wip;
+	}
+
+	public void setWip(Long wip) {
+		this.wip = wip;
+	}
+
+	 @Column(name="id_mat")
+	public Long getIdMat() {
+		return idMat;
+	}
+
+	public void setIdMat(Long idMat) {
+		this.idMat = idMat;
+	}
+
+	 @Column(name="order_by")
+	public Long getOrderBy() {
+		return orderBy;
+	}
+
+	public void setOrderBy(Long orderBy) {
+		this.orderBy = orderBy;
+	}
+	@Column(name="qpu", precision=10, scale=0)
+	public Float getQpu() {
+		return qpu;
+	}
+
+	public void setQpu(Float qpu) {
+		this.qpu = qpu;
+	}
+	@Column(name="wastage", precision=10, scale=0)
+	public Float getWastage() {
+		return wastage;
+	}
+
+	public void setWastage(Float wastage) {
+		this.wastage = wastage;
+	}
+
+	@Column(name="qty")
+	public Long getQty() {
+		return qty;
+	}
+
+	public void setQty(Long qty) {
+		this.qty = qty;
+	}
+	@Column(name="qty_rev")
+	public Long getQtyRev() {
+		return qtyRev;
+	}
+
+	public void setQtyRev(Long qtyRev) {
+		this.qtyRev = qtyRev;
+	}
 
 
 

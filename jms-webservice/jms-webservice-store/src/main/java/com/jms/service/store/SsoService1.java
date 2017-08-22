@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jms.domain.db.Company;
+import com.jms.domain.db.PBom;
 import com.jms.domain.db.PWo;
+import com.jms.domain.db.PWoBom;
+import com.jms.domain.db.SCompanyCo;
 import com.jms.domain.db.SMaterial;
 import com.jms.domain.db.SMtfNo;
 import com.jms.domain.db.SPic;
@@ -23,7 +26,10 @@ import com.jms.domain.ws.s.WSSSoRemark;
 import com.jms.domain.ws.s.WSSso;
 import com.jms.domain.ws.s.WSSsoItem;
 import com.jms.domainadapter.BeanUtil;
+import com.jms.repositories.company.CompanyRepository;
+import com.jms.repositories.p.PBomRepository;
 import com.jms.repositories.p.PStatusDicRepository;
+import com.jms.repositories.p.PWoBomRepository;
 import com.jms.repositories.p.PWoRepository;
 import com.jms.repositories.s.SCompanyCoRepository;
 import com.jms.repositories.s.SCurrencyTypeRepository;
@@ -76,12 +82,20 @@ public class SsoService1 {
 	@Autowired private MrpService mrpService;
 	
 	@Autowired private SSoNumRepository sSoNumRepository;
+	
+	@Autowired
+	private CompanyRepository companyRepository;
+	@Autowired
+	private PBomRepository pBomRepository;
+	@Autowired
+	private  PWoBomRepository pWoBomRepository;
 
 	public Valid saveSSo(WSSso wsSso) throws Exception {
 		
 		Company company = securityUtils.getCurrentDBUser().getCompany();
 		SSoNum soNum;
 		//create
+		Long company2Id = null;
 		if(wsSso.getSoNum()==null||wsSso.getSoNum().equals(0l))
 		{
 			if(wsSso.getCodeSo()==null)
@@ -100,7 +114,11 @@ public class SsoService1 {
 		else
 		{
 			soNum = sSoNumRepository.findOne(wsSso.getSoNum());	
-			sSoRepository.delete(sSoRepository.findBySoNum(wsSso.getSoNum()));
+			//System.out.println(wsSso.getSoNum());
+			List<SSo> sos =sSoRepository.findBySoNum(wsSso.getSoNum());
+			if(!sos.isEmpty())
+			company2Id =sos.get(0).getIdCompany2(); 
+			sSoRepository.delete(sos);
 			wsSso.setCodeSo(soNum.getNam());
 		}
 		for(WSSsoItem item: wsSso.getSoItems().values())
@@ -135,7 +153,21 @@ public class SsoService1 {
 			{
 				dbSso.setSCompanyCo(sCompanyCoRepository.findOne(wsSso.getsCompanyCoId()));
 			}
-			
+			if(wsSso.getIdCompany2()!=null)
+			{
+				Company c = companyRepository.findOne(wsSso.getIdCompany2());
+				if(c!=null)
+				{
+					System.out.println("合作公司: " + c.getCompanyName());
+					SCompanyCo sCompanyCo = sCompanyCoRepository.findByCompanyIdAndNameAndType(company.getIdCompany(), c.getCompanyName(), 2l);
+					System.out.println("友好公司: " + sCompanyCo.getName());
+					dbSso.setSCompanyCo(sCompanyCo);
+				}
+			}
+			if(company2Id!=null)
+			{
+				dbSso.setIdCompany2(company2Id);
+			}
 
 			if(wsSso.getsStatusId()!=null)
 			{
@@ -244,8 +276,10 @@ public class SsoService1 {
 	
 
 	public Valid saveSoAutoRemark(WSSSoRemark wsSSoRemark) {
+	//	System.out.println("change status: "  +wsSSoRemark.getIdSo() +", status: " + wsSSoRemark.getStatusId());
 		Company company = securityUtils.getCurrentDBUser().getCompany();
-		//SSo sso = sSoRepository.findOne(wsSSoRemark.getIdSo());	
+		//SSo so = sSoRepository.findOne(wsSSoRemark.getIdSo());	
+		//List<SSo> sos = sSoRepository.findBySoNum(wsSSoRemark.getIdSo());
 		List<SSo> sos = sSoRepository.findBySoNum(wsSSoRemark.getIdSo());
 		for(SSo sso:sos)
 		{
@@ -345,7 +379,33 @@ public class SsoService1 {
 		    wo.setFt(so.getDeliveryDate());
 		    wo.setPStatusDic(pStatusDicRepository.findOne(12l)); //开放状态
 		    wo.setQty(qty);
-	    	pWoRepository.save(wo);
+	    	wo = pWoRepository.save(wo);
+	    	
+	    	
+			PBom pbom = pBomRepository.findProductByMaterialId(materialId);
+			
+			List<PBom> boms = pBomRepository.findMaterialsByProductId(pbom.getIdBom());
+			//Long qty = wo.getQty();
+			for(PBom bom:boms)
+			{
+				PWoBom woBom = new PWoBom();
+				woBom.setIdMat(bom.getSMaterial().getIdMaterial());
+				woBom.setIdBomLabel(pbom.getPBomLabel().getIdBomLabel());
+				woBom.setLvl(bom.getLvl());
+				woBom.setOrderBy(bom.getOrderBy());
+				woBom.setPWo(wo);
+				woBom.setQpu(bom.getQpu());
+				woBom.setWastage(bom.getWastage());
+				woBom.setWip(bom.getWip());
+				Float waste = bom.getWastage()==null?0f: bom.getWastage();
+				Float q = bom.getQpu()==null?1l:bom.getQpu(); 
+                double a = (qty*q)/(1-waste);
+				double b = Math.ceil(a);
+				woBom.setQty((long)(b));
+				woBom.setQtyRev(0l);
+				pWoBomRepository.save(woBom);
+			}
+	    			
 	    }
 	   
 	   // wo.set

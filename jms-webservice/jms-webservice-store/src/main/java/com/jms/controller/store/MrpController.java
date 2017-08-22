@@ -107,7 +107,8 @@ public class MrpController {
 
 	@Transactional(readOnly = true)
 	@RequestMapping(value = "/s/mrp/sourcingPriceList")
-	public WSTableData sourcingPriceList(@RequestParam(required = false, value = "materialId") Long materialId,
+	public WSTableData sourcingPriceList(
+			@RequestParam(required = false, value = "materialId") Long materialId,
 			@RequestParam(required = false, value = "q") String q, @RequestParam Integer draw,
 			@RequestParam Integer start, @RequestParam Integer length) throws Exception {
 

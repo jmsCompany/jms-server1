@@ -26,7 +26,7 @@ public class AccessControlAllowFilter implements Filter {
 		
 		//httpResponse.addHeader("Access-Control-Allow-Credentials", "true");
 		
-		httpResponse.setHeader("Access-Control-Expose-Headers", "Origin,X-Requested-With,Content-Type,Accept,JMS-TOKEN");
+		httpResponse.addHeader("Access-Control-Expose-Headers", "Origin,X-Requested-With,Content-Type,Accept,JMS-TOKEN");
 		httpResponse.addHeader("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,Accept,JMS-TOKEN");
 		
 		chain.doFilter(httpRequest, httpResponse);

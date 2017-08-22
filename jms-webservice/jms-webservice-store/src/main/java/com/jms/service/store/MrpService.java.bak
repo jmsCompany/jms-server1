@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jms.domain.db.Company;
 import com.jms.domain.db.PBom;
 import com.jms.domain.db.PWo;
-import com.jms.domain.db.PWoBom;
 import com.jms.domain.db.SComCom;
 import com.jms.domain.db.SInventory;
 import com.jms.domain.db.SMaterial;
@@ -31,7 +30,6 @@ import com.jms.domainadapter.BeanUtil;
 import com.jms.file.FileUploadService;
 import com.jms.repositories.company.CompanyRepository;
 import com.jms.repositories.p.PBomRepository;
-import com.jms.repositories.p.PWoBomRepository;
 import com.jms.repositories.p.PWoRepository;
 import com.jms.repositories.s.BuyMehodRepository;
 import com.jms.repositories.s.SAttachmentRepository;
@@ -71,7 +69,6 @@ public class MrpService {
 	@Autowired private SInventoryRepository sInventoryRepository;
 	@Autowired private SCompanyCoRepository sCompanyCoRepository;
 	@Autowired private PBomRepository pBomRepository;
-	@Autowired private PWoBomRepository pWoBomRepository;
 	@Autowired private PWoRepository pWoRepository;
 	@Autowired private SSpoMaterialRepository sSpoMaterialRepository;
 	@Autowired private SSoRepository sSoRepository;
@@ -159,15 +156,14 @@ public class MrpService {
 		   
 		   //type =1, 生产原料数， 及时open wo
 		 // System.out.println("材料： " + m.getIdMaterial() +", mat: " + m.getPno());
-		//  List<PBom> boms = pBomRepository.findBomsByMaterialId(m.getIdMaterial());
-		  List<PWoBom> boms = pWoBomRepository.findByIdMaterial(m.getIdMaterial());
-		  for(PWoBom bom: boms)
+		  List<PBom> boms = pBomRepository.findBomsByMaterialId(m.getIdMaterial());
+		  for(PBom bom: boms)
 		  {
-			 // bom.get
-			  PWo wo = bom.getPWo();
-			  if(wo.getPStatusDic().getIdPstatus().equals(12l)) //open wo
-			  {
-				  
+			 SMaterial product = bom.getPBom().getSMaterial();
+			// System.out.println("成品： " + product.getIdMaterial() +", 成品: " + product.getPno());
+			 List<PWo>  wos =pWoRepository.findOpenWoByCompanyIdAndProductId(companyId, product.getIdMaterial());
+			 for(PWo wo:wos)
+			 {
 				// System.out.println("工单： " +wo.getWoNo() +", 原料: " + m.getPno());
 				Long qty_finished = wo.getActQty()==null?0l:wo.getActQty();
 				Long qty = wo.getQty()-qty_finished;
@@ -184,15 +180,12 @@ public class MrpService {
 							s.setInvUnit(m.getSUnitDicByUnitInf().getName());
 						}
 						s.setType(1l);
+						double a = (qty*q)/(1-waste);
 						
-//						double a = (qty*q)/(1-waste);
-//						
-//						double b = Math.ceil(a);
-						s.setQty(bom.getQtyRev()-bom.getQty());
+						double b = Math.ceil(a);
+						s.setQty((long)(-b));
 						
 						s.setOpenWoQty(qty);
-						
-						SMaterial product =	bom.getPWo().getSSo().getSMaterial();
 						s.setProduct(product.getPno()+product.getRev());
 						s.setProDate(wo.getSt());
 						s.setPWNo(wo.getWoNo());
@@ -210,8 +203,8 @@ public class MrpService {
 				//		ws.add(s);
 					
 				}
-			  }
-			 
+				 
+			 }
 		  }
 		  
 		  
@@ -516,6 +509,11 @@ public class MrpService {
 			   
 			
 			}
+			
+			
+			
+			
+			
 			
 			
 			

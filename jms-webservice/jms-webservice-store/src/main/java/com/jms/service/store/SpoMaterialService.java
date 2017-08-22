@@ -138,7 +138,10 @@ public class SpoMaterialService {
 			wsSpoMaterial.setsMaterialId(spoMaterial.getSMaterial().getIdMaterial());
 			wsSpoMaterial.setRev(spoMaterial.getSMaterial().getRev());
 			wsSpoMaterial.setDes(spoMaterial.getSMaterial().getDes());
-			wsSpoMaterial.setUnit(spoMaterial.getSMaterial().getSUnitDicByUnitPur().getName());
+			if(spoMaterial.getSMaterial().getSUnitDicByUnitPur()!=null)
+			{
+			    wsSpoMaterial.setUnit(spoMaterial.getSMaterial().getSUnitDicByUnitPur().getName());
+			}
 		}
 		if(spoMaterial.getSStatusDic()!=null)
 		{

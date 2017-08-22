@@ -1,9 +1,13 @@
 package com.jms.controller.store;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -87,6 +91,7 @@ public class InventoryController {
 	
 	@Autowired private  SMtfMaterialRepository sMtfMaterialRepository;
 	@Autowired private  SMtfNoRepository sMtfNoRepository;
+	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/s/findInventorySummaryByMaterialAndStk", method=RequestMethod.GET)
 	public List<WSInventoryInfo> findInventorySummaryByMaterialAndStk(@RequestParam(required=false,value="materialId") Long materialId,@RequestParam(required=false,value="stkId") Long stkId) throws Exception {
@@ -97,20 +102,73 @@ public class InventoryController {
 	
 	
 	
-	@RequestMapping(value = "/s/inventorySummary/export", method = RequestMethod.GET)
-	public ResponseEntity<InputStreamResource> inventorySummaryDownload( @RequestParam(required=false,value="materialId") Long materialId,
-			@RequestParam(required=false,value="stkId") Long stkId) throws IOException
-	{
+	
+
+	
+	
+	@RequestMapping(value = "/dic/test", method = RequestMethod.GET)
+	  public String downloadFiletest( 
+			   HttpServletResponse response
+    ) throws UnsupportedEncodingException
+	  {
 		
-//		CsvWriter x  = new CsvWriter();
-//		x.w
-		//List<WSInventory> is= sInventoryService.findInventoryDetailByMaterialAndStk(materialId, stkId);
+		String test="test.csv";
+        response.setContentType("application/force-download");// 设置强制下载不打开
+        response.addHeader("Content-Disposition",
+            "attachment;fileName=" + test);// 设置文件名
+        FileInputStream fis = null;
+        BufferedInputStream bis = null;
+        byte[] buffer = new byte[1024];
+        String str ="ssss";
+        InputStream in_withcode   =   new  ByteArrayInputStream(str.getBytes("UTF-8"));
+        try {
+	         
+	          bis = new BufferedInputStream(in_withcode);
+	          OutputStream os = response.getOutputStream();
+	          int i = bis.read(buffer);
+	          while (i != -1) {
+	            os.write(buffer, 0, i);
+	            i = bis.read(buffer);
+	          }
+	          System.out.println("success");
+	        } catch (Exception e) {
+	          e.printStackTrace();
+	        } finally {
+	          if (bis != null) {
+	            try {
+	              bis.close();
+	            } catch (IOException e) {
+	              e.printStackTrace();
+	            }
+	          }
+	          if (fis != null) {
+	            try {
+	              fis.close();
+	            } catch (IOException e) {
+	              e.printStackTrace();
+	            }
+	          }
+	        }
+	   
+        
+        
+		return null;
+	  }
+	
+	
+
+	  //文件下载相关代码
+	@RequestMapping(value = "/s/inventorySummary/export", method = RequestMethod.GET)
+	  public String downloadFile( 
+			   HttpServletResponse response,
+			  @RequestParam(required=false,value="materialId") Long materialId,
+			  @RequestParam(required=false,value="stkId") Long stkId
+      ) throws UnsupportedEncodingException{
+
+		
 		List<WSInventoryInfo> is= sInventoryService.findInventorySummaryByMaterialAndStk(materialId, stkId);
 		String str="仓库,物料编码,物料版本,物料描述,数量\r\n";
-		
-	//	WSInventoryInfo w = is.get(i);
-	//	String[] d = { w.getStkName(), w.getPno(), w.getRev(),w.getDes(), "" + w.getQty() };
-		
+				
 		for(WSInventoryInfo w :is)
 		{
 			//System.out.println("ssss");
@@ -129,22 +187,95 @@ public class InventoryController {
 			str =str +stk+"," +pno +","+ rev+","+des+","
 					 +qty+"\r\n";
 		}
-		InputStream   in_withcode   =   new  ByteArrayInputStream(str.getBytes("UTF-8"));
-		
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-		headers.add("Pragma", "no-cache");
-		headers.add("Expires", "0");
-
-		return ResponseEntity
-				.ok()
-				.headers(headers)
-				//.contentLength(str.length())
-				.contentType(
-						MediaType
-								.parseMediaType("application/octet-stream"))
-				.body(new InputStreamResource(in_withcode));
-	}
+		InputStream in_withcode   =   new  ByteArrayInputStream(str.getBytes("UTF-8"));
+		String test="test.csv";
+	        response.setContentType("application/force-download");// 设置强制下载不打开
+	        response.addHeader("Content-Disposition",
+	            "attachment;fileName=" + test);// 设置文件名
+	        byte[] buffer = new byte[1024];
+	        FileInputStream fis = null;
+	        BufferedInputStream bis = null;
+	        try {
+	         
+	          bis = new BufferedInputStream(in_withcode);
+	          OutputStream os = response.getOutputStream();
+	          int i = bis.read(buffer);
+	          while (i != -1) {
+	            os.write(buffer, 0, i);
+	            i = bis.read(buffer);
+	          }
+	          System.out.println("success");
+	        } catch (Exception e) {
+	          e.printStackTrace();
+	        } finally {
+	          if (bis != null) {
+	            try {
+	              bis.close();
+	            } catch (IOException e) {
+	              e.printStackTrace();
+	            }
+	          }
+	          if (fis != null) {
+	            try {
+	              fis.close();
+	            } catch (IOException e) {
+	              e.printStackTrace();
+	            }
+	          }
+	        }
+	   
+	    return null;
+	  }
+	
+	
+	
+	
+	
+	
+	
+	
+//	@RequestMapping(value = "/s/inventorySummary/export", method = RequestMethod.GET)
+//	public ResponseEntity<InputStreamResource> inventorySummaryDownload( 
+	       //@RequestParam(required=false,value="materialId") Long materialId,
+//			@RequestParam(required=false,value="stkId") Long stkId) throws IOException
+//	{
+//		List<WSInventoryInfo> is= sInventoryService.findInventorySummaryByMaterialAndStk(materialId, stkId);
+//		String str="仓库,物料编码,物料版本,物料描述,数量\r\n";
+//				
+//		for(WSInventoryInfo w :is)
+//		{
+//			//System.out.println("ssss");
+//			String stk=(w.getStkName()==null)?"":w.getStkName();
+//			stk = rp(stk);
+//			String pno =(w.getPno()==null)?"":w.getPno();
+//			pno = rp(pno);
+//			String rev = (w.getRev()==null)?"":w.getRev();
+//			rev = rp(rev);
+//			String des = (w.getDes()==null)?"":w.getDes();
+//			des = rp(des);
+//			
+//			String qty =(w.getQty()==null)?"":""+w.getQty();
+//			qty=rp(qty);
+//			
+//			str =str +stk+"," +pno +","+ rev+","+des+","
+//					 +qty+"\r\n";
+//		}
+//		InputStream in_withcode   =   new  ByteArrayInputStream(str.getBytes("UTF-8"));
+//		HttpHeaders headers = new HttpHeaders();
+//		String test="test.csv";
+//		headers.add("Content-Disposition","attachment;fileName=\""+test+"\""); 
+//		return ResponseEntity
+//				.ok()
+//				.headers(headers)
+//				.contentType(
+//						MediaType
+//							//	.parseMediaType("application/octet-stream"))
+//				       .parseMediaType("application/force-download"))
+//				.body(new InputStreamResource(in_withcode));
+//	}
+//	
+	
+	
 	
 	
 	@Transactional(readOnly = true)

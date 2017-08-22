@@ -23,6 +23,7 @@ import com.jms.domain.db.SMtfNo;
 import com.jms.domain.db.SPo;
 import com.jms.domain.db.SPoMaterial;
 import com.jms.domain.db.SSo;
+import com.jms.domain.db.SSoNum;
 import com.jms.domain.ws.Valid;
 import com.jms.domain.ws.WSSelectObj;
 import com.jms.domain.ws.s.WSPoItem;
@@ -39,6 +40,7 @@ import com.jms.repositories.s.SCompanyCoRepository;
 import com.jms.repositories.s.SCurrencyTypeRepository;
 import com.jms.repositories.s.SMaterialRepository;
 import com.jms.repositories.s.SMtfNoRepository;
+import com.jms.repositories.s.SSoNumRepository;
 import com.jms.repositories.s.SSoRepository;
 import com.jms.repositories.s.SSoRepositoryCustom;
 import com.jms.repositories.s.SSpoMaterialRepository;
@@ -92,6 +94,8 @@ public class SpoService {
 	private EmailSenderService emailSenderService;
 	@Autowired
 	private SComComRepository sComComRepository;
+	
+	@Autowired private SSoNumRepository sSoNumRepository;
 	
 	public WSSpo saveSpo(WSSpo wsSpo) throws Exception {
 		
@@ -624,6 +628,16 @@ public class SpoService {
 		     Company soCompany =companyRepository.findByCompanyName(sCompanyCo.getName());
 			SComCom comcom1 = sComComRepository.findByTwoCompanyId(myCompanyId, soCompany.getIdCompany());
 			boolean sendemail=false;
+			
+			SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(soCompany.getIdCompany(), 11l);
+		    long currentVal =smtfNo.getCurrentVal()+1;
+		    smtfNo.setCurrentVal(currentVal);
+		    sMtfNoRepository.save(smtfNo);
+		    String codeSo = smtfNo.getPrefix()+String.format("%08d", currentVal);
+		    
+		    SSoNum soNum = new SSoNum(codeSo);
+		    soNum = sSoNumRepository.save(soNum);
+		    
 			for(String k: wsSpo.getPoItems().keySet())
 			{
 			//	logger.debug("save po material: " + k);
@@ -633,14 +647,8 @@ public class SpoService {
 				SMaterial cm = sMaterialRepository.getByCompanyIdAndPno(soCompany.getIdCompany(), m.getPno());
 				if(cm!=null) //
 				{
-					//create so
 					//System.out.println("新建销售订单：id_company: " +soCompany.getIdCompany() );
 					SSo sSo = new SSo();
-					SMtfNo smtfNo = sMtfNoRepository.getByCompanyIdAndType(soCompany.getIdCompany(), 11l);
-				    long currentVal =smtfNo.getCurrentVal()+1;
-				    smtfNo.setCurrentVal(currentVal);
-				    sMtfNoRepository.save(smtfNo);
-				    String codeSo = smtfNo.getPrefix()+String.format("%08d", currentVal);
 				    sSo.setCodeSo(codeSo);
 				    sSo.setCompany(soCompany);
 				    sSo.setCoOrderNo(wsSpo.getCodePo());
@@ -665,6 +673,7 @@ public class SpoService {
 				    //sSo.setQtyDelivered(wm.getQtyPo());
 				    sSo.setUPrice(wm.getUprice().floatValue());
 				    sSo.setTotalAmount(wm.getQtyPo()*wm.getUprice().floatValue());
+				    sSo.setSoNum(soNum.getId());
 				    sSoRepository.save(sSo);
 				    sendemail = true;
 				}
