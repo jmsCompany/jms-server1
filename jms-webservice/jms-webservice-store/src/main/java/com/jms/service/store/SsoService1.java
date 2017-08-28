@@ -406,10 +406,7 @@ public class SsoService1 {
 					woBom.setQtyRev(0l);
 					pWoBomRepository.save(woBom);
 				}
-			}
-			
-			
-	    			
+			}		
 	    }
 	   
 	   // wo.set

@@ -473,7 +473,7 @@ public class MtfController {
 		Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
 		
 		//System.out.println("companyId: " + companyId);
-		if(typeId.equals(9l)&&toStkId!=null)
+		if(typeId!=null&&typeId.equals(9l)&&toStkId!=null)
 		{
 
 			SStk stk = sStkRepository.findOne(toStkId);

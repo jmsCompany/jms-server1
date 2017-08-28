@@ -3,17 +3,14 @@ package com.jms.controller.production;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
 import com.jms.domain.db.PBom;
 import com.jms.domain.db.PCPp;
 import com.jms.domain.db.PCheckPlan;
@@ -50,7 +47,6 @@ public class WoController {
 	@Autowired private PCheckPlanRepository pCheckPlanRepository;
 	@Autowired private SMtfMaterialRepository sMtfMaterialRepository;
 	@Autowired private PStatusDicRepository pStatusDicRepository;
-	
 	@Autowired private PWoRepositoryCustom pWoRepositoryCustomImpl;
 
 	
@@ -72,38 +68,31 @@ public class WoController {
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/findWo", method=RequestMethod.GET)
 	public WSPWo findWo(@RequestParam("woId") Long woId) throws Exception {
-		return woService.findWSPwo(woId);
-		
+		return woService.findWSPwo(woId);	
 	}
 	
-	
-
 	@Transactional(readOnly = false)
 	@RequestMapping(value="/p/finishWo", method=RequestMethod.GET)
 	public Valid finishWo(@RequestParam("woId") Long woId){
-		
 		Valid v = new Valid();
 		v.setValid(true);
 		PWo pwo =pWoRepository.findOne(woId);
 		pwo.setPStatusDic(pStatusDicRepository.findOne(13l));
 		pWoRepository.save(pwo);
 		return v;
-		
-		
 	}
 	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/findWSMaterialQtyByWoId", method=RequestMethod.GET)
 	public WSMaterialQty findWSMaterialQtyByWoId(@RequestParam("woId") Long woId) throws Exception {
-		return woService.findWSMaterialQtyByWoId(woId);
-		
+		return woService.findWSMaterialQtyByWoId(woId);		
 	}
 	
 
-	
 	@Transactional(readOnly = true)
 	@RequestMapping(value="/p/getBomByWoId", method=RequestMethod.POST)
-	public WSTableData  getBomByWoId(@RequestParam Long woId,@RequestParam Integer draw,@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
+	public WSTableData  getBomByWoId(@RequestParam Long woId,@RequestParam Integer draw,
+			@RequestParam Integer start,@RequestParam Integer length) throws Exception {	   
 	
 		PWo pWo =pWoRepository.findOne(woId);
 		SSo sSo =pWo.getSSo();
@@ -398,6 +387,14 @@ public class WoController {
 	@RequestMapping(value="/p/getMaterialByWoBom", method=RequestMethod.GET)
 	public List<WSBomMaterialObj> getMaterialByWoBom(@RequestParam("woId") Long woId) throws Exception {	
 	   return woService.getMaterialsByWoId(woId);
+	}
+	
+	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/p/getMaterialByWoBomAndQ", method=RequestMethod.GET)
+	public List<WSBomMaterialObj> getMaterialByWoBomAndQ(@RequestParam("woId") Long woId,
+			@RequestParam("q") String q) throws Exception {	
+	   return woService.getMaterialsByWoIdAndQ(woId,q);
 	}
 	
 	

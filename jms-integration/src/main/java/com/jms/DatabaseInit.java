@@ -31,6 +31,7 @@ import com.jms.service.production.PPUTimeService;
 import com.jms.service.production.PStatusDicService;
 import com.jms.service.production.PStopsCodeService;
 import com.jms.service.production.PStopsPlanService;
+import com.jms.service.production.WoService;
 import com.jms.service.quality.ItemTypeService;
 import com.jms.service.quality.QFileTypeService;
 import com.jms.service.quality.TesterService;
@@ -187,6 +188,11 @@ public class DatabaseInit {
 	
 	@Autowired
 	private  OCalendarTypeService oCalendarTypeService;
+	
+	
+	@Autowired
+	private  WoService woService;
+	
 	// 在系统初装的执行切只能执行一次，读取csv文件的数据到数据库中。
 	// todo:详细说明系统预设的所有信息这些信息的用途
 	public void init(ConfigurableApplicationContext ctx) throws IOException {
@@ -352,20 +358,22 @@ public class DatabaseInit {
 	//	Resource districtRes = ctx.getResource("classpath:data/123061.csv");
 	//	districtService.loadYadongFromCSV(districtRes.getInputStream());
 		
+		//woService.copyWoPom(137l);
+		
 	}
 	
 	
 
 	@Scheduled(fixedRate=1000*60*3)
 	public void sendEmails() {
-		notificationService.sendEmails();
+		//notificationService.sendEmails();
 		
 	}
 
 	@Scheduled(fixedRate=1000*60*5)
 	public void remind() {
 		//System.out.println("remind");
-		pStopsPlanService.remind();
+		//pStopsPlanService.remind();
 		
 	}
 

@@ -135,7 +135,6 @@ public class MtfService {
 	@Autowired
 	private PMrRepository pMrRepository;
 
-	
 	@Autowired
 	private CompanyRepository companyRepository;
 
@@ -1441,7 +1440,6 @@ public class MtfService {
 				//更改采购订单
 				if(mspo!=null)
 				{
-				
 					SPoMaterial sSpoMaterial = sSpoMaterialRepository.getByPnoAndPoId(mspo.getIdPo(), sm.getSMaterial().getPno());
 					if(sSpoMaterial!=null)
 					{
