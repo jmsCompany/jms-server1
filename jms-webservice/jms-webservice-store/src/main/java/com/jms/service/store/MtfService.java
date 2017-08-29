@@ -188,6 +188,32 @@ public class MtfService {
 				return valid;
 		}
 
+		if (smtfType.equals(4l)) {
+			SStk fromstk = sStkRepository.findOne(wsSMtf.getFromStkId());
+			Long stkType1 = fromstk.getSStkTypeDic().getIdStkType();
+			SStk tostk = sStkRepository.findOne(wsSMtf.getToStkId());
+			Long stkType2 = tostk.getSStkTypeDic().getIdStkType();
+			boolean v =false;
+			if(stkType1.equals(2l))
+			{
+				if(stkType2.equals(1l)||stkType2.equals(3l))
+				{
+					v=true;
+				}
+			}
+			if(stkType1.equals(1l)||stkType1.equals(3l))
+			{
+				if(stkType2.equals(2l))
+				{
+					v=true;
+				}
+			}
+			valid.setValid(v);
+			valid.setMsg("工单流转必须是车间与仓库之间的流转！");
+			if (!valid.getValid())
+				return valid;
+		}
+	
 		if (smtfType.equals(1l)) // 来料入检，检查SPO
 		{
 			// System.out.println("来料入检:");
@@ -562,25 +588,43 @@ public class MtfService {
 			case 4: // 工单流转
 			{
 				wm.setIdMt(sMtf.getIdMt());
-				System.out.println("idWo: " + wsSMtf.getIdWo());
+				//System.out.println("idWo: " + wsSMtf.getIdWo());
 				
 				PWo wo =pWoRepository.findOne(wsSMtf.getIdWo());
 				//产品
+				SStk stk = sStkRepository.findOne(wsSMtf.getToStkId());
 				if(wo.getSSo().getSMaterial().getIdMaterial().equals(wm.getMaterialId()))
 				{
 					Long actQty = wo.getActQty()==null?0:wo.getActQty();
-					actQty = actQty+wm.getQty();
-					wo.setActQty(actQty);
-					pWoRepository.save(wo);
+				
+					if(stk.getSStkTypeDic().getName().equals("车间")) //
+					{
+						actQty = actQty-wm.getQty();
+						wo.setActQty(actQty);
+						pWoRepository.save(wo);
+					}
+					else
+					{
+						actQty = actQty+wm.getQty();
+						wo.setActQty(actQty);
+						pWoRepository.save(wo);
+					}
 				}
 				else //原料
 				{
 					PWoBom pWoBom = pWoBomRepository.findByIdWoAndIdMaterial(wsSMtf.getIdWo(),wm.getMaterialId());
-					SStk stk = sStkRepository.findOne(wsSMtf.getToStkId());
+					
 					if(stk.getSStkTypeDic().getName().equals("车间")) //到车间已发数量变多
 					{
 						Long qtyRev = pWoBom.getQtyRev()==null?0l:pWoBom.getQtyRev();
 						qtyRev =qtyRev+wm.getQty();
+						pWoBom.setQtyRev(qtyRev);
+						pWoBomRepository.save(pWoBom);
+					}
+					else  //从车间到仓库
+					{
+						Long qtyRev = pWoBom.getQtyRev()==null?0l:pWoBom.getQtyRev();
+						qtyRev =qtyRev-wm.getQty();
 						pWoBom.setQtyRev(qtyRev);
 						pWoBomRepository.save(pWoBom);
 					}

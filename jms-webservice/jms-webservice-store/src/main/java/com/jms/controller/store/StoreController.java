@@ -159,7 +159,12 @@ public class StoreController {
 	}
 	
 	
-	
+	@Transactional(readOnly = true)
+	@RequestMapping(value="/s/getBinsByStkIdAndMaterialIdDMethod", method=RequestMethod.GET)
+	public List<WSSelectObj> getBinsByStkIdAndMaterialIdDMethod(@RequestParam Long idStk,@RequestParam Long idMaterial) {
+		System.out.println("B method: idStk: " + idStk +  ", idMaterial " + idMaterial);
+		return sBinService.getBinsByStkIdAndMaterialIdDMethod(idStk, idMaterial);
+	}
 	
 	
 	@Transactional(readOnly = true)

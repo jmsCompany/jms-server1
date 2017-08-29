@@ -157,7 +157,7 @@ public class SBinService implements ISBinService {
 		// System.out.println("idStk: " + idStk +", idMat: " +idMaterial );
 	    List<WSSelectObj> wsBinList = new ArrayList<WSSelectObj>();
 		    SStk stk=sStkRepository.findOne(idStk);
-		    if(stk.getSStkTypeDic().getIdStkType().equals(8l)) //CCA帐号
+		    if(stk.getSStkTypeDic().getIdStkType().equals(8l)||stk.getSStkTypeDic().getIdStkType().equals(2l)) //车间，CCA帐号
 		    {
 		    	for(SBin sbin:sBinRepository.getByIdStk(idStk))
 		    	{
@@ -185,6 +185,47 @@ public class SBinService implements ISBinService {
 		    }
 		return wsBinList;
 	}
+	
+	
+	
+	
+	@Transactional(readOnly = true)
+	public List<WSSelectObj> getBinsByStkIdAndMaterialIdDMethod(Long idStk,Long idMaterial) {
+		// System.out.println("idStk: " + idStk +", idMat: " +idMaterial );
+	    List<WSSelectObj> wsBinList = new ArrayList<WSSelectObj>();
+		    SStk stk=sStkRepository.findOne(idStk);
+		    if(stk.getSStkTypeDic().getIdStkType().equals(8l)||stk.getSStkTypeDic().getIdStkType().equals(2l)) //CCA帐号
+		    {
+		    	for(SBin sbin:sBinRepository.getByIdStk(idStk))
+		    	{
+		    		WSSelectObj w = new WSSelectObj(sbin.getIdBin(),sbin.getBin());
+		    		//System.out.println("idSBin: " + s.getSBin().getIdBin());
+			    	wsBinList.add(w);
+		    	}
+		    	return wsBinList;
+		    }
+	
+			Long companyId = securityUtils.getCurrentDBUser().getCompany().getIdCompany();
+			List<SInventory> ls = sInventoryRepository.findInventoryByMaterialAndStk(idMaterial, companyId, idStk);
+			Map<Long,Long> binMap = new HashMap<Long,Long>();
+		    for(SInventory s: ls)
+		    {
+		    	if(!binMap.containsKey(s.getSBin().getIdBin()))
+		    	{
+		    		WSSelectObj w = new WSSelectObj(s.getSBin().getIdBin(),s.getSBin().getBin());
+		    		//System.out.println("idSBin: " + s.getSBin().getIdBin());
+			    	wsBinList.add(w);
+			    	binMap.put(s.getSBin().getIdBin(), s.getSBin().getIdBin());
+		    	}
+		    
+	
+		    }
+		return wsBinList;
+	}
+	
+	
+	
+	
 	
 	
 	@Transactional(readOnly = true)
